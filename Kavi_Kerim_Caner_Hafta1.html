@@ -124,12 +124,12 @@
 
   <div class="card">
     <div class="card-label">Geçen haftanın değerlendirmesi</div>
-    <div class="degerlendirme-text">Kerim, matematik konusunda sıkıntıların var ama endişelenme! Paralel doğrular ve ortak kat/bölen konularında sıfırdan başlayıp güçlü olduğun Türkçe ve Fen'deki başarını matematik'e de taşıyacağız. Bu ilk hafta temellerini sağlamlaştırıp güvenini artıracağız.</div>
+    <div class="degerlendirme-text">Kavi, matematikte paralel doğrular ve açılar konusunda sıfırdan başlayacağız - bu senin için yeni bir sayfa! İngilizcede 17 boş soru artık geçmişte kaldı. Bu hafta kolay adımlarla başlıyoruz çünkü güçlü olduğun Fen ve Türkçe'deki başarın matematikte de olacağını biliyorum.</div>
   </div>
 
   <div class="card">
     <div class="card-label">Bu haftanın koçluk mesajı</div>
-    <div class="mesaj-text">Futbolda nasıl her antrenman küçük adımlarla büyük başarıya ulaştırıyorsa, matematik'te de aynı şekilde ilerleyeceğiz. Her doğru soru bir gol gibi, her gün biraz daha güçleniyorsun. Hayal kurma yeteneğin aslında matematik'te görselleştirme konusunda büyük avantaj sağlayacak!</div>
+    <div class="mesaj-text">&quot;Futbolda nasıl önce temel pas tekniklerini öğrenip sonra maça çıkıyorsan, matematikte de önce temeli atacağız. Paralel doğrular sanki sahada çizilen yan çizgiler gibi - asla kesişmezler! Her gün küçük antrenmanlarla büyük maçlara hazırlanıyoruz. Sen bu işin altından kalkarsın çünkü başladığında sürdürebiliyorsun.&quot;</div>
   </div>
 
   <div class="card">
@@ -138,7 +138,7 @@
       <div class="hedef-item"><div class="hedef-label">Paragraf sorusu</div><div class="hedef-val">10 paragraf / gün</div></div>
       <div class="hedef-item"><div class="hedef-label">Kitap okuma</div><div class="hedef-val">Her gün 30 sayfa</div></div>
       <div class="hedef-item"><div class="hedef-label">Günlük toplam soru</div><div class="hedef-val">50 soru / gün</div></div>
-      <div class="hedef-item"><div class="hedef-label">Bu hafta odak konular</div><div class="hedef-val" style="font-size:13px">Mat: Paralel doğrular ve açılar · İng: Kolay okuma parçaları</div></div>
+      <div class="hedef-item"><div class="hedef-label">Bu hafta odak konular</div><div class="hedef-val" style="font-size:13px">Mat: Paralel doğrular ve açılar · İng: Kolay okuma soruları</div></div>
     </div>
   </div>
 
@@ -146,8 +146,8 @@
   <div class="gun-grid" id="gunGrid"></div>
 
   <div class="koc-notu" style="margin-top:12px">
-    <div class="koc-notu-baslik">Koç Notu — İlk Hafta: Temel Atma</div>
-    <div class="koc-notu-text">Bu hafta matematik'te video izleyip sonra soru çözme sistemini kuracağız. İngilizce'de kolay sorularla özgüvenini artıracak, matematik'teki sıfırları pozitife çevireceğiz. Hareketli yapın için 25-30 dakikalık bloklar halinde çalış, aralar ver.</div>
+    <div class="koc-notu-baslik">Koç Notu — İlk Hafta Stratejisi</div>
+    <div class="koc-notu-text">Kavi'nin hareketli yapısını dikkate alarak kısa odaklanma periyotları planlıyoruz. İlk 3 gün matematikte sadece video izleyip temel kavramları oturtacak, ardından soru çözmeye başlayacak. İngilizce'de özgüven kazanması için kolay metinlerle başlıyoruz. Spor benzetmeleri kullanarak dikkatini toplamaya odaklanıyoruz.</div>
   </div>
 
   <div class="pazar-card">
@@ -168,37 +168,40 @@ const SON_GIRIS_DAKIKA = 0;
 
 const GUNLER = [
   { ad:'Pazartesi', tarih:'14 Nisan', prefix:'pzt', jsGun:1,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Paralel doğrular konusunu videolardan izle','Temel açı özellikleri 15 soru'], takipKey:'mat' },
-      { cls:'ders-ing', ad:'İngilizce', gorevler:['Basit okuma parçaları 15 soru','Kelime çalış 10 soru'], takipKey:'ing' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Paralel doğrular video izle (15 dk)','Temel açı türleri tekrar et'], takipKey:'mat' },
+      { cls:'ders-tur', ad:'Türkçe', gorevler:['20 sözcükte anlam sorusu çöz'], takipKey:'tur' },
+      { cls:'ders-fen', ad:'Fen', gorevler:['20 sürat-hız sorusu çöz'], takipKey:'fen' },
       { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — ana fikir odaklı'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Salı', tarih:'15 Nisan', prefix:'sal', jsGun:2,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Dün öğrendiğin açı konularından 20 soru çöz','Paralel doğru özelliklerini tekrar et'], takipKey:'mat' },
-      { cls:'ders-fen', ad:'Fen', gorevler:['Sürat-hız konusunu videolardan izle','Temel formüller 10 soru'], takipKey:'fen' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — çıkarım odaklı'], takipKey:'par' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Açılar video izle (15 dk)','5 temel açı sorusu çöz'], takipKey:'mat' },
+      { cls:'ders-ing', ad:'İngilizce', gorevler:['15 kolay okuma sorusu — kısa metinler'], takipKey:'ing' },
+      { cls:'ders-sos', ad:'Sosyal', gorevler:['20 coğrafya sorusu çöz'], takipKey:'sos' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — ana fikir odaklı'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Çarşamba', tarih:'16 Nisan', prefix:'car', jsGun:3,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Ortak kat-bölen konusunu videolardan öğren','EKOK-EBOB temel sorular 15 soru'], takipKey:'mat' },
-      { cls:'ders-tur', ad:'Türkçe', gorevler:['Güçlü olduğun yapı bilgisi 15 soru'], takipKey:'tur' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — ana düşünce odaklı'], takipKey:'par' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Paralel doğrularda açılar video izle','10 temel soru çöz'], takipKey:'mat' },
+      { cls:'ders-tur', ad:'Türkçe', gorevler:['15 dil bilgisi sorusu'], takipKey:'tur' },
+      { cls:'ders-din', ad:'Din Kültürü', gorevler:['15 konu sorusu çöz'], takipKey:'din' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — ana fikir odaklı'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Perşembe', tarih:'17 Nisan', prefix:'per', jsGun:4,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Dünkü EKOK-EBOB konusundan 20 soru çöz','Hata yaptığın soruları tekrar et'], takipKey:'mat' },
-      { cls:'ders-fen', ad:'Fen', gorevler:['Sürat-hız formül sorular 10 soru'], takipKey:'fen' },
-      { cls:'ders-ing', ad:'İngilizce', gorevler:['Kolay reading passages 10 soru'], takipKey:'ing' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — karma'], takipKey:'par' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['15 paralel doğrular ve açılar sorusu'], takipKey:'mat' },
+      { cls:'ders-ing', ad:'İngilizce', gorevler:['15 okuma sorusu — orta seviye'], takipKey:'ing' },
+      { cls:'ders-fen', ad:'Fen', gorevler:['10 sürat-hız karma soru'], takipKey:'fen' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — ana fikir odaklı'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Cuma', tarih:'18 Nisan', prefix:'cum', jsGun:5,
-    dersler: [{ cls:'ders-din', ad:'Din', gorevler:['Güçlü olduğun alanlardan 15 soru'], takipKey:'din' },
-      { cls:'ders-sos', ad:'Sosyal', gorevler:['Kolay tarih konularından 15 soru'], takipKey:'sos' },
-      { cls:'ders-ing', ad:'İngilizce', gorevler:['Vocabulary ve grammar 10 soru'], takipKey:'ing' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — hız odaklı'], takipKey:'par' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['20 paralel doğrular ve açılar sorusu — pekiştirme'], takipKey:'mat' },
+      { cls:'ders-ing', ad:'İngilizce', gorevler:['10 okuma + 10 kelime sorusu'], takipKey:'ing' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — ana fikir odaklı'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Cumartesi', tarih:'19 Nisan', prefix:'cmt', jsGun:6,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Haftalık tekrar: açılar + EKOK-EBOB karma 20 soru'], takipKey:'mat' },
-      { cls:'ders-ing', ad:'İngilizce', gorevler:['Haftalık mini test 10 soru'], takipKey:'ing' },
-      { cls:'ders-fen', ad:'Fen', gorevler:['Sürat-hız tekrar soruları 10 soru'], takipKey:'fen' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — hafta değerlendirme'], takipKey:'par' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['10 paralel doğrular mini testi'], takipKey:'mat' },
+      { cls:'ders-tur', ad:'Türkçe', gorevler:['10 karma soru'], takipKey:'tur' },
+      { cls:'ders-ing', ad:'İngilizce', gorevler:['10 okuma sorusu — özgüven testi'], takipKey:'ing' },
+      { cls:'ders-fen', ad:'Fen', gorevler:['10 karma soru'], takipKey:'fen' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — ana fikir odaklı'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] }
 ];
 
