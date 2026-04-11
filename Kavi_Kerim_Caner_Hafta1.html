@@ -124,12 +124,12 @@
 
   <div class="card">
     <div class="card-label">Geçen haftanın değerlendirmesi</div>
-    <div class="degerlendirme-text">Kavi, matematik ve İngilizcede sıfırdan geliyorsun ama bu seni yıldırmasın! Bu hafta ortak kat-bölen konusunu günlük örneklerle pekiştireceğiz. Futbolcu disiplini gibi her gün düzenli çalışırsan, sınavlarda başarı gelecek. En güçlü yanın olan özgüvenini kullan!</div>
+    <div class="degerlendirme-text">Kavi Kerim, senin 377 puan ortalamanı matematik ve İngilizce'deki kritik konulara odaklanarak yukarı çekebiliriz. Özellikle ortak kat-bölen ve veri sorularında sıfır başarından çıkman için günlük çalışma şart. Futbola olan tutkun gibi matematik konularına da disiplinli yaklaşırsan hızla yükselirsin.</div>
   </div>
 
   <div class="card">
     <div class="card-label">Bu haftanın koçluk mesajı</div>
-    <div class="mesaj-text">&quot;Futbolda nasıl her antrenmanla daha iyi oluyorsan, matematikte de her soru seni hedefe yaklaştırıyor. Ortak kat-bölen konusu futbol takım oyunu gibi - sayılar arasındaki uyumu yakalayacaksın. Hareketli yapın sıkıldığında, her doğru soruyu gol gibi düşün ve ilerle!&quot;</div>
+    <div class="mesaj-text">&quot;Futbolda nasıl her antrenman önemliyse, matematik de böyle! Her ortak bölen sorusu bir pas, her veri grafiği bir taktik. Sen sahada nasıl pes etmiyorsan, matematik sorularında da aynı azminle devam et. Başarı senin elinde!&quot;</div>
   </div>
 
   <div class="card">
@@ -138,7 +138,7 @@
       <div class="hedef-item"><div class="hedef-label">Paragraf sorusu</div><div class="hedef-val">10 paragraf / gün</div></div>
       <div class="hedef-item"><div class="hedef-label">Kitap okuma</div><div class="hedef-val">Her gün 30 sayfa</div></div>
       <div class="hedef-item"><div class="hedef-label">Günlük toplam soru</div><div class="hedef-val">50 soru / gün</div></div>
-      <div class="hedef-item"><div class="hedef-label">Bu hafta odak konular</div><div class="hedef-val" style="font-size:13px">Mat: Ortak kat-bölen, Veri analizi · İng: Weather-Emotions</div></div>
+      <div class="hedef-item"><div class="hedef-label">Bu hafta odak konular</div><div class="hedef-val" style="font-size:13px">Mat: Ortak Kat-Bölen · İng: Weather-Emotions</div></div>
     </div>
   </div>
 
@@ -146,8 +146,8 @@
   <div class="gun-grid" id="gunGrid"></div>
 
   <div class="koc-notu" style="margin-top:12px">
-    <div class="koc-notu-baslik">Koç Notu — İlk Hafta Temel Atma</div>
-    <div class="koc-notu-text">Bu hafta matematik temelleri üzerine odaklanıyoruz. Ortak kat-bölen konusunu günlük hayat örnekleriyle pekiştir, veri sorularını adım adım çöz. İngilizce'de hava durumu kelimelerini futbol terimlerine benzetme yaparak ezberle. Her gün 10 dakika molalarla çalış, dikkat dağınıklığını önle.</div>
+    <div class="koc-notu-baslik">Koç Notu — İlk Hafta Stratejisi</div>
+    <div class="koc-notu-text">Bu hafta temelleri oturtuyoruz. Matematik'te ortak kat-bölen günlük hayat örnekleriyle pekiştir, veri sorularını adım adım çöz. Hareketli yapın için kısa molalar ver, dikkat dağıldığında futbol benzetmeleri yap. İlk 3 gün ağır konulara odaklanıp, Cumartesi karma ile pekiştireceğiz.</div>
   </div>
 
   <div class="pazar-card">
@@ -168,40 +168,38 @@ const SON_GIRIS_DAKIKA = 0;
 
 const GUNLER = [
   { ad:'Pazartesi', tarih:'13 Nisan', prefix:'pzt', jsGun:1,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Ortak kat-bölen konu anlatım videosu izle','Temel tanım ve örnekleri not al'], takipKey:'mat' },
-      { cls:'ders-ing', ad:'İngilizce', gorevler:['Weather kelimelerini öğren','8 soru çöz - hava durumu odaklı'], takipKey:'ing' },
-      { cls:'ders-din', ad:'Din Kültürü', gorevler:['İlahi kitaplar konu tekrarı','7 soru çöz'], takipKey:'din' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Ortak kat-bölen konu videosu izle + not çıkar','5 temel ortak bölen problemi çöz'], takipKey:'mat' },
+      { cls:'ders-ing', ad:'İngilizce', gorevler:['Weather kelimelerini çalış + örnek cümleler yaz','12 weather sorusu çöz'], takipKey:'ing' },
       { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — ana fikir odaklı'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Salı', tarih:'14 Nisan', prefix:'sal', jsGun:2,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Ortak kat-bölen 12 soru çöz','Günlük hayat problemleri üzerinden örnekler yap'], takipKey:'mat' },
-      { cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['İnsan üreme organları konu tekrarı','8 soru çöz'], takipKey:'fen' },
-      { cls:'ders-tur', ad:'Türkçe', gorevler:['Sözcükte anlam 7 soru çöz'], takipKey:'tur' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['15 ortak kat-bölen sorusu çöz','Veri işleme konu tekrarı yap'], takipKey:'mat' },
+      { cls:'ders-ing', ad:'İngilizce', gorevler:['Emotions kelimelerini pekiştir','12 emotion sorusu çöz'], takipKey:'ing' },
       { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — çıkarım odaklı'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Çarşamba', tarih:'15 Nisan', prefix:'car', jsGun:3,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Veri işleme konu anlatımı izle','Grafik okuma temel örnekleri'], takipKey:'mat' },
-      { cls:'ders-ing', ad:'İngilizce', gorevler:['Emotions kelimeleri öğren','Weather-emotions 10 soru çöz'], takipKey:'ing' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', gorevler:['7 soru çöz - karma konular'], takipKey:'sos' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — tema bulma odaklı'], takipKey:'par' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['12 veri işleme sorusu adım adım çöz','Grafik okuma teknikleri çalış'], takipKey:'mat' },
+      { cls:'ders-din', ad:'Din Kültürü', gorevler:['İlahi kitaplar konusunu tekrar et','10 ilahi kitap sorusu çöz'], takipKey:'din' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['Üreme organları şemasını çiz + etiketle','5 üreme sistemi sorusu çöz'], takipKey:'fen' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — karma'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Perşembe', tarih:'16 Nisan', prefix:'per', jsGun:4,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Veri analizi 10 soru çöz','Sütun grafiği okuma pratikleri yap'], takipKey:'mat' },
-      { cls:'ders-din', ad:'Din Kültürü', gorevler:['İlahi kitaplar 10 soru çöz','Kavramları tekrar et'], takipKey:'din' },
-      { cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['7 soru çöz - karma konular'], takipKey:'fen' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — ayrıntı odaklı'], takipKey:'par' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['10 ortak kat-bölen + 10 veri karma sorusu','Hatalı sorularını tekrar çöz'], takipKey:'mat' },
+      { cls:'ders-ing', ad:'İngilizce', gorevler:['Weather + emotions karma çalışma','7 karma soru çöz'], takipKey:'ing' },
+      { cls:'ders-din', ad:'Din Kültürü', gorevler:['5 ilahi kitap sorusu tekrar','Hatalı sorularını analiz et'], takipKey:'din' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — yorum türleri'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Cuma', tarih:'17 Nisan', prefix:'cum', jsGun:5,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Ortak kat-bölen pekiştirme 8 soru','Veri analizi 4 soru çöz'], takipKey:'mat' },
-      { cls:'ders-ing', ad:'İngilizce', gorevler:['Weather-emotions karma 8 soru','Kelime tekrarı yap'], takipKey:'ing' },
-      { cls:'ders-tur', ad:'Türkçe', gorevler:['7 soru çöz - dil bilgisi odaklı'], takipKey:'tur' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — karma türler'], takipKey:'par' },
+    dersler: [{ cls:'ders-tur', ad:'Türkçe', gorevler:['Sözcükte anlam çalış','12 anlam sorusu çöz'], takipKey:'tur' },
+      { cls:'ders-sos', ad:'Sosyal Bilgiler', gorevler:['Yeryüzünde yaşam konusunu gözden geçir','10 sosyal soru çöz'], takipKey:'sos' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['5 üreme sistemi tekrar sorusu'], takipKey:'fen' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — hafta tekrarı'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Cumartesi', tarih:'18 Nisan', prefix:'cmt', jsGun:6,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Haftalık tekrar testi 15 soru','Eksik konuları belirle'], takipKey:'mat' },
-      { cls:'ders-ing', ad:'İngilizce', gorevler:['Mini test 6 soru','Haftanın kelimelerini tekrar et'], takipKey:'ing' },
-      { cls:'ders-din', ad:'Din Kültürü', gorevler:['6 soru çöz - hafta özeti'], takipKey:'din' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — hız odaklı'], takipKey:'par' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['15 karma soru: ortak kat-bölen + veri','Haftalık hata analizini yap'], takipKey:'mat' },
+      { cls:'ders-ing', ad:'İngilizce', gorevler:['7 weather-emotions karma test'], takipKey:'ing' },
+      { cls:'ders-din', ad:'Din Kültürü', gorevler:['5 ilahi kitap sorusu son tekrar'], takipKey:'din' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — mini test'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] }
 ];
 
