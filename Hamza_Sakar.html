@@ -119,18 +119,19 @@
       <div class="badges">
         <span class="badge badge-mat">Matematik acil</span>
         <span class="badge badge-fen">Fen kritik</span>
+        <span class="badge badge-ing">İngilizce öncelikli</span>
       </div>
     </div>
   </div>
 
   <div class="card">
     <div class="card-label">📊 Geçen haftanın değerlendirmesi</div>
-    <div class="degerlendirme-text">Hamza, matematik ve fen konularında temel eksiklerin var ama bu normal - kodlama mantığın güçlü olduğu için asal sayıları ve hız formüllerini algoritma gibi çözebilirsin. Bu hafta odaklanma sürenin kısalığını göz önünde bulundurarak kısa aralıklarla çalışacağız. Güçlü mantığını kullanarak bu zorlu konuları aşacaksın.</div>
+    <div class="degerlendirme-text">Hamza, matematik ve fen bilimleri alanlarındaki temel eksikliklerin giderilmesi gerekiyor. Bu hafta asal sayılar ve hız kavramları üzerinde yoğunlaşacağız. Robotik ve kodlama konularındaki yeteneğin bu sayısal konularda da başarı getireceğini biliyorum.</div>
   </div>
 
   <div class="card">
     <div class="card-label">💬 Bu haftanın koçluk mesajı</div>
-    <div class="mesaj-text">&quot;Robotik kodlarında nasıl adım adım mantık kuruyorsan, matematik problemlerini de aynı şekilde parçalara bölerek çözebilirsin. Asal sayılar da aslında bir algoritma gibi - sayıyı bölenlerini kontrol et, sadece 1 ve kendisi varsa asal! Hız formülleri de kodlamadaki değişkenler gibi: mesafe/zaman = hız. Sen bu mantığı çok iyi biliyorsun.&quot;</div>
+    <div class="mesaj-text">&quot;Robotlarda da kod yazarken her komutun ardında matematik mantığı vardır. Asal sayılar da kodlamadaki algoritma mantığı gibi - bir kez çözdüğünde sistem otomatik çalışır. Bu hafta matematik ve fen konularını kodlama mantığıyla yaklaşırsan çok daha kolay anlayacaksın!&quot;</div>
   </div>
 
   <div class="card">
@@ -139,7 +140,7 @@
       <div class="hedef-item"><div class="hedef-label">📖 Paragraf sorusu</div><div class="hedef-val">10 soru / gün</div></div>
       <div class="hedef-item"><div class="hedef-label">📚 Kitap okuma</div><div class="hedef-val">Her gün 30 sayfa</div></div>
       <div class="hedef-item"><div class="hedef-label">✏️ Günlük toplam soru</div><div class="hedef-val">50 soru / gün</div></div>
-      <div class="hedef-item"><div class="hedef-label">🔥 Bu hafta odak</div><div class="hedef-val" style="font-size:14px">Mat: Asal sayılar · Fen: Sürat-hız</div></div>
+      <div class="hedef-item"><div class="hedef-label">🔥 Bu hafta odak</div><div class="hedef-val" style="font-size:14px">Mat: Asal sayılar ve çarpanlar · Fen: Sürat-hız kavramları</div></div>
     </div>
   </div>
 
@@ -147,8 +148,8 @@
   <div class="gun-grid" id="gunGrid"></div>
 
   <div class="koc-notu" style="margin-top:12px">
-    <div class="koc-notu-baslik">🏆 Koç Notu — Temel Güçlendirme Haftası</div>
-    <div class="koc-notu-text">Bu hafta dikkat sürenin kısa olduğu için 25 dakika çalış, 5 dakika ara ver tekniğini kullan. Asal sayılar konusunu robotik mantığınla yaklaş - her sayı için bölenleri kontrol eden bir algoritma gibi düşün. Hız formüllerini de kodlamadaki değişkenler gibi gör: mesafe/zaman = sürat.</div>
+    <div class="koc-notu-baslik">🏆 Koç Notu — Temel Sağlamlaştırma Haftası</div>
+    <div class="koc-notu-text">Bu hafta dikkat dağınıklığına karşı 25 dakika çalış-5 dakika mola tekniğini kullan. Asal sayılar konusunu robot programlama gibi düşün: basit kuralları öğren, sistematik uygula. Hız konularında ise elektronik devre mantığını hatırla - her büyüklüğün birimi ve anlamı var.</div>
   </div>
 
   <div class="pazar-card">
@@ -169,33 +170,34 @@ const SON_GIRIS_DAKIKA = 0;
 
 const GUNLER = [
   { ad:'Pazartesi', tarih:'13 Nisan', prefix:'pzt', jsGun:1,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Asal sayı tanımı videosunu izle','1-30 arası asal sayıları bul ve listele','Asal sayı belirleme kurallarını özetle'], takipKey:'mat' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Asal sayılar konu videosu izle ve not al','Temel asal sayı tanımı örnekleri çöz (8 soru)'], takipKey:'mat' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['Sürat ve hız kavramları konu tekrarı','Temel sürat-hız fark soruları (9 soru)'], takipKey:'fen' },
       { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — ana fikir odaklı'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Salı', tarih:'14 Nisan', prefix:'sal', jsGun:2,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['15 asal sayı sorusu çöz','Asal çarpanlara ayırma 8 soru'], takipKey:'mat' },
-      { cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['Sürat-hız farkı videosunu izle','Hız formülünü ezberle: mesafe/zaman'], takipKey:'fen' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — ana fikir odaklı'], takipKey:'par' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Asal çarpan bulma yöntemleri çalış','Asal çarpan ayırma soruları (12 soru)'], takipKey:'mat' },
+      { cls:'ders-ing', ad:'İngilizce', gorevler:['Food Preferences kelime listesi ezberle','Yiyecek tercihleri soru kalıpları (5 soru)'], takipKey:'ing' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — sebep-sonuç ilişkisi'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Çarşamba', tarih:'15 Nisan', prefix:'car', jsGun:3,
-    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['12 hız-sürat hesaplama sorusu','Birim çevrimi 6 soru'], takipKey:'fen' },
-      { cls:'ders-ing', ad:'İngilizce', gorevler:['Food kelimelerini çalış','Food preferences kalıplarını ezberle','5 food sorusu çöz'], takipKey:'ing' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — ana fikir odaklı'], takipKey:'par' },
+    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['Sürat-hız birim dönüşüm örnekleri çalış','Hız hesaplama soruları (10 soru)'], takipKey:'fen' },
+      { cls:'ders-sos', ad:'Sosyal Bilgiler', gorevler:['Türkiye\'nin konum özellikleri tekrar','Konum ve yön soruları (7 soru)'], takipKey:'sos' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — karşılaştırma cümleleri'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Perşembe', tarih:'16 Nisan', prefix:'per', jsGun:4,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Asal çarpanlara ayırma 10 soru','Çarpan-kat ilişkisi 8 soru'], takipKey:'mat' },
-      { cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['Bitki üremesi videosunu izle','Üreme türlerini not al'], takipKey:'fen' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — ana fikir odaklı'], takipKey:'par' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Çarpan-kat ilişkisi konu pekiştirme','Çarpan-kat karışık sorular (8 soru)'], takipKey:'mat' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['Bitki üremesi temel kavramlar','Üreme türleri sınıflandırma (9 soru)'], takipKey:'fen' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — anlam çıkarma'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Cuma', tarih:'17 Nisan', prefix:'cum', jsGun:5,
-    dersler: [{ cls:'ders-ing', ad:'İngilizce', gorevler:['Do you like...? kalıpları','Food preferences 8 soru','Repeated actions 5 soru'], takipKey:'ing' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', gorevler:['Türkiye\'nin konumu haritadan çalış','Kıta ve okyanus isimleri 6 soru'], takipKey:'sos' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — ana fikir odaklı'], takipKey:'par' },
+    dersler: [{ cls:'ders-ing', ad:'İngilizce', gorevler:['Repeated Actions kalıpları çalış','Rutin ifadeler ve sorular (8 soru)'], takipKey:'ing' },
+      { cls:'ders-din', ad:'Din Kültürü', gorevler:['Peygamberlerin rehberliği özet','Peygamberlik örnekleri (9 soru)'], takipKey:'din' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — kelime anlamı tahmin'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Cumartesi', tarih:'18 Nisan', prefix:'cmt', jsGun:6,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Karma asal sayı testi 12 soru','Çarpan-kat karma 6 soru'], takipKey:'mat' },
-      { cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['Hız-sürat karma 6 soru','Mini fen testi 3 soru'], takipKey:'fen' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — ana fikir odaklı'], takipKey:'par' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['Asal sayı-çarpan karışık test (10 soru)'], takipKey:'mat' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['Hız ve üreme konuları mini test (7 soru)'], takipKey:'fen' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — hafta tekrar'], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] }
 ];
 
