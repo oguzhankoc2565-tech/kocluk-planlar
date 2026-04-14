@@ -117,21 +117,21 @@
       <h1>Seyid Ali Demir</h1>
       <div class="meta">6/A · Hafta 1 · 13–18 Nisan 2026</div>
       <div class="badges">
-        <span class="badge badge-sos">Sosyal Bilgiler kritik</span>
-        <span class="badge badge-fen">Fen Bilimleri öncelikli</span>
-        <span class="badge badge-mat">Matematik temel</span>
+        <span class="badge badge-sos">Sosyal öncelikli</span>
+        <span class="badge badge-fen">Fen kritik</span>
+        <span class="badge badge-mat">Matematik odak</span>
       </div>
     </div>
   </div>
 
   <div class="card">
     <div class="card-label">📊 Geçen haftanın değerlendirmesi</div>
-    <div class="degerlendirme-text">Seyid Ali, son sınav performansın 404,37 net ile gayet iyi durumda. Bu hafta %0 başarı gösterdiğin kritik konulara odaklanıyoruz. Din Kültürü'ndeki muhteşem yükselişin (10 tam net) diğer derslerde de yapabileceğinin kanıtı. Matematik yeteneğin güçlü, sadece dikkatini toplamaya odaklanman gerek.</div>
+    <div class="degerlendirme-text">Seyid Ali, geçen hafta sadece 2 günlük veri gönderdin ama bu hafta yeni bir başlangıç yapıyoruz. Din'de gösterdiğin muhteşem ilerleme (tam net almak) diğer derslerde de yapabilceğini kanıtlıyor. Sosyal'deki coğrafi konum ve Fen'deki bileşke kuvvet konularına odaklanarak bu eksikleri kapatacağız.</div>
   </div>
 
   <div class="card">
     <div class="card-label">💬 Bu haftanın koçluk mesajı</div>
-    <div class="mesaj-text">&quot;Yüzmede nasıl doğru teknikle ilerliyorsan, çalışmada da doğru stratejiyle ilerleyeceksin. Her gün düzenli antrenman yapan yüzücüler gibi sen de her gün düzenli çalışarak hedeflerine ulaşacaksın. Bilim insanı olma hayalin için attığın her adım seni hedefe yaklaştırıyor.&quot;</div>
+    <div class="mesaj-text">&quot;Yüzme sporcusu gibi her vuruşun önemli - matematikte asal sayılar da böyle, her adım hedefe götürür. Bilim insanı olmak isteyen biri olarak Fen'deki kuvvet konusunu çözmek senin için çocuk oyuncağı olacak. Bu hafta her gün küçük kazanımlarla büyük hedefine yürüyorsun!&quot;</div>
   </div>
 
   <div class="card">
@@ -140,7 +140,7 @@
       <div class="hedef-item"><div class="hedef-label">📖 Paragraf sorusu</div><div class="hedef-val">10 soru / gün</div></div>
       <div class="hedef-item"><div class="hedef-label">📚 Kitap okuma</div><div class="hedef-val">Her gün 30 sayfa</div></div>
       <div class="hedef-item"><div class="hedef-label">✏️ Günlük toplam soru</div><div class="hedef-val">50 soru / gün</div></div>
-      <div class="hedef-item"><div class="hedef-label">🔥 Bu hafta odak</div><div class="hedef-val" style="font-size:14px">Sos: Coğrafi Konum · Fen: Bileşke Kuvvet</div></div>
+      <div class="hedef-item"><div class="hedef-label">🔥 Bu hafta odak</div><div class="hedef-val" style="font-size:14px">Sos: Coğrafi konum · Fen: Bileşke kuvvet</div></div>
     </div>
   </div>
 
@@ -148,8 +148,8 @@
   <div class="gun-grid" id="gunGrid"></div>
 
   <div class="koc-notu" style="margin-top:12px">
-    <div class="koc-notu-baslik">🏆 Koç Notu — Kritik Konular Haftası</div>
-    <div class="koc-notu-text">Bu hafta %0 başarı gösteren konuları ele alıyoruz. Her gün sabit saatlerde çalışarak dikkat dağınıklığını minimize edeceğiz. 17:30-21:30 arasındaki 4 saatlik çalışma blokunu verimli kullanacağız. 20:00'deki kitap molası zihnini dinlendirecek.</div>
+    <div class="koc-notu-baslik">🏆 Koç Notu — Rutin Kurma Haftası</div>
+    <div class="koc-notu-text">Bu hafta önce çalışma disiplinini oturtacağız. Her gün düzenli veri gönderimi yaparak takip sistemi kurulacak. İlk 3 gün en zayıf konulara odaklanarak özgüven artırılacak. Din'deki başarını diğer derslere taşıma zamanı!</div>
   </div>
 
   <div class="pazar-card">
@@ -170,42 +170,34 @@ const SON_GIRIS_DAKIKA = 0;
 
 const GUNLER = [
   { ad:'Pazartesi', tarih:'13 Nisan', prefix:'pzt', jsGun:1,
-    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', gorevler:['17:30-18:00: Coğrafi konum konu anlatım videosu izle','18:00-18:30: Kıta ve okyanus konumları 15 soru çöz'], takipKey:'sos' },
-      { cls:'ders-mat', ad:'Matematik', gorevler:['18:30-19:00: Kontak denemesi 1 test çöz','19:00-19:30: Asal sayılar konu tekrarı + 7 soru'], takipKey:'mat' },
-      { cls:'ders-tur', ad:'Türkçe', gorevler:['21:00-21:30: Kontak denemesi 1 test çöz'], takipKey:'tur' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['19:30-20:00: Ana fikir odaklı 10 paragraf sorusu'], takipKey:'par' },
-      { cls:'ders-kit', ad:'Kitap', gorevler:['20:00-20:30: 30 sayfa oku'], takipKey:null }] },
+    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', gorevler:['Coğrafi konum videosu izle','15 soru çöz - kıtalar ve okyanuslar odaklı'], takipKey:'sos' },
+      { cls:'ders-mat', ad:'Matematik', gorevler:['Asal sayılar konu tekrarı','12 soru - asal çarpanlar uygulaması'], takipKey:'mat' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — ana fikir odaklı'], takipKey:'par' },
+      { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Salı', tarih:'14 Nisan', prefix:'sal', jsGun:2,
-    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['17:30-18:00: Bileşke kuvvet konu anlatımı izle','18:00-18:30: Kuvvet problemleri 15 soru çöz'], takipKey:'fen' },
-      { cls:'ders-mat', ad:'Matematik', gorevler:['18:30-19:00: Kontak denemesi 1 test çöz','19:00-19:30: Ondalık sayı işlemleri 7 soru'], takipKey:'mat' },
-      { cls:'ders-tur', ad:'Türkçe', gorevler:['21:00-21:30: Kontak denemesi 1 test çöz'], takipKey:'tur' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['19:30-20:00: Yüzey anlam belirlemesi 10 soru'], takipKey:'par' },
-      { cls:'ders-kit', ad:'Kitap', gorevler:['20:00-20:30: 30 sayfa oku'], takipKey:null }] },
+    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['Bileşke kuvvet videosu','15 soru - kuvvet yönleri ve hesaplama'], takipKey:'fen' },
+      { cls:'ders-tur', ad:'Türkçe', gorevler:['12 soru - yazım kuralları ve noktalama'], takipKey:'tur' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — yüzey anlam odaklı'], takipKey:'par' },
+      { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Çarşamba', tarih:'15 Nisan', prefix:'car', jsGun:3,
-    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', gorevler:['17:30-18:00: Coğrafi konum pekiştirme','18:00-18:30: Ülke konumları 15 soru çöz'], takipKey:'sos' },
-      { cls:'ders-mat', ad:'Matematik', gorevler:['18:30-19:00: Kontak denemesi 1 test çöz','19:00-19:30: Asal çarpanlar 7 soru'], takipKey:'mat' },
-      { cls:'ders-tur', ad:'Türkçe', gorevler:['21:00-21:30: Kontak denemesi 1 test + yazım kuralları'], takipKey:'tur' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['19:30-20:00: Karma paragraf 10 soru'], takipKey:'par' },
-      { cls:'ders-kit', ad:'Kitap', gorevler:['20:00-20:30: 30 sayfa oku'], takipKey:null }] },
+    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', gorevler:['20 soru - Türkiye\'nin konumu pekiştirme'], takipKey:'sos' },
+      { cls:'ders-din', ad:'Din Kültürü', gorevler:['7 soru - başarını sürdür'], takipKey:'din' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — ana fikir ve ayrıntı'], takipKey:'par' },
+      { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Perşembe', tarih:'16 Nisan', prefix:'per', jsGun:4,
-    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['17:30-18:00: Güneş sistemi gezegenler konu tekrarı','18:00-18:30: Gezegen özellikleri 15 soru'], takipKey:'fen' },
-      { cls:'ders-mat', ad:'Matematik', gorevler:['18:30-19:00: Kontak denemesi 1 test çöz','19:00-19:30: Ondalık işlem problemleri 7 soru'], takipKey:'mat' },
-      { cls:'ders-tur', ad:'Türkçe', gorevler:['21:00-21:30: Kontak denemesi 1 test + noktalama'], takipKey:'tur' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['19:30-20:00: Anahtar kelime bulma 10 soru'], takipKey:'par' },
-      { cls:'ders-kit', ad:'Kitap', gorevler:['20:00-20:30: 30 sayfa oku'], takipKey:null }] },
+    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['Gezegen sınıflandırması konu','15 soru - Güneş sistemi'], takipKey:'fen' },
+      { cls:'ders-ing', ad:'İngilizce', gorevler:['12 soru - making inquiries kalıpları'], takipKey:'ing' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — anlam ilişkileri'], takipKey:'par' },
+      { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Cuma', tarih:'17 Nisan', prefix:'cum', jsGun:5,
-    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', gorevler:['17:30-18:00: Coğrafi konum karma sorular','18:00-18:30: Lokasyon belirleme 10 soru'], takipKey:'sos' },
-      { cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['18:30-19:00: Bileşke kuvvet problemleri 5 soru'], takipKey:'fen' },
-      { cls:'ders-mat', ad:'Matematik', gorevler:['19:00-19:30: Kontak denemesi 1 test çöz'], takipKey:'mat' },
-      { cls:'ders-tur', ad:'Türkçe', gorevler:['21:00-21:30: Kontak denemesi 1 test çöz'], takipKey:'tur' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['19:30-20:00: Karma paragraf 10 soru'], takipKey:'par' },
-      { cls:'ders-kit', ad:'Kitap', gorevler:['20:00-20:30: 30 sayfa oku'], takipKey:null }] },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['15 soru - asal sayı soruları çöz'], takipKey:'mat' },
+      { cls:'ders-tur', ad:'Türkçe', gorevler:['12 soru - metin anlama ve söz varlığı'], takipKey:'tur' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — karma sorular'], takipKey:'par' },
+      { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] },
   { ad:'Cumartesi', tarih:'18 Nisan', prefix:'cmt', jsGun:6,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', gorevler:['17:30-18:15: Mini test - asal sayılar ve ondalık işlemler (15 soru)'], takipKey:'mat' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', gorevler:['18:15-19:00: Coğrafi konum mini test (10 soru)'], takipKey:'sos' },
-      { cls:'ders-fen', ad:'Fen Bilimleri', gorevler:['19:00-19:30: Kuvvet ve gezegenler karma test (12 soru)'], takipKey:'fen' },
-      { cls:'ders-par', ad:'Paragraf', gorevler:['21:00-21:30: Hafta tekrar paragrafları 10 soru'], takipKey:'par' },
-      { cls:'ders-kit', ad:'Kitap', gorevler:['20:00-20:30: 30 sayfa oku'], takipKey:null }] }
+    dersler: [{ cls:'ders-sos', ad:'Mini Test', gorevler:['37 soruluk karma test - özellikle coğrafi konum ve bileşke kuvvet'], takipKey:'sos' },
+      { cls:'ders-par', ad:'Paragraf', gorevler:['10 paragraf sorusu — haftalık değerlendirme'], takipKey:'par' },
+      { cls:'ders-kit', ad:'Kitap', gorevler:['30 sayfa oku'], takipKey:null }] }
 ];
 
 function trSaati() {
