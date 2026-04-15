@@ -141,7 +141,7 @@
       <div class="meta">6/A · Hafta 1 · 13–18 Nisan 2026</div>
       <div class="badges">
         <span class="badge badge-sos">Sosyal öncelikli</span>
-        <span class="badge badge-mat">Matematik kritik</span>
+        <span class="badge badge-tur">Türkçe kritik</span>
       </div>
     </div>
   </div>
@@ -203,7 +203,7 @@
 
   <div class="card">
     <div class="card-label">💬 Bu haftanın mesajı</div>
-    <div class="kocundan-text">Taha, bursluluk sınavına sadece 9 gün kaldı ve karşında 1060 soru var! Bu çok gibi görünse de sen matematik ve fende çok güçlüsün, sistematik çalışırsan kesinlikle başarırsın. Bu hafta her gün ortalama 106 soru çözeceğiz - en zayıf derslerden başlayarak. Sosyal Bilgiler'e odaklanacağız çünkü 327 soru kalmış ve en çok puan kaybettiğin alan burası. Her soruyu çözdükten sonra mutlaka yanlışlarını kontrol et ve neden yanlış yaptığını anla - bu sınavda her puan çok değerli. Disiplinli çalışırsan hedeflediğin bursluluk kesinlikle senin olacak!</div>
+    <div class="kocundan-text">Taha, bursluluk sınavına sadece 9 gün kaldı ve karşında 1060 soru var - bu gerçekten çok fazla ama panik yapma! Sen matematik ve fende çok güçlüsün, bu sınavı çözebilecek potansiyelin var. Bu 6 günde günde 100-120 soru çözerek toplamda 630 soruyu bitireceğiz, kalan 430 soruyu da son 4 günde halledeceğiz. En önemlisi: her soruyu çözdükten sonra mutlaka kontrol et, yanlış yaptıklarını tekrar çöz ve neden yanlış yaptığını anla. Sosyal Bilgiler en zayıf dersın olduğu için ona en çok zaman ayıracağız. Disiplinli çalışırsan bu sınavı kazanabilirsin!</div>
   </div>
 
   <div class="card">
@@ -220,8 +220,8 @@
   <div class="gun-grid" id="gunGrid"></div>
 
   <div class="koc-notu" style="margin-top:12px">
-    <div class="koc-notu-baslik">🏆 Koç Notu — Son Sprint - Sistematik Çözüm</div>
-    <div class="koc-notu-text">Her gün akşam yemeğinden sonra 2.5-3 saat odakla çalış. İlk 1 saat Sosyal'e ayır (en zayıf), sonra 1 saat Matematik, son 30-45 dakika diğer dersler. Her konuyu bitirdikten sonra 5 dakika ara ver. Yanlış yaptığın soruları işaretle ve günün sonunda tekrar çöz. Konu atlamadan sırayla ilerle - bu sistem seni başarıya götürecek.</div>
+    <div class="koc-notu-baslik">🏆 Koç Notu — Hızlandırılmış Bitirme Stratejisi</div>
+    <div class="koc-notu-text">Her gün akşam yemeğinden sonra 3 saat çalışacaksın. İlk 2 saat sosyal ve matematik, son 1 saat türkçe ve diğer dersler. Soruları çöz, kontrol et, yanlışları tekrar çöz. Her konuyu bitirdiğinde sıradakine geç, zamanı boşa harcama. Cumartesi karma tekrar günü olacak.</div>
   </div>
 
   <div class="pazar-card">
@@ -243,43 +243,37 @@ const SON_GIRIS_DAKIKA = 0;
 
 const GUNLER = [
   { ad:'Çarşamba', tarih:'15 Nisan', prefix:'car', jsGun:3,
-    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Birlikte Yaşamak — 11 soru çöz (58. sorudan devam)', checkbox:false, id:'undefined_sos_g0' },{ metin:'Evimiz Dünya — 45 soru çöz', checkbox:false, id:'undefined_sos_g1' }], takipKey:'sos' },
-      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Sayılar ve Nicelikler (2) — 35 soru çöz (72. sorudan devam)', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
-      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Cümlede Anlam — 20 soru çöz (61. sorudan devam)', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Bugün yanlış yaptığın soruları tekrar çöz ve neden yanlış yaptığını anla', checkbox:true, id:'undefined_sos_g0' }], takipKey:'sos' }] },
+    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Birlikte Yaşamak — kalan 11 soruyu bitir (58. sorudan)', checkbox:false, id:'undefined_sos_g0' },{ metin:'Evimiz Dünya — ilk 35 soru çöz', checkbox:false, id:'undefined_sos_g1' }], takipKey:'sos' },
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Sayılar ve Nicelikler (2) — 30 soru çöz (72. sorudan devam)', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Cümlede Anlam — 25 soru çöz (61. sorudan devam)', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Maddenin Ayırt Edici Özellikleri — ilk 15 soru çöz', checkbox:false, id:'undefined_fen_g0' }], takipKey:'fen' },
+      { cls:'ders-din', ad:'Din Kültürü', key:'din', gorevler:[{ metin:'Ahlaki Davranışlar — ilk 10 soru çöz', checkbox:false, id:'undefined_din_g0' }], takipKey:'din' }] },
   { ad:'Perşembe', tarih:'16 Nisan', prefix:'per', jsGun:4,
-    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Evimiz Dünya — 50 soru çöz', checkbox:false, id:'undefined_sos_g0' }], takipKey:'sos' },
-      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Sayılar ve Nicelikler (2) — 40 soru çöz', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
-      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Maddenin Ayırt Edici Özellikleri — 25 soru çöz', checkbox:false, id:'undefined_fen_g0' }], takipKey:'fen' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Bugün yanlış yaptığın soruları tekrar çöz ve neden yanlış yaptığını anla', checkbox:true, id:'undefined_sos_g0' }], takipKey:'sos' }] },
+    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Evimiz Dünya — 40 soru çöz (36. sorudan devam)', checkbox:false, id:'undefined_sos_g0' }], takipKey:'sos' },
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Sayılar ve Nicelikler (2) — 35 soru çöz (102. sorudan devam)', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Cümlede Anlam — 30 soru çöz (86. sorudan devam)', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Maddenin Ayırt Edici Özellikleri — 20 soru çöz (16. sorudan devam)', checkbox:false, id:'undefined_fen_g0' }], takipKey:'fen' }] },
   { ad:'Cuma', tarih:'17 Nisan', prefix:'cum', jsGun:5,
-    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Evimiz Dünya — kalan 15 soru çöz', checkbox:false, id:'undefined_sos_g0' },{ metin:'Ortak Mirasımız — 40 soru çöz', checkbox:false, id:'undefined_sos_g1' }], takipKey:'sos' },
-      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Sayılar ve Nicelikler (2) — kalan 25 soru çöz', checkbox:false, id:'undefined_mat_g0' },{ metin:'Geometrik Şekiller — 16 soru çöz', checkbox:false, id:'undefined_mat_g1' }], takipKey:'mat' },
-      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Cümlede Anlam — 25 soru çöz', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Bugün yanlış yaptığın soruları tekrar çöz ve neden yanlış yaptığını anla', checkbox:true, id:'undefined_sos_g0' }], takipKey:'sos' }] },
+    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Evimiz Dünya — kalan 35 soruyu bitir (76. sorudan)', checkbox:false, id:'undefined_sos_g0' },{ metin:'Ortak Mirasımız — ilk 20 soru çöz', checkbox:false, id:'undefined_sos_g1' }], takipKey:'sos' },
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Sayılar ve Nicelikler (2) — kalan 35 soruyu bitir (137. sorudan)', checkbox:false, id:'undefined_mat_g0' },{ metin:'Geometrik Şekiller — ilk 16 soruyu bitir', checkbox:false, id:'undefined_mat_g1' }], takipKey:'mat' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Cümlede Anlam — kalan 30 soruyu bitir (116. sorudan)', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
+      { cls:'ders-din', ad:'Din Kültürü', key:'din', gorevler:[{ metin:'Ahlaki Davranışlar — kalan 14 soruyu bitir (11. sorudan)', checkbox:false, id:'undefined_din_g0' }], takipKey:'din' }] },
   { ad:'Cumartesi', tarih:'18 Nisan', prefix:'cmt', jsGun:6,
-    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Ortak Mirasımız — 50 soru çöz', checkbox:false, id:'undefined_sos_g0' }], takipKey:'sos' },
-      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'İşlemlerle Cebirsel Düşünce ve Değişimler — 35 soru çöz', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
-      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Maddenin Ayırt Edici Özellikleri — 30 soru çöz', checkbox:false, id:'undefined_fen_g0' }], takipKey:'fen' },
-      { cls:'ders-din', ad:'Din Kültürü', key:'din', gorevler:[{ metin:'Ahlaki Davranışlar — 24 soru çöz', checkbox:false, id:'undefined_din_g0' }], takipKey:'din' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Bugün yanlış yaptığın soruları tekrar çöz ve neden yanlış yaptığını anla', checkbox:true, id:'undefined_sos_g0' }], takipKey:'sos' }] },
+    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Ortak Mirasımız — 45 soru çöz (21. sorudan devam)', checkbox:false, id:'undefined_sos_g0' }], takipKey:'sos' },
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'İşlemlerle Cebirsel Düşünce ve Değişimler — ilk 30 soru çöz', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Metinde Konu - Başlık — 19 soruyu bitir', checkbox:false, id:'undefined_tur_g0' },{ metin:'Metinde Ana Düşünce / Ana Duygu — ilk 20 soru çöz', checkbox:false, id:'undefined_tur_g1' }], takipKey:'tur' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Maddenin Ayırt Edici Özellikleri — 25 soru çöz (36. sorudan devam)', checkbox:false, id:'undefined_fen_g0' }], takipKey:'fen' }] },
   { ad:'Pazar', tarih:'19 Nisan', prefix:'pzt', jsGun:1,
-    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Ortak Mirasımız — kalan 23 soru çöz', checkbox:false, id:'undefined_sos_g0' },{ metin:'Yaşayan Demokrasimiz — 19 soru çöz', checkbox:false, id:'undefined_sos_g1' }], takipKey:'sos' },
-      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'İşlemlerle Cebirsel Düşünce ve Değişimler — 35 soru çöz', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
-      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Cümlede Anlam — kalan 40 soru çöz', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
-      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Maddenin Ayırt Edici Özellikleri — 25 soru çöz', checkbox:false, id:'undefined_fen_g0' }], takipKey:'fen' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Bugün yanlış yaptığın soruları tekrar çöz ve neden yanlış yaptığını anla', checkbox:true, id:'undefined_sos_g0' }], takipKey:'sos' }] },
+    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Ortak Mirasımız — kalan 48 soruyu bitir (66. sorudan)', checkbox:false, id:'undefined_sos_g0' },{ metin:'Yaşayan Demokrasimiz — 19 soruyu bitir', checkbox:false, id:'undefined_sos_g1' }], takipKey:'sos' },
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'İşlemlerle Cebirsel Düşünce ve Değişimler — 40 soru çöz (31. sorudan devam)', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Metinde Ana Düşünce / Ana Duygu — kalan 19 soruyu bitir (21. sorudan)', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Maddenin Ayırt Edici Özellikleri — 20 soru çöz (61. sorudan devam)', checkbox:false, id:'undefined_fen_g0' }], takipKey:'fen' },
+      { cls:'ders-din', ad:'Din Kültürü', key:'din', gorevler:[{ metin:'Peygamberliğinden Önce Hz. Muhammed — 3 soruyu bitir', checkbox:false, id:'undefined_din_g0' },{ metin:'Kültürümüzdeki Dini Motifler — 10 soruyu bitir', checkbox:false, id:'undefined_din_g1' }], takipKey:'din' }] },
   { ad:'Pazartesi', tarih:'20 Nisan', prefix:'pzt', jsGun:1,
-    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Hayatımızdaki Ekonomi — 48 soru çöz', checkbox:false, id:'undefined_sos_g0' }], takipKey:'sos' },
-      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Metinde Konu - Başlık — 19 soru çöz', checkbox:false, id:'undefined_tur_g0' },{ metin:'Metinde Ana Düşünce / Ana Duygu — 39 soru çöz', checkbox:false, id:'undefined_tur_g1' }], takipKey:'tur' },
-      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Elektriğin İletimi ve Direnç — 11 soru çöz', checkbox:false, id:'undefined_fen_g0' },{ metin:'Sürdürülebilir Yaşam ve Etkileşim — 18 soru çöz', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
-      { cls:'ders-din', ad:'Din Kültürü', key:'din', gorevler:[{ metin:'Peygamberliğinden Önce Hz. Muhammed — 3 soru çöz', checkbox:false, id:'undefined_din_g0' },{ metin:'Kültürümüzdeki Dini Motifler — 10 soru çöz', checkbox:false, id:'undefined_din_g1' }], takipKey:'din' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Bugün yanlış yaptığın soruları tekrar çöz ve neden yanlış yaptığını anla', checkbox:true, id:'undefined_sos_g0' }], takipKey:'sos' }] },
-  { ad:'Salı', tarih:'21 Nisan', prefix:'sal', jsGun:2,
-    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Teknoloji ve Sosyal Bilimler — 26 soru çöz', checkbox:false, id:'undefined_sos_g0' }], takipKey:'sos' },
-      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Metinde Yardımcı Düşünce — 74 soru çöz', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
-      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Geometrik Nicelikler — 19 soru çöz', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Bugün yanlış yaptığın soruları tekrar çöz ve neden yanlış yaptığını anla', checkbox:true, id:'undefined_sos_g0' }], takipKey:'sos' }] }
+    dersler: [{ cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Hayatımızdaki Ekonomi — 35 soru çöz', checkbox:false, id:'undefined_sos_g0' }], takipKey:'sos' },
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'İşlemlerle Cebirsel Düşünce ve Değişimler — kalan 30 soruyu bitir', checkbox:false, id:'undefined_mat_g0' },{ metin:'Geometrik Nicelikler — 19 soruyu bitir', checkbox:false, id:'undefined_mat_g1' }], takipKey:'mat' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Metinde Yardımcı Düşünce — 35 soru çöz', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Maddenin Ayırt Edici Özellikleri — kalan 20 soruyu bitir', checkbox:false, id:'undefined_fen_g0' },{ metin:'Elektriğin İletimi ve Direnç — 11 soruyu bitir', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' }] }
 ];
 
 function trSaati() {
