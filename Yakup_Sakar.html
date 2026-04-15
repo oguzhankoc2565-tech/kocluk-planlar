@@ -140,8 +140,7 @@
       <h1>Yakup Şakar</h1>
       <div class="meta">6/A · Hafta 1 · 13–18 Nisan 2026</div>
       <div class="badges">
-        <span class="badge badge-mat">Matematik 枚ncelikli</span>
-        <span class="badge badge-din">Din acil tekrar</span>
+        <span class="badge badge-mat">Matematik öncelikli</span>
       </div>
     </div>
   </div>
@@ -203,7 +202,7 @@
 
   <div class="card">
     <div class="card-label">💬 Bu haftanın mesajı</div>
-    <div class="kocundan-text">Yakup, elektronik aletleri nas谋l par莽a par莽a analiz ediyorsan, bu hafta matematik asal say谋lar谋 da 枚yle 莽枚z眉mleyece臒iz. Son puan谋n 409, bir sonraki denemedeki hedefin 426 - sadece 17 puan art谋艧 yeterli! Ge莽en hafta Ankara denemesinde matematik asal say谋lar konusunda zorland谋臒谋n gibi, bir elektronik devredeki ar谋zal谋 par莽ay谋 bulmak gibi, asal 莽arpanlar谋 da sistematik olarak bulaca臒谋z. Bu hafta oda臒谋m谋z matematik asal say谋lar ve din peygamber rehberli臒i - ikisi de temel kavramlar.</div>
+    <div class="kocundan-text">Yakup, son puanın 409'dan bu hafta 426'ya çıkarmayı hedefliyoruz - sadece 17 puanlık bir artış ama bu senin için büyük bir adım! Elektronik aletleri tamir ederken nasıl adım adım ilerliyorsan, matematik de öyle: önce asal sayıları anlayacak, sonra asal çarpanlara geçeceğiz. Bu hafta özellikle matematik asal sayılar ve din kültürü peygamberler konusuna odaklanıyoruz. Bir sonraki denemedeki hedefin için bu temel konuları sağlam oturtmamız şart.</div>
   </div>
 
   <div class="card">
@@ -212,7 +211,7 @@
       <div class="hedef-item"><div class="hedef-label">📖 Paragraf sorusu</div><div class="hedef-val">10 soru / gün</div></div>
       <div class="hedef-item"><div class="hedef-label">📚 Kitap okuma</div><div class="hedef-val">Her gün 30 sayfa</div></div>
       <div class="hedef-item"><div class="hedef-label">✏️ Günlük toplam soru</div><div class="hedef-val">50 soru / gün</div></div>
-      <div class="hedef-item"><div class="hedef-label">🔥 Bu hafta odak</div><div class="hedef-val" style="font-size:14px">Mat: Asal say谋lar-asal 莽arpanlar 路 Din: Peygamberlerin rehberli臒i</div></div>
+      <div class="hedef-item"><div class="hedef-label">🔥 Bu hafta odak</div><div class="hedef-val" style="font-size:14px">Mat: Asal sayılar-asal çarpanlar · Din: Peygamberlerin rehberliği</div></div>
     </div>
   </div>
 
@@ -220,8 +219,8 @@
   <div class="gun-grid" id="gunGrid"></div>
 
   <div class="koc-notu" style="margin-top:12px">
-    <div class="koc-notu-baslik">🏆 Koç Notu — Temel Devreleri G眉莽lendir</div>
-    <div class="koc-notu-text">Elektronik aletlerde temel devreler nas谋l 枚nemliyse, matematik asal say谋lar da 枚yle. 陌lk 3 g眉n asal say谋lara odaklan, sonra di臒er dersleri ekle. G眉nl眉k 2 saat: 45 dk matematik, 30 dk din, 45 dk di臒er dersler. Her konuyu k眉莽眉k par莽alara b枚l, elektronik komponent test eder gibi her ad谋m谋 kontrol et.</div>
+    <div class="koc-notu-baslik">🏆 Koç Notu — Temel Kazanım Güçlendirme</div>
+    <div class="koc-notu-text">Bu hafta elektronik devrelerde olduğu gibi temel bileşenleri güçlendiriyoruz. Matematik asal sayılarla başlayıp asal çarpanlara ilerleyeceğiz - günde 30 dakika odaklanmaya yetecek kısa çalışmalar. Din kültürü ve sosyal bilgilere her gün 20'şer dakika ayır. En önemlisi: her konu için önce örnek çöz, sonra benzer soruları dene - tamir işinde yaptığın gibi.</div>
   </div>
 
   <div class="pazar-card">
@@ -243,36 +242,41 @@ const SON_GIRIS_DAKIKA = 0;
 
 const GUNLER = [
   { ad:'Pazartesi', tarih:'13 Nisan', prefix:'pzt', jsGun:1,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Asal say谋lar konusu video izle', checkbox:true, id:'undefined_mat_g0' },{ metin:'1-100 aras谋 asal say谋lar谋 listele ve ezberle', checkbox:true, id:'undefined_mat_g1' }], takipKey:'mat' },
-      { cls:'ders-din', ad:'Din K眉lt眉r眉', key:'din', gorevler:[{ metin:'Peygamberlerin rehberli臒i konu tekrar谋', checkbox:true, id:'undefined_din_g0' },{ metin:'Peygamberlerin rehberli臒i 15 soru 莽枚z', checkbox:false, id:'undefined_din_g1' }], takipKey:'din' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'Ana fikir odakl谋 10 paragraf sorusu', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Asal sayılar konusunu video izle', checkbox:true, id:'undefined_mat_g0' },{ metin:'Asal sayı belirleme 15 soru çöz', checkbox:false, id:'undefined_mat_g1' }], takipKey:'mat' },
+      { cls:'ders-din', ad:'Din Kültürü', key:'din', gorevler:[{ metin:'Peygamberlerin rehberliği konu tekrarı', checkbox:true, id:'undefined_din_g0' },{ metin:'Peygamberler konusu 10 soru çöz', checkbox:false, id:'undefined_din_g1' }], takipKey:'din' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Hikaye unsurları 15 soru çöz', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu - ana fikir odaklı', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
-  { ad:'Sal谋', tarih:'14 Nisan', prefix:'pzt', jsGun:1,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Asal 莽arpanlara ay谋rma 25 soru 莽枚z', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Gruplar ve roller de臒i艧imi konu tekrar谋', checkbox:true, id:'undefined_sos_g0' },{ metin:'Toplumsal roller 15 soru 莽枚z', checkbox:false, id:'undefined_sos_g1' }], takipKey:'sos' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'Anlam ili艧kileri 10 paragraf sorusu', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
+  { ad:'Salı', tarih:'14 Nisan', prefix:'sal', jsGun:2,
+    dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Asal çarpanlara ayırma 20 soru çöz', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
+      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Gruplar ve roller konu anlatımı', checkbox:true, id:'undefined_sos_g0' },{ metin:'Toplumsal roller 15 soru çöz', checkbox:false, id:'undefined_sos_g1' }], takipKey:'sos' },
+      { cls:'ders-ing', ad:'İngilizce', key:'ing', gorevler:[{ metin:'Basit soru kalıpları kelime çalışması', checkbox:true, id:'undefined_ing_g0' },{ metin:'Simple questions 5 soru çöz', checkbox:false, id:'undefined_ing_g1' }], takipKey:'ing' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu - anlam bilgisi', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
-  { ad:'脟ar艧amba', tarih:'15 Nisan', prefix:'pzt', jsGun:1,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Ortak b枚len-kat konusu video izle', checkbox:true, id:'undefined_mat_g0' },{ metin:'Asal 莽arpanlar karma 20 soru 莽枚z', checkbox:false, id:'undefined_mat_g1' }], takipKey:'mat' },
-      { cls:'ders-ing', ad:'陌ngilizce', key:'ing', gorevler:[{ metin:'Basit soru kal谋plar谋 konu 莽al谋艧mas谋', checkbox:true, id:'undefined_ing_g0' },{ metin:'Simple inquiries 10 soru 莽枚z', checkbox:false, id:'undefined_ing_g1' }], takipKey:'ing' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'脟谋kar谋m odakl谋 10 paragraf sorusu', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
+  { ad:'Çarşamba', tarih:'15 Nisan', prefix:'car', jsGun:3,
+    dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Çarpan-katlar 20 soru çöz', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
+      { cls:'ders-din', ad:'Din Kültürü', key:'din', gorevler:[{ metin:'Peygamberler konusu 15 soru çöz', checkbox:false, id:'undefined_din_g0' }], takipKey:'din' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Güneş sistemi gezegenler konu tekrarı', checkbox:true, id:'undefined_fen_g0' },{ metin:'Gezegen özellikleri 5 soru çöz', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu - çıkarım', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
-  { ad:'Per艧embe', tarih:'16 Nisan', prefix:'pzt', jsGun:1,
-    dersler: [{ cls:'ders-tur', ad:'T眉rk莽e', key:'tur', gorevler:[{ metin:'Hikaye unsurlar谋 konu tekrar谋', checkbox:true, id:'undefined_tur_g0' },{ metin:'脰yk眉leyici metinler 15 soru 莽枚z', checkbox:false, id:'undefined_tur_g1' }], takipKey:'tur' },
-      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'G眉ne艧 sistemi gezegenleri konu tekrar谋', checkbox:true, id:'undefined_fen_g0' },{ metin:'Gezegenler s谋n谋fland谋rmas谋 15 soru 莽枚z', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'S枚z varl谋臒谋 odakl谋 10 paragraf sorusu', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
+  { ad:'Perşembe', tarih:'16 Nisan', prefix:'per', jsGun:4,
+    dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Asal sayılar karma 15 soru çöz', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Söz varlığı kelime çalışması', checkbox:true, id:'undefined_tur_g0' },{ metin:'Anlam bilgisi 20 soru çöz', checkbox:false, id:'undefined_tur_g1' }], takipKey:'tur' },
+      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Toplumsal sorun çözme 5 soru çöz', checkbox:false, id:'undefined_sos_g0' }], takipKey:'sos' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu - ayrıntı', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
   { ad:'Cuma', tarih:'17 Nisan', prefix:'cum', jsGun:5,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'EBOB-EKOK 20 soru 莽枚z', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
-      { cls:'ders-din', ad:'Din K眉lt眉r眉', key:'din', gorevler:[{ metin:'Peygamberlerin rehberli臒i 15 soru 莽枚z', checkbox:false, id:'undefined_din_g0' }], takipKey:'din' },
-      { cls:'ders-ing', ad:'陌ngilizce', key:'ing', gorevler:[{ metin:'Daily activities 15 soru 莽枚z', checkbox:false, id:'undefined_ing_g0' }], takipKey:'ing' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'Karma paragraf 10 soru', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
+    dersler: [{ cls:'ders-ing', ad:'İngilizce', key:'ing', gorevler:[{ metin:'Daily activities 10 soru çöz', checkbox:false, id:'undefined_ing_g0' }], takipKey:'ing' },
+      { cls:'ders-din', ad:'Din Kültürü', key:'din', gorevler:[{ metin:'Peygamberler tekrar 10 soru çöz', checkbox:false, id:'undefined_din_g0' }], takipKey:'din' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Güneş sistemi 20 soru çöz', checkbox:false, id:'undefined_fen_g0' }], takipKey:'fen' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu - karma', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
   { ad:'Cumartesi', tarih:'18 Nisan', prefix:'cmt', jsGun:6,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Asal say谋lar karma mini test 15 soru', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
-      { cls:'ders-tur', ad:'T眉rk莽e', key:'tur', gorevler:[{ metin:'Anlam bilgisi karma 15 soru 莽枚z', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Toplumsal sorunlar 10 soru 莽枚z', checkbox:false, id:'undefined_sos_g0' }], takipKey:'sos' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'Hafta sonu de臒erlendirme 10 paragraf', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Haftalık karma test 15 soru', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Hikaye unsurları mini test 10 soru', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
+      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Gruplar ve roller 10 soru', checkbox:false, id:'undefined_sos_g0' }], takipKey:'sos' },
+      { cls:'ders-ing', ad:'İngilizce', key:'ing', gorevler:[{ metin:'Questions karma test 5 soru', checkbox:false, id:'undefined_ing_g0' }], takipKey:'ing' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu - değerlendirme', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] }
 ];
 
