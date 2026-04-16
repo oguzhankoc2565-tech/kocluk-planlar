@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LGS Koçluk — Giriş</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Arial, sans-serif;
+    background: #f0f4f8;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  }
+  .logo { text-align: center; margin-bottom: 2rem; }
+  .logo .icon {
+    width: 56px; height: 56px; background: #185FA5;
+    border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; margin: 0 auto 1rem;
+  }
+  .logo .icon svg {
+    width: 28px; height: 28px; fill: none;
+    stroke: #fff; stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .logo h1 { font-size: 18px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
+  .logo p { font-size: 13px; color: #888; }
+  label { display: block; font-size: 13px; font-weight: 500; color: #444; margin-bottom: 6px; }
+  input {
+    width: 100%; padding: 11px 14px; border: 1.5px solid #ddd;
+    border-radius: 10px; font-size: 15px; color: #1a1a1a;
+    outline: none; transition: border-color 0.15s; margin-bottom: 1rem;
+  }
+  input:focus { border-color: #185FA5; }
+  input.error { border-color: #e24b4a; }
+  .err-msg { font-size: 13px; color: #a32d2d; margin-top: -8px; margin-bottom: 12px; display: none; }
+  button {
+    width: 100%; padding: 12px; background: #185FA5; color: #fff;
+    border: none; border-radius: 10px; font-size: 15px;
+    font-weight: 500; cursor: pointer; transition: background 0.15s;
+  }
+  button:hover { background: #0C447C; }
+  button:active { transform: scale(0.98); }
+  .hint { margin-top: 1.25rem; font-size: 12px; color: #aaa; text-align: center; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <div class="icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    <h1>LGS Koçluk Planı</h1>
+    <p>Oğuzhan Koç — 6/A</p>
+  </div>
+
+  <label for="sifre">Şifren</label>
+  <input type="password" id="sifre" placeholder="Şifreni gir" autocomplete="off" autofocus>
+  <div class="err-msg" id="err">Şifre hatalı. Tekrar dene.</div>
+  <button onclick="giris()">Planıma Git</button>
+  <div class="hint">Şifreni bilmiyorsan<br>koçunla iletişime geç.</div>
+</div>
+
+<script>
+const ogrenciler = {
+  "Kavi-Kerim.670/Caner":      "Kavi_Kerim_Caner.html",
+  "Hamza.90/Sakar":            "Hamza_Sakar.html",
+  "Yakup.91/Sakar":            "Yakup_Sakar.html",
+  "Eyup-Ensar.95/Orun":        "Eyup_Ensar_Orun.html",
+  "Mustafa-Eren.97/Terim":     "Mustafa_Eren_Terim.html",
+  "Harun.106/Bozkurt":         "Harun_Bozkurt.html",
+  "Yaser-Eren.173/Metin":      "Yaser_Eren_Metin.html",
+  "Civan-Eymen.187/Orkmez":    "Civan_Eymen_Orkmez.html",
+  "Ali-Eymen.476/Caglin":      "Ali_Eymen_Caglin.html",
+  "Omer-Faruk.477/Kaya":       "Ömer_Faruk_Kaya.html",
+  "Gokhan-Omer.669/Sahin":     "Gokhan_Omer_Sahin.html",
+  "Seyid-Ali.478/Demir":       "Seyid_Ali_Demir.html",
+  "Muhammed-Taha.281/Gultepe": "Muhammed_Taha_Gultepe.html"
+};
+
+const BASE = "https://oguzhankoc2565-tech.github.io/kocluk-planlar/";
+
+function giris() {
+  const sifre = document.getElementById('sifre').value.trim();
+  const input = document.getElementById('sifre');
+  const err   = document.getElementById('err');
+
+  if (ogrenciler[sifre]) {
+    err.style.display = 'none';
+    input.classList.remove('error');
+    localStorage.setItem('lgsDogru', '1');
+    localStorage.setItem('lgsSayfa', ogrenciler[sifre]);
+    window.location.href = BASE + ogrenciler[sifre];
+  } else {
+    input.classList.add('error');
+    err.style.display = 'block';
+    input.select();
+  }
+}
+
+document.getElementById('sifre').addEventListener('keydown', e => {
+  if (e.key === 'Enter') giris();
+});
+</script>
+</body>
+</html>
