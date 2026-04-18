@@ -259,28 +259,6 @@ const SON_GIRIS_SAATI = { 1:22, 2:22, 3:22, 4:22, 5:22, 6:22 };
 const SON_GIRIS_DAKIKA = 0;
 
 const GUNLER = [
-  { ad:'Pazar', tarih:'19 Nisan', prefix:'paz', jsGun:0,
-    dersler: [
-      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[
-        { metin:'Sözcükte ve Cümlede Anlam — konu çalış', checkbox:true, id:'paz_tur_g0' },
-        { metin:'Sözcükte ve Cümlede Anlam — 50 soru çöz', checkbox:false, id:'paz_tur_g1' }
-      ], takipKey:'tur' },
-      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[
-        { metin:'Sayılar ve Nicelikler — konu çalış', checkbox:true, id:'paz_mat_g0' },
-        { metin:'Sayılar ve Nicelikler — 50 soru çöz', checkbox:false, id:'paz_mat_g1' }
-      ], takipKey:'mat' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[
-        { metin:'Birlikte Yaşamak — konu çalış', checkbox:true, id:'paz_sos_g0' },
-        { metin:'Birlikte Yaşamak — 40 soru çöz', checkbox:false, id:'paz_sos_g1' }
-      ], takipKey:'sos' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
-        { metin:'10 paragraf sorusu çöz', checkbox:false, id:'paz_par_g0' }
-      ], takipKey:'par' },
-      { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[
-        { metin:'30 sayfa oku', checkbox:false, id:'paz_kit_g0' }
-      ], takipKey:null }
-    ]
-  },
   { ad:'Cumartesi', tarih:'18 Nisan', prefix:'cmt', jsGun:6,
     dersler: [
       { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[
@@ -303,24 +281,46 @@ const GUNLER = [
       ], takipKey:null }
     ]
   },
+  { ad:'Pazar', tarih:'19 Nisan', prefix:'paz', jsGun:0,
+    dersler: [
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[
+        { metin:'Parçada Anlam — konu çalış', checkbox:true, id:'paz_tur_g0' },
+        { metin:'Parçada Anlam — 50 soru çöz', checkbox:false, id:'paz_tur_g1' }
+      ], takipKey:'tur' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
+        { metin:'Güneş Sistemi ve Tutulmalar — konu çalış', checkbox:true, id:'paz_fen_g0' },
+        { metin:'Güneş Sistemi ve Tutulmalar — 50 soru çöz', checkbox:false, id:'paz_fen_g1' }
+      ], takipKey:'fen' },
+      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[
+        { metin:'Evimiz Dünya — konu çalış', checkbox:true, id:'paz_sos_g0' },
+        { metin:'Evimiz Dünya — 40 soru çöz', checkbox:false, id:'paz_sos_g1' }
+      ], takipKey:'sos' },
+      { cls:'ders-din', ad:'Din Kültürü', key:'din', gorevler:[
+        { metin:'Peygamber ve İlahi Kitap İnancı — konu çalış', checkbox:true, id:'paz_din_g0' },
+        { metin:'Peygamber ve İlahi Kitap İnancı — 10 soru çöz', checkbox:false, id:'paz_din_g1' }
+      ], takipKey:'din' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
+        { metin:'10 paragraf sorusu çöz', checkbox:false, id:'paz_par_g0' }
+      ], takipKey:'par' },
+      { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[
+        { metin:'30 sayfa oku', checkbox:false, id:'paz_kit_g0' }
+      ], takipKey:null }
+    ]
+  },
   { ad:'Pazartesi', tarih:'20 Nisan', prefix:'pzt', jsGun:1,
     dersler: [
       { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[
-        { metin:'Parçada Anlam — konu çalış', checkbox:true, id:'pzt_tur_g0' },
-        { metin:'Parçada Anlam — 50 soru çöz', checkbox:false, id:'pzt_tur_g1' }
+        { metin:'Metin Türleri — konu çalış', checkbox:true, id:'pzt_tur_g0' },
+        { metin:'Metin Türleri — 50 soru çöz', checkbox:false, id:'pzt_tur_g1' }
       ], takipKey:'tur' },
-      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
-        { metin:'Güneş Sistemi ve Tutulmalar — konu çalış', checkbox:true, id:'pzt_fen_g0' },
-        { metin:'Güneş Sistemi ve Tutulmalar — 50 soru çöz', checkbox:false, id:'pzt_fen_g1' }
-      ], takipKey:'fen' },
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[
+        { metin:'Geometrik Şekiller — konu çalış', checkbox:true, id:'pzt_mat_g0' },
+        { metin:'Geometrik Şekiller — 50 soru çöz', checkbox:false, id:'pzt_mat_g1' }
+      ], takipKey:'mat' },
       { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[
-        { metin:'Evimiz Dünya — konu çalış', checkbox:true, id:'pzt_sos_g0' },
-        { metin:'Evimiz Dünya — 40 soru çöz', checkbox:false, id:'pzt_sos_g1' }
+        { metin:'Ortak Mirasımız — konu çalış', checkbox:true, id:'pzt_sos_g0' },
+        { metin:'Ortak Mirasımız — 40 soru çöz', checkbox:false, id:'pzt_sos_g1' }
       ], takipKey:'sos' },
-      { cls:'ders-din', ad:'Din Kültürü', key:'din', gorevler:[
-        { metin:'Peygamber ve İlahi Kitap İnancı — konu çalış', checkbox:true, id:'pzt_din_g0' },
-        { metin:'Peygamber ve İlahi Kitap İnancı — 10 soru çöz', checkbox:false, id:'pzt_din_g1' }
-      ], takipKey:'din' },
       { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
         { metin:'10 paragraf sorusu çöz', checkbox:false, id:'pzt_par_g0' }
       ], takipKey:'par' },
@@ -332,17 +332,21 @@ const GUNLER = [
   { ad:'Salı', tarih:'21 Nisan', prefix:'sal', jsGun:2,
     dersler: [
       { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[
-        { metin:'Metin Türleri — konu çalış', checkbox:true, id:'sal_tur_g0' },
-        { metin:'Metin Türleri — 50 soru çöz', checkbox:false, id:'sal_tur_g1' }
+        { metin:'İşlev Temelli Dil Yapıları ve Söz Varlığı — konu çalış', checkbox:true, id:'sal_tur_g0' },
+        { metin:'İşlev Temelli Dil Yapıları ve Söz Varlığı — 50 soru çöz', checkbox:false, id:'sal_tur_g1' }
       ], takipKey:'tur' },
-      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[
-        { metin:'Geometrik Şekiller — konu çalış', checkbox:true, id:'sal_mat_g0' },
-        { metin:'Geometrik Şekiller — 50 soru çöz', checkbox:false, id:'sal_mat_g1' }
-      ], takipKey:'mat' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
+        { metin:'Kuvvet ve Hareket — konu çalış', checkbox:true, id:'sal_fen_g0' },
+        { metin:'Kuvvet ve Hareket — 50 soru çöz', checkbox:false, id:'sal_fen_g1' }
+      ], takipKey:'fen' },
       { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[
-        { metin:'Ortak Mirasımız — konu çalış', checkbox:true, id:'sal_sos_g0' },
-        { metin:'Ortak Mirasımız — 40 soru çöz', checkbox:false, id:'sal_sos_g1' }
+        { metin:'Yaşayan Demokrasimiz — konu çalış', checkbox:true, id:'sal_sos_g0' },
+        { metin:'Yaşayan Demokrasimiz — 40 soru çöz', checkbox:false, id:'sal_sos_g1' }
       ], takipKey:'sos' },
+      { cls:'ders-din', ad:'Din Kültürü', key:'din', gorevler:[
+        { metin:'Ramazan ve Oruç — konu çalış', checkbox:true, id:'sal_din_g0' },
+        { metin:'Ramazan ve Oruç — 10 soru çöz', checkbox:false, id:'sal_din_g1' }
+      ], takipKey:'din' },
       { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
         { metin:'10 paragraf sorusu çöz', checkbox:false, id:'sal_par_g0' }
       ], takipKey:'par' },
@@ -354,20 +358,20 @@ const GUNLER = [
   { ad:'Çarşamba', tarih:'22 Nisan', prefix:'car', jsGun:3,
     dersler: [
       { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[
-        { metin:'İşlev Temelli Dil Yapıları ve Söz Varlığı — konu çalış', checkbox:true, id:'car_tur_g0' },
-        { metin:'İşlev Temelli Dil Yapıları ve Söz Varlığı — 50 soru çöz', checkbox:false, id:'car_tur_g1' }
+        { metin:'Yazım Kuralları — konu çalış', checkbox:true, id:'car_tur_g0' },
+        { metin:'Yazım Kuralları — 50 soru çöz', checkbox:false, id:'car_tur_g1' }
       ], takipKey:'tur' },
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[
+        { metin:'Cebirsel İfadeler — konu çalış', checkbox:true, id:'car_mat_g0' },
+        { metin:'Cebirsel İfadeler — 50 soru çöz', checkbox:false, id:'car_mat_g1' }
+      ], takipKey:'mat' },
       { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
-        { metin:'Kuvvet ve Hareket — konu çalış', checkbox:true, id:'car_fen_g0' },
-        { metin:'Kuvvet ve Hareket — 50 soru çöz', checkbox:false, id:'car_fen_g1' }
+        { metin:'Canlılarda Sistemler — konu çalış', checkbox:true, id:'car_fen_g0' },
+        { metin:'Canlılarda Sistemler — 50 soru çöz', checkbox:false, id:'car_fen_g1' }
       ], takipKey:'fen' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[
-        { metin:'Yaşayan Demokrasimiz — konu çalış', checkbox:true, id:'car_sos_g0' },
-        { metin:'Yaşayan Demokrasimiz — 40 soru çöz', checkbox:false, id:'car_sos_g1' }
-      ], takipKey:'sos' },
       { cls:'ders-din', ad:'Din Kültürü', key:'din', gorevler:[
-        { metin:'Ramazan ve Oruç — konu çalış', checkbox:true, id:'car_din_g0' },
-        { metin:'Ramazan ve Oruç — 10 soru çöz', checkbox:false, id:'car_din_g1' }
+        { metin:'Ahlaki Davranışlar — konu çalış', checkbox:true, id:'car_din_g0' },
+        { metin:'Ahlaki Davranışlar — 10 soru çöz', checkbox:false, id:'car_din_g1' }
       ], takipKey:'din' },
       { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
         { metin:'10 paragraf sorusu çöz', checkbox:false, id:'car_par_g0' }
@@ -380,20 +384,20 @@ const GUNLER = [
   { ad:'Perşembe', tarih:'23 Nisan', prefix:'per', jsGun:4,
     dersler: [
       { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[
-        { metin:'Yazım Kuralları — konu çalış', checkbox:true, id:'per_tur_g0' },
-        { metin:'Yazım Kuralları — 50 soru çöz', checkbox:false, id:'per_tur_g1' }
+        { metin:'Yazım Kuralları ve Noktalama İşaretleri — konu çalış', checkbox:true, id:'per_tur_g0' },
+        { metin:'Yazım Kuralları ve Noktalama — 50 soru çöz', checkbox:false, id:'per_tur_g1' }
       ], takipKey:'tur' },
       { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[
-        { metin:'Cebirsel İfadeler — konu çalış', checkbox:true, id:'per_mat_g0' },
-        { metin:'Cebirsel İfadeler — 50 soru çöz', checkbox:false, id:'per_mat_g1' }
+        { metin:'Veriden Olasılığa — konu çalış', checkbox:true, id:'per_mat_g0' },
+        { metin:'Veriden Olasılığa — 50 soru çöz', checkbox:false, id:'per_mat_g1' }
       ], takipKey:'mat' },
       { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
-        { metin:'Canlılarda Sistemler — konu çalış', checkbox:true, id:'per_fen_g0' },
-        { metin:'Canlılarda Sistemler — 50 soru çöz', checkbox:false, id:'per_fen_g1' }
+        { metin:'Işık ve Renk — konu çalış', checkbox:true, id:'per_fen_g0' },
+        { metin:'Işık ve Renk — 50 soru çöz', checkbox:false, id:'per_fen_g1' }
       ], takipKey:'fen' },
       { cls:'ders-din', ad:'Din Kültürü', key:'din', gorevler:[
-        { metin:'Ahlaki Davranışlar — konu çalış', checkbox:true, id:'per_din_g0' },
-        { metin:'Ahlaki Davranışlar — 10 soru çöz', checkbox:false, id:'per_din_g1' }
+        { metin:'Peygamberliğinden Önce Hz. Muhammed — konu çalış', checkbox:true, id:'per_din_g0' },
+        { metin:'Peygamberliğinden Önce Hz. Muhammed — 10 soru çöz', checkbox:false, id:'per_din_g1' }
       ], takipKey:'din' },
       { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
         { metin:'10 paragraf sorusu çöz', checkbox:false, id:'per_par_g0' }
@@ -406,21 +410,20 @@ const GUNLER = [
   { ad:'Cuma', tarih:'24 Nisan', prefix:'cum', jsGun:5,
     dersler: [
       { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[
-        { metin:'Yazım Kuralları ve Noktalama İşaretleri — konu çalış', checkbox:true, id:'cum_tur_g0' },
-        { metin:'Yazım Kuralları ve Noktalama — 50 soru çöz', checkbox:false, id:'cum_tur_g1' }
+        { metin:'Deyim ve Atasözleri, Söz Sanatları-Şiir Bilgisi — konu çalış', checkbox:true, id:'cum_tur_g0' },
+        { metin:'Deyim ve Atasözleri, Söz Sanatları-Şiir Bilgisi — 50 soru çöz', checkbox:false, id:'cum_tur_g1' }
       ], takipKey:'tur' },
       { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[
-        { metin:'Veriden Olasılığa — konu çalış', checkbox:true, id:'cum_mat_g0' },
-        { metin:'Veriden Olasılığa — 50 soru çöz', checkbox:false, id:'cum_mat_g1' }
+        { metin:'Sözel Mantık/Muhakeme, Görsel/Karikatür, Grafik/Tablo — konu çalış', checkbox:true, id:'cum_mat_g0' },
+        { metin:'Sözel Mantık/Muhakeme, Görsel/Karikatür, Grafik/Tablo — 50 soru çöz', checkbox:false, id:'cum_mat_g1' }
       ], takipKey:'mat' },
       { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
-        { metin:'Işık ve Renk — konu çalış', checkbox:true, id:'cum_fen_g0' },
-        { metin:'Işık ve Renk — 50 soru çöz', checkbox:false, id:'cum_fen_g1' }
+        { metin:'Maddenin Ayırt Edici Özellikleri — konu çalış', checkbox:true, id:'cum_fen_g0' },
+        { metin:'Maddenin Ayırt Edici Özellikleri — 50 soru çöz', checkbox:false, id:'cum_fen_g1' }
       ], takipKey:'fen' },
-      { cls:'ders-din', ad:'Din Kültürü', key:'din', gorevler:[
-        { metin:'Peygamberliğinden Önce Hz. Muhammed — konu çalış', checkbox:true, id:'cum_din_g0' },
-        { metin:'Peygamberliğinden Önce Hz. Muhammed — 10 soru çöz', checkbox:false, id:'cum_din_g1' }
-      ], takipKey:'din' },
+      { cls:'ders-mat', ad:'Tüm Dersler', key:'mat', gorevler:[
+        { metin:'Tüm derslerin testlerinde yapılamayan sorulara dön', checkbox:true, id:'cum_genel_g0' }
+      ], takipKey:null },
       { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
         { metin:'10 paragraf sorusu çöz', checkbox:false, id:'cum_par_g0' }
       ], takipKey:'par' },
