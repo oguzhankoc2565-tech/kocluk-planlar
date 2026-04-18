@@ -228,7 +228,7 @@
       <div class="hedef-item"><div class="hedef-label">📖 Paragraf sorusu</div><div class="hedef-val">10 soru / gün</div></div>
       <div class="hedef-item"><div class="hedef-label">📚 Kitap okuma</div><div class="hedef-val">Her gün 30 sayfa</div></div>
       <div class="hedef-item"><div class="hedef-label">✏️ Günlük toplam soru</div><div class="hedef-val">50 soru / gün</div></div>
-      <div class="hedef-item"><div class="hedef-label">🔥 Bu hafta odak</div><div class="hedef-val" style="font-size:14px">Mat: Ortak kat-bölen yorumlama · Fen: Güneş sistemi sınıflandırma</div></div>
+      <div class="hedef-item"><div class="hedef-label">🔥 Bu hafta odak</div><div class="hedef-val" style="font-size:14px">Mat: Ortak kat-bölen yorumlama · Fen: İnsan, hayvan ve bitkilerde üreme</div></div>
     </div>
   </div>
 
@@ -237,7 +237,7 @@
 
   <div class="koc-notu" style="margin-top:12px">
     <div class="koc-notu-baslik">🏆 Koç Notu — Sayısal Stabilizasyon Haftası</div>
-    <div class="koc-notu-text">Bu hafta günlük 3 saat çalışma rutinini oturt: Sabah 1 saat matematik, öğleden sonra 1 saat fen, akşam 1 saat sözel. Matematik testlerini çözerken yanlışları mutlaka babanla veya öğretmenlerinle çöz. Fen konularında ezber yapmak yerine sebep-sonuç ilişkilerini anlamaya odaklan. Her gün aynı saatte başla ki rutinlerin oturasın.</div>
+    <div class="koc-notu-text">Bu hafta günlük 2 saat çalışma rutinini oturt: Okuldan geldikten sonra 1 saat matematik, Akşam yemeğinden sonra sonra 1 saat fen. Matematik testlerini çözerken yanlışları mutlaka babanla veya öğretmenlerinle çöz. Fen konularında ezber yapmak yerine sebep-sonuç ilişkilerini anlamaya odaklan. Her gün aynı saatte başla ki rutinlerin oturasın.</div>
   </div>
 
   <div class="pazar-card">
@@ -265,7 +265,7 @@ const GUNLER = [
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
   { ad:'Pazartesi', tarih:'20 Nisan', prefix:'pzt', jsGun:1,
     dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Ortak kat-bölen konusunu tekrar et', checkbox:true, id:'undefined_mat_g0' },{ metin:'Banko Matematik 1. ünite 3. test', checkbox:false, id:'undefined_mat_g1' },{ metin:'Banko Matematik 1. ünite 4. test', checkbox:false, id:'undefined_mat_g2' }], takipKey:'mat' },
-      { cls:'ders-fen', ad:'Fen', key:'fen', gorevler:[{ metin:'Güneş sistemi gezegenlerini özelliklerine göre grupla', checkbox:true, id:'undefined_fen_g0' },{ metin:'All Star Fen 11. test', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
+      { cls:'ders-fen', ad:'Fen', key:'fen', gorevler:[{ metin:'All Star Fen 11. test', checkbox:false, id:'undefined_fen_g0' }], takipKey:'fen' },
       { cls:'ders-ing', ad:'İngilizce', key:'ing', gorevler:[{ metin:'More and More Life ünitesi 3. test', checkbox:false, id:'undefined_ing_g0' },{ metin:'Holidays ünitesi kelime çalışması', checkbox:true, id:'undefined_ing_g1' }], takipKey:'ing' },
       { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'Güçlendiren Paragraf 11. test - Anlam yönü', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
@@ -277,26 +277,27 @@ const GUNLER = [
       { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'Güçlendiren Paragraf 12. test - Anlam yönü', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
   { ad:'Çarşamba', tarih:'22 Nisan', prefix:'car', jsGun:3,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Banko Matematik 1. ünite 7. test', checkbox:false, id:'undefined_mat_g0' },{ metin:'Banko Matematik 1. ünite 8. test', checkbox:false, id:'undefined_mat_g1' }], takipKey:'mat' },
-      { cls:'ders-fen', ad:'Fen', key:'fen', gorevler:[{ metin:'Eşeyli-eşeysiz üreme konusunu tekrar et', checkbox:true, id:'undefined_fen_g0' },{ metin:'All Star Fen 13. test', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Banko Matematik 1. ünite 7. ve 8. test', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
+      { cls:'ders-fen', ad:'Fen', key:'fen', gorevler:[{ metin:'All Star Fen 13. test', checkbox:false, id:'undefined_fen_g0' }], takipKey:'fen' },
       { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'İstediğin konuda yarım sayfa kompozisyon yaz', checkbox:true, id:'undefined_tur_g0' },{ metin:'Güçlendiren Türkçe Sözcükte anlam 8. test', checkbox:false, id:'undefined_tur_g1' }], takipKey:'tur' },
       { cls:'ders-ing', ad:'İngilizce', key:'ing', gorevler:[{ metin:'More and More Yummy Breakfast ünitesi 2. test', checkbox:false, id:'undefined_ing_g0' }], takipKey:'ing' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'Güçlendiren Paragraf 13. test - Anlam yönü', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'Güçlendiren Paragraf 13. test', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
   { ad:'Perşembe', tarih:'23 Nisan', prefix:'per', jsGun:4,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Ondalık gösterimleri basamak değerine göre yorumla', checkbox:true, id:'undefined_mat_g0' },{ metin:'Banko Matematik 1. ünite 9. test', checkbox:false, id:'undefined_mat_g1' },{ metin:'Banko Matematik 1. ünite 10. test', checkbox:false, id:'undefined_mat_g2' }], takipKey:'mat' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Asal sayılar ve asal çarpanlar video izle.', checkbox:true, id:'undefined_mat_g0' },{ metin:'Banko Matematik 1. ünite 9. test', checkbox:false, id:'undefined_mat_g1' },{ metin:'Banko Matematik 1. ünite 10. test', checkbox:false, id:'undefined_mat_g2' }], takipKey:'mat' },
       { cls:'ders-fen', ad:'Fen', key:'fen', gorevler:[{ metin:'All Star Fen 14. test', checkbox:false, id:'undefined_fen_g0' }], takipKey:'fen' },
       { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Güçlendiren Türkçe Sözcükte anlam 9. test', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
       { cls:'ders-ing', ad:'İngilizce', key:'ing', gorevler:[{ metin:'More and More Downtown ünitesi 1. test', checkbox:false, id:'undefined_ing_g0' }], takipKey:'ing' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'Güçlendiren Paragraf 14. test - Anlam yönü', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'Güçlendiren Paragraf 14. test', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
   { ad:'Cuma', tarih:'24 Nisan', prefix:'cum', jsGun:5,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Haftanın yanlış sorularını tekrar çöz', checkbox:true, id:'undefined_mat_g0' },{ metin:'Banko Matematik 1. ünite 11. test', checkbox:false, id:'undefined_mat_g1' },{ metin:'Banko Matematik 1. ünite 12. test', checkbox:false, id:'undefined_mat_g2' }], takipKey:'mat' },
+    dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Ortak kat konusunu tekrar et. (oku ya da video)', checkbox:true, id:'undefined_mat_g0' },{ metin:'Banko Matematik 1. ünite 11. test', checkbox:false, id:'undefined_mat_g1' },{ metin:'Banko Matematik 1. ünite 12. test', checkbox:false, id:'undefined_mat_g2' }], takipKey:'mat' },
       { cls:'ders-fen', ad:'Fen', key:'fen', gorevler:[{ metin:'All Star Fen 15. test', checkbox:false, id:'undefined_fen_g0' },{ metin:'All Star Fen 16. test', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
       { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'Güçlendiren Paragraf 15. test - Anlam yönü', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] }
 ];
-
+</script>
+<script>
 function trSaati() {
   const now = new Date();
   const utc = now.getTime() + now.getTimezoneOffset() * 60000;
