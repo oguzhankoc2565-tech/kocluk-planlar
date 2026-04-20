@@ -8,34 +8,29 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, 'Segoe UI', Arial, sans-serif;
-    background: #f0f4f8;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
+    background: #f0f4f8; min-height: 100vh;
+    display: flex; align-items: center; justify-content: center; padding: 1rem;
   }
   .card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 2.5rem 2rem;
-    width: 100%;
-    max-width: 380px;
+    background: #fff; border-radius: 16px; padding: 2.5rem 2rem;
+    width: 100%; max-width: 400px;
     box-shadow: 0 2px 16px rgba(0,0,0,0.08);
   }
   .logo { text-align: center; margin-bottom: 2rem; }
   .logo .icon {
-    width: 56px; height: 56px; background: #185FA5;
-    border-radius: 50%; display: flex; align-items: center;
-    justify-content: center; margin: 0 auto 1rem;
+    width: 56px; height: 56px; background: #185FA5; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;
   }
-  .logo .icon svg {
-    width: 28px; height: 28px; fill: none;
-    stroke: #fff; stroke-width: 2;
-    stroke-linecap: round; stroke-linejoin: round;
-  }
+  .logo .icon svg { width: 28px; height: 28px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   .logo h1 { font-size: 18px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
-  .logo p { font-size: 13px; color: #888; }
+  .logo p  { font-size: 13px; color: #888; }
+
+  .adim { display: none; }
+  .adim.aktif { display: block; }
+
+  .adim-baslik { font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
+  .adim-aciklama { font-size: 13px; color: #888; margin-bottom: 20px; line-height: 1.5; }
+
   label { display: block; font-size: 13px; font-weight: 500; color: #444; margin-bottom: 6px; }
   input {
     width: 100%; padding: 11px 14px; border: 1.5px solid #ddd;
@@ -43,16 +38,38 @@
     outline: none; transition: border-color 0.15s; margin-bottom: 1rem;
   }
   input:focus { border-color: #185FA5; }
-  input.error { border-color: #e24b4a; }
-  .err-msg { font-size: 13px; color: #a32d2d; margin-top: -8px; margin-bottom: 12px; display: none; }
-  button {
+  input.hata { border-color: #e24b4a; }
+  input.tamam { border-color: #16a34a; }
+
+  .hata-mesaj { font-size: 13px; color: #a32d2d; margin-top: -8px; margin-bottom: 12px; display: none; }
+  .tamam-mesaj { font-size: 13px; color: #15803d; margin-top: -8px; margin-bottom: 12px; display: none; }
+
+  .btn {
     width: 100%; padding: 12px; background: #185FA5; color: #fff;
     border: none; border-radius: 10px; font-size: 15px;
     font-weight: 500; cursor: pointer; transition: background 0.15s;
   }
-  button:hover { background: #0C447C; }
-  button:active { transform: scale(0.98); }
+  .btn:hover:not(:disabled) { background: #0C447C; }
+  .btn:active:not(:disabled) { transform: scale(0.98); }
+  .btn:disabled { background: #94a3b8; cursor: not-allowed; }
+
+  .ilerleme { display: flex; gap: 6px; margin-bottom: 24px; }
+  .ilerleme-adim {
+    height: 4px; flex: 1; border-radius: 2px; background: #e2e8f0; transition: background 0.3s;
+  }
+  .ilerleme-adim.aktif { background: #185FA5; }
+  .ilerleme-adim.gecti { background: #16a34a; }
+
+  .bilgi-kutu {
+    background: #f0fdf4; border: 1.5px solid #bbf7d0;
+    border-radius: 10px; padding: 12px 14px; margin-bottom: 16px;
+    font-size: 13px; color: #15803d; font-weight: 600;
+  }
+
   .hint { margin-top: 1.25rem; font-size: 12px; color: #aaa; text-align: center; line-height: 1.6; }
+  .yukluyor { opacity: 0.6; pointer-events: none; }
+
+  .kural { font-size: 12px; color: #888; margin-top: -8px; margin-bottom: 12px; }
 </style>
 </head>
 <body>
@@ -69,52 +86,314 @@
     <p>Oğuzhan Koç</p>
   </div>
 
-  <label for="sifre">Şifren</label>
-  <input type="password" id="sifre" placeholder="Şifreni gir" autocomplete="off" autofocus>
-  <div class="err-msg" id="err">Şifre hatalı. Tekrar dene.</div>
-  <button onclick="giris()">Planıma Git</button>
-  <div class="hint">Şifreni bilmiyorsan<br>koçunla iletişime geç.</div>
+  <!-- İlerleme çubuğu -->
+  <div class="ilerleme" id="ilerleme">
+    <div class="ilerleme-adim aktif" id="ip1"></div>
+    <div class="ilerleme-adim" id="ip2"></div>
+    <div class="ilerleme-adim" id="ip3"></div>
+  </div>
+
+  <!-- ADIM 1: Giriş (normal kullanıcı adı + şifre VEYA eski şifre) -->
+  <div class="adim aktif" id="adim1">
+    <div class="adim-baslik">Giriş Yap</div>
+    <div class="adim-aciklama">Kullanıcı adın ve şifrenle giriş yap.</div>
+
+    <label for="kadi">Kullanıcı adın</label>
+    <input type="text" id="kadi" placeholder="kullaniciadi" autocomplete="username" autofocus>
+
+    <label for="sifre1">Şifren</label>
+    <input type="password" id="sifre1" placeholder="Şifreni gir" autocomplete="current-password">
+
+    <div class="hata-mesaj" id="hata1">Kullanıcı adı veya şifre hatalı.</div>
+    <button class="btn" id="btn1" onclick="girisYap()">Giriş Yap</button>
+
+    <div class="hint">
+      <a href="#" onclick="ilkKezAc(); return false;" style="color:#185FA5; text-decoration:none; font-weight:600">
+        İlk kez mi giriyorsun? Buraya tıkla →
+      </a>
+    </div>
+  </div>
+
+  <!-- ADIM İLK KEZ: Eski şifre doğrulama -->
+  <div class="adim" id="adimIlk">
+    <div class="adim-baslik">İlk Giriş — Kimliğini Doğrula</div>
+    <div class="adim-aciklama">Koçunun sana verdiği şifreyi gir.</div>
+
+    <label for="eskiSifre">Koçun verdiği şifre</label>
+    <input type="password" id="eskiSifre" placeholder="Eski şifreni gir">
+    <div class="hata-mesaj" id="hataIlk">Şifre hatalı veya zaten kullanıcı adı oluşturulmuş.</div>
+
+    <button class="btn" id="btnIlk" onclick="eskiSifreDogrula()">Devam Et</button>
+    <div class="hint"><a href="#" onclick="adimGoster('adim1'); return false;" style="color:#888; text-decoration:none">← Geri dön</a></div>
+  </div>
+
+  <!-- ADIM 2: Kullanıcı adı seç -->
+  <div class="adim" id="adim2">
+    <div class="adim-baslik">Kullanıcı Adı Seç</div>
+    <div class="adim-aciklama" id="adim2Aciklama">Planlarına girmek için kullanacağın kullanıcı adını belirle.</div>
+
+    <div class="bilgi-kutu" id="adim2Bilgi"></div>
+
+    <label for="yeniKadi">Kullanıcı adın</label>
+    <input type="text" id="yeniKadi" placeholder="örn: kavikerim" oninput="kadiKontrol()" autocomplete="off">
+    <div class="kural">Küçük harf, rakam, nokta veya alt çizgi kullanabilirsin. Boşluk olmaz.</div>
+    <div class="hata-mesaj" id="hataKadi">Bu kullanıcı adı zaten alınmış, başka bir tane seç.</div>
+    <div class="tamam-mesaj" id="tamamKadi">✓ Bu kullanıcı adı uygun!</div>
+
+    <button class="btn" id="btn2" onclick="adim2Devam()" disabled>Devam Et</button>
+  </div>
+
+  <!-- ADIM 3: Şifre belirle -->
+  <div class="adim" id="adim3">
+    <div class="adim-baslik">Şifre Belirle</div>
+    <div class="adim-aciklama">Bir dahaki girişinde kullanacağın şifreyi belirle.</div>
+
+    <label for="yeniSifre1">Yeni şifren</label>
+    <input type="password" id="yeniSifre1" placeholder="En az 6 karakter" oninput="sifreKontrol()">
+
+    <label for="yeniSifre2">Şifreni tekrar gir</label>
+    <input type="password" id="yeniSifre2" placeholder="Aynı şifreyi tekrar gir" oninput="sifreKontrol()">
+
+    <div class="hata-mesaj" id="hataSifre">Şifreler eşleşmiyor veya çok kısa.</div>
+
+    <button class="btn" id="btn3" onclick="kayitTamamla()" disabled>Kaydet ve Giriş Yap</button>
+  </div>
+
 </div>
 
 <script>
-const ogrenciler = {
-  "Kavi-Kerim.670/Caner":      "Kavi_Kerim_Caner.html",
-  "Hamza.90/Sakar":            "Hamza_Sakar.html",
-  "Yakup.91/Sakar":            "Yakup_Sakar.html",
-  "Eyup-Ensar.95/Orun":        "Eyup_Ensar_Orun.html",
-  "Mustafa-Eren.97/Terim":     "Mustafa_Eren_Terim.html",
-  "Harun.106/Bozkurt":         "Harun_Bozkurt.html",
-  "Yaser-Eren.173/Metin":      "Yaser_Eren_Metin.html",
-  "Civan-Eymen.187/Orkmez":    "Civan_Eymen_Orkmez.html",
-  "Ali-Eymen.476/Caglin":      "Ali_Eymen_Caglin.html",
-  "Omer-Faruk.477/Kaya":       "Omer_Faruk_Kaya.html",
-  "Gokhan-Omer.669/Sahin":     "Gokhan_Omer_Sahin.html",
-  "Seyid-Ali.478/Demir":       "Seyid_Ali_Demir.html",
-  "Muhammed-Taha.281/Gultepe": "Muhammed_Taha_Gultepe.html"
-};
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwuYEaEdXqLK4xSSKsHIvMgZopzfmumuqi79OoQjA3lTt2CVb5Xmt1GozBLV-AFnCh9/exec';
+const BASE = 'https://oguzhankoc2565-tech.github.io/kocluk-planlar/';
 
-const BASE = "https://oguzhankoc2565-tech.github.io/kocluk-planlar/";
+var _eskiSifre = '';
+var _ogrenciAd = '';
+var _secilenKadi = '';
+var _kadiMusait = false;
+var _kadiTimer = null;
 
-function giris() {
-  const sifre = document.getElementById('sifre').value.trim();
-  const input = document.getElementById('sifre');
-  const err   = document.getElementById('err');
+function adimGoster(id) {
+  document.querySelectorAll('.adim').forEach(function(el) { el.classList.remove('aktif'); });
+  document.getElementById(id).classList.add('aktif');
+  ilerlemeGuncelle(id);
+}
 
-  if (ogrenciler[sifre]) {
-    err.style.display = 'none';
-    input.classList.remove('error');
-    localStorage.setItem('lgsDogru', '1');
-    localStorage.setItem('lgsSayfa', ogrenciler[sifre]);
-    window.location.href = BASE + ogrenciler[sifre];
+function ilerlemeGuncelle(id) {
+  var ilerleme = document.getElementById('ilerleme');
+  if (id === 'adim1' || id === 'adimIlk') {
+    ilerleme.style.display = 'none';
   } else {
-    input.classList.add('error');
-    err.style.display = 'block';
-    input.select();
+    ilerleme.style.display = 'flex';
+    var adimNo = id === 'adim2' ? 2 : 3;
+    ['ip1','ip2','ip3'].forEach(function(pid, idx) {
+      var el = document.getElementById(pid);
+      el.className = 'ilerleme-adim';
+      if (idx + 1 < adimNo) el.classList.add('gecti');
+      else if (idx + 1 === adimNo) el.classList.add('aktif');
+    });
   }
 }
 
-document.getElementById('sifre').addEventListener('keydown', e => {
-  if (e.key === 'Enter') giris();
+function ilkKezAc() {
+  adimGoster('adimIlk');
+  document.getElementById('ilerleme').style.display = 'none';
+  setTimeout(function() { document.getElementById('eskiSifre').focus(); }, 100);
+}
+
+// Normal giriş
+function girisYap() {
+  var kadi   = document.getElementById('kadi').value.trim();
+  var sifre  = document.getElementById('sifre1').value.trim();
+  var btn    = document.getElementById('btn1');
+  var hata   = document.getElementById('hata1');
+
+  if (!kadi || !sifre) { hata.textContent = 'Lütfen kullanıcı adı ve şifreni gir.'; hata.style.display = 'block'; return; }
+
+  btn.disabled = true; btn.textContent = 'Kontrol ediliyor...';
+  hata.style.display = 'none';
+
+  fetch(SCRIPT_URL + '?istek=girisYap&kullaniciAdi=' + encodeURIComponent(kadi) + '&sifre=' + encodeURIComponent(sifre))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.durum === 'basarili') {
+        localStorage.setItem('lgsDogru', '1');
+        localStorage.setItem('lgsSayfa', data.sayfa);
+        window.location.href = BASE + data.sayfa;
+      } else {
+        hata.style.display = 'block';
+        btn.disabled = false; btn.textContent = 'Giriş Yap';
+      }
+    })
+    .catch(function() {
+      hata.textContent = 'Bağlantı hatası. Tekrar dene.';
+      hata.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Giriş Yap';
+    });
+}
+
+// İlk kez — eski şifre doğrula
+function eskiSifreDogrula() {
+  var sifre = document.getElementById('eskiSifre').value.trim();
+  var btn   = document.getElementById('btnIlk');
+  var hata  = document.getElementById('hataIlk');
+
+  if (!sifre) return;
+  btn.disabled = true; btn.textContent = 'Kontrol ediliyor...';
+  hata.style.display = 'none';
+
+  fetch(SCRIPT_URL + '?istek=eskiSifreDogrula&sifre=' + encodeURIComponent(sifre))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.durum === 'basarili') {
+        _eskiSifre = sifre;
+        _ogrenciAd = data.ad;
+        document.getElementById('adim2Bilgi').textContent = '👋 Merhaba ' + data.ad + '!';
+        document.getElementById('ilerleme').style.display = 'flex';
+        adimGoster('adim2');
+        setTimeout(function() { document.getElementById('yeniKadi').focus(); }, 100);
+      } else {
+        hata.style.display = 'block';
+        btn.disabled = false; btn.textContent = 'Devam Et';
+      }
+    })
+    .catch(function() {
+      hata.textContent = 'Bağlantı hatası.';
+      hata.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Devam Et';
+    });
+}
+
+// Kullanıcı adı anlık kontrol
+function kadiKontrol() {
+  var kadi   = document.getElementById('yeniKadi').value.trim();
+  var hata   = document.getElementById('hataKadi');
+  var tamam  = document.getElementById('tamamKadi');
+  var btn    = document.getElementById('btn2');
+  var input  = document.getElementById('yeniKadi');
+
+  hata.style.display = 'none';
+  tamam.style.display = 'none';
+  input.className = '';
+  btn.disabled = true;
+  _kadiMusait = false;
+
+  if (!kadi || kadi.length < 3) return;
+
+  // Format kontrolü
+  if (!/^[a-z0-9._]+$/.test(kadi)) {
+    hata.textContent = 'Sadece küçük harf, rakam, nokta veya alt çizgi kullanabilirsin.';
+    hata.style.display = 'block';
+    input.classList.add('hata');
+    return;
+  }
+
+  clearTimeout(_kadiTimer);
+  _kadiTimer = setTimeout(function() {
+    fetch(SCRIPT_URL + '?istek=kullaniciAdiKontrol&kullaniciAdi=' + encodeURIComponent(kadi))
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (document.getElementById('yeniKadi').value.trim() !== kadi) return;
+        if (data.durum === 'musait') {
+          tamam.style.display = 'block';
+          input.classList.add('tamam');
+          _kadiMusait = true;
+          _secilenKadi = kadi;
+          btn.disabled = false;
+        } else {
+          hata.textContent = 'Bu kullanıcı adı zaten alınmış, başka bir tane seç.';
+          hata.style.display = 'block';
+          input.classList.add('hata');
+        }
+      });
+  }, 600);
+}
+
+function adim2Devam() {
+  if (!_kadiMusait) return;
+  adimGoster('adim3');
+  setTimeout(function() { document.getElementById('yeniSifre1').focus(); }, 100);
+}
+
+// Şifre eşleşme kontrolü
+function sifreKontrol() {
+  var s1  = document.getElementById('yeniSifre1').value;
+  var s2  = document.getElementById('yeniSifre2').value;
+  var btn = document.getElementById('btn3');
+  var hata = document.getElementById('hataSifre');
+
+  hata.style.display = 'none';
+  document.getElementById('yeniSifre1').className = '';
+  document.getElementById('yeniSifre2').className = '';
+
+  if (s1.length >= 6 && s2.length > 0) {
+    if (s1 === s2) {
+      btn.disabled = false;
+      document.getElementById('yeniSifre1').classList.add('tamam');
+      document.getElementById('yeniSifre2').classList.add('tamam');
+    } else {
+      btn.disabled = true;
+      if (s2.length >= 3) {
+        hata.style.display = 'block';
+        document.getElementById('yeniSifre2').classList.add('hata');
+      }
+    }
+  } else {
+    btn.disabled = true;
+  }
+}
+
+// Kayıt tamamla
+function kayitTamamla() {
+  var s1  = document.getElementById('yeniSifre1').value;
+  var s2  = document.getElementById('yeniSifre2').value;
+  var btn = document.getElementById('btn3');
+
+  if (s1 !== s2 || s1.length < 6) return;
+
+  btn.disabled = true; btn.textContent = 'Kaydediliyor...';
+
+  fetch(SCRIPT_URL, {
+    method: 'POST', mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      istek: 'kayitOlustur',
+      eskiSifre: _eskiSifre,
+      kullaniciAdi: _secilenKadi,
+      yeniSifre: s1
+    })
+  })
+  .then(function() {
+    // no-cors yüzünden cevabı okuyamıyoruz, direkt giriş dene
+    setTimeout(function() {
+      fetch(SCRIPT_URL + '?istek=girisYap&kullaniciAdi=' + encodeURIComponent(_secilenKadi) + '&sifre=' + encodeURIComponent(s1))
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.durum === 'basarili') {
+            localStorage.setItem('lgsDogru', '1');
+            localStorage.setItem('lgsSayfa', data.sayfa);
+            window.location.href = BASE + data.sayfa;
+          } else {
+            btn.textContent = 'Bir sorun oluştu, tekrar dene';
+            btn.disabled = false;
+          }
+        });
+    }, 1500);
+  })
+  .catch(function() {
+    btn.textContent = 'Bağlantı hatası, tekrar dene';
+    btn.disabled = false;
+  });
+}
+
+// Enter tuşu desteği
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter') return;
+  var aktif = document.querySelector('.adim.aktif');
+  if (!aktif) return;
+  var id = aktif.id;
+  if (id === 'adim1') girisYap();
+  else if (id === 'adimIlk') eskiSifreDogrula();
+  else if (id === 'adim2') adim2Devam();
+  else if (id === 'adim3') { if (!document.getElementById('btn3').disabled) kayitTamamla(); }
 });
 </script>
 </body>
