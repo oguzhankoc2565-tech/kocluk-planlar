@@ -612,7 +612,10 @@ const veri = Object.assign({
     btn.textContent = 'Guncelle';
     btn.classList.add('tamamlandi');
     btn.disabled = false;
-
+// Civan sürpriz — sadece Salı günü
+if (gunAdi === 'Salı') {
+  setTimeout(civanSurpriz, 800);
+}
     if (gunAdi === SON_GUN_ADI) {
       setTimeout(function() {
         fetch(SCRIPT_URL + '?ogrenciAdi=' + encodeURIComponent(OGRENCI_ADI) + '&haftaNo=' + encodeURIComponent(HAFTA_NO))
@@ -633,6 +636,228 @@ const veri = Object.assign({
     btn.disabled = false;
     btn.textContent = 'Kaydet';
   });
+}
+function civanSurpriz() {
+  if (localStorage.getItem('civanSurprizGosterildi')) return;
+  localStorage.setItem('civanSurprizGosterildi', '1');
+
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto';
+
+  overlay.innerHTML = `
+  <div style="background:#fff;border-radius:20px;margin:auto;width:100%;max-width:430px;font-family:'Nunito',sans-serif;overflow:hidden;position:relative">
+
+    <div style="background:#0a0a1a;padding:22px 24px 18px">
+      <div style="display:inline-block;background:rgba(55,138,221,0.3);color:#85B7EB;font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;margin-bottom:10px;letter-spacing:0.04em">KOÇUNDAN SÜRPRIZ 🎉</div>
+      <div style="font-size:19px;font-weight:800;color:#fff;margin-bottom:5px">Civan, matematik = kod</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.5);line-height:1.5">Kodlamanın her satırının arkasında matematik var. Bugün bunu keşfedeceksin.</div>
+    </div>
+
+    <div style="display:flex;border-bottom:2px solid #f0f0f0;background:#fff" id="cvTabs">
+      <button onclick="cvTab(0)" id="cvT0" style="flex:1;padding:11px 4px;font-size:12px;font-weight:800;border:none;background:none;cursor:pointer;font-family:'Nunito',sans-serif;color:#185FA5;border-bottom:3px solid #185FA5;margin-bottom:-2px">Dalgalar</button>
+      <button onclick="cvTab(1)" id="cvT1" style="flex:1;padding:11px 4px;font-size:12px;font-weight:800;border:none;background:none;cursor:pointer;font-family:'Nunito',sans-serif;color:#94a3b8;border-bottom:3px solid transparent;margin-bottom:-2px">Fraktal</button>
+      <button onclick="cvTab(2)" id="cvT2" style="flex:1;padding:11px 4px;font-size:12px;font-weight:800;border:none;background:none;cursor:pointer;font-family:'Nunito',sans-serif;color:#94a3b8;border-bottom:3px solid transparent;margin-bottom:-2px">Oyun fiziği</button>
+      <button onclick="cvTab(3)" id="cvT3" style="flex:1;padding:11px 4px;font-size:12px;font-weight:800;border:none;background:none;cursor:pointer;font-family:'Nunito',sans-serif;color:#94a3b8;border-bottom:3px solid transparent;margin-bottom:-2px">Neden?</button>
+    </div>
+
+    <div style="padding:18px 20px 20px;background:#fff">
+
+      <div id="cvB0">
+        <div style="background:#0a0a1a;border-radius:10px;height:150px;padding:8px;margin-bottom:10px;overflow:hidden">
+          <canvas id="cvCvs1" style="display:block;width:100%;height:100%"></canvas>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span style="font-size:11px;color:#6b7280;font-weight:600;min-width:65px">Frekans</span>
+          <input type="range" min="1" max="20" value="5" id="cvFr" step="1" oninput="cvFreq=+this.value;document.getElementById('cvFrV').textContent=this.value" style="flex:1;accent-color:#185FA5">
+          <span id="cvFrV" style="font-size:12px;font-weight:800;color:#1a1a2e;min-width:20px">5</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <span style="font-size:11px;color:#6b7280;font-weight:600;min-width:65px">Genlik</span>
+          <input type="range" min="10" max="90" value="50" id="cvAm" step="1" oninput="cvAmp=+this.value;document.getElementById('cvAmV').textContent=this.value" style="flex:1;accent-color:#185FA5">
+          <span id="cvAmV" style="font-size:12px;font-weight:800;color:#1a1a2e;min-width:20px">50</span>
+        </div>
+        <div style="background:#f8fafc;border-radius:8px;padding:10px 12px;font-family:monospace;font-size:11px;color:#1a1a2e;line-height:1.75;border:1px solid #e2e8f0;margin-bottom:10px">
+          <span style="color:#534AB7;font-weight:700">for</span> (let x = 0; x &lt; genişlik; x++) {<br>
+          &nbsp;&nbsp;y = <span style="color:#0F6E56;font-weight:700">Math.sin</span>(x × frekans) × genlik<br>
+          &nbsp;&nbsp;<span style="color:#94a3b8">// sin() → trigonometri = kodlama!</span><br>
+          }
+        </div>
+        <div style="background:#eff6ff;border-left:3px solid #185FA5;padding:9px 12px;font-size:12px;color:#1a1a2e;line-height:1.6;border-radius:0 8px 8px 0">
+          <span style="font-weight:800;color:#0C447C">Math.sin, Math.cos</span> — ses dalgaları, animasyonlar, oyun hareketleri hepsi bu!
+        </div>
+      </div>
+
+      <div id="cvB1" style="display:none">
+        <canvas id="cvCvs2" style="display:block;width:100%;height:170px;background:#0a0a1a;border-radius:10px;margin-bottom:10px"></canvas>
+        <div style="background:#faf5ff;border-radius:8px;padding:8px 12px;text-align:center;font-size:14px;font-weight:800;color:#534AB7;margin-bottom:10px;font-family:monospace;border:1px solid #ddd6fe">z = z² + c &nbsp;|&nbsp; Mandelbrot Seti</div>
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <button onclick="cvMandel(50)" style="flex:1;padding:8px;background:#185FA5;color:#fff;border:none;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">Az detay</button>
+          <button onclick="cvMandel(150)" style="flex:1;padding:8px;background:#0F6E56;color:#fff;border:none;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">Orta</button>
+          <button onclick="cvMandel(300)" style="flex:1;padding:8px;background:#534AB7;color:#fff;border:none;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">Tam detay</button>
+        </div>
+        <div style="background:#eff6ff;border-left:3px solid #185FA5;padding:9px 12px;font-size:12px;color:#1a1a2e;line-height:1.6;border-radius:0 8px 8px 0">
+          Bu <span style="font-weight:800;color:#0C447C">sonsuz karmaşık desen</span> sadece tek bir formülden çıkıyor. Matematiğin gücü bu!
+        </div>
+      </div>
+
+      <div id="cvB2" style="display:none">
+        <canvas id="cvCvs3" style="display:block;width:100%;height:130px;background:#1a1a2e;border-radius:10px;margin-bottom:10px"></canvas>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px">
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px;text-align:center">
+            <div id="cvHiz" style="font-size:18px;font-weight:800;color:#185FA5">0</div>
+            <div style="font-size:10px;color:#94a3b8;font-weight:600">Hız</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px;text-align:center">
+            <div id="cvYuk" style="font-size:18px;font-weight:800;color:#185FA5">0</div>
+            <div style="font-size:10px;color:#94a3b8;font-weight:600">Yükseklik</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px;text-align:center">
+            <div id="cvCarp" style="font-size:18px;font-weight:800;color:#185FA5">0</div>
+            <div style="font-size:10px;color:#94a3b8;font-weight:600">Çarpma</div>
+          </div>
+        </div>
+        <div style="background:#f8fafc;border-radius:8px;padding:9px 12px;font-family:monospace;font-size:11px;color:#1a1a2e;line-height:1.75;border:1px solid #e2e8f0;margin-bottom:8px">
+          hız += yerçekimi &nbsp;<span style="color:#94a3b8">// ivme = matematik</span><br>
+          y += hız<br>
+          <span style="color:#534AB7;font-weight:700">if</span> (y &gt; zemin) { hız *= <span style="color:#BA7517">-0.7</span> }
+        </div>
+        <button onclick="cvTopuFirlat()" style="width:100%;padding:9px;background:#185FA5;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">Topu fırlat!</button>
+      </div>
+
+      <div id="cvB3" style="display:none">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px">
+            <div style="font-size:10px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px">Oyun motoru</div>
+            <div style="font-size:12px;color:#1a1a2e;line-height:1.5">Her hareket, çarpışma, gölge</div>
+            <div style="font-family:monospace;font-size:11px;color:#534AB7;font-weight:700;margin-top:4px">vektör + matris</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px">
+            <div style="font-size:10px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px">Yapay zeka</div>
+            <div style="font-size:12px;color:#1a1a2e;line-height:1.5">GPT, görüntü tanıma, robotlar</div>
+            <div style="font-family:monospace;font-size:11px;color:#534AB7;font-weight:700;margin-top:4px">olasılık + türev</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px">
+            <div style="font-size:10px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px">Grafik & tasarım</div>
+            <div style="font-size:12px;color:#1a1a2e;line-height:1.5">3D render, efektler, animasyon</div>
+            <div style="font-family:monospace;font-size:11px;color:#534AB7;font-weight:700;margin-top:4px">sin() + cos() + sqrt()</div>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px">
+            <div style="font-size:10px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px">Siber güvenlik</div>
+            <div style="font-size:12px;color:#1a1a2e;line-height:1.5">Şifreleme, hack engelleme</div>
+            <div style="font-family:monospace;font-size:11px;color:#534AB7;font-weight:700;margin-top:4px">asal sayılar + mod</div>
+          </div>
+        </div>
+        <div style="background:#eff6ff;border-left:3px solid #185FA5;padding:10px 14px;font-size:13px;color:#1a1a2e;line-height:1.7;border-radius:0 8px 8px 0;margin-bottom:4px">
+          <span style="font-weight:800;color:#0C447C">Civan, sende kodlama merakı zaten var.</span> Şimdi buna matematik gücünü eklersen — oyun motorları yazabilir, kendi yapay zekanı geliştirebilir, siber güvenlik uzmanı olabilirsin. Matematikten kaçma, o senin en güçlü silahın!
+        </div>
+      </div>
+
+      <button onclick="this.closest('[style*=fixed]').remove()" style="width:100%;margin-top:14px;padding:11px;background:linear-gradient(135deg,#185FA5,#7c3aed);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer">Anladım, hadi çalışmaya! 💪</button>
+    </div>
+  </div>`;
+
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
+
+  setTimeout(function() {
+    var c1 = document.getElementById('cvCvs1');
+    if (!c1) return;
+    var ctx1 = c1.getContext('2d');
+    c1.width = c1.parentElement.clientWidth - 16;
+    c1.height = c1.parentElement.clientHeight - 16;
+    function drawWave() {
+      if (!document.getElementById('cvCvs1')) return;
+      var w = c1.width, h = c1.height;
+      ctx1.clearRect(0, 0, w, h);
+      ctx1.strokeStyle = 'rgba(255,255,255,0.05)'; ctx1.lineWidth = 0.5;
+      for (var i = 0; i < w; i += 40) { ctx1.beginPath(); ctx1.moveTo(i,0); ctx1.lineTo(i,h); ctx1.stroke(); }
+      for (var j = 0; j < h; j += 35) { ctx1.beginPath(); ctx1.moveTo(0,j); ctx1.lineTo(w,j); ctx1.stroke(); }
+      ctx1.beginPath(); ctx1.strokeStyle = '#378ADD'; ctx1.lineWidth = 2;
+      for (var x = 0; x < w; x++) { var y = h/2 + Math.sin((x/w*Math.PI*2*cvFreq)+cvT)*(cvAmp/100*h/2*0.82); x===0?ctx1.moveTo(x,y):ctx1.lineTo(x,y); }
+      ctx1.stroke();
+      ctx1.beginPath(); ctx1.strokeStyle = '#1D9E75'; ctx1.lineWidth = 1.5;
+      for (var x = 0; x < w; x++) { var y = h/2 + Math.cos((x/w*Math.PI*2*cvFreq)+cvT)*(cvAmp/100*h/2*0.55); x===0?ctx1.moveTo(x,y):ctx1.lineTo(x,y); }
+      ctx1.stroke();
+      var px = ((cvT*12)%w); var py = h/2 + Math.sin((px/w*Math.PI*2*cvFreq)+cvT)*(cvAmp/100*h/2*0.82);
+      ctx1.beginPath(); ctx1.arc(px < 0 ? px+w : px, py, 5, 0, Math.PI*2); ctx1.fillStyle = '#FAC775'; ctx1.fill();
+      cvT += 0.03; requestAnimationFrame(drawWave);
+    }
+    drawWave();
+  }, 100);
+}
+
+var cvFreq = 5, cvAmp = 50, cvT = 0;
+var cvBy = 15, cvBvy = 0, cvCarpSayisi = 0;
+
+function cvTab(n) {
+  for (var i = 0; i < 4; i++) {
+    var t = document.getElementById('cvT'+i);
+    var b = document.getElementById('cvB'+i);
+    if (!t || !b) continue;
+    if (i === n) {
+      t.style.color = '#185FA5'; t.style.borderBottom = '3px solid #185FA5';
+      b.style.display = 'block';
+    } else {
+      t.style.color = '#94a3b8'; t.style.borderBottom = '3px solid transparent';
+      b.style.display = 'none';
+    }
+  }
+  if (n === 1) cvMandel(150);
+  if (n === 2) cvStartBall();
+}
+
+function cvMandel(maxIter) {
+  var cvs = document.getElementById('cvCvs2');
+  if (!cvs) return;
+  cvs.width = cvs.clientWidth || 390; cvs.height = 170;
+  var ctx = cvs.getContext('2d');
+  var w = cvs.width, h = cvs.height;
+  var img = ctx.createImageData(w, h);
+  for (var px = 0; px < w; px++) {
+    for (var py = 0; py < h; py++) {
+      var x0 = (px/w)*3.5-2.5, y0 = (py/h)*2-1, x = 0, y = 0, it = 0;
+      while (x*x+y*y <= 4 && it < maxIter) { var xt = x*x-y*y+x0; y = 2*x*y+y0; x = xt; it++; }
+      var idx = (py*w+px)*4;
+      if (it === maxIter) { img.data[idx]=10; img.data[idx+1]=10; img.data[idx+2]=26; img.data[idx+3]=255; }
+      else { var r=it/maxIter; img.data[idx]=Math.round(r*55+10); img.data[idx+1]=Math.round(r*95+30); img.data[idx+2]=Math.round(r*180+60); img.data[idx+3]=255; }
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+}
+
+function cvStartBall() {
+  var cvs = document.getElementById('cvCvs3');
+  if (!cvs) return;
+  cvs.width = cvs.clientWidth || 390; cvs.height = 130;
+  var ctx = cvs.getContext('2d');
+  cvBy = 20; cvBvy = 0; cvCarpSayisi = 0;
+  function draw() {
+    if (!document.getElementById('cvCvs3')) return;
+    var w = cvs.width, h = cvs.height;
+    ctx.clearRect(0,0,w,h); ctx.fillStyle='#1a1a2e'; ctx.fillRect(0,0,w,h);
+    ctx.strokeStyle='rgba(255,255,255,0.07)'; ctx.lineWidth=0.5;
+    for (var i=0;i<w;i+=40){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,h);ctx.stroke();}
+    ctx.strokeStyle='rgba(55,138,221,0.3)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(0,h-12); ctx.lineTo(w,h-12); ctx.stroke();
+    cvBvy += 0.5; cvBy += cvBvy;
+    if (cvBy >= h-20) { cvBy=h-20; cvBvy*=-0.7; cvCarpSayisi++; if(Math.abs(cvBvy)<0.5)cvBvy=0; }
+    document.getElementById('cvHiz').textContent = Math.round(Math.abs(cvBvy)*10);
+    document.getElementById('cvYuk').textContent = Math.max(0, Math.round(h-20-cvBy));
+    document.getElementById('cvCarp').textContent = cvCarpSayisi;
+    ctx.beginPath(); ctx.arc(w/2,cvBy,11,0,Math.PI*2); ctx.fillStyle='#378ADD'; ctx.fill();
+    ctx.beginPath(); ctx.arc(w/2-3,cvBy-3,3,0,Math.PI*2); ctx.fillStyle='rgba(255,255,255,0.25)'; ctx.fill();
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+function cvTopuFirlat() {
+  var cvs = document.getElementById('cvCvs3');
+  if (!cvs) return;
+  cvBy = 15; cvBvy = 0; cvCarpSayisi = 0;
+  document.getElementById('cvHiz').textContent='0';
+  document.getElementById('cvYuk').textContent='0';
+  document.getElementById('cvCarp').textContent='0';
 }
 </script>
 </body>
