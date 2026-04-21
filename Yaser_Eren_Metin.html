@@ -154,9 +154,10 @@
     <div class="avatar">YM</div>
     <div class="header-info" style="flex:1">
       <h1>Yaser Eren Metin</h1>
-      <div class="meta">6/A · Hafta 1 · 20–25 Nisan 2026</div>
+      <div class="meta">6/A · Hafta 1 · 21–27 Nisan 2026</div>
       <div class="badges">
-        <span class="badge badge-fen">Fen öncelikli</span>
+        <span class="badge badge-fen">Fen Bilimleri öncelikli</span>
+        <span class="badge badge-tur">Türkçe yazım kuralları odaklı</span>
       </div>
     </div>
   </div>
@@ -218,7 +219,7 @@
 
   <div class="card">
     <div class="card-label">💬 Bu haftanın mesajı</div>
-    <div class="kocundan-text">Yaser, son puanın 430 çok güzel ama bir sonraki denemedeki hedefin 459! Futbol takımın gibi sistem oyunu oynamalısın - her konuda paso paso ilerleyeceğiz. Güneş sistemi konusunu çözdükten sonra İç Anadolu'dan Şampiyonlar Ligi'ne çıkan takım gibi olacaksın. Bu hafta Fen'i çakacağız, özellikle o gezegen sınıflandırması konusu artık hiç kaçmayacak. Okuldan gelir gelmez 15 dakika mola, sonra gaza bas!</div>
+    <div class="kocundan-text">Yaser Eren! Son puanın 430, bir sonraki denemedeki hedefin 459 - sadece 29 puan artış yeter! Geçen hafta analizine bakınca Fen'de gezegen sınıflandırması ve Türkçe'de 'de, mi, ki' yazımı en kritik noktaların. Tıpkı yazılım projelerinde bug'ları öncelik sırasına koyduğun gibi, bu hafta Fen Bilimleri ve Türkçe yazım kurallarına odaklanıyoruz. Erteleme alışkanlığına karşı 'okuldan hemen sonra' kuralını uygula - futbol maçlarında da ilk dakikadan baskı yapar, golü erkenden bulursun değil mi?</div>
   </div>
 
   <div class="card">
@@ -227,7 +228,7 @@
       <div class="hedef-item"><div class="hedef-label">📖 Paragraf sorusu</div><div class="hedef-val">10 soru / gün</div></div>
       <div class="hedef-item"><div class="hedef-label">📚 Kitap okuma</div><div class="hedef-val">Her gün 50 sayfa</div></div>
       <div class="hedef-item"><div class="hedef-label">✏️ Günlük toplam soru</div><div class="hedef-val">100 soru / gün</div></div>
-      <div class="hedef-item"><div class="hedef-label">🔥 Bu hafta odak</div><div class="hedef-val" style="font-size:14px">Fen: Güneş sistemi-gezegen sınıflandırması · Tur: De/mi/ki yazımı</div></div>
+      <div class="hedef-item"><div class="hedef-label">🔥 Bu hafta odak</div><div class="hedef-val" style="font-size:14px">Fen: Güneş sistemi sınıflandırması · Tur: De-mi-ki yazım kuralları</div></div>
     </div>
   </div>
 
@@ -235,8 +236,8 @@
   <div class="gun-grid" id="gunGrid"></div>
 
   <div class="koc-notu" style="margin-top:12px">
-    <div class="koc-notu-baslik">🏆 Koç Notu — Sistem Oyunu Stratejisi</div>
-    <div class="koc-notu-text">Okuldan gelir gelmez 15 dakika dinlen, sonra Fen'le başla çünkü beyni taze. Video izle → hemen soru çöz döngüsünde kal. Günde 2 ders + paragraf + kitap sistemi. Soru çözerken telefonu başka odaya koy. Cumartesi mini test günün - hafta boyunca çalıştıklarını test et.</div>
+    <div class="koc-notu-baslik">🏆 Koç Notu — Hedefli Eksik Giderme Haftası</div>
+    <div class="koc-notu-text">Bu hafta erteleme düşmanın! Okuldan gelir gelmez 15 dakika mola ver, sonra doğruca çalışmaya başla. İlk 3 gün Fen'de güneş sistemi konusunu tamamen bitir - video + soru çözümü. Türkçe'de her gün yazım kuralları tekrarı yap. Cumartesi karma test ile kendini denetle. Günlük 100 soru hedefini böl: paragraf 10 + ders 90. Her doğru soru seni 459 hedefe yaklaştırıyor!</div>
   </div>
 
   <div class="pazar-card">
@@ -244,7 +245,7 @@
     <div class="pazar-text"><span>Kitap okuma önerilir</span><span>·</span><span>Zorunlu ders çalışma yok</span><span>·</span><span>Ailenizin tercihine göre</span></div>
   </div>
 
-  <div class="dipnot">Bu plan Yaser Eren Metin için hazırlanmıştır · Hafta 1 · 20–25 Nisan 2026</div>
+  <div class="dipnot">Bu plan Yaser Eren Metin için hazırlanmıştır · Hafta 1 · 21–27 Nisan 2026</div>
 </div>
 
 <script>
@@ -257,36 +258,46 @@ const SON_GIRIS_SAATI = { 1:22, 2:22, 3:22, 4:22, 5:22, 6:22 };
 const SON_GIRIS_DAKIKA = 0;
 
 const GUNLER = [
-  { ad:'Pazartesi', tarih:'20 Nisan', prefix:'pzt', jsGun:1,
-    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Güneş sistemi konusunu video izle', checkbox:true, id:'undefined_fen_g0' },{ metin:'Gezegen sınıflandırması 40 soru çöz', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
-      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'De/mi/ki yazım kuralları konu anlatımı', checkbox:true, id:'undefined_tur_g0' },{ metin:'Yazım kuralları 40 soru çöz', checkbox:false, id:'undefined_tur_g1' }], takipKey:'tur' },
+  { ad:'Salı', tarih:'21 Nisan', prefix:'sal', jsGun:2,
+    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Güneş sistemi gezegen sınıflandırması video izle', checkbox:true, id:'undefined_fen_g0' },{ metin:'Güneş sistemi özelliklerini not çıkar', checkbox:true, id:'undefined_fen_g1' }], takipKey:'fen' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'De-mi-ki yazım kuralları konu tekrarı', checkbox:true, id:'undefined_tur_g0' },{ metin:'Yazım kuralları 20 soru çöz', checkbox:false, id:'undefined_tur_g1' }], takipKey:'tur' },
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Çokgenlerde açı problemleri 25 soru çöz', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
+      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Türklerin coğrafi konumu 15 soru çöz', checkbox:false, id:'undefined_sos_g0' }], takipKey:'sos' },
       { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu — ana fikir odaklı', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'50 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
-  { ad:'Salı', tarih:'21 Nisan', prefix:'sal', jsGun:2,
-    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Isı ve genleşme konusunu video izle', checkbox:true, id:'undefined_fen_g0' },{ metin:'Madde ve ısı konusu 35 soru çöz', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
-      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Söz varlığı konusunu çalış', checkbox:true, id:'undefined_tur_g0' },{ metin:'Söz varlığı ve anlam bilgisi 35 soru çöz', checkbox:false, id:'undefined_tur_g1' }], takipKey:'tur' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu — kelime anlamı odaklı', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
-      { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'50 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
   { ad:'Çarşamba', tarih:'22 Nisan', prefix:'car', jsGun:3,
-    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Fiziksel olaylar: Kuvvet ve hareket konu anlatımı', checkbox:true, id:'undefined_fen_g0' },{ metin:'Bileşke kuvvet ve sürat-hız 30 soru çöz', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
-      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Çokgenlerde açı problemleri konu tekrarı', checkbox:true, id:'undefined_mat_g0' },{ metin:'Geometri açı problemleri 40 soru çöz', checkbox:false, id:'undefined_mat_g1' }], takipKey:'mat' },
+    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Güneş sistemi gezegen sınıflandırması 25 soru çöz', checkbox:false, id:'undefined_fen_g0' },{ metin:'Fiziksel olaylar - sürat ve hız konu tekrarı', checkbox:true, id:'undefined_fen_g1' }], takipKey:'fen' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Noktalama işaretleri 15 soru çöz', checkbox:false, id:'undefined_tur_g0' },{ metin:'Söz varlığı - kelime anlamı 15 soru çöz', checkbox:false, id:'undefined_tur_g1' }], takipKey:'tur' },
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Problem çözme stratejileri 20 soru çöz', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
       { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu — çıkarım odaklı', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'50 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
   { ad:'Perşembe', tarih:'23 Nisan', prefix:'per', jsGun:4,
-    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Canlılarda üreme ve gelişim konusunu video izle', checkbox:true, id:'undefined_fen_g0' },{ metin:'Bitki ve hayvan üremesi 30 soru çöz', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Coğrafi konum bilgisi konu tekrarı', checkbox:true, id:'undefined_sos_g0' },{ metin:'Ülkemizin konumu ve kıtalar 30 soru çöz', checkbox:false, id:'undefined_sos_g1' }], takipKey:'sos' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu — karma sorular', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
+    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Canlılarda üreme-gelişim konu anlatımı izle', checkbox:true, id:'undefined_fen_g0' },{ metin:'Isı genleşmesi 15 soru çöz', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Yazım kuralları karma 25 soru çöz', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Geometri açı problemleri 20 soru çöz', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
+      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'İslam medeniyeti katkıları 15 soru çöz', checkbox:false, id:'undefined_sos_g0' }], takipKey:'sos' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu — anlam bilgisi', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'50 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
   { ad:'Cuma', tarih:'24 Nisan', prefix:'cum', jsGun:5,
-    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Işığın yansıması ve soğurulması konu anlatımı', checkbox:true, id:'undefined_fen_g0' },{ metin:'Işık ve görme 25 soru çöz', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'İslam medeniyeti ve Türklerin değişimi konu tekrarı', checkbox:true, id:'undefined_sos_g0' },{ metin:'İslam tarihi ve Türk kültürü 35 soru çöz', checkbox:false, id:'undefined_sos_g1' }], takipKey:'sos' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu — tüm soru tipleri', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
+    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Canlılarda üreme-gelişim 20 soru çöz', checkbox:false, id:'undefined_fen_g0' },{ metin:'Bileşke kuvvet 10 soru çöz', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Anlam bilgisi - deyim atasözü 20 soru çöz', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
+      { cls:'ders-ing', ad:'İngilizce', key:'ing', gorevler:[{ metin:'Kelime çalışması - 50 kelime tekrar', checkbox:true, id:'undefined_ing_g0' },{ metin:'Grammar exercises 15 soru çöz', checkbox:false, id:'undefined_ing_g1' }], takipKey:'ing' },
+      { cls:'ders-din', ad:'Din', key:'din', gorevler:[{ metin:'İbadet konuları 15 soru çöz', checkbox:false, id:'undefined_din_g0' }], takipKey:'din' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu — karma', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'50 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
   { ad:'Cumartesi', tarih:'25 Nisan', prefix:'cmt', jsGun:6,
-    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Hafta konuları karma test 30 soru', checkbox:false, id:'undefined_fen_g0' }], takipKey:'fen' },
-      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Yazım kuralları karma test 25 soru', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
-      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Geometri problemleri mini test 25 soru', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu — hızlı çözüm odaklı', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
+    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Haftalık eksikler karma test 25 soru', checkbox:false, id:'undefined_fen_g0' }], takipKey:'fen' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Yazım-noktalama karma test 20 soru', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Problem çözme mini test 20 soru', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
+      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Coğrafi konum karma 15 soru', checkbox:false, id:'undefined_sos_g0' }], takipKey:'sos' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu — karma test', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
+      { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'50 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
+  { ad:'Pazartesi', tarih:'27 Nisan', prefix:'pzt', jsGun:1,
+    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Işık yansıması konu tekrarı', checkbox:true, id:'undefined_fen_g0' },{ metin:'Fiziksel olaylar karma 20 soru', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Haftanın yazım kuralları pekiştirme 25 soru', checkbox:false, id:'undefined_tur_g0' }], takipKey:'tur' },
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Geometri ve problem karma 25 soru', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
+      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Türk-İslam tarihi 10 soru', checkbox:false, id:'undefined_sos_g0' }], takipKey:'sos' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu — hafta değerlendirme', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'50 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] }
 ];
 
