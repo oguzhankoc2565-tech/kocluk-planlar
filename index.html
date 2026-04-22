@@ -93,7 +93,7 @@
     <div class="ilerleme-adim" id="ip3"></div>
   </div>
 
-  <!-- ADIM 1: Giriş (normal kullanıcı adı + şifre VEYA eski şifre) -->
+  <!-- ADIM 1: Giriş -->
   <div class="adim aktif" id="adim1">
     <div class="adim-baslik">Giriş Yap</div>
     <div class="adim-aciklama">Kullanıcı adın ve şifrenle giriş yap.</div>
@@ -201,10 +201,10 @@ function ilkKezAc() {
 
 // Normal giriş
 function girisYap() {
-  var kadi   = document.getElementById('kadi').value.trim();
-  var sifre  = document.getElementById('sifre1').value.trim();
-  var btn    = document.getElementById('btn1');
-  var hata   = document.getElementById('hata1');
+  var kadi  = document.getElementById('kadi').value.trim();
+  var sifre = document.getElementById('sifre1').value.trim();
+  var btn   = document.getElementById('btn1');
+  var hata  = document.getElementById('hata1');
 
   if (!kadi || !sifre) { hata.textContent = 'Lütfen kullanıcı adı ve şifreni gir.'; hata.style.display = 'block'; return; }
 
@@ -264,11 +264,11 @@ function eskiSifreDogrula() {
 
 // Kullanıcı adı anlık kontrol
 function kadiKontrol() {
-  var kadi   = document.getElementById('yeniKadi').value.trim();
-  var hata   = document.getElementById('hataKadi');
-  var tamam  = document.getElementById('tamamKadi');
-  var btn    = document.getElementById('btn2');
-  var input  = document.getElementById('yeniKadi');
+  var kadi  = document.getElementById('yeniKadi').value.trim();
+  var hata  = document.getElementById('hataKadi');
+  var tamam = document.getElementById('tamamKadi');
+  var btn   = document.getElementById('btn2');
+  var input = document.getElementById('yeniKadi');
 
   hata.style.display = 'none';
   tamam.style.display = 'none';
@@ -278,7 +278,6 @@ function kadiKontrol() {
 
   if (!kadi || kadi.length < 3) return;
 
-  // Format kontrolü
   if (!/^[a-z0-9._]+$/.test(kadi)) {
     hata.textContent = 'Sadece küçük harf, rakam, nokta veya alt çizgi kullanabilirsin.';
     hata.style.display = 'block';
@@ -313,11 +312,10 @@ function adim2Devam() {
   setTimeout(function() { document.getElementById('yeniSifre1').focus(); }, 100);
 }
 
-// Şifre eşleşme kontrolü
 function sifreKontrol() {
-  var s1  = document.getElementById('yeniSifre1').value;
-  var s2  = document.getElementById('yeniSifre2').value;
-  var btn = document.getElementById('btn3');
+  var s1   = document.getElementById('yeniSifre1').value;
+  var s2   = document.getElementById('yeniSifre2').value;
+  var btn  = document.getElementById('btn3');
   var hata = document.getElementById('hataSifre');
 
   hata.style.display = 'none';
@@ -341,47 +339,80 @@ function sifreKontrol() {
   }
 }
 
-// Kayıt tamamla
+// ✅ DÜZELTİLDİ: no-cors POST yerine GET ile kayıt, ardından doğrulama sonrası yönlendirme
 function kayitTamamla() {
   var s1  = document.getElementById('yeniSifre1').value;
   var s2  = document.getElementById('yeniSifre2').value;
   var btn = document.getElementById('btn3');
+  var hata = document.getElementById('hataSifre');
 
   if (s1 !== s2 || s1.length < 6) return;
 
-  btn.disabled = true; btn.textContent = 'Kaydediliyor...';
+  btn.disabled = true;
+  btn.textContent = 'Kaydediliyor...';
+  hata.style.display = 'none';
 
-  fetch(SCRIPT_URL, {
-    method: 'POST', mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      istek: 'kayitOlustur',
-      eskiSifre: _eskiSifre,
-      kullaniciAdi: _secilenKadi,
-      yeniSifre: s1
+  // GET ile kayıt isteği gönder — yanıt okunabilir
+  var url = SCRIPT_URL
+    + '?istek=kayitOlustur'
+    + '&eskiSifre=' + encodeURIComponent(_eskiSifre)
+    + '&kullaniciAdi=' + encodeURIComponent(_secilenKadi)
+    + '&yeniSifre=' + encodeURIComponent(s1);
+
+  fetch(url)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.durum === 'basarili') {
+        // Kayıt başarılı → doğrudan yönlendir (sayfa zaten dönüldü)
+        localStorage.setItem('lgsDogru', '1');
+        localStorage.setItem('lgsSayfa', data.sayfa);
+        window.location.href = BASE + data.sayfa;
+      } else if (data.durum === 'hata') {
+        // Script'ten hata mesajı geldi
+        hata.textContent = data.mesaj || 'Bir hata oluştu, tekrar dene.';
+        hata.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Kaydet ve Giriş Yap';
+      } else {
+        // Kayıt tamamlandı ama sayfa bilgisi yoksa giriş ile doğrula
+        girisDene(s1, btn);
+      }
     })
-  })
-  .then(function() {
-    // no-cors yüzünden cevabı okuyamıyoruz, direkt giriş dene
-    setTimeout(function() {
-      fetch(SCRIPT_URL + '?istek=girisYap&kullaniciAdi=' + encodeURIComponent(_secilenKadi) + '&sifre=' + encodeURIComponent(s1))
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-          if (data.durum === 'basarili') {
-            localStorage.setItem('lgsDogru', '1');
-            localStorage.setItem('lgsSayfa', data.sayfa);
-            window.location.href = BASE + data.sayfa;
-          } else {
-            btn.textContent = 'Bir sorun oluştu, tekrar dene';
-            btn.disabled = false;
-          }
-        });
-    }, 1500);
-  })
-  .catch(function() {
-    btn.textContent = 'Bağlantı hatası, tekrar dene';
-    btn.disabled = false;
-  });
+    .catch(function(err) {
+      console.error('Kayıt hatası:', err);
+      // Fetch hatası olsa bile kayıt yazılmış olabilir, giriş dene
+      btn.textContent = 'Giriş deneniyor...';
+      girisDene(s1, btn);
+    });
+}
+
+// Kayıt sonrası giriş doğrulama (fallback)
+function girisDene(sifre, btn) {
+  fetch(SCRIPT_URL
+    + '?istek=girisYap'
+    + '&kullaniciAdi=' + encodeURIComponent(_secilenKadi)
+    + '&sifre=' + encodeURIComponent(sifre))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.durum === 'basarili') {
+        localStorage.setItem('lgsDogru', '1');
+        localStorage.setItem('lgsSayfa', data.sayfa);
+        window.location.href = BASE + data.sayfa;
+      } else {
+        var hata = document.getElementById('hataSifre');
+        hata.textContent = 'Kayıt işlemi tamamlanamadı. Tekrar dene veya koçunla iletişime geç.';
+        hata.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Kaydet ve Giriş Yap';
+      }
+    })
+    .catch(function() {
+      var hata = document.getElementById('hataSifre');
+      hata.textContent = 'Bağlantı hatası. Tekrar dene.';
+      hata.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Kaydet ve Giriş Yap';
+    });
 }
 
 // Enter tuşu desteği
