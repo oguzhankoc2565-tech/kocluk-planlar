@@ -199,6 +199,27 @@ function ilkKezAc() {
   setTimeout(function() { document.getElementById('eskiSifre').focus(); }, 100);
 }
 
+// Yardımcı fetch fonksiyonu — redirect ve credentials sorunlarını çözer
+function gasIstek(url) {
+  return fetch(url, {
+    method: 'GET',
+    redirect: 'follow',
+    credentials: 'omit',
+    cache: 'no-cache'
+  }).then(function(r) {
+    // Google bazen text/html döner, JSON parse dene
+    return r.text();
+  }).then(function(text) {
+    try {
+      return JSON.parse(text);
+    } catch(e) {
+      // JSON değilse HTML gelmiş — redirect sorunu devam ediyor
+      console.error('JSON parse hatası, gelen içerik:', text.substring(0, 200));
+      throw new Error('json_parse_error');
+    }
+  });
+}
+
 // Normal giriş
 function girisYap() {
   var kadi  = document.getElementById('kadi').value.trim();
@@ -211,8 +232,7 @@ function girisYap() {
   btn.disabled = true; btn.textContent = 'Kontrol ediliyor...';
   hata.style.display = 'none';
 
-  fetch(SCRIPT_URL + '?istek=girisYap&kullaniciAdi=' + encodeURIComponent(kadi) + '&sifre=' + encodeURIComponent(sifre))
-    .then(function(r) { return r.json(); })
+  gasIstek(SCRIPT_URL + '?istek=girisYap&kullaniciAdi=' + encodeURIComponent(kadi) + '&sifre=' + encodeURIComponent(sifre))
     .then(function(data) {
       if (data.durum === 'basarili') {
         localStorage.setItem('lgsDogru', '1');
@@ -240,8 +260,7 @@ function eskiSifreDogrula() {
   btn.disabled = true; btn.textContent = 'Kontrol ediliyor...';
   hata.style.display = 'none';
 
-  fetch(SCRIPT_URL + '?istek=eskiSifreDogrula&sifre=' + encodeURIComponent(sifre))
-    .then(function(r) { return r.json(); })
+  gasIstek(SCRIPT_URL + '?istek=eskiSifreDogrula&sifre=' + encodeURIComponent(sifre))
     .then(function(data) {
       if (data.durum === 'basarili') {
         _eskiSifre = sifre;
@@ -287,8 +306,7 @@ function kadiKontrol() {
 
   clearTimeout(_kadiTimer);
   _kadiTimer = setTimeout(function() {
-    fetch(SCRIPT_URL + '?istek=kullaniciAdiKontrol&kullaniciAdi=' + encodeURIComponent(kadi))
-      .then(function(r) { return r.json(); })
+    gasIstek(SCRIPT_URL + '?istek=kullaniciAdiKontrol&kullaniciAdi=' + encodeURIComponent(kadi))
       .then(function(data) {
         if (document.getElementById('yeniKadi').value.trim() !== kadi) return;
         if (data.durum === 'musait') {
@@ -359,8 +377,7 @@ function kayitTamamla() {
     + '&kullaniciAdi=' + encodeURIComponent(_secilenKadi)
     + '&yeniSifre=' + encodeURIComponent(s1);
 
-  fetch(url)
-    .then(function(r) { return r.json(); })
+  gasIstek(url)
     .then(function(data) {
       if (data.durum === 'basarili') {
         // Kayıt başarılı → doğrudan yönlendir (sayfa zaten dönüldü)
@@ -388,11 +405,10 @@ function kayitTamamla() {
 
 // Kayıt sonrası giriş doğrulama (fallback)
 function girisDene(sifre, btn) {
-  fetch(SCRIPT_URL
+  gasIstek(SCRIPT_URL
     + '?istek=girisYap'
     + '&kullaniciAdi=' + encodeURIComponent(_secilenKadi)
     + '&sifre=' + encodeURIComponent(sifre))
-    .then(function(r) { return r.json(); })
     .then(function(data) {
       if (data.durum === 'basarili') {
         localStorage.setItem('lgsDogru', '1');
