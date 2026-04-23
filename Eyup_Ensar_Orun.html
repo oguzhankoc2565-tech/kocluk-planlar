@@ -33,6 +33,7 @@
     --kit: #475569; --kit-bg: #f8fafc;
     --par: #b45309; --par-bg: #fefce8;
     --pazar: #4d7c0f; --pazar-bg: #f7fee7;
+    --okul: #7c3aed; --okul-bg: #faf5ff;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.6; padding: 20px; }
@@ -97,6 +98,7 @@
   .ders-din { color: var(--din); background: var(--din-bg); }
   .ders-kit { color: var(--kit); background: var(--kit-bg); }
   .ders-par { color: var(--par); background: var(--par-bg); }
+  .ders-okul { color: var(--okul); background: var(--okul-bg); }
   .gorev-list { padding: 0; }
   .gorev-item { display: flex; align-items: flex-start; gap: 8px; padding: 4px 0; }
   .gorev-item.soru-gorev { padding-left: 4px; }
@@ -145,6 +147,19 @@
   .koc-notu-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #7c3aed; margin-bottom: 8px; }
   .koc-notu-text { font-size: 14px; line-height: 1.75; }
   .dipnot { font-size: 12px; color: var(--muted); text-align: center; margin-top: 8px; font-weight: 600; }
+
+  /* Okul testi bölümü */
+  .okul-testi-bolum { margin-top: 10px; padding: 10px 12px; background: var(--okul-bg); border: 2px solid #ddd6fe; border-radius: 12px; }
+  .okul-testi-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--okul); margin-bottom: 8px; }
+  .okul-testi-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .okul-select { height: 32px; border: 2px solid #ddd6fe; border-radius: 8px; background: #fff; font-size: 12px; font-family: 'Nunito', sans-serif; color: var(--text); font-weight: 700; padding: 0 6px; flex-shrink: 0; }
+  .okul-select:disabled { background: #f1f5f9; color: #aaa; cursor: not-allowed; }
+  .okul-konu-input { flex: 1; min-width: 80px; height: 32px; border: 2px solid #ddd6fe; border-radius: 8px; background: #fff; font-size: 12px; padding: 0 8px; font-family: 'Nunito', sans-serif; color: var(--text); }
+  .okul-konu-input:focus { outline: none; border-color: var(--okul); }
+  .okul-konu-input:disabled { background: #f1f5f9; color: #aaa; cursor: not-allowed; }
+  .okul-cb { width: 16px; height: 16px; flex-shrink: 0; accent-color: var(--okul); cursor: pointer; }
+  .okul-cb:disabled { cursor: not-allowed; opacity: 0.5; }
+  .okul-cb-label { font-size: 12px; font-weight: 700; color: var(--okul); }
 </style>
 </head>
 <body>
@@ -154,10 +169,10 @@
     <div class="avatar">EO</div>
     <div class="header-info" style="flex:1">
       <h1>Eyüp Ensar Orun</h1>
-      <div class="meta">6/A · Hafta 1 · 16–22 Nisan 2026</div>
+      <div class="meta">6/A · Hafta 2 · 23–30 Nisan 2026</div>
       <div class="badges">
-        <span class="badge badge-fen">Fen öncelikli</span>
-        <span class="badge badge-mat">Geometri odaklı</span>
+        <span class="badge badge-mat">Mat & Fen öncelikli</span>
+        <span class="badge badge-ing">İngilizce günaşırı</span>
       </div>
     </div>
   </div>
@@ -167,68 +182,73 @@
     <div class="durum-grid">
       <div class="durum-item">
         <div class="durum-label">🎯 Son deneme puanın</div>
-        <div class="durum-val puan">455.09</div>
+        <div class="durum-val puan">474.77</div>
       </div>
       <div class="durum-item">
         <div class="durum-label">📊 Deneme ortalaması</div>
-        <div class="durum-val" style="color:#7c3aed">432.39</div>
+        <div class="durum-val" style="color:#7c3aed">444.52</div>
       </div>
       <div class="durum-item">
         <div class="durum-label">🚀 Sonraki denemedeki hedefin</div>
-        <div class="durum-val hedef">473</div>
+        <div class="durum-val hedef">490</div>
       </div>
     </div>
-    <div style="margin-bottom:6px"><span style="font-size:12px;font-weight:700;color:var(--muted)">💪 Güçlü: </span><span style="font-size:13px;font-weight:700;color:#15803d">Sos (%85), Din (%85)</span></div>
-    <div style="margin-bottom:10px"><span style="font-size:12px;font-weight:700;color:var(--muted)">⚠️ Gelişim: </span><span style="font-size:13px;font-weight:700;color:#dc2626">Mat (%78), Fen (%73)</span></div>
+    <div style="margin-bottom:6px"><span style="font-size:12px;font-weight:700;color:var(--muted)">💪 Güçlü: </span><span style="font-size:13px;font-weight:700;color:#15803d">Türkçe (15.00), Sos & Din (10.00)</span></div>
+    <div style="margin-bottom:10px"><span style="font-size:12px;font-weight:700;color:var(--muted)">⚠️ Gelişim: </span><span style="font-size:13px;font-weight:700;color:#dc2626">Fen (%insanlarda üreme, hız-sürat), Mat (geometri dikkat hataları)</span></div>
     <div class="card-label" style="margin-top:4px">📈 Ders ortalama netlerin & hedefler</div>
     <div class="net-kartlar">
       <div class="net-kart ders-tur-bg">
-      <div class="net-kart-ders">Türkçe</div>
-      <div class="net-kart-sayi" style="color:#15803d">12.7</div>
-      <div class="net-kart-label">net ort.</div>
-      <div class="net-kart-hedef">hedef: 13.7</div>
-    </div><div class="net-kart ders-sos-bg">
-      <div class="net-kart-ders">Sosyal</div>
-      <div class="net-kart-sayi" style="color:#dc2626">8.5</div>
-      <div class="net-kart-label">net ort.</div>
-      <div class="net-kart-hedef">hedef: 9.5</div>
-    </div><div class="net-kart ders-din-bg">
-      <div class="net-kart-ders">Din</div>
-      <div class="net-kart-sayi" style="color:#dc2626">8.5</div>
-      <div class="net-kart-label">net ort.</div>
-      <div class="net-kart-hedef">hedef: 9.5</div>
-    </div><div class="net-kart ders-ing-bg">
-      <div class="net-kart-ders">İngilizce</div>
-      <div class="net-kart-sayi" style="color:#dc2626">8.3</div>
-      <div class="net-kart-label">net ort.</div>
-      <div class="net-kart-hedef">hedef: 9.3</div>
-    </div><div class="net-kart ders-mat-bg">
-      <div class="net-kart-ders">Matematik</div>
-      <div class="net-kart-sayi" style="color:#b45309">11.8</div>
-      <div class="net-kart-label">net ort.</div>
-      <div class="net-kart-hedef">hedef: 12.8</div>
-    </div><div class="net-kart ders-fen-bg">
-      <div class="net-kart-ders">Fen</div>
-      <div class="net-kart-sayi" style="color:#b45309">11.0</div>
-      <div class="net-kart-label">net ort.</div>
-      <div class="net-kart-hedef">hedef: 12.0</div>
-    </div>
+        <div class="net-kart-ders">Türkçe</div>
+        <div class="net-kart-sayi" style="color:#15803d">13.7</div>
+        <div class="net-kart-label">net ort.</div>
+        <div class="net-kart-hedef">hedef: 14.5</div>
+      </div>
+      <div class="net-kart ders-sos-bg">
+        <div class="net-kart-ders">Sosyal</div>
+        <div class="net-kart-sayi" style="color:#15803d">10.0</div>
+        <div class="net-kart-label">net ort.</div>
+        <div class="net-kart-hedef">hedef: 10.5</div>
+      </div>
+      <div class="net-kart ders-din-bg">
+        <div class="net-kart-ders">Din</div>
+        <div class="net-kart-sayi" style="color:#15803d">10.0</div>
+        <div class="net-kart-label">net ort.</div>
+        <div class="net-kart-hedef">hedef: 10.5</div>
+      </div>
+      <div class="net-kart ders-ing-bg">
+        <div class="net-kart-ders">İngilizce</div>
+        <div class="net-kart-sayi" style="color:#b45309">8.67</div>
+        <div class="net-kart-label">net ort.</div>
+        <div class="net-kart-hedef">hedef: 9.5</div>
+      </div>
+      <div class="net-kart ders-mat-bg">
+        <div class="net-kart-ders">Matematik</div>
+        <div class="net-kart-sayi" style="color:#b45309">12.67</div>
+        <div class="net-kart-label">net ort.</div>
+        <div class="net-kart-hedef">hedef: 13.5</div>
+      </div>
+      <div class="net-kart ders-fen-bg">
+        <div class="net-kart-ders">Fen</div>
+        <div class="net-kart-sayi" style="color:#b45309">13.67</div>
+        <div class="net-kart-label">net ort.</div>
+        <div class="net-kart-hedef">hedef: 14.5</div>
+      </div>
     </div>
     <div class="ortalama-notu">⚡ Altın kural: Ne olursa olsun ortalama netinin altına düşme. Her gün biraz, her hafta ileri!</div>
   </div>
 
   <div class="card">
     <div class="card-label">💬 Bu haftanın mesajı</div>
-    <div class="kocundan-text">Eyüp Ensar, son puanın 455 ve şu andaki performansın çok güzel! Bir sonraki denemedeki hedefin 473 puan - bu sadece 18 puanlık bir artış ve kesinlikle ulaşılabilir. Fen'deki bitki üremesi konusunda %33'ten %80'e çıkacaksın, matematik geometride ise açı hesaplarını pekiştireceğiz. Sevdiğin dünya coğrafyası bilgini kullanarak özellikle sosyal derste puan kaybetmeyeceğiz. Bu hafta odağımız: görsel materyallerle fen konularını anlamak ve geometri formüllerini ezbere bilir hale getirmek.</div>
+    <div class="kocundan-text">Eyüp Ensar, geçen hafta 474 puanla harika bir performans sergiledi! Bu haftaki hedefimiz 490. Fen'de insanlarda üreme ve fizik konularını pekiştireceğiz. Matematikte cebirsel düşünme ve geometri açı konularında dikkat hatalarını sıfırlayacağız. İngilizce'de günaşırı ünite çalışmasıyla 9.5 net hedefine yaklaşacağız. Bu hafta düzenli çalışmanın karşılığını puanda göreceksin!</div>
   </div>
 
   <div class="card">
     <div class="card-label">🎯 Sabit haftalık hedefler</div>
     <div class="hedef-grid">
-      <div class="hedef-item"><div class="hedef-label">📖 Paragraf sorusu</div><div class="hedef-val">10 soru / gün</div></div>
+      <div class="hedef-item"><div class="hedef-label">📖 Paragraf sorusu</div><div class="hedef-val">20 soru / gün</div></div>
       <div class="hedef-item"><div class="hedef-label">📚 Kitap okuma</div><div class="hedef-val">Her gün 30 sayfa</div></div>
-      <div class="hedef-item"><div class="hedef-label">✏️ Günlük toplam soru</div><div class="hedef-val">60 soru / gün</div></div>
-      <div class="hedef-item"><div class="hedef-label">🔥 Bu hafta odak</div><div class="hedef-val" style="font-size:14px">Fen: Bitki üremesi-gelişme · Mat: Üçgen-yamuk açıları</div></div>
+      <div class="hedef-item"><div class="hedef-label">✏️ Günlük toplam soru</div><div class="hedef-val">~80 soru / gün</div></div>
+      <div class="hedef-item"><div class="hedef-label">🔥 Bu hafta odak</div><div class="hedef-val" style="font-size:13px">Mat: Cebir & Geometri · Fen: Biyoloji & Fizik</div></div>
     </div>
   </div>
 
@@ -236,8 +256,8 @@
   <div class="gun-grid" id="gunGrid"></div>
 
   <div class="koc-notu" style="margin-top:12px">
-    <div class="koc-notu-baslik">🏆 Koç Notu — Görsel Öğrenme Haftası</div>
-    <div class="koc-notu-text">Bu hafta her fen konusunu çizim ve şema ile pekiştir. Bitki üremesini çizerken aşamalarını yaz. Geometri açılarını çizip formülleri yanına not et. Günde 3 kez 20'şer dakika çalış - uzun oturmaya zorlanma. Her çalışma arası 5 dakika yürü, sonra tekrar odaklan. Çözümü bildiğin soruları hızlı geç, zor olanlara zaman ayır.</div>
+    <div class="koc-notu-baslik">🏆 Koç Notu — Konu Pekiştirme Haftası</div>
+    <div class="koc-notu-text">Bu hafta her konuyu önce video ile anla, sonra soruya geç. Matematikte geometri sorularını çözerken formülleri yanına yaz, dikkat hatalarını not al. Fen'de insanlarda üreme aşamalarını ve hız-sürat-yer değiştirme farkını iyi kavra. İngilizce'de kelime tekrarını sesli yap. Günde 3 kez 20–25 dakika çalış. Her aradan sonra biraz yürü, sonra tekrar odaklan.</div>
   </div>
 
   <div class="pazar-card">
@@ -245,56 +265,167 @@
     <div class="pazar-text"><span>Kitap okuma önerilir</span><span>·</span><span>Zorunlu ders çalışma yok</span><span>·</span><span>Ailenizin tercihine göre</span></div>
   </div>
 
-  <div class="dipnot">Bu plan Eyüp Ensar Orun için hazırlanmıştır · Hafta 1 · 16–22 Nisan 2026</div>
+  <div class="dipnot">Bu plan Eyüp Ensar Orun için hazırlanmıştır · Hafta 2 · 23–30 Nisan 2026</div>
 </div>
 
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwuYEaEdXqLK4xSSKsHIvMgZopzfmumuqi79OoQjA3lTt2CVb5Xmt1GozBLV-AFnCh9/exec';
 const OGRENCI_ADI = 'Eyüp Ensar Orun';
-const HAFTA_NO = '1';
+const HAFTA_NO = '2';
 const MOTIVASYON_MESAJLARI = ['Finişe ulaştın Eyüp! Bugün de başardın 🏊','Olimpik tempo! Harika bir gün geçirdin 🥇','Dalgaları aştın! Yarın da devam 💦','Havuzun şampiyonu! Bugünkü tur tamamlandı 🏊'];
 
 const SON_GIRIS_SAATI = { 1:22, 2:22, 3:22, 4:22, 5:22, 6:22 };
 const SON_GIRIS_DAKIKA = 0;
 
 const GUNLER = [
-  { ad:'Perşembe', tarih:'16 Nisan', prefix:'per', jsGun:4,
-    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Bitkilerde üreme konusunu video izle, aşamaları çiz', checkbox:true, id:'undefined_fen_g0' },{ metin:'Bitki üremesi 15 soru çöz', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
-      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Üçgen açıları formüllerini tekrar et', checkbox:true, id:'undefined_mat_g0' },{ metin:'Üçgen açıları 15 soru çöz', checkbox:false, id:'undefined_mat_g1' }], takipKey:'mat' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Kıtalar ve okyanuslar 20 soru çöz', checkbox:false, id:'undefined_sos_g0' }], takipKey:'sos' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu — ana fikir odaklı', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
-      { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
-  { ad:'Cuma', tarih:'17 Nisan', prefix:'cum', jsGun:5,
-    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Işığın yansıması video izle, ayna çeşitlerini çiz', checkbox:true, id:'undefined_fen_g0' },{ metin:'Işık ve aynalar 15 soru çöz', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
-      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Yamuk ve paralelkenar açıları 15 soru çöz', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
-      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Yazım kuralları tekrar et', checkbox:true, id:'undefined_tur_g0' },{ metin:'Noktalama ve yazım 20 soru çöz', checkbox:false, id:'undefined_tur_g1' }], takipKey:'tur' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu — çıkarım odaklı', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
-      { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
-  { ad:'Cumartesi', tarih:'18 Nisan', prefix:'cmt', jsGun:6,
-    dersler: [{ cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Ondalık gösterimler ve basamak değeri 20 soru çöz', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
-      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Tutulmalar konusunu modelle, karma 20 soru çöz', checkbox:false, id:'undefined_fen_g0' }], takipKey:'fen' },
-      { cls:'ders-ing', ad:'İngilizce', key:'ing', gorevler:[{ metin:'Unit 5-6 kelime tekrarı', checkbox:true, id:'undefined_ing_g0' },{ metin:'Hava durumu ve meslekler 20 soru çöz', checkbox:false, id:'undefined_ing_g1' }], takipKey:'ing' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu — mini test', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
-      { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
-  { ad:'Pazartesi', tarih:'20 Nisan', prefix:'pzt', jsGun:1,
-    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Hayvanlarda üreme video izle, örnekleri listele', checkbox:true, id:'undefined_fen_g0' },{ metin:'Hayvan üremesi 15 soru çöz', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
-      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Asal sayılar ve çarpanlar 20 soru çöz', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
-      { cls:'ders-din', ad:'Din Kültürü', key:'din', gorevler:[{ metin:'Peygamberlerin rehberliği 15 soru çöz', checkbox:false, id:'undefined_din_g0' }], takipKey:'din' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu — tema bulma', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
-      { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
-  { ad:'Salı', tarih:'21 Nisan', prefix:'sal', jsGun:2,
-    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Maddenin ısı ile etkileşimi deney videoları izle', checkbox:true, id:'undefined_fen_g0' },{ metin:'Madde ve ısı 15 soru çöz', checkbox:false, id:'undefined_fen_g1' }], takipKey:'fen' },
-      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'İstatistik ve veri analizi 15 soru çöz', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[{ metin:'Ekonomik faaliyetler ve meslekler 20 soru çöz', checkbox:false, id:'undefined_sos_g0' }], takipKey:'sos' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu — sözcük anlamı', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
-      { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] },
-  { ad:'Çarşamba', tarih:'22 Nisan', prefix:'car', jsGun:3,
-    dersler: [{ cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[{ metin:'Kuvvet ve hareket karma 20 soru çöz', checkbox:false, id:'undefined_fen_g0' }], takipKey:'fen' },
-      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[{ metin:'Karma sayılar ve nicelikler 20 soru çöz', checkbox:false, id:'undefined_mat_g0' }], takipKey:'mat' },
-      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[{ metin:'Sevdiğin konu hakkında yarım sayfa kompozisyon yaz', checkbox:true, id:'undefined_tur_g0' },{ metin:'Yazını fotoğrafla WhatsApp\'tan gönder', checkbox:true, id:'undefined_tur_g1' }], takipKey:'tur' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[{ metin:'10 paragraf sorusu — karma tekrar', checkbox:false, id:'undefined_par_g0' }], takipKey:'par' },
-      { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[{ metin:'30 sayfa oku', checkbox:false, id:'undefined_kit_g0' }], takipKey:null }] }
+  { ad:'Perşembe', tarih:'23 Nisan', prefix:'per', jsGun:4,
+    dersler: [
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[
+        { metin:'Ondalık gösterim konusunu video izle', checkbox:true, id:'per_mat_g0' },
+        { metin:'Ondalık gösterimden 15 soru çöz', checkbox:false, id:'per_mat_g1' }
+      ], takipKey:'mat' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
+        { metin:'İnsanlarda üreme konusunu video izle, aşamaları çiz', checkbox:true, id:'per_fen_g0' },
+        { metin:'İnsanlarda üremeden 15 soru çöz', checkbox:false, id:'per_fen_g1' }
+      ], takipKey:'fen' },
+      { cls:'ders-ing', ad:'İngilizce', key:'ing', gorevler:[
+        { metin:'6. ünite Occupations kelimelerini tekrar et', checkbox:true, id:'per_ing_g0' },
+        { metin:'6. üniteden 15 soru çöz', checkbox:false, id:'per_ing_g1' }
+      ], takipKey:'ing' },
+      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[
+        { metin:'Evimiz Dünya — kıtaların ve okyanusların konum özellikleri 15 soru çöz', checkbox:false, id:'per_sos_g0' }
+      ], takipKey:'sos' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
+        { metin:'20 paragraf sorusu çöz', checkbox:false, id:'per_par_g0' }
+      ], takipKey:'par' },
+      { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[
+        { metin:'30 sayfa oku', checkbox:false, id:'per_kit_g0' }
+      ], takipKey:null }
+    ]
+  },
+  { ad:'Cuma', tarih:'24 Nisan', prefix:'cum', jsGun:5,
+    dersler: [
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[
+        { metin:'Kesirlerde toplama ve çıkarma konusunu video izle', checkbox:true, id:'cum_mat_g0' },
+        { metin:'Kesirlerde toplama ve çıkarmadan 15 soru çöz', checkbox:false, id:'cum_mat_g1' }
+      ], takipKey:'mat' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
+        { metin:'Hız, sürat ve yer değiştirme konusunu video izle', checkbox:true, id:'cum_fen_g0' },
+        { metin:'Hız ve süratten 15 soru çöz', checkbox:false, id:'cum_fen_g1' }
+      ], takipKey:'fen' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[
+        { metin:'Atasözleri ve deyimler konusunu tekrar et', checkbox:true, id:'cum_tur_g0' },
+        { metin:'Atasözleri ve deyimlerden 15 soru çöz', checkbox:false, id:'cum_tur_g1' }
+      ], takipKey:'tur' },
+      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[
+        { metin:'Evimiz Dünya ünitesinden 15 soru çöz', checkbox:false, id:'cum_sos_g0' }
+      ], takipKey:'sos' },
+      { cls:'ders-din', ad:'Din Kültürü', key:'din', gorevler:[
+        { metin:'Önceki ünitelerden çözülmemiş bir test çöz (10 soru)', checkbox:false, id:'cum_din_g0' }
+      ], takipKey:'din' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
+        { metin:'20 paragraf sorusu çöz', checkbox:false, id:'cum_par_g0' }
+      ], takipKey:'par' },
+      { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[
+        { metin:'30 sayfa oku', checkbox:false, id:'cum_kit_g0' }
+      ], takipKey:null }
+    ]
+  },
+  { ad:'Cumartesi', tarih:'25 Nisan', prefix:'cmt', jsGun:6,
+    dersler: [
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[
+        { metin:'Veri ve Olasılık (4. ünite) konusunu video izle', checkbox:true, id:'cmt_mat_g0' },
+        { metin:'Veri ve Olasılıktan 15 soru çöz', checkbox:false, id:'cmt_mat_g1' }
+      ], takipKey:'mat' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
+        { metin:'İnsanlarda üreme karma 15 soru çöz', checkbox:false, id:'cmt_fen_g0' }
+      ], takipKey:'fen' },
+      { cls:'ders-ing', ad:'İngilizce', key:'ing', gorevler:[
+        { metin:'7. ünite Holidays kelimelerini tekrar et', checkbox:true, id:'cmt_ing_g0' },
+        { metin:'7. üniteden 15 soru çöz', checkbox:false, id:'cmt_ing_g1' }
+      ], takipKey:'ing' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[
+        { metin:'Yazım kuralları ve noktalama işaretleri 15 soru çöz', checkbox:false, id:'cmt_tur_g0' }
+      ], takipKey:'tur' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
+        { metin:'20 paragraf sorusu çöz', checkbox:false, id:'cmt_par_g0' }
+      ], takipKey:'par' },
+      { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[
+        { metin:'30 sayfa oku', checkbox:false, id:'cmt_kit_g0' }
+      ], takipKey:null }
+    ]
+  },
+  { ad:'Pazartesi', tarih:'28 Nisan', prefix:'pzt', jsGun:1,
+    dersler: [
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[
+        { metin:'Cebirsel düşünme (6. ünite) 20 soru çöz', checkbox:false, id:'pzt_mat_g0' }
+      ], takipKey:'mat' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
+        { metin:'Hız-sürat ve yer değiştirme karma 20 soru çöz', checkbox:false, id:'pzt_fen_g0' }
+      ], takipKey:'fen' },
+      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[
+        { metin:'Evimiz Dünya — ülkemizin konum özellikleri 10 soru çöz', checkbox:false, id:'pzt_sos_g0' }
+      ], takipKey:'sos' },
+      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[
+        { metin:'Sevdiğin bir konudan en az yarım sayfa kompozisyon yaz', checkbox:true, id:'pzt_tur_g0' },
+        { metin:'Yazdığın kompozisyonu fotoğraflayıp WhatsApp\'tan gönder', checkbox:true, id:'pzt_tur_g1' }
+      ], takipKey:'tur' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
+        { metin:'20 paragraf sorusu çöz', checkbox:false, id:'pzt_par_g0' }
+      ], takipKey:'par' },
+      { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[
+        { metin:'30 sayfa oku', checkbox:false, id:'pzt_kit_g0' }
+      ], takipKey:null }
+    ]
+  },
+  { ad:'Salı', tarih:'29 Nisan', prefix:'sal', jsGun:2,
+    dersler: [
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[
+        { metin:'Asal sayılar ve çarpanlar — dikkat hatalarına odaklan, 20 soru çöz', checkbox:false, id:'sal_mat_g0' }
+      ], takipKey:'mat' },
+      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
+        { metin:'Biyoloji ve fizik konularından karma 20 soru çöz', checkbox:false, id:'sal_fen_g0' }
+      ], takipKey:'fen' },
+      { cls:'ders-ing', ad:'İngilizce', key:'ing', gorevler:[
+        { metin:'7. ünite Holidays kelimelerini tekrar et', checkbox:true, id:'sal_ing_g0' },
+        { metin:'7. üniteden 15 soru çöz', checkbox:false, id:'sal_ing_g1' }
+      ], takipKey:'ing' },
+      { cls:'ders-din', ad:'Din Kültürü', key:'din', gorevler:[
+        { metin:'Önceki ünitelerden çözülmemiş bir test çöz (10 soru)', checkbox:false, id:'sal_din_g0' }
+      ], takipKey:'din' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
+        { metin:'20 paragraf sorusu çöz', checkbox:false, id:'sal_par_g0' }
+      ], takipKey:'par' },
+      { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[
+        { metin:'30 sayfa oku', checkbox:false, id:'sal_kit_g0' }
+      ], takipKey:null }
+    ]
+  },
+  { ad:'Çarşamba', tarih:'30 Nisan', prefix:'car', jsGun:3,
+    dersler: [
+      { cls:'ders-mat', ad:'Matematik — Cebirsel Düşünme', key:'mat', gorevler:[
+        { metin:'Cebirsel düşünme (6. ünite) 2. tur — 20 soru çöz', checkbox:false, id:'car_mat_g0' }
+      ], takipKey:'mat' },
+      { cls:'ders-mat', ad:'Matematik — Geometri', key:'mat2', gorevler:[
+        { metin:'Açı konuları ve alan ölçme birimleri — dikkat hatalarına odaklan, 20 soru çöz', checkbox:false, id:'car_mat2_g0' }
+      ], takipKey:null },
+      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
+        { metin:'Haftanın fen konularından karma 20 soru çöz', checkbox:false, id:'car_fen_g0' }
+      ], takipKey:'fen' },
+      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[
+        { metin:'Evimiz Dünya ünitesinden 10 soru çöz', checkbox:false, id:'car_sos_g0' }
+      ], takipKey:'sos' },
+      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
+        { metin:'20 paragraf sorusu çöz', checkbox:false, id:'car_par_g0' }
+      ], takipKey:'par' },
+      { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[
+        { metin:'30 sayfa oku', checkbox:false, id:'car_kit_g0' }
+      ], takipKey:null }
+    ]
+  }
 ];
+
+const DERS_SECENEKLERI = ['Matematik','Fen Bilimleri','Türkçe','Sosyal Bilgiler','İngilizce','Din Kültürü','Diğer'];
 
 function trSaati() {
   const now = new Date();
@@ -324,7 +455,7 @@ function kalanSure(gun) {
 }
 
 const renkMap = { mat:'var(--mat)', fen:'var(--fen)', tur:'var(--tur)', ing:'var(--ing)', sos:'var(--sos)', din:'var(--din)', par:'var(--par)' };
-const adMap = { mat:'Mat', fen:'Fen', tur:'Turkce', ing:'Ingilizce', sos:'Sosyal', din:'Din', par:'Paragraf' };
+const adMap = { mat:'Mat', fen:'Fen', tur:'Türkçe', ing:'İngilizce', sos:'Sosyal', din:'Din', par:'Paragraf' };
 
 function hesaplaNet(prefix, ders) {
   const d = parseFloat(document.getElementById(prefix+'_'+ders+'_d').value) || 0;
@@ -348,34 +479,68 @@ function gorevDegisti(cb) {
   }
 }
 
+function okulCbDegisti(cb) {
+  const label = cb.closest('.okul-testi-row').querySelector('.okul-cb-label');
+  if (label) {
+    label.textContent = cb.checked ? '✅ Tamamlandı' : 'Tamamlandı mı?';
+    label.style.color = cb.checked ? '#15803d' : 'var(--okul)';
+  }
+}
+
 function takipDersleriHTML(gun, durum) {
   const dis = durum !== 'aktif' ? 'disabled' : '';
-  const takipDersler = gun.dersler.filter(function(d) { return d.takipKey; });
-  let html = '<div class="takip-bolum"><div class="takip-baslik">Gunluk takip — ' + gun.ad + '</div>';
-  html += '<div class="takip-dyb-header"><div class="takip-dyb-header-bos"></div><div class="takip-dyb-header-lbl">D</div><div class="takip-dyb-header-lbl">Y</div><div class="takip-dyb-header-lbl">B</div><div class="takip-dyb-header-lbl">Net</div></div><div class="takip-satirlar">';
-  takipDersler.forEach(function(d) {
-    const renk = renkMap[d.takipKey] || 'var(--text)';
-    const ad = adMap[d.takipKey] || d.ad;
+  // Tüm dersler için D/Y/B — sadece takipKey olanlar değil, hepsi esnek
+  const takipDersListesi = [
+    { key:'mat', renk:'var(--mat)', ad:'Mat' },
+    { key:'fen', renk:'var(--fen)', ad:'Fen' },
+    { key:'ing', renk:'var(--ing)', ad:'İngilizce' },
+    { key:'tur', renk:'var(--tur)', ad:'Türkçe' },
+    { key:'sos', renk:'var(--sos)', ad:'Sosyal' },
+    { key:'din', renk:'var(--din)', ad:'Din' },
+    { key:'par', renk:'var(--par)', ad:'Paragraf' },
+  ];
+
+  let html = '<div class="takip-bolum"><div class="takip-baslik">Günlük takip — ' + gun.ad + '</div>';
+  html += '<div class="takip-dyb-header"><div class="takip-dyb-header-bos"></div><div class="takip-dyb-header-lbl">D</div><div class="takip-dyb-header-lbl">Y</div><div class="takip-dyb-header-lbl">B</div><div class="takip-dyb-header-lbl">Net</div></div>';
+  html += '<div class="takip-satirlar">';
+  takipDersListesi.forEach(function(d) {
     const pid = gun.prefix;
-    const did = d.takipKey;
-    html += '<div class="takip-satir"><div class="takip-satir-adi" style="color:'+renk+'">'+ad+'</div>';
+    const did = d.key;
+    html += '<div class="takip-satir"><div class="takip-satir-adi" style="color:'+d.renk+'">'+d.ad+'</div>';
     html += '<input class="takip-input" type="number" min="0" id="'+pid+'_'+did+'_d" placeholder="0" '+dis+' data-p="'+pid+'" data-d="'+did+'" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">';
     html += '<input class="takip-input" type="number" min="0" id="'+pid+'_'+did+'_y" placeholder="0" '+dis+' data-p="'+pid+'" data-d="'+did+'" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">';
     html += '<input class="takip-input" type="number" min="0" id="'+pid+'_'+did+'_b" placeholder="0" '+dis+' data-p="'+pid+'" data-d="'+did+'" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">';
     html += '<div class="net-goster" id="'+pid+'_'+did+'_net">—</div>';
     html += '</div>';
   });
-  html += '</div><div class="kp-row"><div class="kp-item"><div class="kp-label">Kitap (sayfa)</div><input class="kp-input" type="number" min="0" id="'+gun.prefix+'_kitap" placeholder="0" '+dis+'></div></div>';
-  html += '<input class="not-input" type="text" id="'+gun.prefix+'_not" placeholder="Bugunku notun..." '+dis+'>';
+  html += '</div>';
+
+  // Kitap + not
+  html += '<div class="kp-row"><div class="kp-item"><div class="kp-label">Kitap (sayfa)</div><input class="kp-input" type="number" min="0" id="'+gun.prefix+'_kitap" placeholder="0" '+dis+'></div></div>';
+  html += '<input class="not-input" type="text" id="'+gun.prefix+'_not" placeholder="Bugünkü notun..." '+dis+'>';
+
+  // Okul testi bölümü
+  const okulDis = durum !== 'aktif' ? 'disabled' : '';
+  let selectOpts = DERS_SECENEKLERI.map(function(d) { return '<option value="'+d+'">'+d+'</option>'; }).join('');
+  html += '<div class="okul-testi-bolum">';
+  html += '<div class="okul-testi-baslik">📚 Okul testi — okulda işlenen çözülmemiş test</div>';
+  html += '<div class="okul-testi-row">';
+  html += '<select class="okul-select" id="'+gun.prefix+'_okul_ders" '+okulDis+'><option value="">Ders seç</option>'+selectOpts+'</select>';
+  html += '<input class="okul-konu-input" type="text" id="'+gun.prefix+'_okul_konu" placeholder="Konu / ünite adı..." '+okulDis+'>';
+  html += '<input type="checkbox" class="okul-cb" id="'+gun.prefix+'_okul_cb" '+okulDis+' onchange="okulCbDegisti(this)">';
+  html += '<label class="okul-cb-label" for="'+gun.prefix+'_okul_cb">Tamamlandı mı?</label>';
+  html += '</div></div>';
+
+  // Buton vs.
   if (durum === 'aktif') {
-    html += '<div class="geri-sayim" id="'+gun.prefix+'_sayim">Hesaplaniyor...</div>';
+    html += '<div class="geri-sayim" id="'+gun.prefix+'_sayim">Hesaplanıyor...</div>';
     html += '<button class="gonder-btn" id="'+gun.prefix+'_btn" data-gun="'+gun.ad+'" data-p="'+gun.prefix+'" onclick="gonder(this.dataset.gun,this.dataset.p)">Kaydet</button>';
   } else if (durum === 'suresi_doldu') {
-    html += '<button class="gonder-btn" disabled>Giris suresi doldu</button>';
+    html += '<button class="gonder-btn" disabled>Giriş süresi doldu</button>';
   } else if (durum === 'kilitli') {
-    html += '<div class="kilit-overlay">Bu gun henuz gelmedi<br><small style="color:#94a3b8">' + gun.tarih + ' tarihinde acilacak</small></div>';
+    html += '<div class="kilit-overlay">Bu gün henüz gelmedi<br><small style="color:#94a3b8">' + gun.tarih + ' tarihinde açılacak</small></div>';
   } else if (durum === 'gecmis') {
-    html += '<button class="gonder-btn" disabled style="background:#854d0e">Giris suresi gecti</button>';
+    html += '<button class="gonder-btn" disabled style="background:#854d0e">Giriş süresi geçti</button>';
   }
   html += '<div class="gonder-mesaj" id="'+gun.prefix+'_mesaj"></div></div>';
   return html;
@@ -385,9 +550,9 @@ function gunKartiHTML(gun) {
   const durum = gunDurumu(gun);
   const durumClass = durum === 'aktif' ? '' : durum === 'gecmis' ? ' gecmis' : ' kilitli';
   const badgeMap = {
-    aktif:'<span class="gun-durum-badge badge-aktif">Bugun</span>',
+    aktif:'<span class="gun-durum-badge badge-aktif">Bugün</span>',
     kilitli:'<span class="gun-durum-badge badge-kilitli">Bekliyor</span>',
-    gecmis:'<span class="gun-durum-badge badge-gecmis">Gecti</span>',
+    gecmis:'<span class="gun-durum-badge badge-gecmis">Geçti</span>',
     suresi_doldu:'<span class="gun-durum-badge badge-gecmis">Doldu</span>'
   };
   let html = '<div class="gun-card'+durumClass+'" id="kart_'+gun.prefix+'"><div class="gun-baslik">'+gun.ad+' <span class="gun-tarih">'+gun.tarih+'</span>'+badgeMap[durum]+'</div>';
@@ -429,14 +594,14 @@ GUNLER.forEach(function(gun) {
     const btn = document.getElementById(gun.prefix + '_btn');
     if (!el) return;
     if (!kalan) {
-      el.textContent = 'Giris suresi doldu.';
-      if (btn) { btn.disabled = true; btn.textContent = 'Giris suresi doldu'; }
+      el.textContent = 'Giriş süresi doldu.';
+      if (btn) { btn.disabled = true; btn.textContent = 'Giriş süresi doldu'; }
       clearInterval(timerIds[gun.prefix]);
-      document.querySelectorAll('#kart_'+gun.prefix+' input, #kart_'+gun.prefix+' .gorev-cb').forEach(function(i){i.disabled=true;});
+      document.querySelectorAll('#kart_'+gun.prefix+' input, #kart_'+gun.prefix+' .gorev-cb, #kart_'+gun.prefix+' select').forEach(function(i){i.disabled=true;});
       return;
     }
     const sure = (kalan.s > 0 ? kalan.s + ' sa ' : '') + kalan.d + ' dk ' + kalan.sn + ' sn';
-    el.textContent = 'Son giris saatine ' + sure + ' kaldi';
+    el.textContent = 'Son giriş saatine ' + sure + ' kaldı';
     if (kalan.toplam < 600000) el.classList.add('son-dakika');
   }
   guncelle();
@@ -444,6 +609,8 @@ GUNLER.forEach(function(gun) {
 });
 
 function val(id) { const el = document.getElementById(id); return el ? (el.value || '0') : '0'; }
+function strVal(id) { const el = document.getElementById(id); return el ? (el.value || '') : ''; }
+function cbVal(id) { const el = document.getElementById(id); return el ? (el.checked ? '1' : '0') : '0'; }
 
 function gonderiBilgisiTopla(gun) {
   const dersGorevler = {};
@@ -462,8 +629,8 @@ function gonderiBilgisiTopla(gun) {
 
 const SON_GUN_ADI = GUNLER.length > 0 ? GUNLER[GUNLER.length - 1].ad : null;
 
-const TEBRIK_MESAJLARI = ["Bu hafta gercekten harika bir performans sergiliyorsun! Rakamlar bunu acikca soyluyor.","Haftayi guclu bitirdin! Her gun biraz daha ileri gidiyorsun bunu unutma.","Sayilara bak! Bu hafta kendini aston. Boyle devam edersen LGSde istedigin yere gelirsin.","Harika bir hafta gecirdin! Bu temponu korursan hedef puanina ulasman an meselesi.","Bu hafta yaptiklarin bosa gitmiyor. Her soru her sayfa seni bir adim one tasidi.","Supersin! Bu haftaki calishman gercekten etkileyici. Kendinle gurur duyabilirsin.","Mukemmel bir hafta! Rakamlar yalan soylemiyor bu hafta fark yarattın.","Bu hafta tam anlamiyla savastin! Sonuclar da bunu gosteriyor.","Bravo! Bu hafta hem duzenli hem verimli calistin. Bu ikisini bir arada yapmak kolay degil.","Haftayi boyle kapatmak muhtesem! Pazar dinlen pazartesi yeniden baslayacaksin."];
-const MOTIVASYON_HAFTALIK = ["Bu hafta istedigin kadar verimli olmadi ama bu bitti demek degil. Gelecek hafta daha guclu baslayacaksin.","Bazi haftalar zor gecer. Onemli olan birakmamak. Sen burada olmaya devam ediyorsun bu basli basina bir basari.","Rakamlar su an istedigin yerde olmayabilir ama her gun calismak zaten kazanmaktir.","Zor bir hafta gecirmis olabilirsin. Pazar dinlen pazartesi temiz sayfa ac.","Herkesin zorlandigi haftalar olur. Onemli olan pes etmemek. Gelecek hafta daha iyi olacak.","Bu haftaki sonuclar seni tanimlamaz. Asil onemli olan devam etmek sen devam ediyorsun.","Bazen motor isinmaya ihtiyac duyar. Bu hafta isinma haftasiydi gelecek hafta tam gaz!","Sonuclar bekledigin gibi olmayabilir ama cabalamak bile degerli. Devam et!"];
+const TEBRIK_MESAJLARI = ["Bu hafta gerçekten harika bir performans sergiliyorsun! Rakamlar bunu açıkça söylüyor.","Haftayı güçlü bitirdin! Her gün biraz daha ileri gidiyorsun, bunu unutma.","Sayılara bak! Bu hafta kendini astın. Böyle devam edersen LGS'de istediğin yere gelirsin.","Harika bir hafta geçirdin! Bu temponu korursan hedef puanına ulaşman an meselesi.","Bu hafta yaptıkların boşa gitmiyor. Her soru, her sayfa seni bir adım öne taşıdı.","Süpersin! Bu haftaki çalışman gerçekten etkileyici. Kendinle gurur duyabilirsin.","Mükemmel bir hafta! Rakamlar yalan söylemiyor, bu hafta fark yarattın.","Bu hafta tam anlamıyla savaştın! Sonuçlar da bunu gösteriyor.","Bravo! Bu hafta hem düzenli hem verimli çalıştın. Bu ikisini bir arada yapmak kolay değil.","Haftayı böyle kapatmak muhteşem! Pazar dinlen, pazartesi yeniden başlayacaksın."];
+const MOTIVASYON_HAFTALIK = ["Bu hafta istediğin kadar verimli olmadı ama bu bitti demek değil. Gelecek hafta daha güçlü başlayacaksın.","Bazı haftalar zor geçer. Önemli olan bırakmamak. Sen burada olmaya devam ediyorsun, bu başlı başına bir başarı.","Rakamlar şu an istediğin yerde olmayabilir ama her gün çalışmak zaten kazanmaktır.","Zor bir hafta geçirmiş olabilirsin. Pazar dinlen, pazartesi temiz sayfa aç.","Herkesin zorlandığı haftalar olur. Önemli olan pes etmemek. Gelecek hafta daha iyi olacak.","Bu haftaki sonuçlar seni tanımlamaz. Asıl önemli olan devam etmek, sen devam ediyorsun.","Bazen motor ısınmaya ihtiyaç duyar. Bu hafta ısınma haftasıydı, gelecek hafta tam gaz!","Sonuçlar beklediğin gibi olmayabilir ama çabalamak bile değerli. Devam et!"];
 
 function rastgeleSecim(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -504,7 +671,7 @@ function hesaplaHaftaOzeti(gunler) {
 
 function gosterHaftaOzetiPopup(gunler) {
   const ozet = hesaplaHaftaOzeti(gunler);
-  const iyi = ozet.toplamSoru >= 150;
+  const iyi = ozet.toplamSoru >= 200;
   const mesaj = iyi ? rastgeleSecim(TEBRIK_MESAJLARI) : rastgeleSecim(MOTIVASYON_HAFTALIK);
 
   const dersAdMap = { mat:'Matematik', fen:'Fen', tur:'Türkçe', ing:'İngilizce', sos:'Sosyal', din:'Din' };
@@ -555,12 +722,8 @@ function gosterHaftaOzetiPopup(gunler) {
     '</div>';
 
   document.body.appendChild(overlay);
-  document.getElementById('hafta-kapat-btn').addEventListener('click', function() {
-    overlay.remove();
-  });
-  overlay.addEventListener('click', function(e) {
-    if (e.target === overlay) overlay.remove();
-  });
+  document.getElementById('hafta-kapat-btn').addEventListener('click', function() { overlay.remove(); });
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
 }
 
 function gonder(gunAdi, prefix) {
@@ -581,7 +744,10 @@ function gonder(gunAdi, prefix) {
     din_d: val(prefix+'_din_d'), din_y: val(prefix+'_din_y'), din_b: val(prefix+'_din_b'),
     paragraf: val(prefix+'_par_d'),
     kitap: val(prefix+'_kitap'),
-    not: document.getElementById(prefix+'_not') ? document.getElementById(prefix+'_not').value : ''
+    not: strVal(prefix+'_not'),
+    okul_ders: strVal(prefix+'_okul_ders'),
+    okul_konu: strVal(prefix+'_okul_konu'),
+    okul_tamamlandi: cbVal(prefix+'_okul_cb')
   }, gorevBilgisi);
 
   const mesajEl = document.getElementById(prefix + '_mesaj');
@@ -591,7 +757,7 @@ function gonder(gunAdi, prefix) {
     mesajEl.textContent = rastgeleMesaj;
     mesajEl.className = 'gonder-mesaj mesaj-ok';
     mesajEl.style.display = 'block';
-    btn.textContent = 'Guncelle';
+    btn.textContent = 'Güncelle';
     btn.classList.add('tamamlandi');
     btn.disabled = false;
 
@@ -609,7 +775,7 @@ function gonder(gunAdi, prefix) {
     }
   })
   .catch(function() {
-    mesajEl.textContent = 'Baglanti hatasi. Tekrar dene.';
+    mesajEl.textContent = 'Bağlantı hatası. Tekrar dene.';
     mesajEl.className = 'gonder-mesaj mesaj-hata';
     mesajEl.style.display = 'block';
     btn.disabled = false;
