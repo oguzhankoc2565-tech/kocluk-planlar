@@ -97,6 +97,7 @@
   .ders-din { color: var(--din); background: var(--din-bg); }
   .ders-kit { color: var(--kit); background: var(--kit-bg); }
   .ders-par { color: var(--par); background: var(--par-bg); }
+  .ders-sinav { color: #dc2626; background: #fef2f2; }
   .gorev-list { padding: 0; }
   .gorev-item { display: flex; align-items: flex-start; gap: 8px; padding: 4px 0; }
   .gorev-item.soru-gorev { padding-left: 4px; }
@@ -105,6 +106,7 @@
   .gorev-metin { font-size: 13px; line-height: 1.5; transition: all 0.2s; }
   .gorev-metin.tamamlandi { text-decoration: line-through; color: var(--muted); opacity: 0.7; }
   .gorev-nokta { font-size: 9px; color: var(--muted); margin-top: 5px; flex-shrink: 0; }
+  .gorev-wp { font-size: 9px; color: #16a34a; margin-top: 5px; flex-shrink: 0; }
   .takip-bolum { margin-top: 12px; padding-top: 12px; border-top: 2px dashed var(--border); }
   .takip-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
   .takip-dyb-header { display: flex; gap: 4px; margin-bottom: 4px; align-items: center; }
@@ -145,6 +147,8 @@
   .koc-notu-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #7c3aed; margin-bottom: 8px; }
   .koc-notu-text { font-size: 14px; line-height: 1.75; }
   .dipnot { font-size: 12px; color: var(--muted); text-align: center; margin-top: 8px; font-weight: 600; }
+  .sinav-banner { background: linear-gradient(135deg, #fef2f2, #fff7ed); border: 2px solid #fecaca; border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; font-size: 13px; font-weight: 700; color: #991b1b; text-align: center; }
+  .tam-puan-badge { display: inline-block; background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 10px; margin-left: 6px; }
 </style>
 </head>
 <body>
@@ -153,11 +157,13 @@
   <div class="header">
     <div class="avatar">YM</div>
     <div class="header-info" style="flex:1">
-      <h1>Yaser Eren Metin</h1>
-      <div class="meta">6/A · Hafta 1 · 21–27 Nisan 2026</div>
+      <h1>Yaser Eren Metin <span class="tam-puan-badge">🎯 Tam Puan Adayı</span></h1>
+      <div class="meta">6/A · Hafta 2 · 28 Nisan – 4 Mayıs 2026</div>
       <div class="badges">
-        <span class="badge badge-fen">Fen Bilimleri öncelikli</span>
-        <span class="badge badge-tur">Türkçe yazım kuralları odaklı</span>
+        <span class="badge badge-fen">Fen: Tonguç serisi</span>
+        <span class="badge badge-tur">Türkçe: Anlam bilgisi</span>
+        <span class="badge badge-mat">Mat: Çarpanlar & Sayılar</span>
+        <span class="badge badge-sos">Sosyal: Birlikte yaşamak</span>
       </div>
     </div>
   </div>
@@ -178,57 +184,62 @@
         <div class="durum-val hedef">459</div>
       </div>
     </div>
-    <div style="margin-bottom:6px"><span style="font-size:12px;font-weight:700;color:var(--muted)">💪 Güçlü: </span><span style="font-size:13px;font-weight:700;color:#15803d">Din (%93), Ing (%93), Mat (%91), Sos (%87)</span></div>
-    <div style="margin-bottom:10px"><span style="font-size:12px;font-weight:700;color:var(--muted)">⚠️ Gelişim: </span><span style="font-size:13px;font-weight:700;color:#dc2626">Tur (%80), Fen (%76)</span></div>
+    <div style="margin-bottom:6px"><span style="font-size:12px;font-weight:700;color:var(--muted)">💪 Güçlü: </span><span style="font-size:13px;font-weight:700;color:#15803d">Mat (13.7) · Din (9.3) · İng (9.3)</span></div>
+    <div style="margin-bottom:10px"><span style="font-size:12px;font-weight:700;color:var(--muted)">⚠️ Gelişim: </span><span style="font-size:13px;font-weight:700;color:#dc2626">Fen (11.3) ve Türkçe (12.0) zirveye taşınıyor</span></div>
     <div class="card-label" style="margin-top:4px">📈 Ders ortalama netlerin & hedefler</div>
     <div class="net-kartlar">
       <div class="net-kart ders-tur-bg">
-      <div class="net-kart-ders">Türkçe</div>
-      <div class="net-kart-sayi" style="color:#15803d">12.0</div>
-      <div class="net-kart-label">net ort.</div>
-      <div class="net-kart-hedef">hedef: 13.0</div>
-    </div><div class="net-kart ders-sos-bg">
-      <div class="net-kart-ders">Sosyal</div>
-      <div class="net-kart-sayi" style="color:#dc2626">8.7</div>
-      <div class="net-kart-label">net ort.</div>
-      <div class="net-kart-hedef">hedef: 9.7</div>
-    </div><div class="net-kart ders-din-bg">
-      <div class="net-kart-ders">Din</div>
-      <div class="net-kart-sayi" style="color:#b45309">9.3</div>
-      <div class="net-kart-label">net ort.</div>
-      <div class="net-kart-hedef">hedef: 10.0</div>
-    </div><div class="net-kart ders-ing-bg">
-      <div class="net-kart-ders">İngilizce</div>
-      <div class="net-kart-sayi" style="color:#b45309">9.3</div>
-      <div class="net-kart-label">net ort.</div>
-      <div class="net-kart-hedef">hedef: 10.0</div>
-    </div><div class="net-kart ders-mat-bg">
-      <div class="net-kart-ders">Matematik</div>
-      <div class="net-kart-sayi" style="color:#15803d">13.7</div>
-      <div class="net-kart-label">net ort.</div>
-      <div class="net-kart-hedef">hedef: 14.7</div>
-    </div><div class="net-kart ders-fen-bg">
-      <div class="net-kart-ders">Fen</div>
-      <div class="net-kart-sayi" style="color:#b45309">11.3</div>
-      <div class="net-kart-label">net ort.</div>
-      <div class="net-kart-hedef">hedef: 12.3</div>
+        <div class="net-kart-ders">Türkçe</div>
+        <div class="net-kart-sayi" style="color:#15803d">12.0</div>
+        <div class="net-kart-label">net ort.</div>
+        <div class="net-kart-hedef">hedef: 13.5</div>
+      </div>
+      <div class="net-kart ders-sos-bg">
+        <div class="net-kart-ders">Sosyal</div>
+        <div class="net-kart-sayi" style="color:#b45309">8.7</div>
+        <div class="net-kart-label">net ort.</div>
+        <div class="net-kart-hedef">hedef: 9.5</div>
+      </div>
+      <div class="net-kart ders-din-bg">
+        <div class="net-kart-ders">Din</div>
+        <div class="net-kart-sayi" style="color:#15803d">9.3</div>
+        <div class="net-kart-label">net ort.</div>
+        <div class="net-kart-hedef">hedef: 10.0</div>
+      </div>
+      <div class="net-kart ders-ing-bg">
+        <div class="net-kart-ders">İngilizce</div>
+        <div class="net-kart-sayi" style="color:#15803d">9.3</div>
+        <div class="net-kart-label">net ort.</div>
+        <div class="net-kart-hedef">hedef: 10.0</div>
+      </div>
+      <div class="net-kart ders-mat-bg">
+        <div class="net-kart-ders">Matematik</div>
+        <div class="net-kart-sayi" style="color:#15803d">13.7</div>
+        <div class="net-kart-label">net ort.</div>
+        <div class="net-kart-hedef">hedef: 14.7</div>
+      </div>
+      <div class="net-kart ders-fen-bg">
+        <div class="net-kart-ders">Fen</div>
+        <div class="net-kart-sayi" style="color:#b45309">11.3</div>
+        <div class="net-kart-label">net ort.</div>
+        <div class="net-kart-hedef">hedef: 12.5</div>
+      </div>
     </div>
-    </div>
-    <div class="ortalama-notu">⚡ Altın kural: Ne olursa olsun ortalama netinin altına düşme. Her gün biraz, her hafta ileri!</div>
+    <div class="ortalama-notu">⚡ Bu hafta Salı günü 2026 Bursluluk sınavı ile kendini gerçek sınav koşullarında test ediyorsun. Sonucu merakla bekliyorum!</div>
   </div>
 
   <div class="card">
     <div class="card-label">💬 Bu haftanın mesajı</div>
-    <div class="kocundan-text">Yaser Eren! Son puanın 430, bir sonraki denemedeki hedefin 459 - sadece 29 puan artış yeter! Geçen hafta analizine bakınca Fen'de gezegen sınıflandırması ve Türkçe'de 'de, mi, ki' yazımı en kritik noktaların. Tıpkı yazılım projelerinde bug'ları öncelik sırasına koyduğun gibi, bu hafta Fen Bilimleri ve Türkçe yazım kurallarına odaklanıyoruz. Erteleme alışkanlığına karşı 'okuldan hemen sonra' kuralını uygula - futbol maçlarında da ilk dakikadan baskı yapar, golü erkenden bulursun değil mi?</div>
+    <div class="kocundan-text">Yaser Eren, sana açıkça söyleyeyim: LGS'de tam puan yapabilecek profildeki öğrencilerden birisin. Mat'ta 13.7 ortalama, Din ve İng'de 9.3 — bu rakamlar rastlantı değil, senin zeka ve çalışma gücünün yansıması. Şimdi tek hedef Fen ve Türkçe'yi bu seviyeye taşımak. Bu hafta Tonguç serisiyle sistematik çalışıyoruz: her test bir tuğla, her tuğla seni zirveye yaklaştırıyor. Salı günü bursluluk sınavını gerçek koşullarda çözeceksin — bu sana hem motivasyon verecek hem de nerede durduğunu gösterecek. Sana güveniyorum, planı eksiksiz uygula, sonuçlar kendisi gelecek!</div>
   </div>
 
   <div class="card">
     <div class="card-label">🎯 Sabit haftalık hedefler</div>
     <div class="hedef-grid">
-      <div class="hedef-item"><div class="hedef-label">📖 Paragraf sorusu</div><div class="hedef-val">10 soru / gün</div></div>
+      <div class="hedef-item"><div class="hedef-label">📖 Paragraf sorusu</div><div class="hedef-val">10 soru / gün (Salı hariç)</div></div>
       <div class="hedef-item"><div class="hedef-label">📚 Kitap okuma</div><div class="hedef-val">Her gün 50 sayfa</div></div>
-      <div class="hedef-item"><div class="hedef-label">✏️ Günlük toplam soru</div><div class="hedef-val">100 soru / gün</div></div>
-      <div class="hedef-item"><div class="hedef-label">🔥 Bu hafta odak</div><div class="hedef-val" style="font-size:14px">Fen: Güneş sistemi sınıflandırması · Tur: De-mi-ki yazım kuralları</div></div>
+      <div class="hedef-item"><div class="hedef-label">✏️ Günlük toplam soru</div><div class="hedef-val">80–100 soru / gün</div></div>
+      <div class="hedef-item"><div class="hedef-label">🔥 Bu hafta odak</div><div class="hedef-val" style="font-size:13px">Tonguç serisi · Fen: Tutulmalar & Elektrik & Kuvvet · Türkçe: Anlam bilgisi</div></div>
     </div>
   </div>
 
@@ -236,8 +247,8 @@
   <div class="gun-grid" id="gunGrid"></div>
 
   <div class="koc-notu" style="margin-top:12px">
-    <div class="koc-notu-baslik">🏆 Koç Notu — Hedefli Eksik Giderme Haftası</div>
-    <div class="koc-notu-text">Bu hafta erteleme düşmanın! Okuldan gelir gelmez 15 dakika mola ver, sonra doğruca çalışmaya başla. İlk 3 gün Fen'de güneş sistemi konusunu tamamen bitir - video + soru çözümü. Türkçe'de her gün yazım kuralları tekrarı yap. Cumartesi karma test ile kendini denetle. Günlük 100 soru hedefini böl: paragraf 10 + ders 90. Her doğru soru seni 459 hedefe yaklaştırıyor!</div>
+    <div class="koc-notu-baslik">🏆 Koç Notu — Zirveye Kilitlenen Hafta</div>
+    <div class="koc-notu-text">Yaser Eren, bu hafta Tonguç testlerini çözerken sadece cevabı işaretleyip geçme — her yanlışın neden yanlış olduğunu anla. Bir soruyu yanlış yapmak değil, aynı soruyu iki kez yanlış yapmak kaybettirişir. Fen'de tutulmalar ve elektrik konuları LGS'nin favorileri — bu hafta bunları tam bitiriyoruz. Türkçe'de anlam bilgisi soruları senin Türkçe ortalamanı 13+'a taşıyacak anahtar konu. Cuma günü kompozisyon yazarken kaliteli yaz, bana gönder, geri bildirim vereceğim. Tam puan hedefi hayal değil — sen bu yoldasın!</div>
   </div>
 
   <div class="pazar-card">
@@ -245,152 +256,152 @@
     <div class="pazar-text"><span>Kitap okuma önerilir</span><span>·</span><span>Zorunlu ders çalışma yok</span><span>·</span><span>Ailenizin tercihine göre</span></div>
   </div>
 
-  <div class="dipnot">Bu plan Yaser Eren Metin için hazırlanmıştır · Hafta 1 · 21–27 Nisan 2026</div>
+  <div class="dipnot">Bu plan Yaser Eren Metin için hazırlanmıştır · Hafta 2 · 28 Nisan – 4 Mayıs 2026</div>
 </div>
 
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwuYEaEdXqLK4xSSKsHIvMgZopzfmumuqi79OoQjA3lTt2CVb5Xmt1GozBLV-AFnCh9/exec';
 const OGRENCI_ADI = 'Yaser Eren Metin';
-const HAFTA_NO = '1';
-const MOTIVASYON_MESAJLARI = ['Süper gol Yaser! Bugünkü antrenman tamamlandı ⚽','Penaltı gol gibi kesin! Harika bir gün geçirdin 🏆','Sahaya hakim oldun! Yarın da böyle devam 💪','Takım kaptanı gibi! Bugün de kazandın ⚽'];
+const HAFTA_NO = '2';
+const MOTIVASYON_MESAJLARI = ['Süper gol Yaser! Bugünkü antrenman tamamlandı ⚽','Penaltı gol gibi kesin! Harika bir gün geçirdin 🏆','Sahaya hakim oldun! Yarın da böyle devam 💪','Takım kaptanı gibi! Bugün de kazandın ⚽','Tam puan yolunda bir adım daha! Aferin 🎯'];
 
-const SON_GIRIS_SAATI = { 1:22, 2:22, 3:22, 4:22, 5:22, 6:22 };
+const SON_GIRIS_SAATI = { 1:23, 2:23, 3:23, 4:23, 5:23, 6:23 };
 const SON_GIRIS_DAKIKA = 0;
 
 const GUNLER = [
-  { ad:'Salı', tarih:'21 Nisan', prefix:'sal', jsGun:2,
+  { ad:'Salı', tarih:'28 Nisan', prefix:'sal', jsGun:2,
     dersler: [
-      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
-        { metin:'Güneş sistemi gezegen sınıflandırması video izle', checkbox:true, id:'sal_fen_g0' },
-        { metin:'Güneş sistemi özelliklerini 40 soru çöz', checkbox:false, id:'sal_fen_g1' }
-      ], takipKey:'fen' },
-      { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[
-        { metin:'De-mi-ki yazım kuralları konu tekrarı yap', checkbox:true, id:'sal_tur_g0' },
-        { metin:'Yazım kuralları 20 soru çöz', checkbox:false, id:'sal_tur_g1' }
-      ], takipKey:'tur' },
-      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[
-        { metin:'Çokgenlerde açı problemleri 25 soru çöz', checkbox:false, id:'sal_mat_g0' }
-      ], takipKey:'mat' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[
-        { metin:'Türklerin coğrafi konumu 15 soru çöz', checkbox:false, id:'sal_sos_g0' }
-      ], takipKey:'sos' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
-        { metin:'10 paragraf sorusu — ana fikir odaklı', checkbox:false, id:'sal_par_g0' }
-      ], takipKey:'par' },
+      { cls:'ders-sinav', ad:'🏆 Bursluluk Sınavı 2026', key:null, gorevler:[
+        { metin:'Süreyi başlat: 100 dakika, 80 soru — gerçek sınav koşullarında çöz', checkbox:false, id:'sal_sinav_g0' },
+        { metin:'Sonucunu (doğru/yanlış sayısı ve tahmini puanı) not alanına yaz', checkbox:false, id:'sal_sinav_g1' }
+      ], takipKey:null },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[
         { metin:'50 sayfa oku', checkbox:false, id:'sal_kit_g0' }
       ], takipKey:null }
     ]
   },
-  { ad:'Çarşamba', tarih:'22 Nisan', prefix:'car', jsGun:3,
+  { ad:'Çarşamba', tarih:'29 Nisan', prefix:'car', jsGun:3,
     dersler: [
       { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
-        { metin:'Güneş sistemi gezegen sınıflandırması 25 soru çöz', checkbox:false, id:'car_fen_g0' },
-        { metin:'Fiziksel olaylar - sürat ve hız konu tekrarı yap', checkbox:true, id:'car_fen_g1' },
-        { metin:'Fiziksel olaylar - sürat ve hız 25 soru çöz', checkbox:false, id:'car_fen_g2' }
+        { metin:'Tonguç — Güneş ve Ay tutulmaları: Test 8 ve Test 9 çöz (toplam 20 soru)', checkbox:false, id:'car_fen_g0' },
+        { metin:'Seviye tespit sınavını çöz', checkbox:false, id:'car_fen_g1' }
       ], takipKey:'fen' },
       { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[
-        { metin:'Noktalama işaretleri 20 soru çöz', checkbox:false, id:'car_tur_g0' },
-        { metin:'Söz varlığı - kelime anlamı 20 soru çöz', checkbox:false, id:'car_tur_g1' }
+        { metin:'1. ünite "Sözcük ve söz gruplarında anlam": T3, T4, T5 testlerini çöz (24 soru)', checkbox:false, id:'car_tur_g0' }
       ], takipKey:'tur' },
       { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[
-        { metin:'Problem çözme stratejileri 20 soru çöz', checkbox:false, id:'car_mat_g0' }
+        { metin:'Çarpanlar ve katlar: T1, T2, T3, T4 testlerini çöz (28 soru)', checkbox:false, id:'car_mat_g0' }
       ], takipKey:'mat' },
+      { cls:'ders-ing', ad:'İngilizce', key:'ing', gorevler:[
+        { metin:'Life ünitesi kelime tekrarı yap', checkbox:true, id:'car_ing_g0' },
+        { metin:'Sayfa 11\'i tamamla ve fotoğrafını WhatsApp\'tan gönder 📸', checkbox:true, id:'car_ing_g1' },
+        { metin:'Vocabulary testi (13 soru) ve grammar testi (10 soru) çöz', checkbox:false, id:'car_ing_g2' }
+      ], takipKey:'ing' },
       { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
-        { metin:'10 paragraf sorusu — çıkarım odaklı', checkbox:false, id:'car_par_g0' }
+        { metin:'10 paragraf sorusu çöz', checkbox:false, id:'car_par_g0' }
       ], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[
         { metin:'50 sayfa oku', checkbox:false, id:'car_kit_g0' }
       ], takipKey:null }
     ]
   },
-  { ad:'Perşembe', tarih:'23 Nisan', prefix:'per', jsGun:4,
+  { ad:'Perşembe', tarih:'1 Mayıs', prefix:'per', jsGun:4,
     dersler: [
       { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
-        { metin:'Canlılarda üreme-gelişim konu anlatımı izle', checkbox:true, id:'per_fen_g0' },
-        { metin:'Canlılarda üreme-gelişim konusundan 30 soru çöz', checkbox:false, id:'per_fen_g1' }
+        { metin:'Tonguç 6. ünite "Elektriğin iletimi – temel kabuller" sayfa 199 konu tekrarı yap', checkbox:true, id:'per_fen_g0' },
+        { metin:'T90, T91, T92, T93 testlerini çöz (24 soru)', checkbox:false, id:'per_fen_g1' }
       ], takipKey:'fen' },
       { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[
-        { metin:'Yazım kuralları karma 25 soru çöz', checkbox:false, id:'per_tur_g0' }
+        { metin:'"Sözcüğün anlam özellikleri" T6 testini yap ve fotoğrafını WhatsApp\'tan gönder 📸', checkbox:true, id:'per_tur_g0' },
+        { metin:'T7 ve T8 testlerini çöz', checkbox:false, id:'per_tur_g1' }
       ], takipKey:'tur' },
       { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[
-        { metin:'Geometri açı problemleri 20 soru çöz', checkbox:false, id:'per_mat_g0' }
+        { metin:'Tonguç "Bölünebilme kuralları": T5, T6, T7 testlerini çöz (20 soru)', checkbox:false, id:'per_mat_g0' }
       ], takipKey:'mat' },
       { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[
-        { metin:'İslam medeniyeti katkıları 15 soru çöz', checkbox:false, id:'per_sos_g0' }
+        { metin:'Tonguç "Birlikte yaşamak" ünitesi: T1, T2, T3 testlerini çöz', checkbox:false, id:'per_sos_g0' },
+        { metin:'T3 testinin fotoğrafını WhatsApp\'tan gönder 📸', checkbox:true, id:'per_sos_g1' }
       ], takipKey:'sos' },
       { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
-        { metin:'10 paragraf sorusu — anlam bilgisi', checkbox:false, id:'per_par_g0' }
+        { metin:'10 paragraf sorusu çöz', checkbox:false, id:'per_par_g0' }
       ], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[
         { metin:'50 sayfa oku', checkbox:false, id:'per_kit_g0' }
       ], takipKey:null }
     ]
   },
-  { ad:'Cuma', tarih:'24 Nisan', prefix:'cum', jsGun:5,
+  { ad:'Cuma', tarih:'2 Mayıs', prefix:'cum', jsGun:5,
     dersler: [
       { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
-        { metin:'Bitki ve hayvanlarda üreme-gelişim 30 soru çöz', checkbox:false, id:'cum_fen_g0' },
-        { metin:'Bileşke kuvvet 20 soru çöz', checkbox:false, id:'cum_fen_g1' }
+        { metin:'Tonguç "Kuvvet ve hareket" temel konular (31. sayfa) çalış', checkbox:true, id:'cum_fen_g0' },
+        { metin:'T10, T11, T12, T13 testlerini çöz (24 soru)', checkbox:false, id:'cum_fen_g1' }
       ], takipKey:'fen' },
       { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[
-        { metin:'Anlam bilgisi - deyim atasözü 20 soru çöz', checkbox:false, id:'cum_tur_g0' }
+        { metin:'"Anlam özellikleri" konusuna çalış', checkbox:true, id:'cum_tur_g0' },
+        { metin:'T9 testini yap ve fotoğrafını WhatsApp\'tan gönder 📸', checkbox:true, id:'cum_tur_g1' },
+        { metin:'T10 testini çöz', checkbox:false, id:'cum_tur_g2' },
+        { metin:'Sevdiğin bir konuda en az yarım sayfa kompozisyon yaz', checkbox:true, id:'cum_tur_g3' },
+        { metin:'Yazdığın kompozisyonu WhatsApp\'tan gönder 📸', checkbox:true, id:'cum_tur_g4' }
       ], takipKey:'tur' },
+      { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[
+        { metin:'Tonguç "Asal sayılar ve çarpanlar": Test 8, Test 9, Test 10\'u çöz (24 soru)', checkbox:false, id:'cum_mat_g0' },
+        { metin:'Test 10\'un fotoğrafını WhatsApp\'tan gönder 📸', checkbox:true, id:'cum_mat_g1' }
+      ], takipKey:'mat' },
       { cls:'ders-ing', ad:'İngilizce', key:'ing', gorevler:[
-        { metin:'Holidays ünitesinden kelime tekrarı yap', checkbox:true, id:'cum_ing_g0' },
-        { metin:'Bu konudan 15 soru çöz', checkbox:false, id:'cum_ing_g1' }
+        { metin:'Sayfa 16\'yı yap ve fotoğrafını WhatsApp\'tan gönder 📸', checkbox:true, id:'cum_ing_g0' },
+        { metin:'Practica Test 1 ve Life testini çöz (13 soru)', checkbox:false, id:'cum_ing_g1' }
       ], takipKey:'ing' },
-      { cls:'ders-din', ad:'Din', key:'din', gorevler:[
-        { metin:'İbadet konuları 15 soru çöz', checkbox:false, id:'cum_din_g0' }
-      ], takipKey:'din' },
       { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
-        { metin:'10 paragraf sorusu — karma', checkbox:false, id:'cum_par_g0' }
+        { metin:'10 paragraf sorusu çöz', checkbox:false, id:'cum_par_g0' }
       ], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[
         { metin:'50 sayfa oku', checkbox:false, id:'cum_kit_g0' }
       ], takipKey:null }
     ]
   },
-  { ad:'Cumartesi', tarih:'25 Nisan', prefix:'cmt', jsGun:6,
+  { ad:'Cumartesi', tarih:'3 Mayıs', prefix:'cmt', jsGun:6,
     dersler: [
       { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
-        { metin:'Isı etkisiyle maddelerin genleşip büzülmesi konusuna çalış', checkbox:true, id:'cmt_fen_g0' },
-        { metin:'Isı etkisiyle maddelerin genleşip büzülmesi 25 soru çöz', checkbox:false, id:'cmt_fen_g1' }
+        { metin:'Tonguç 6. ünite "Elektriğin iletimi": T94, T95, T96, T97 testlerini çöz (24 soru)', checkbox:false, id:'cmt_fen_g0' }
       ], takipKey:'fen' },
       { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[
-        { metin:'Yazım-noktalama karma 20 soru çöz', checkbox:false, id:'cmt_tur_g0' }
+        { metin:'"Sözcüğün anlam özellikleri": T11, T12, T13 testlerini çöz', checkbox:false, id:'cmt_tur_g0' },
+        { metin:'T13 testinin fotoğrafını WhatsApp\'tan gönder 📸', checkbox:true, id:'cmt_tur_g1' }
       ], takipKey:'tur' },
       { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[
-        { metin:'Dörtgenler - Yamuk - Paralel Kenar 20 soru çöz', checkbox:false, id:'cmt_mat_g0' }
+        { metin:'"Ortak kat ve ortak bölen": T11, T12, T13 testlerini çöz', checkbox:false, id:'cmt_mat_g0' },
+        { metin:'T13 testinin fotoğrafını WhatsApp\'tan gönder 📸', checkbox:true, id:'cmt_mat_g1' }
       ], takipKey:'mat' },
       { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[
-        { metin:'Coğrafi konum 15 soru çöz', checkbox:false, id:'cmt_sos_g0' }
+        { metin:'Tonguç "Kültürel bağlar": T4, T5, T6, T7 testlerini çöz (25 soru)', checkbox:false, id:'cmt_sos_g0' },
+        { metin:'T6 testinin fotoğrafını WhatsApp\'tan gönder 📸', checkbox:true, id:'cmt_sos_g1' }
       ], takipKey:'sos' },
       { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
-        { metin:'10 paragraf sorusu — karma', checkbox:false, id:'cmt_par_g0' }
+        { metin:'10 paragraf sorusu çöz', checkbox:false, id:'cmt_par_g0' }
       ], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[
         { metin:'50 sayfa oku', checkbox:false, id:'cmt_kit_g0' }
       ], takipKey:null }
     ]
   },
-  { ad:'Pazartesi', tarih:'27 Nisan', prefix:'pzt', jsGun:1,
+  { ad:'Pazartesi', tarih:'4 Mayıs', prefix:'pzt', jsGun:1,
     dersler: [
       { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
-        { metin:'Işık yansıması konu tekrarı yap', checkbox:true, id:'pzt_fen_g0' },
-        { metin:'Işık yansıması 20 soru çöz', checkbox:false, id:'pzt_fen_g1' }
+        { metin:'Tonguç "Bileşke kuvvet": T14, T15, T16, T17 testlerini çöz', checkbox:false, id:'pzt_fen_g0' }
       ], takipKey:'fen' },
       { cls:'ders-tur', ad:'Türkçe', key:'tur', gorevler:[
-        { metin:'Yazım kuralları pekiştirme 25 soru çöz', checkbox:false, id:'pzt_tur_g0' }
+        { metin:'"Söz sanatları": T14, T15, T16 testlerini çöz (24 soru)', checkbox:false, id:'pzt_tur_g0' },
+        { metin:'T16 testinin fotoğrafını WhatsApp\'tan gönder 📸', checkbox:true, id:'pzt_tur_g1' }
       ], takipKey:'tur' },
       { cls:'ders-mat', ad:'Matematik', key:'mat', gorevler:[
-        { metin:'Geometri ve problem karma 25 soru çöz', checkbox:false, id:'pzt_mat_g0' }
+        { metin:'"Sayılar ve nicelikler": T14 testini yap', checkbox:false, id:'pzt_mat_g0' },
+        { metin:'Seviye tespit testini çöz', checkbox:false, id:'pzt_mat_g1' }
       ], takipKey:'mat' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[
-        { metin:'XI-XIII. yüzyıllar arasında Anadolu\'nun Türkleşmesi konusundan 15 soru çöz', checkbox:false, id:'pzt_sos_g0' }
-      ], takipKey:'sos' },
+      { cls:'ders-ing', ad:'İngilizce', key:'ing', gorevler:[
+        { metin:'Practica Test 2 ve Life testini çöz (10 soru)', checkbox:false, id:'pzt_ing_g0' }
+      ], takipKey:'ing' },
       { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
-        { metin:'10 paragraf sorusu — hafta değerlendirme', checkbox:false, id:'pzt_par_g0' }
+        { metin:'10 paragraf sorusu çöz', checkbox:false, id:'pzt_par_g0' }
       ], takipKey:'par' },
       { cls:'ders-kit', ad:'Kitap', key:'kit', gorevler:[
         { metin:'50 sayfa oku', checkbox:false, id:'pzt_kit_g0' }
@@ -426,9 +437,6 @@ function kalanSure(gun) {
   return { toplam: fark, s: Math.floor(fark/3600000), d: Math.floor((fark%3600000)/60000), sn: Math.floor((fark%60000)/1000) };
 }
 
-const renkMap = { mat:'var(--mat)', fen:'var(--fen)', tur:'var(--tur)', ing:'var(--ing)', sos:'var(--sos)', din:'var(--din)', par:'var(--par)' };
-const adMap = { mat:'Mat', fen:'Fen', tur:'Turkce', ing:'Ingilizce', sos:'Sosyal', din:'Din', par:'Paragraf' };
-
 function hesaplaNet(prefix, ders) {
   const d = parseFloat(document.getElementById(prefix+'_'+ders+'_d').value) || 0;
   const y = parseFloat(document.getElementById(prefix+'_'+ders+'_y').value) || 0;
@@ -451,10 +459,13 @@ function gorevDegisti(cb) {
   }
 }
 
+const renkMap = { mat:'var(--mat)', fen:'var(--fen)', tur:'var(--tur)', ing:'var(--ing)', sos:'var(--sos)', din:'var(--din)', par:'var(--par)' };
+const adMap = { mat:'Mat', fen:'Fen', tur:'Türkçe', ing:'İngilizce', sos:'Sosyal', din:'Din', par:'Paragraf' };
+
 function takipDersleriHTML(gun, durum) {
   const dis = durum !== 'aktif' ? 'disabled' : '';
   const takipDersler = gun.dersler.filter(function(d) { return d.takipKey; });
-  let html = '<div class="takip-bolum"><div class="takip-baslik">Gunluk takip — ' + gun.ad + '</div>';
+  let html = '<div class="takip-bolum"><div class="takip-baslik">Günlük takip — ' + gun.ad + '</div>';
   html += '<div class="takip-dyb-header"><div class="takip-dyb-header-bos"></div><div class="takip-dyb-header-lbl">D</div><div class="takip-dyb-header-lbl">Y</div><div class="takip-dyb-header-lbl">B</div><div class="takip-dyb-header-lbl">Net</div></div><div class="takip-satirlar">';
   takipDersler.forEach(function(d) {
     const renk = renkMap[d.takipKey] || 'var(--text)';
@@ -468,17 +479,19 @@ function takipDersleriHTML(gun, durum) {
     html += '<div class="net-goster" id="'+pid+'_'+did+'_net">—</div>';
     html += '</div>';
   });
-  html += '</div><div class="kp-row"><div class="kp-item"><div class="kp-label">Kitap (sayfa)</div><input class="kp-input" type="number" min="0" id="'+gun.prefix+'_kitap" placeholder="0" '+dis+'></div></div>';
-  html += '<input class="not-input" type="text" id="'+gun.prefix+'_not" placeholder="Bugunku notun..." '+dis+'>';
+  html += '</div>';
+  html += '<div class="kp-row"><div class="kp-item"><div class="kp-label">Kitap (sayfa)</div><input class="kp-input" type="number" min="0" id="'+gun.prefix+'_kitap" placeholder="0" '+dis+'></div></div>';
+  html += '<input class="not-input" type="text" id="'+gun.prefix+'_not" placeholder="Bugünkü notun / bursluluk sonucu..." '+dis+'>';
+
   if (durum === 'aktif') {
-    html += '<div class="geri-sayim" id="'+gun.prefix+'_sayim">Hesaplaniyor...</div>';
+    html += '<div class="geri-sayim" id="'+gun.prefix+'_sayim">Hesaplanıyor...</div>';
     html += '<button class="gonder-btn" id="'+gun.prefix+'_btn" data-gun="'+gun.ad+'" data-p="'+gun.prefix+'" onclick="gonder(this.dataset.gun,this.dataset.p)">Kaydet</button>';
   } else if (durum === 'suresi_doldu') {
-    html += '<button class="gonder-btn" disabled>Giris suresi doldu</button>';
+    html += '<button class="gonder-btn" disabled>Giriş süresi doldu</button>';
   } else if (durum === 'kilitli') {
-    html += '<div class="kilit-overlay">Bu gun henuz gelmedi<br><small style="color:#94a3b8">' + gun.tarih + ' tarihinde acilacak</small></div>';
+    html += '<div class="kilit-overlay">Bu gün henüz gelmedi<br><small style="color:#94a3b8">' + gun.tarih + ' tarihinde açılacak</small></div>';
   } else if (durum === 'gecmis') {
-    html += '<button class="gonder-btn" disabled style="background:#854d0e">Giris suresi gecti</button>';
+    html += '<button class="gonder-btn" disabled style="background:#854d0e">Giriş süresi geçti</button>';
   }
   html += '<div class="gonder-mesaj" id="'+gun.prefix+'_mesaj"></div></div>';
   return html;
@@ -488,9 +501,9 @@ function gunKartiHTML(gun) {
   const durum = gunDurumu(gun);
   const durumClass = durum === 'aktif' ? '' : durum === 'gecmis' ? ' gecmis' : ' kilitli';
   const badgeMap = {
-    aktif:'<span class="gun-durum-badge badge-aktif">Bugun</span>',
+    aktif:'<span class="gun-durum-badge badge-aktif">Bugün</span>',
     kilitli:'<span class="gun-durum-badge badge-kilitli">Bekliyor</span>',
-    gecmis:'<span class="gun-durum-badge badge-gecmis">Gecti</span>',
+    gecmis:'<span class="gun-durum-badge badge-gecmis">Geçti</span>',
     suresi_doldu:'<span class="gun-durum-badge badge-gecmis">Doldu</span>'
   };
   let html = '<div class="gun-card'+durumClass+'" id="kart_'+gun.prefix+'"><div class="gun-baslik">'+gun.ad+' <span class="gun-tarih">'+gun.tarih+'</span>'+badgeMap[durum]+'</div>';
@@ -532,14 +545,14 @@ GUNLER.forEach(function(gun) {
     const btn = document.getElementById(gun.prefix + '_btn');
     if (!el) return;
     if (!kalan) {
-      el.textContent = 'Giris suresi doldu.';
-      if (btn) { btn.disabled = true; btn.textContent = 'Giris suresi doldu'; }
+      el.textContent = 'Giriş süresi doldu.';
+      if (btn) { btn.disabled = true; btn.textContent = 'Giriş süresi doldu'; }
       clearInterval(timerIds[gun.prefix]);
       document.querySelectorAll('#kart_'+gun.prefix+' input, #kart_'+gun.prefix+' .gorev-cb').forEach(function(i){i.disabled=true;});
       return;
     }
     const sure = (kalan.s > 0 ? kalan.s + ' sa ' : '') + kalan.d + ' dk ' + kalan.sn + ' sn';
-    el.textContent = 'Son giris saatine ' + sure + ' kaldi';
+    el.textContent = 'Son giriş saatine ' + sure + ' kaldı';
     if (kalan.toplam < 600000) el.classList.add('son-dakika');
   }
   guncelle();
@@ -547,6 +560,7 @@ GUNLER.forEach(function(gun) {
 });
 
 function val(id) { const el = document.getElementById(id); return el ? (el.value || '0') : '0'; }
+function strVal(id) { const el = document.getElementById(id); return el ? (el.value || '') : ''; }
 
 function gonderiBilgisiTopla(gun) {
   const dersGorevler = {};
@@ -565,12 +579,10 @@ function gonderiBilgisiTopla(gun) {
 
 const SON_GUN_ADI = GUNLER.length > 0 ? GUNLER[GUNLER.length - 1].ad : null;
 
-const TEBRIK_MESAJLARI = ["Bu hafta gercekten harika bir performans sergiliyorsun! Rakamlar bunu acikca soyluyor.","Haftayi guclu bitirdin! Her gun biraz daha ileri gidiyorsun bunu unutma.","Sayilara bak! Bu hafta kendini aston. Boyle devam edersen LGSde istedigin yere gelirsin.","Harika bir hafta gecirdin! Bu temponu korursan hedef puanina ulasman an meselesi.","Bu hafta yaptiklarin bosa gitmiyor. Her soru her sayfa seni bir adim one tasidi.","Supersin! Bu haftaki calishman gercekten etkileyici. Kendinle gurur duyabilirsin.","Mukemmel bir hafta! Rakamlar yalan soylemiyor bu hafta fark yarattın.","Bu hafta tam anlamiyla savastin! Sonuclar da bunu gosteriyor.","Bravo! Bu hafta hem duzenli hem verimli calistin. Bu ikisini bir arada yapmak kolay degil.","Haftayi boyle kapatmak muhtesem! Pazar dinlen pazartesi yeniden baslayacaksin."];
-const MOTIVASYON_HAFTALIK = ["Bu hafta istedigin kadar verimli olmadi ama bu bitti demek degil. Gelecek hafta daha guclu baslayacaksin.","Bazi haftalar zor gecer. Onemli olan birakmamak. Sen burada olmaya devam ediyorsun bu basli basina bir basari.","Rakamlar su an istedigin yerde olmayabilir ama her gun calismak zaten kazanmaktir.","Zor bir hafta gecirmis olabilirsin. Pazar dinlen pazartesi temiz sayfa ac.","Herkesin zorlandigi haftalar olur. Onemli olan pes etmemek. Gelecek hafta daha iyi olacak.","Bu haftaki sonuclar seni tanimlamaz. Asil onemli olan devam etmek sen devam ediyorsun.","Bazen motor isinmaya ihtiyac duyar. Bu hafta isinma haftasiydi gelecek hafta tam gaz!","Sonuclar bekledigin gibi olmayabilir ama cabalamak bile degerli. Devam et!"];
+const TEBRIK_MESAJLARI = ["Bu hafta gerçekten harika bir performans! Tam puan yolunda emin adımlarla ilerliyorsun.","Haftayı güçlü bitirdin! Her test, her soru seni zirveye taşıyor.","Sayılara bak! Bu hafta kendini astın. LGS'de tam puan hayal değil — sen bu yoldasın!","Muhteşem bir hafta! Bu tempoyu korursan hedefe ulaşman an meselesi.","Bravo! Bu hafta hem düzenli hem verimli çalıştın. Koç olarak çok gurur duyuyorum!"];
+const MOTIVASYON_HAFTALIK = ["Bu hafta istediğin kadar verimli olmadı ama bu bitti demek değil. Gelecek hafta daha güçlü!","Bazı haftalar zor geçer. Önemli olan bırakmamak. Tam puan hedefi hâlâ seninle.","Zor bir hafta geçirdin. Pazar dinlen, pazartesi temiz sayfa aç. Sana güveniyorum!","Sonuçlar beklediğin gibi olmayabilir ama devam etmek zaten kazanmaktır."];
 
-function rastgeleSecim(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
+function rastgeleSecim(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
 function hesaplaHaftaOzeti(gunler) {
   let toplamSoru = 0, toplamKitap = 0, toplamParagraf = 0;
@@ -584,11 +596,7 @@ function hesaplaHaftaOzeti(gunler) {
     dersler.forEach(function(d) {
       const net = (Number(g[d+'_d']) || 0) - (Number(g[d+'_y']) || 0) / 3;
       const soru = (Number(g[d+'_d']) || 0) + (Number(g[d+'_y']) || 0) + (Number(g[d+'_b']) || 0);
-      if (soru > 0) {
-        dersToplam[d] += net;
-        dersGunSayisi[d]++;
-        gunSoru += soru;
-      }
+      if (soru > 0) { dersToplam[d] += net; dersGunSayisi[d]++; gunSoru += soru; }
     });
     toplamParagraf += Number(g.paragraf) || 0;
     gunSoru += Number(g.paragraf) || 0;
@@ -601,15 +609,13 @@ function hesaplaHaftaOzeti(gunler) {
   Object.keys(dersToplam).forEach(function(d) {
     dersNetleri[d] = dersGunSayisi[d] > 0 ? (dersToplam[d] / dersGunSayisi[d]).toFixed(1) : null;
   });
-
   return { toplamSoru, toplamKitap, toplamParagraf, dersNetleri, enIyiGun, enIyiSoru };
 }
 
 function gosterHaftaOzetiPopup(gunler) {
   const ozet = hesaplaHaftaOzeti(gunler);
-  const iyi = ozet.toplamSoru >= 150;
+  const iyi = ozet.toplamSoru >= 200;
   const mesaj = iyi ? rastgeleSecim(TEBRIK_MESAJLARI) : rastgeleSecim(MOTIVASYON_HAFTALIK);
-
   const dersAdMap = { mat:'Matematik', fen:'Fen', tur:'Türkçe', ing:'İngilizce', sos:'Sosyal', din:'Din' };
   const dersRenkMap = { mat:'#2563eb', fen:'#16a34a', tur:'#9333ea', ing:'#d97706', sos:'#0891b2', din:'#be185d' };
 
@@ -620,14 +626,12 @@ function gosterHaftaOzetiPopup(gunler) {
     return '<div style="text-align:center;padding:8px 6px;border-radius:10px;border:2px solid ' + renk + '22;background:' + renk + '11">' +
       '<div style="font-size:11px;font-weight:800;color:' + renk + ';text-transform:uppercase">' + dersAdMap[d] + '</div>' +
       '<div style="font-size:20px;font-weight:900;color:' + renk + '">' + net + '</div>' +
-      '<div style="font-size:10px;color:#64748b">ort. net</div>' +
-      '</div>';
+      '<div style="font-size:10px;color:#64748b">ort. net</div></div>';
   }).filter(Boolean).join('');
 
   const overlay = document.createElement('div');
   overlay.id = 'hafta-ozeti-overlay';
   overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px';
-
   overlay.innerHTML =
     '<div style="background:white;border-radius:20px;padding:24px;max-width:420px;width:100%;max-height:90vh;overflow-y:auto;position:relative">' +
       '<button id="hafta-kapat-btn" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:22px;cursor:pointer;color:#94a3b8">×</button>' +
@@ -637,33 +641,18 @@ function gosterHaftaOzetiPopup(gunler) {
         '<div style="font-size:13px;color:#64748b;margin-top:2px">İşte bu haftanın özeti</div>' +
       '</div>' +
       '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">' +
-        '<div style="text-align:center;padding:10px 6px;border-radius:12px;background:#f0f4ff;border:2px solid #dde3f0">' +
-          '<div style="font-size:24px;font-weight:900;color:#2563eb">' + ozet.toplamSoru + '</div>' +
-          '<div style="font-size:11px;font-weight:700;color:#64748b">toplam soru</div>' +
-        '</div>' +
-        '<div style="text-align:center;padding:10px 6px;border-radius:12px;background:#f0fdf4;border:2px solid #bbf7d0">' +
-          '<div style="font-size:24px;font-weight:900;color:#16a34a">' + ozet.toplamKitap + '</div>' +
-          '<div style="font-size:11px;font-weight:700;color:#64748b">sayfa kitap</div>' +
-        '</div>' +
-        '<div style="text-align:center;padding:10px 6px;border-radius:12px;background:#fefce8;border:2px solid #fde68a">' +
-          '<div style="font-size:24px;font-weight:900;color:#b45309">' + ozet.toplamParagraf + '</div>' +
-          '<div style="font-size:11px;font-weight:700;color:#64748b">paragraf soru</div>' +
-        '</div>' +
+        '<div style="text-align:center;padding:10px 6px;border-radius:12px;background:#f0f4ff;border:2px solid #dde3f0"><div style="font-size:24px;font-weight:900;color:#2563eb">' + ozet.toplamSoru + '</div><div style="font-size:11px;font-weight:700;color:#64748b">toplam soru</div></div>' +
+        '<div style="text-align:center;padding:10px 6px;border-radius:12px;background:#f0fdf4;border:2px solid #bbf7d0"><div style="font-size:24px;font-weight:900;color:#16a34a">' + ozet.toplamKitap + '</div><div style="font-size:11px;font-weight:700;color:#64748b">sayfa kitap</div></div>' +
+        '<div style="text-align:center;padding:10px 6px;border-radius:12px;background:#fefce8;border:2px solid #fde68a"><div style="font-size:24px;font-weight:900;color:#b45309">' + ozet.toplamParagraf + '</div><div style="font-size:11px;font-weight:700;color:#64748b">paragraf soru</div></div>' +
       '</div>' +
       (ozet.enIyiGun ? '<div style="text-align:center;margin-bottom:12px;padding:8px;background:#faf5ff;border-radius:10px;border:2px solid #e9d5ff"><span style="font-size:13px;font-weight:700;color:#7c3aed">⭐ En iyi günün: ' + ozet.enIyiGun + ' (' + ozet.enIyiSoru + ' soru)</span></div>' : '') +
       '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px">' + dersKartlariHTML + '</div>' +
-      '<div style="padding:14px 16px;border-radius:12px;background:' + (iyi ? '#f0fdf4' : '#fefce8') + ';border:2px solid ' + (iyi ? '#86efac' : '#fde68a') + ';font-size:14px;font-weight:600;color:' + (iyi ? '#15803d' : '#854d0e') + ';line-height:1.6;text-align:center">' +
-        mesaj +
-      '</div>' +
+      '<div style="padding:14px 16px;border-radius:12px;background:' + (iyi ? '#f0fdf4' : '#fefce8') + ';border:2px solid ' + (iyi ? '#86efac' : '#fde68a') + ';font-size:14px;font-weight:600;color:' + (iyi ? '#15803d' : '#854d0e') + ';line-height:1.6;text-align:center">' + mesaj + '</div>' +
     '</div>';
 
   document.body.appendChild(overlay);
-  document.getElementById('hafta-kapat-btn').addEventListener('click', function() {
-    overlay.remove();
-  });
-  overlay.addEventListener('click', function(e) {
-    if (e.target === overlay) overlay.remove();
-  });
+  document.getElementById('hafta-kapat-btn').addEventListener('click', function() { overlay.remove(); });
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
 }
 
 function gonder(gunAdi, prefix) {
@@ -673,21 +662,6 @@ function gonder(gunAdi, prefix) {
 
   const gun = GUNLER.find(function(g) { return g.prefix === prefix; });
   const gorevBilgisi = gun ? gonderiBilgisiTopla(gun) : {};
-
-  const konular = [];
-  if (gun) {
-    gun.dersler.forEach(function(d) {
-      const dersAdMap = { mat:'Matematik', fen:'Fen', tur:'Turkce', ing:'Ingilizce', sos:'Sosyal', din:'Din', par:'Paragraf' };
-      d.gorevler.forEach(function(g) {
-        if (g.checkbox) {
-          const cb = document.getElementById(g.id);
-          if (cb && cb.checked) {
-            konular.push({ ders: dersAdMap[d.key] || d.key, konu: g.metin });
-          }
-        }
-      });
-    });
-  }
 
   const veri = Object.assign({
     ogrenciAdi: OGRENCI_ADI, haftaNo: HAFTA_NO, gun: gunAdi,
@@ -699,8 +673,7 @@ function gonder(gunAdi, prefix) {
     din_d: val(prefix+'_din_d'), din_y: val(prefix+'_din_y'), din_b: val(prefix+'_din_b'),
     par_d: val(prefix+'_par_d'), par_y: val(prefix+'_par_y'), par_b: val(prefix+'_par_b'),
     kitap: val(prefix+'_kitap'),
-    not: document.getElementById(prefix+'_not') ? document.getElementById(prefix+'_not').value : '',
-    konular: konular
+    not: strVal(prefix+'_not')
   }, gorevBilgisi);
 
   const mesajEl = document.getElementById(prefix + '_mesaj');
@@ -710,10 +683,9 @@ function gonder(gunAdi, prefix) {
     mesajEl.textContent = rastgeleMesaj;
     mesajEl.className = 'gonder-mesaj mesaj-ok';
     mesajEl.style.display = 'block';
-    btn.textContent = 'Guncelle';
+    btn.textContent = 'Güncelle';
     btn.classList.add('tamamlandi');
     btn.disabled = false;
-
     if (gunAdi === SON_GUN_ADI) {
       setTimeout(function() {
         fetch(SCRIPT_URL + '?ogrenciAdi=' + encodeURIComponent(OGRENCI_ADI) + '&haftaNo=' + encodeURIComponent(HAFTA_NO))
@@ -722,13 +694,12 @@ function gonder(gunAdi, prefix) {
           if (data.durum === 'basarili' && data.gunler && data.gunler.length > 0) {
             gosterHaftaOzetiPopup(data.gunler);
           }
-        })
-        .catch(function() {});
+        }).catch(function() {});
       }, 800);
     }
   })
   .catch(function() {
-    mesajEl.textContent = 'Baglanti hatasi. Tekrar dene.';
+    mesajEl.textContent = 'Bağlantı hatası. Tekrar dene.';
     mesajEl.className = 'gonder-mesaj mesaj-hata';
     mesajEl.style.display = 'block';
     btn.disabled = false;
