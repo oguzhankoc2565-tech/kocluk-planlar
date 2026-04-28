@@ -1,0 +1,52 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # veya master — hangisini kullanıyorsan
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Add cache-busting version to all HTML files
+        run: |
+          VERSION=$(date +%s)
+          for file in *.html; do
+            # Her HTML dosyasına benzersiz bir versiyon query string ekle
+            sed -i "s|</head>|<meta name=\"version\" content=\"$VERSION\">\n</head>|g" "$file"
+          done
+          echo "Version: $VERSION applied to all HTML files"
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit versioned files
+        run: |
+          git add -A
+          git diff --staged --quiet || git commit -m "chore: cache bust $(date +%Y-%m-%d_%H-%M)"
+
+      - name: Push changes
+        run: git push
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
