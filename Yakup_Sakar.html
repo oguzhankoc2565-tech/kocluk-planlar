@@ -378,7 +378,7 @@ const CONFIG = {
 .geri-sayim { color: #0891b2 !important; }
 .bursluluk-badge { display: inline-block; background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
 /* durum + stats yan yana */
-#dur-stats-wrap { display: grid; grid-template-columns: 1fr 260px; gap: 0; margin-bottom: 12px; align-items: stretch; }
+#dur-stats-wrap { display: grid; grid-template-columns: 1fr 320px; gap: 0; margin-bottom: 12px; align-items: stretch; }
 #dur-stats-wrap > div { margin-bottom: 0 !important; }
 #dur-stats-wrap #dur-kart .card { border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important; border-right: none !important; margin-bottom: 0 !important; height: 100%; box-sizing: border-box; }
 #dur-stats-wrap #stats-kart .stats-kart { border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important; margin-bottom: 0; height: 100%; box-sizing: border-box; }
@@ -392,7 +392,7 @@ const CONFIG = {
 <body>
 <div class="page">
   <div class="header" id="hdr"></div>
-  <div id="dur-stats-wrap"><div id="dur-kart" style="flex:1;min-width:0"></div><div id="stats-kart" style="width:260px;flex-shrink:0"></div></div>
+  <div id="dur-stats-wrap"><div id="dur-kart" style="flex:1;min-width:0"></div><div id="stats-kart" style="width:320px;flex-shrink:0"></div></div>
   <div id="koc-deg"></div>
   <div id="hdf-kart"></div>
   <div id="hedef-yolu-wrap"></div>
@@ -1395,23 +1395,35 @@ function renderStatsKart(gunlerData) {
     return '<div class="stats-gun-dot ' + (on ? 'stats-gun-on' : 'stats-gun-off') + '">' + GUN_KSA[i] + '</div>';
   }).join('');
 
+  // Bu haftanın özeti — sunucudan gelen verilerden
+  var toplamSoruHafta = 0, toplamKitapHafta = 0, enIyiGunAd = '—', enIyiGunSoru = 0;
+  (gunlerData || []).forEach(function(g) {
+    var gs = ['mat','fen','tur','sos','ing','din','par'].reduce(function(a,k) {
+      return a + (Number(g[k+'_d'])||0) + (Number(g[k+'_y'])||0) + (Number(g[k+'_b'])||0);
+    }, 0);
+    toplamSoruHafta += gs;
+    toplamKitapHafta += Number(g.kitap)||0;
+    if (gs > enIyiGunSoru) { enIyiGunSoru = gs; enIyiGunAd = g.gun || '—'; }
+  });
+
   var el = document.getElementById('stats-kart');
   if (!el) return;
   el.innerHTML =
     '<div class="stats-kart">' +
-      '<div class="stats-kart-head">' +
-        '<div class="stats-avatar">' + ini + '</div>' +
-        '<div style="flex:1">' +
-          '<div style="font-size:14px;font-weight:800;color:var(--text)">' + ad + '</div>' +
-          '<div style="font-size:11px;color:var(--muted);margin-top:2px">' + CONFIG.ogrenci.sinif + ' · Hafta ' + CONFIG.ogrenci.haftaNo + '</div>' +
+      // Başlık
+      '<div style="font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">📊 Ders Ortalama Netleri</div>' +
+      bars +
+      // Bu hafta özet kutuları
+      '<div style="margin-top:12px;padding-top:12px;border-top:1.5px solid var(--border)">' +
+        '<div style="font-size:10px;font-weight:800;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">📅 Bu Haftanın Özeti</div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px">' +
+          '<div class="stats-skor"><div class="stats-skor-val" style="color:#2563eb">' + toplamSoruHafta + '</div><div class="stats-skor-lbl">Soru</div></div>' +
+          '<div class="stats-skor"><div class="stats-skor-val" style="color:#16a34a">' + toplamKitapHafta + '</div><div class="stats-skor-lbl">Sayfa</div></div>' +
+          '<div class="stats-skor"><div class="stats-skor-val" style="color:#9333ea;font-size:13px">' + (enIyiGunAd.substring(0,2)||'—') + '</div><div class="stats-skor-lbl">En İyi</div></div>' +
         '</div>' +
       '</div>' +
-      '<div class="stats-skorlar">' +
-        '<div class="stats-skor"><div class="stats-skor-val">' + d.sonPuan.toFixed(0) + '</div><div class="stats-skor-lbl">Son</div></div>' +
-        '<div class="stats-skor"><div class="stats-skor-val" style="color:#7c3aed">' + d.ortalama.toFixed(0) + '</div><div class="stats-skor-lbl">Ort.</div></div>' +
-        '<div class="stats-skor"><div class="stats-skor-val" style="color:#16a34a">' + d.hedef + '</div><div class="stats-skor-lbl">Hedef</div></div>' +
-      '</div>' +
-      bars +
+      // Gün noktaları
+      '<div style="font-size:10px;font-weight:800;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">📬 Rapor Gönderilen Günler</div>' +
       '<div class="stats-gun-dots">' + dots + '</div>' +
     '</div>';
 }
