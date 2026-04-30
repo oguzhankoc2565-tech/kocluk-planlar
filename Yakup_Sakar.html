@@ -2,24 +2,178 @@
 <html lang="tr">
 <head>
 <script>
-(function() {
-  var BASE = "https://oguzhankoc2565-tech.github.io/kocluk-planlar/";
-  var dogru = localStorage.getItem('lgsDogru');
-  var sayfa = localStorage.getItem('lgsSayfa');
-  var buSayfa = location.pathname.split('/').pop();
-  if (!dogru || dogru !== '1') {
-    window.location.replace(BASE + 'index.html');
-    return;
-  }
-  if (sayfa && sayfa !== buSayfa) {
-    window.location.replace(BASE + sayfa);
-    return;
-  }
-})();
+/* ═══════════════════════════════════════════════════════════════════
+   CONFIG — Her hafta SADECE bu blok değişir.
+   Aşağıdaki şablon koduna kesinlikle dokunma.
+═══════════════════════════════════════════════════════════════════ */
+const CONFIG = {
+
+  ogrenci: {
+    ad:          'Yakup Şakar',
+    sinif:       '6/A',
+    haftaNo:     '1',
+    tarihAralik: '27 Nisan – 2 Mayıs 2026',
+    scriptUrl:   'https://script.google.com/macros/s/AKfycbwuYEaEdXqLK4xSSKsHIvMgZopzfmumuqi79OoQjA3lTt2CVb5Xmt1GozBLV-AFnCh9/exec',
+    rozetler: [
+      ['Türkçe öncelikli',       'badge-tur'],
+      ['Mat & Fen güçlendirme',  'badge-mat'],
+      ['Sos & Din geliştir',     'badge-sos'],
+    ],
+    ekstraBaslik: '🏅 Bursluluk',
+    motivasyon: null,
+  },
+
+  durum: {
+    sonPuan:    409.64,
+    oncekiPuan: 350.00,
+    ortalama:   370.61,
+    hedef:      440,
+    gelisim:    'Matematik tutarsız · Din & İngilizce düşük',
+    netler: {
+      tur: { ort:  9.21, hedef: 10.5 },
+      sos: { ort:  6.13, hedef:  7.0 },
+      din: { ort:  5.92, hedef:  6.5 },
+      ing: { ort:  5.75, hedef:  6.5 },
+      mat: { ort:  8.38, hedef:  9.5 },
+      fen: { ort:  8.71, hedef:  9.5 },
+    }
+  },
+
+  koc: {
+    degerlendirme: `Yakup, bursluluk sınavına girdin ve zor olmasına rağmen güzel bir performans sergilediğin görülüyor — bu gerçekten gurur verici! Şimdi bu motivasyonu LGS'ye taşıma zamanı. Türkçe'de en güçlü olduğun alan, ama kumulatif ortalamana bakıyorum ve tutarsızlıklar var. Bu hafta Bursluluk kitabından Türkçe çalışacaksın. Matematik'te Tonguç'un testleri sıra sıra gidecek. Fen ve Sosyal'de soru bankalarını düzenli bitireceğiz. Hedefin 440 — bu tamamen ulaşılabilir!`,
+    haftalikNot: `Bu haftanın stratejisi sıralı ve düzenli ilerleme! Tonguç testlerini atlama — T31'den başla, sırayla git. Her test çözümünden sonra hatalı soruları mutlaka işaretle. Fen'de bölümleri sıra sıra bitiriyoruz. Perşembe günü kompozisyon yazarken acele etme — en az yarım sayfa, düzgün cümleler kur.`,
+  },
+
+  hedefler: {
+    paragraf:   '10 soru / gün',
+    kitap:      'Her gün 20 sayfa',
+    gunlukSoru: '50–70 soru / gün',
+    odak:       'Mat: Tonguç T31–T49 · Tür: Bursluluk Kitabı · Fen: Bölüm 5–7',
+  },
+
+  gunler: [
+    {
+      ad: 'Pazartesi', tarih: new Date(2026, 3, 27), sonGiris: 23,
+      dersler: [
+        { cls: 'ders-tur', ad: 'Türkçe (Bursluluk Kitabı)', takipKey: 'tur',
+          gorevler: [
+            { metin: '8. Bölüm — Metinde Soru Cevap: 9–16. soruları çöz' },
+            { metin: 'Metinde Yapı 9. Bölüm: 1–14. soruları çöz' },
+          ]},
+        { cls: 'ders-fen', ad: 'Fen Bilimleri', takipKey: 'fen',
+          gorevler: [{ metin: '5. Bölüm (Maddenin Ayırt Edici Özellikleri): 45–65. soruları çöz' }]},
+        { cls: 'ders-mat', ad: 'Matematik (Tonguç)', takipKey: 'mat',
+          gorevler: [
+            { metin: 'Sayılar ve Nicelikler – Temel Kabuller tekrarı', checkbox: true },
+            { metin: 'T31, T32, T33 testlerini çöz (toplam 23 soru)' },
+          ]},
+        { cls: 'ders-par', ad: 'Paragraf', takipKey: 'par', gorevler: [{ metin: '10 paragraf sorusu çöz' }] },
+        { cls: 'ders-kit', ad: 'Kitap', takipKey: null, gorevler: [{ metin: '20 sayfa oku' }] },
+      ]
+    },
+    {
+      ad: 'Salı', tarih: new Date(2026, 3, 28), sonGiris: 23,
+      dersler: [
+        { cls: 'ders-tur', ad: 'Türkçe (Bursluluk Kitabı)', takipKey: 'tur',
+          gorevler: [{ metin: 'Metinde Yapı 9. Bölüm: 15–35. soruları çöz' }]},
+        { cls: 'ders-fen', ad: 'Fen Bilimleri', takipKey: 'fen',
+          gorevler: [
+            { metin: '5. Bölüm: 66–80. soruları çöz' },
+            { metin: '6. Bölüm: 1–7. soruları çöz' },
+          ]},
+        { cls: 'ders-mat', ad: 'Matematik (Tonguç)', takipKey: 'mat',
+          gorevler: [{ metin: 'T34, T35, T36 testlerini çöz' }]},
+        { cls: 'ders-par', ad: 'Paragraf', takipKey: 'par', gorevler: [{ metin: '10 paragraf sorusu çöz' }] },
+        { cls: 'ders-kit', ad: 'Kitap', takipKey: null, gorevler: [{ metin: '20 sayfa oku' }] },
+      ]
+    },
+    {
+      ad: 'Çarşamba', tarih: new Date(2026, 3, 29), sonGiris: 23,
+      dersler: [
+        { cls: 'ders-tur', ad: 'Türkçe (Bursluluk Kitabı)', takipKey: 'tur',
+          gorevler: [
+            { metin: '9. Bölüm: 36–41. soruları çöz' },
+            { metin: '10. Bölüm: 1–13. soruları çöz' },
+          ]},
+        { cls: 'ders-fen', ad: 'Fen Bilimleri', takipKey: 'fen',
+          gorevler: [
+            { metin: '6. Bölüm: 8–11. soruları çöz' },
+            { metin: '7. Bölüm: 1–18. soruları çöz' },
+          ]},
+        { cls: 'ders-mat', ad: 'Matematik (Tonguç)', takipKey: 'mat',
+          gorevler: [{ metin: 'T37, T38, T39 testlerini çöz' }]},
+        { cls: 'ders-par', ad: 'Paragraf', takipKey: 'par', gorevler: [{ metin: '10 paragraf sorusu çöz' }] },
+        { cls: 'ders-kit', ad: 'Kitap', takipKey: null, gorevler: [{ metin: '20 sayfa oku' }] },
+      ]
+    },
+    {
+      ad: 'Perşembe', tarih: new Date(2026, 3, 30), sonGiris: 23,
+      dersler: [
+        { cls: 'ders-tur', ad: 'Türkçe (Bursluluk Kitabı)', takipKey: 'tur',
+          gorevler: [
+            { metin: '10. Bölüm: 13–23. soruları çöz' },
+            { metin: '11. Bölüm: 1–8. soruları çöz' },
+            { metin: 'Sevdiğin bir konuda en az yarım sayfa kompozisyon yaz', checkbox: true },
+            { metin: 'Yazdığın kompozisyonun fotoğrafını WhatsApp\u2019tan at', checkbox: true },
+          ]},
+        { cls: 'ders-sos', ad: 'Sosyal Bilgiler', takipKey: 'sos',
+          gorevler: [{ metin: '3. Bölüm (Ortak Miras): 60–83. soruları çöz' }]},
+        { cls: 'ders-mat', ad: 'Matematik (Tonguç)', takipKey: 'mat',
+          gorevler: [{ metin: 'T40, T41, T42, T43 testlerini çöz' }]},
+        { cls: 'ders-par', ad: 'Paragraf', takipKey: 'par', gorevler: [{ metin: '10 paragraf sorusu çöz' }] },
+        { cls: 'ders-kit', ad: 'Kitap', takipKey: null, gorevler: [{ metin: '20 sayfa oku' }] },
+      ]
+    },
+    {
+      ad: 'Cuma', tarih: new Date(2026, 4, 1), sonGiris: 23,
+      dersler: [
+        { cls: 'ders-tur', ad: 'Türkçe (Bursluluk Kitabı)', takipKey: 'tur',
+          gorevler: [
+            { metin: '11. Bölüm: 9–17. soruları çöz' },
+            { metin: '12. Bölüm: 3 soruyu çöz (tamamı)' },
+            { metin: '13. Bölüm: 7 soruyu çöz' },
+          ]},
+        { cls: 'ders-sos', ad: 'Sosyal Bilgiler', takipKey: 'sos',
+          gorevler: [{ metin: '3. Bölüm (Ortak Miras): 84–107. soruları çöz' }]},
+        { cls: 'ders-mat', ad: 'Matematik (Tonguç)', takipKey: 'mat',
+          gorevler: [{ metin: 'T44, T45, T46 testlerini çöz' }]},
+        { cls: 'ders-par', ad: 'Paragraf', takipKey: 'par', gorevler: [{ metin: '10 paragraf sorusu çöz' }] },
+        { cls: 'ders-kit', ad: 'Kitap', takipKey: null, gorevler: [{ metin: '20 sayfa oku' }] },
+      ]
+    },
+    {
+      ad: 'Cumartesi', tarih: new Date(2026, 4, 2), sonGiris: 23,
+      dersler: [
+        { cls: 'ders-tur', ad: 'Türkçe (Bursluluk Kitabı)', takipKey: 'tur',
+          gorevler: [
+            { metin: '13. Bölüm: 8–20. soruları çöz' },
+            { metin: '14. Bölüm: 2 soruyu çöz (tamamı)' },
+            { metin: '15. Bölüm: 6 soruyu çöz' },
+          ]},
+        { cls: 'ders-sos', ad: 'Sosyal Bilgiler', takipKey: 'sos',
+          gorevler: [
+            { metin: '3. Bölüm: 108–113. soruları çöz' },
+            { metin: '4. Bölüm: 1–19. soruları çöz' },
+          ]},
+        { cls: 'ders-mat', ad: 'Matematik (Tonguç)', takipKey: 'mat',
+          gorevler: [{ metin: 'T47, T48, T49 testlerini çöz' }]},
+        { cls: 'ders-par', ad: 'Paragraf', takipKey: 'par', gorevler: [{ metin: '10 paragraf sorusu çöz' }] },
+        { cls: 'ders-kit', ad: 'Kitap', takipKey: null, gorevler: [{ metin: '20 sayfa oku' }] },
+      ]
+    },
+  ]
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   ŞABLON BURADAN İTİBAREN — DOKUNMA
+═══════════════════════════════════════════════════════════════════ */
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Haftalık Plan — Yakup Şakar</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title id="page-title">Haftalık Plan</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -37,7 +191,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.6; padding: 20px; }
   .page { max-width: 880px; margin: 0 auto; }
-  .header { background: linear-gradient(135deg, #0f766e 0%, #0891b2 100%); border-radius: 20px; padding: 22px 28px; margin-bottom: 14px; display: flex; align-items: center; gap: 18px; color: white; }
+  .header { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); border-radius: 20px; padding: 22px 28px; margin-bottom: 14px; display: flex; align-items: center; gap: 18px; color: white; }
   .avatar { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.25); font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 2px solid rgba(255,255,255,0.5); }
   .header-info h1 { font-size: 22px; font-weight: 800; color: white; }
   .header-info .meta { font-size: 13px; color: rgba(255,255,255,0.8); margin-top: 2px; }
@@ -55,7 +209,7 @@
   .durum-item { background: var(--bg); border: 2px solid var(--border); border-radius: 12px; padding: 12px 16px; }
   .durum-label { font-size: 12px; color: var(--muted); margin-bottom: 3px; font-weight: 600; }
   .durum-val { font-size: 20px; font-weight: 800; }
-  .durum-val.puan { color: #0891b2; }
+  .durum-val.puan { color: #2563eb; }
   .durum-val.hedef { color: #16a34a; }
   .net-kartlar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
   .net-kart { border-radius: 10px; padding: 8px 12px; text-align: center; min-width: 72px; border: 2px solid var(--border); }
@@ -70,14 +224,46 @@
   .net-kart-label { font-size: 10px; color: var(--muted); font-weight: 600; }
   .net-kart-hedef { font-size: 11px; font-weight: 700; color: #16a34a; margin-top: 3px; border-top: 1px dashed #d1d5db; padding-top: 3px; }
   .ortalama-notu { margin-top: 12px; padding: 10px 14px; background: #fefce8; border: 2px solid #fde68a; border-radius: 10px; font-size: 13px; font-weight: 700; color: #854d0e; }
-  .kocundan-text { font-size: 15px; line-height: 1.85; padding: 16px 20px; background: linear-gradient(135deg, #ecfeff, #f0fdfa); border-left: 4px solid #0891b2; border-radius: 0 12px 12px 0; }
+  .kocundan-text { font-size: 15px; line-height: 1.85; padding: 16px 20px; background: linear-gradient(135deg, #faf5ff, #eff6ff); border-left: 4px solid #7c3aed; border-radius: 0 12px 12px 0; }
   .hedef-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .hedef-item { background: var(--bg); border: 2px solid var(--border); border-radius: 12px; padding: 12px 16px; }
   .hedef-label { font-size: 12px; color: var(--muted); margin-bottom: 3px; font-weight: 600; }
   .hedef-val { font-size: 16px; font-weight: 800; }
   .plan-label { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; padding: 0 4px; }
-  .gun-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  @media (max-width: 600px) { .gun-grid { grid-template-columns: 1fr; } .hedef-grid { grid-template-columns: 1fr; } .durum-grid { grid-template-columns: 1fr; } .net-kartlar { justify-content: center; } }
+  @media (max-width: 600px) { .hedef-grid { grid-template-columns: 1fr; } .durum-grid { grid-template-columns: 1fr; } .net-kartlar { justify-content: center; } }
+
+  /* ── HEDEF YOLU ── */
+  .hedef-yolu { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 18px 22px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .hedef-yolu-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .hedef-yolu-track { position: relative; height: 36px; margin: 0 0 10px; }
+  .hedef-yolu-bg { position: absolute; top: 14px; left: 0; right: 0; height: 8px; background: var(--border); border-radius: 4px; }
+  .hedef-yolu-fill { position: absolute; top: 14px; left: 0; height: 8px; background: linear-gradient(90deg, #2563eb, #7c3aed); border-radius: 4px; transition: width 1s cubic-bezier(.16,1,.3,1); }
+  .hedef-yolu-top { position: absolute; top: 0; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .hedef-yolu-top-dot { width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; font-size: 10px; }
+  .hedef-yolu-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 4px; }
+  .hedef-yolu-bilgi { margin-top: 10px; font-size: 13px; color: var(--text); font-weight: 600; text-align: center; }
+  .hedef-yolu-bilgi span { color: var(--mat); font-weight: 800; }
+
+  /* ── ACCORDION ── */
+  .accordion { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+  .acc-item { background: var(--white); border: 2px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: border-color 0.2s; }
+  .acc-item.aktif { border-color: #2563eb; box-shadow: 0 4px 16px rgba(37,99,235,0.1); }
+  .acc-item.gecmis { opacity: 0.75; }
+  .acc-item.kilitli { opacity: 0.5; }
+  .acc-header { display: flex; align-items: center; gap: 12px; padding: 14px 18px; cursor: pointer; user-select: none; transition: background 0.15s; }
+  .acc-header:hover { background: var(--bg); }
+  .acc-item.kilitli .acc-header { cursor: not-allowed; }
+  .acc-gun-adi { font-size: 15px; font-weight: 800; color: var(--text); min-width: 90px; }
+  .acc-item.aktif .acc-gun-adi { color: #2563eb; }
+  .acc-tarih { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .acc-soru { font-size: 11px; font-weight: 700; color: #2563eb; margin-top: 2px; min-height: 14px; }
+  .acc-mini-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; min-width: 40px; max-width: 120px; }
+  .acc-mini-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #2563eb, #7c3aed); transition: width 0.4s; }
+  .acc-badges { display: flex; gap: 6px; align-items: center; }
+  .acc-chevron { font-size: 14px; color: var(--muted); transition: transform 0.25s; flex-shrink: 0; }
+  .acc-item.acik .acc-chevron { transform: rotate(180deg); }
+  .acc-body { display: none; padding: 0 18px 18px; border-top: 1px solid var(--border); }
+  .acc-item.acik .acc-body { display: block; }
   .gun-card { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 16px; position: relative; transition: opacity 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
   .gun-card.kilitli { opacity: 0.55; }
   .gun-card.gecmis { opacity: 0.65; }
@@ -100,7 +286,7 @@
   .gorev-list { padding: 0; }
   .gorev-item { display: flex; align-items: flex-start; gap: 8px; padding: 4px 0; }
   .gorev-item.soru-gorev { padding-left: 4px; }
-  .gorev-cb { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; accent-color: #0891b2; cursor: pointer; }
+  .gorev-cb { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; accent-color: #2563eb; cursor: pointer; }
   .gorev-cb:disabled { cursor: not-allowed; opacity: 0.5; }
   .gorev-metin { font-size: 13px; line-height: 1.5; transition: all 0.2s; }
   .gorev-metin.tamamlandi { text-decoration: line-through; color: var(--muted); opacity: 0.7; }
@@ -114,300 +300,270 @@
   .takip-satir { display: flex; align-items: center; gap: 4px; }
   .takip-satir-adi { font-size: 12px; font-weight: 700; min-width: 70px; }
   .takip-input { width: 40px; height: 30px; border: 2px solid var(--border); border-radius: 8px; background: #fafafa; font-size: 13px; text-align: center; font-family: 'Nunito', sans-serif; color: var(--text); font-weight: 700; }
-  .takip-input:focus { outline: none; border-color: #0891b2; background: #fff; }
+  .takip-input:focus { outline: none; border-color: var(--mat); background: #fff; }
   .takip-input:disabled { background: #f1f5f9; color: #aaa; cursor: not-allowed; }
   .net-goster { width: 40px; font-size: 12px; font-weight: 800; text-align: center; color: var(--fen); }
   .kp-row { display: flex; gap: 10px; margin-top: 8px; }
   .kp-item { display: flex; flex-direction: column; gap: 3px; }
   .kp-label { font-size: 11px; color: var(--muted); font-weight: 600; }
   .kp-input { width: 80px; height: 30px; border: 2px solid var(--border); border-radius: 8px; background: #fafafa; font-size: 13px; text-align: center; font-family: 'Nunito', sans-serif; color: var(--text); font-weight: 700; }
-  .kp-input:focus { outline: none; border-color: #0891b2; background: #fff; }
+  .kp-input:focus { outline: none; border-color: var(--mat); background: #fff; }
   .kp-input:disabled { background: #f1f5f9; color: #aaa; cursor: not-allowed; }
   .not-input { width: 100%; margin-top: 8px; height: 34px; border: 2px solid var(--border); border-radius: 8px; background: #fafafa; font-size: 13px; padding: 0 10px; font-family: 'Nunito', sans-serif; color: var(--text); }
-  .not-input:focus { outline: none; border-color: #0891b2; background: #fff; }
+  .not-input:focus { outline: none; border-color: var(--mat); background: #fff; }
   .not-input:disabled { background: #f1f5f9; color: #aaa; cursor: not-allowed; }
-  .geri-sayim { font-size: 12px; color: #0891b2; font-weight: 700; margin-top: 8px; text-align: center; }
+  .geri-sayim { font-size: 12px; color: var(--mat); font-weight: 700; margin-top: 8px; text-align: center; }
   .geri-sayim.son-dakika { color: #dc2626; }
-  .gonder-btn { width: 100%; margin-top: 10px; padding: 10px; background: linear-gradient(135deg, #0f766e, #0891b2); color: white; border: none; border-radius: 10px; font-size: 13px; font-weight: 800; font-family: 'Nunito', sans-serif; cursor: pointer; transition: opacity 0.2s; }
+  .gonder-btn { width: 100%; margin-top: 10px; padding: 10px; background: linear-gradient(135deg, #2563eb, #7c3aed); color: white; border: none; border-radius: 10px; font-size: 13px; font-weight: 800; font-family: 'Nunito', sans-serif; cursor: pointer; transition: opacity 0.2s; }
   .gonder-btn:hover:not(:disabled) { opacity: 0.88; }
   .gonder-btn:active:not(:disabled) { transform: scale(0.98); }
   .gonder-btn:disabled { background: #94a3b8; cursor: not-allowed; }
   .gonder-btn.tamamlandi { background: linear-gradient(135deg, #15803d, #16a34a); }
   .gonder-mesaj { display: none; margin-top: 8px; padding: 10px 14px; border-radius: 10px; font-size: 14px; font-weight: 700; text-align: center; }
-  .mesaj-ok { background: var(--fen-bg); color: #15803d; border: 2px solid #bbf7d0; }
-  .mesaj-hata { background: #fef2f2; color: #dc2626; }
+  .mesaj-ok   { background: var(--fen-bg); color: #15803d; border: 2px solid #bbf7d0; }
+  .mesaj-hata { background: #fef2f2; color: #dc2626; border: 2px solid #fecaca; }
   .kilit-overlay { text-align: center; padding: 14px 8px; font-size: 13px; color: var(--muted); font-weight: 600; }
   .pazar-card { background: var(--pazar-bg); border: 2px solid #bbf7d0; border-radius: 16px; padding: 14px 20px; margin-bottom: 12px; }
   .pazar-baslik { font-size: 13px; font-weight: 800; color: var(--pazar); margin-bottom: 4px; }
   .pazar-text { font-size: 13px; color: #365314; }
   .pazar-text span { margin-right: 12px; }
-  .koc-notu { background: linear-gradient(135deg, #ecfeff, #f0fdfa); border: 2px solid #a5f3fc; border-radius: 16px; padding: 18px 22px; margin-bottom: 12px; }
-  .koc-notu-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #0891b2; margin-bottom: 8px; }
+  .koc-notu { background: linear-gradient(135deg, #faf5ff, #eff6ff); border: 2px solid #ddd6fe; border-radius: 16px; padding: 18px 22px; margin-bottom: 12px; }
+  .koc-notu-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #7c3aed; margin-bottom: 8px; }
   .koc-notu-text { font-size: 14px; line-height: 1.75; }
   .dipnot { font-size: 12px; color: var(--muted); text-align: center; margin-top: 8px; font-weight: 600; }
-  .bursluluk-badge { display: inline-block; background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 10px; margin-left: 6px; }
+  .ozet-kart { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 18px 22px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .ozet-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .ozet-tablo { width: 100%; border-collapse: collapse; }
+  .ozet-tablo th { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); padding: 6px 8px; text-align: center; border-bottom: 2px solid var(--border); }
+  .ozet-tablo th:first-child { text-align: left; }
+  .ozet-tablo td { font-size: 13px; padding: 7px 8px; text-align: center; border-bottom: 1px solid var(--border); font-weight: 700; }
+  .ozet-tablo td:first-child { text-align: left; font-size: 13px; font-weight: 800; color: var(--text); }
+  .ozet-tablo tbody tr:last-child td { border-bottom: none; }
+  .ozet-tablo tbody tr:hover td { background: var(--bg); }
+  .ozet-yukleniyor { text-align: center; padding: 24px; color: var(--muted); font-size: 13px; font-weight: 600; }
+  .ozet-bos { text-align: center; padding: 24px; color: var(--muted); font-size: 13px; }
+  .ozet-net-yok { color: #d1d5db; font-weight: 400; font-size: 12px; }
+</style>
+
+<style>
+.header { background: linear-gradient(135deg, #0f766e 0%, #0891b2 100%) !important; }
+.gonder-btn:not(:disabled):not(.tamamlandi) { background: linear-gradient(135deg, #0f766e, #0891b2) !important; }
+.acc-item.aktif { border-color: #0891b2 !important; }
+.acc-item.aktif .acc-gun-adi { color: #0891b2 !important; }
+.acc-mini-fill { background: linear-gradient(90deg, #0f766e, #0891b2) !important; }
+.hedef-yolu-fill { background: linear-gradient(90deg, #0f766e, #0891b2) !important; }
+.koc-notu { background: linear-gradient(135deg, #ecfeff, #f0fdfa) !important; border-color: #a5f3fc !important; }
+.koc-notu-baslik { color: #0891b2 !important; }
+.takip-input:focus { border-color: #0891b2 !important; }
+.geri-sayim { color: #0891b2 !important; }
+.bursluluk-badge { display: inline-block; background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
 </style>
 </head>
 <body>
 <div class="page">
-
-  <div class="header">
-    <div class="avatar">YŞ</div>
-    <div class="header-info" style="flex:1">
-      <h1>Yakup Şakar <span class="bursluluk-badge">🏅 Bursluluk</span></h1>
-      <div class="meta">6/A · Hafta 1 · 27 Nisan – 2 Mayıs 2026</div>
-      <div class="badges">
-        <span class="badge badge-tur">Türkçe öncelikli</span>
-        <span class="badge badge-mat">Mat & Fen güçlendirme</span>
-        <span class="badge badge-sos">Sos & Din geliştir</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-label">📊 Genel durumun</div>
-    <div class="durum-grid">
-      <div class="durum-item">
-        <div class="durum-label">🎯 Son deneme puanın</div>
-        <div class="durum-val puan">409.64</div>
-      </div>
-      <div class="durum-item">
-        <div class="durum-label">📊 Deneme ortalaması</div>
-        <div class="durum-val" style="color:#0f766e">370.61</div>
-      </div>
-      <div class="durum-item">
-        <div class="durum-label">🚀 Sonraki denemedeki hedefin</div>
-        <div class="durum-val hedef">440</div>
-      </div>
-    </div>
-    <div style="margin-bottom:6px"><span style="font-size:12px;font-weight:700;color:var(--muted)">💪 Güçlü: </span><span style="font-size:13px;font-weight:700;color:#15803d">Türkçe (9.21 ort.) · Fen (8.71 ort.)</span></div>
-    <div style="margin-bottom:10px"><span style="font-size:12px;font-weight:700;color:var(--muted)">⚠️ Gelişim: </span><span style="font-size:13px;font-weight:700;color:#dc2626">Matematik tutarsız · Din & İngilizce düşük</span></div>
-    <div class="card-label" style="margin-top:4px">📈 Ders ortalama netlerin & hedefler</div>
-    <div class="net-kartlar">
-      <div class="net-kart ders-tur-bg">
-        <div class="net-kart-ders">Türkçe</div>
-        <div class="net-kart-sayi" style="color:#15803d">9.21</div>
-        <div class="net-kart-label">net ort.</div>
-        <div class="net-kart-hedef">hedef: 10.5</div>
-      </div>
-      <div class="net-kart ders-sos-bg">
-        <div class="net-kart-ders">Sosyal</div>
-        <div class="net-kart-sayi" style="color:#b45309">6.13</div>
-        <div class="net-kart-label">net ort.</div>
-        <div class="net-kart-hedef">hedef: 7.0</div>
-      </div>
-      <div class="net-kart ders-din-bg">
-        <div class="net-kart-ders">Din</div>
-        <div class="net-kart-sayi" style="color:#b45309">5.92</div>
-        <div class="net-kart-label">net ort.</div>
-        <div class="net-kart-hedef">hedef: 6.5</div>
-      </div>
-      <div class="net-kart ders-ing-bg">
-        <div class="net-kart-ders">İngilizce</div>
-        <div class="net-kart-sayi" style="color:#b45309">5.75</div>
-        <div class="net-kart-label">net ort.</div>
-        <div class="net-kart-hedef">hedef: 6.5</div>
-      </div>
-      <div class="net-kart ders-mat-bg">
-        <div class="net-kart-ders">Matematik</div>
-        <div class="net-kart-sayi" style="color:#b45309">8.38</div>
-        <div class="net-kart-label">net ort.</div>
-        <div class="net-kart-hedef">hedef: 9.5</div>
-      </div>
-      <div class="net-kart ders-fen-bg">
-        <div class="net-kart-ders">Fen</div>
-        <div class="net-kart-sayi" style="color:#15803d">8.71</div>
-        <div class="net-kart-label">net ort.</div>
-        <div class="net-kart-hedef">hedef: 9.5</div>
-      </div>
-    </div>
-    <div class="ortalama-notu">⚡ Altın kural: Bursluluk sınavı motivasyonunu koru! Her gün düzenli çalış, ortalaman her hafta yukarı çıksın.</div>
-  </div>
-
-  <div class="card">
-    <div class="card-label">💬 Bu haftanın mesajı</div>
-    <div class="kocundan-text">Yakup, bursluluk sınavına girdin ve zor olmasına rağmen güzel bir performans sergilediğin görülüyor — bu gerçekten gurur verici! Şimdi bu motivasyonu LGS'ye taşıma zamanı. Türkçe'de en güçlü olduğun alan, ama kümülatif ortalamana bakıyorum ve tutarsızlıklar var — özellikle Ankara denemesinde 3.33 net görmek seni de rahatsız etmiştir. Bu hafta Bursluluk kitabından Türkçe çalışacaksın, bu hem seni LGS'ye hem de ilerisi için hazırlıyor. Matematik'te Tonguç'un testleri sıra sıra gidecek; buradaki tutarsızlığı gidermek en büyük önceliğimiz. Fen ve Sosyal'de soru bankalarını düzenli bitireceğiz. Her gün 10 paragraf sorusu ve kompozisyon pratiği Türkçe ortalamanı 10+ seviyesine taşıyacak. Hedefin 440 — bu tamamen ulaşılabilir, yeter ki planına sadık kal!</div>
-  </div>
-
-  <div class="card">
-    <div class="card-label">🎯 Sabit haftalık hedefler</div>
-    <div class="hedef-grid">
-      <div class="hedef-item"><div class="hedef-label">📖 Paragraf sorusu</div><div class="hedef-val">10 soru / gün</div></div>
-      <div class="hedef-item"><div class="hedef-label">✏️ Kompozisyon</div><div class="hedef-val">Perşembe — 1 kompozisyon</div></div>
-      <div class="hedef-item"><div class="hedef-label">✏️ Günlük toplam soru</div><div class="hedef-val">~50–70 soru / gün</div></div>
-      <div class="hedef-item"><div class="hedef-label">🔥 Bu hafta odak</div><div class="hedef-val" style="font-size:13px">Mat: Tonguç T31–T49 · Tur: Bursluluk Kitabı · Fen: Bölüm 5–7</div></div>
-    </div>
-  </div>
-
-  <div class="plan-label">📅 Günlük plan & takip</div>
-  <div class="gun-grid" id="gunGrid"></div>
-
-  <div class="koc-notu" style="margin-top:12px">
-    <div class="koc-notu-baslik">🏆 Koç Notu — Temelleri Sağlamlaştırma Haftası</div>
-    <div class="koc-notu-text">Yakup, bu haftanın stratejisi sıralı ve düzenli ilerleme! Tonguç testlerini atlama — T31'den başla, sırayla git. Her test çözümünden sonra hatalı soruları mutlaka işaretle, hata defterine yaz. Fen'de bölümleri sıra sıra bitiriyoruz, her bölümü bitirmeden diğerine geçme. Sosyal için 3. bölümü bu hafta tamamlıyoruz. Perşembe günü kompozisyon yazarken acele etme — en az yarım sayfa, düzgün cümleler kur. Günde tutarlı 50-70 soru çözmen, deneme ortalamanı hafta hafta yukarı taşır. Planını uygula, 440 hedef senin için gerçekçi!</div>
-  </div>
-
+  <div class="header" id="hdr"></div>
+  <div id="dur-kart"></div>
+  <div id="koc-deg"></div>
+  <div id="hdf-kart"></div>
+  <div id="hedef-yolu-wrap"></div>
+  <div class="plan-label">📅 Günlük plan &amp; takip</div>
+  <div class="accordion" id="accordionGunler"></div>
+  <div class="koc-notu" id="koc-nt"></div>
   <div class="pazar-card">
     <div class="pazar-baslik">☀️ Pazar — veliye bırakılmıştır</div>
-    <div class="pazar-text"><span>Kitap okuma önerilir</span><span>·</span><span>Zorunlu ders çalışma yok</span><span>·</span><span>Ailenizin tercihine göre</span></div>
+    <div class="pazar-text">
+      <span>Kitap okuma önerilir</span><span>·</span>
+      <span>Zorunlu ders çalışma yok</span><span>·</span>
+      <span>Ailenizin tercihine göre</span>
+    </div>
   </div>
-
-  <div class="dipnot">Bu plan Yakup Şakar için hazırlanmıştır · Hafta 1 · 27 Nisan – 2 Mayıs 2026</div>
+  <div class="ozet-kart">
+    <div class="ozet-baslik">📈 Bu Haftanın Kayıtlarım</div>
+    <div id="haftalikOzetIcerik"><div class="ozet-yukleniyor">Yükleniyor...</div></div>
+  </div>
+  <div class="dipnot" id="dpnt"></div>
 </div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwuYEaEdXqLK4xSSKsHIvMgZopzfmumuqi79OoQjA3lTt2CVb5Xmt1GozBLV-AFnCh9/exec';
-const OGRENCI_ADI = 'Yakup Şakar';
-const HAFTA_NO = '1';
-const MOTIVASYON_MESAJLARI = ['Harika iş Yakup! Bugün de kazandın 🌟','Süpersin! Yarın da bu tempoda devam 💪','Bugün de zirvede! Aferin sana 🏆','Bir adım daha ileri! Böyle devam et 🚀','Harika! Bugünkü planı bitirdin 🎯'];
+// ══════════════════════════════════════════════════════════════════
+//  ŞABLON — CONFIG'DEN TÜRETILEN SABITLER
+// ══════════════════════════════════════════════════════════════════
 
-const SON_GIRIS_SAATI = { 1:23, 2:23, 3:23, 4:23, 5:23, 6:23 };
-const SON_GIRIS_DAKIKA = 0;
+// Gün adını kısa prefix'e çevir (DOM id'lerinde ve localStorage'da kullanılır)
+var SLUG_MAP = {
+  'Pazartesi': 'pzt', 'Salı': 'sal', 'Çarşamba': 'car',
+  'Perşembe':  'per', 'Cuma': 'cum', 'Cumartesi': 'cmt'
+};
 
-const GUNLER = [
-  { ad:'Pazartesi', tarih:'28 Nisan', prefix:'pzt', jsGun:1,
-    dersler: [
-      { cls:'ders-tur', ad:'Türkçe (Bursluluk Kitabı)', key:'tur', gorevler:[
-        { metin:'8. Bölüm — Metinde Soru Cevap: 9–16. soruları çöz', checkbox:false, id:'pzt_tur_g0' },
-        { metin:'Metinde Yapı 9. Bölüm: 1–14. soruları çöz', checkbox:false, id:'pzt_tur_g1' }
-      ], takipKey:'tur' },
-      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
-        { metin:'5. Bölüm (Maddenin Ayırt Edici Özellikleri): 45–65. soruları çöz', checkbox:false, id:'pzt_fen_g0' }
-      ], takipKey:'fen' },
-      { cls:'ders-mat', ad:'Matematik (Tonguç)', key:'mat', gorevler:[
-        { metin:'Sayılar ve Nicelikler – Temel Kabuller tekrarı', checkbox:true, id:'pzt_mat_g0' },
-        { metin:'T31, T32, T33 testlerini çöz (toplam 23 soru)', checkbox:false, id:'pzt_mat_g1' }
-      ], takipKey:'mat' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
-        { metin:'10 paragraf sorusu çöz', checkbox:false, id:'pzt_par_g0' }
-      ], takipKey:'par' }
-    ]
-  },
-  { ad:'Salı', tarih:'29 Nisan', prefix:'sal', jsGun:2,
-    dersler: [
-      { cls:'ders-tur', ad:'Türkçe (Bursluluk Kitabı)', key:'tur', gorevler:[
-        { metin:'Metinde Yapı 9. Bölüm: 15–35. soruları çöz', checkbox:false, id:'sal_tur_g0' }
-      ], takipKey:'tur' },
-      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
-        { metin:'5. Bölüm: 66–80. soruları çöz', checkbox:false, id:'sal_fen_g0' },
-        { metin:'6. Bölüm: 1–7. soruları çöz', checkbox:false, id:'sal_fen_g1' }
-      ], takipKey:'fen' },
-      { cls:'ders-mat', ad:'Matematik (Tonguç)', key:'mat', gorevler:[
-        { metin:'T34, T35, T36 testlerini çöz', checkbox:false, id:'sal_mat_g0' }
-      ], takipKey:'mat' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
-        { metin:'10 paragraf sorusu çöz', checkbox:false, id:'sal_par_g0' }
-      ], takipKey:'par' }
-    ]
-  },
-  { ad:'Çarşamba', tarih:'30 Nisan', prefix:'car', jsGun:3,
-    dersler: [
-      { cls:'ders-tur', ad:'Türkçe (Bursluluk Kitabı)', key:'tur', gorevler:[
-        { metin:'9. Bölüm: 36–41. soruları çöz', checkbox:false, id:'car_tur_g0' },
-        { metin:'10. Bölüm: 1–13. soruları çöz', checkbox:false, id:'car_tur_g1' }
-      ], takipKey:'tur' },
-      { cls:'ders-fen', ad:'Fen Bilimleri', key:'fen', gorevler:[
-        { metin:'6. Bölüm: 8–11. soruları çöz', checkbox:false, id:'car_fen_g0' },
-        { metin:'7. Bölüm: 1–18. soruları çöz', checkbox:false, id:'car_fen_g1' }
-      ], takipKey:'fen' },
-      { cls:'ders-mat', ad:'Matematik (Tonguç)', key:'mat', gorevler:[
-        { metin:'T37, T38, T39 testlerini çöz', checkbox:false, id:'car_mat_g0' }
-      ], takipKey:'mat' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
-        { metin:'10 paragraf sorusu çöz', checkbox:false, id:'car_par_g0' }
-      ], takipKey:'par' }
-    ]
-  },
-  { ad:'Perşembe', tarih:'1 Mayıs', prefix:'per', jsGun:4,
-    dersler: [
-      { cls:'ders-tur', ad:'Türkçe (Bursluluk Kitabı)', key:'tur', gorevler:[
-        { metin:'10. Bölüm: 13–23. soruları çöz', checkbox:false, id:'per_tur_g0' },
-        { metin:'11. Bölüm: 1–8. soruları çöz', checkbox:false, id:'per_tur_g1' },
-        { metin:'Sevdiğin bir konuda en az yarım sayfa kompozisyon yaz', checkbox:true, id:'per_tur_g2' },
-        { metin:'Yazdığın kompozisyonun fotoğrafını WhatsApp\'tan at', checkbox:true, id:'per_tur_g3' }
-      ], takipKey:'tur' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[
-        { metin:'3. Bölüm (Ortak Miras): 60–83. soruları çöz', checkbox:false, id:'per_sos_g0' }
-      ], takipKey:'sos' },
-      { cls:'ders-mat', ad:'Matematik (Tonguç)', key:'mat', gorevler:[
-        { metin:'T40, T41, T42, T43 testlerini çöz', checkbox:false, id:'per_mat_g0' }
-      ], takipKey:'mat' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
-        { metin:'10 paragraf sorusu çöz', checkbox:false, id:'per_par_g0' }
-      ], takipKey:'par' }
-    ]
-  },
-  { ad:'Cuma', tarih:'2 Mayıs', prefix:'cum', jsGun:5,
-    dersler: [
-      { cls:'ders-tur', ad:'Türkçe (Bursluluk Kitabı)', key:'tur', gorevler:[
-        { metin:'11. Bölüm: 9–17. soruları çöz', checkbox:false, id:'cum_tur_g0' },
-        { metin:'12. Bölüm: 3 soruyu çöz (tamamı)', checkbox:false, id:'cum_tur_g1' },
-        { metin:'13. Bölüm: 7 soruyu çöz', checkbox:false, id:'cum_tur_g2' }
-      ], takipKey:'tur' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[
-        { metin:'3. Bölüm (Ortak Miras): 84–107. soruları çöz', checkbox:false, id:'cum_sos_g0' }
-      ], takipKey:'sos' },
-      { cls:'ders-mat', ad:'Matematik (Tonguç)', key:'mat', gorevler:[
-        { metin:'T44, T45, T46 testlerini çöz', checkbox:false, id:'cum_mat_g0' }
-      ], takipKey:'mat' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
-        { metin:'10 paragraf sorusu çöz', checkbox:false, id:'cum_par_g0' }
-      ], takipKey:'par' }
-    ]
-  },
-  { ad:'Cumartesi', tarih:'3 Mayıs', prefix:'cmt', jsGun:6,
-    dersler: [
-      { cls:'ders-tur', ad:'Türkçe (Bursluluk Kitabı)', key:'tur', gorevler:[
-        { metin:'13. Bölüm: 8–20. soruları çöz', checkbox:false, id:'cmt_tur_g0' },
-        { metin:'14. Bölüm: 2 soruyu çöz (tamamı)', checkbox:false, id:'cmt_tur_g1' },
-        { metin:'15. Bölüm: 6 soruyu çöz', checkbox:false, id:'cmt_tur_g2' }
-      ], takipKey:'tur' },
-      { cls:'ders-sos', ad:'Sosyal Bilgiler', key:'sos', gorevler:[
-        { metin:'3. Bölüm (Ortak Miras): 108–113. soruları çöz', checkbox:false, id:'cmt_sos_g0' },
-        { metin:'4. Bölüm: 1–19. soruları çöz', checkbox:false, id:'cmt_sos_g1' }
-      ], takipKey:'sos' },
-      { cls:'ders-mat', ad:'Matematik (Tonguç)', key:'mat', gorevler:[
-        { metin:'T47, T48, T49 testlerini çöz', checkbox:false, id:'cmt_mat_g0' }
-      ], takipKey:'mat' },
-      { cls:'ders-par', ad:'Paragraf', key:'par', gorevler:[
-        { metin:'10 paragraf sorusu çöz', checkbox:false, id:'cmt_par_g0' }
-      ], takipKey:'par' }
-    ]
-  }
+// Her güne otomatik prefix ve her göreve otomatik id ata
+CONFIG.gunler.forEach(function (gun, gi) {
+  gun.prefix = SLUG_MAP[gun.ad] || ('g' + gi);
+  gun.dersler.forEach(function (d, di) {
+    d.gorevler.forEach(function (g, gj) {
+      g.id = gun.prefix + '_' + (d.takipKey || ('k' + di)) + '_g' + gj;
+    });
+  });
+});
+
+var SCRIPT_URL  = CONFIG.ogrenci.scriptUrl;
+var OGRENCI_ADI = CONFIG.ogrenci.ad;
+var HAFTA_NO    = CONFIG.ogrenci.haftaNo;
+var GUNLER      = CONFIG.gunler;
+var SON_GUN_ADI = GUNLER[GUNLER.length - 1].ad;
+// LocalStorage key'de boşluk olmayacak şekilde öğrenci adını temizle
+var LS_PREFIX   = 'lgs_' + OGRENCI_ADI.replace(/\s+/g, '_') + '_H' + HAFTA_NO + '_';
+
+var MOTIVASYON_MESAJLARI = [
+  'Süper gol! Bugünkü antrenman tamamlandı ⚽',
+  'Penaltı gol gibi kesin! Harika bir gün 🏆',
+  'Sahaya hakim oldun! Yarın da böyle devam 💪',
+  'Takım kaptanı gibi! Bugün de kazandın ⚽'
 ];
 
-function trSaati() {
-  const now = new Date();
-  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
-  return new Date(utc + 3 * 3600000);
+// ── YARDIMCI FONKSİYONLAR ──
+function ini(ad) {
+  return (ad || '').split(' ').slice(0, 2).map(function (w) { return w[0] || ''; }).join('').toUpperCase();
 }
 
+function val(id) {
+  var el = document.getElementById(id);
+  if (!el) { console.warn('val(): element bulunamadı →', id); return '0'; }
+  return el.value || '0';
+}
+function strVal(id) {
+  var el = document.getElementById(id);
+  if (!el) { console.warn('strVal(): element bulunamadı →', id); return ''; }
+  return el.value || '';
+}
+
+// ── SAYFA METAVERİLERİ ──
+document.getElementById('page-title').textContent = 'Haftalık Plan — ' + OGRENCI_ADI;
+document.getElementById('dpnt').textContent =
+  'Bu plan ' + OGRENCI_ADI + ' için hazırlanmıştır · Hafta ' + HAFTA_NO + ' · ' + CONFIG.ogrenci.tarihAralik;
+
+// ── HEADER ──
+(function () {
+  var rozetlerHtml = (CONFIG.ogrenci.rozetler || [])
+    .map(function (r) { return '<span class="badge ' + r[1] + '">' + r[0] + '</span>'; })
+    .join('');
+  document.getElementById('hdr').innerHTML =
+    '<div class="avatar">' + ini(OGRENCI_ADI) + '</div>' +
+    '<div class="header-info" style="flex:1">' +
+      '<h1>' + OGRENCI_ADI + (CONFIG.ogrenci.ekstraBaslik ? ' <span class="bursluluk-badge">' + CONFIG.ogrenci.ekstraBaslik + '</span>' : '') + '</h1>' +
+      '<div class="meta">' + CONFIG.ogrenci.sinif + ' · Hafta ' + HAFTA_NO + ' · ' + CONFIG.ogrenci.tarihAralik + '</div>' +
+      '<div class="badges">' + rozetlerHtml + '</div>' +
+    '</div>';
+}());
+
+// ── DURUM KARTI ──
+(function () {
+  var d = CONFIG.durum;
+  var SIRALI = ['tur', 'sos', 'din', 'ing', 'mat', 'fen'];
+  var RENK   = { tur: '#9333ea', sos: '#0891b2', din: '#be185d', ing: '#d97706', mat: '#2563eb', fen: '#16a34a' };
+  var ADI    = { tur: 'Türkçe', sos: 'Sosyal', din: 'Din', ing: 'İngilizce', mat: 'Matematik', fen: 'Fen' };
+  var BGCLS  = { tur: 'ders-tur-bg', sos: 'ders-sos-bg', din: 'ders-din-bg', ing: 'ders-ing-bg', mat: 'ders-mat-bg', fen: 'ders-fen-bg' };
+
+  var netKartlar = SIRALI.map(function (k) {
+    var v = d.netler[k];
+    if (!v) return '';
+    return '<div class="net-kart ' + BGCLS[k] + '">' +
+      '<div class="net-kart-ders">' + ADI[k] + '</div>' +
+      '<div class="net-kart-sayi" style="color:' + RENK[k] + '">' + v.ort.toFixed(2) + '</div>' +
+      '<div class="net-kart-label">net ort.</div>' +
+      '<div class="net-kart-hedef">hedef: ' + v.hedef + '</div>' +
+    '</div>';
+  }).join('');
+
+  document.getElementById('dur-kart').innerHTML =
+    '<div class="card">' +
+      '<div class="card-label">📊 Genel durumun</div>' +
+      '<div class="durum-grid">' +
+        '<div class="durum-item"><div class="durum-label">🎯 Son deneme puanın</div><div class="durum-val puan">' + d.sonPuan.toFixed(2) + '</div></div>' +
+        '<div class="durum-item"><div class="durum-label">📊 Deneme ortalaması</div><div class="durum-val" style="color:#7c3aed">' + d.ortalama.toFixed(2) + '</div></div>' +
+        '<div class="durum-item"><div class="durum-label">🚀 Sonraki denemedeki hedefin</div><div class="durum-val hedef">' + d.hedef + '</div></div>' +
+      '</div>' +
+      '<div style="margin-bottom:10px"><span style="font-size:12px;font-weight:700;color:var(--muted)">⚠️ Gelişim: </span>' +
+        '<span style="font-size:13px;font-weight:700;color:#dc2626">' + d.gelisim + '</span></div>' +
+      '<div class="card-label" style="margin-top:4px">📈 Ders ortalama netlerin &amp; hedefler</div>' +
+      '<div class="net-kartlar">' + netKartlar + '</div>' +
+      '<div class="ortalama-notu">⚡ Altın kural: Ne olursa olsun ortalama netinin altına düşme. Her gün biraz, her hafta ileri!</div>' +
+    '</div>';
+}());
+
+// ── KOÇ DEĞERLENDİRMESİ ──
+document.getElementById('koc-deg').innerHTML =
+  '<div class="card">' +
+    '<div class="card-label">📝 Koç Değerlendirmesi</div>' +
+    '<div class="kocundan-text">' + CONFIG.koc.degerlendirme + '</div>' +
+  '</div>';
+
+// ── HEDEFLER ──
+(function () {
+  var h = CONFIG.hedefler;
+  document.getElementById('hdf-kart').innerHTML =
+    '<div class="card">' +
+      '<div class="card-label">🎯 Sabit haftalık hedefler</div>' +
+      '<div class="hedef-grid">' +
+        '<div class="hedef-item"><div class="hedef-label">📖 Paragraf sorusu</div><div class="hedef-val">' + h.paragraf + '</div></div>' +
+        '<div class="hedef-item"><div class="hedef-label">📚 Kitap okuma</div><div class="hedef-val">' + h.kitap + '</div></div>' +
+        '<div class="hedef-item"><div class="hedef-label">✏️ Günlük toplam soru</div><div class="hedef-val">' + h.gunlukSoru + '</div></div>' +
+        '<div class="hedef-item"><div class="hedef-label">🔥 Bu hafta odak</div><div class="hedef-val" style="font-size:14px">' + h.odak + '</div></div>' +
+      '</div>' +
+    '</div>';
+}());
+
+// ── KOÇ NOTU ──
+document.getElementById('koc-nt').innerHTML =
+  '<div class="koc-notu-baslik">🏆 Koç Notu — Hafta ' + HAFTA_NO + '</div>' +
+  '<div class="koc-notu-text">' + CONFIG.koc.haftalikNot + '</div>';
+
+// ══════════════════════════════════════════════════════════════════
+//  ZAMAN
+// ══════════════════════════════════════════════════════════════════
+
+function trSaati() {
+  var now = new Date();
+  return new Date(now.getTime() + now.getTimezoneOffset() * 60000 + 3 * 3600000);
+}
+
+// Artık jsGun veya SON_GIRIS_SAATI nesnesi yok.
+// Her günün kendi tarih nesnesi ve sonGiris saati var.
 function gunDurumu(gun) {
-  const simdi = trSaati();
-  const bugunJsGun = simdi.getDay();
-  const saat = simdi.getHours();
-  const dakika = simdi.getMinutes();
-  if (gun.jsGun > bugunJsGun) return 'kilitli';
-  if (gun.jsGun < bugunJsGun) return 'gecmis';
-  const sonSaat = SON_GIRIS_SAATI[gun.jsGun];
-  if (saat > sonSaat || (saat === sonSaat && dakika >= SON_GIRIS_DAKIKA)) return 'suresi_doldu';
+  var simdi = trSaati();
+  var bugun = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
+  var gunT  = new Date(gun.tarih.getFullYear(), gun.tarih.getMonth(), gun.tarih.getDate());
+  if (gunT > bugun) return 'kilitli';
+  if (gunT < bugun) return 'gecmis';
+  // Bugün — saate bak
+  if (simdi.getHours() >= gun.sonGiris) return 'suresi_doldu';
   return 'aktif';
 }
 
 function kalanSure(gun) {
-  const simdi = trSaati();
-  const son = new Date(simdi);
-  son.setHours(SON_GIRIS_SAATI[gun.jsGun], SON_GIRIS_DAKIKA, 0, 0);
-  const fark = son - simdi;
+  var simdi = trSaati();
+  var son   = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate(), gun.sonGiris, 0, 0, 0);
+  var fark  = son - simdi;
   if (fark <= 0) return null;
-  return { toplam: fark, s: Math.floor(fark/3600000), d: Math.floor((fark%3600000)/60000), sn: Math.floor((fark%60000)/1000) };
+  return {
+    toplam: fark,
+    s:  Math.floor(fark / 3600000),
+    d:  Math.floor((fark % 3600000) / 60000),
+    sn: Math.floor((fark % 60000) / 1000)
+  };
 }
 
+// ══════════════════════════════════════════════════════════════════
+//  HTML RENDER
+// ══════════════════════════════════════════════════════════════════
+
+var renkMap = { mat:'var(--mat)', fen:'var(--fen)', tur:'var(--tur)', ing:'var(--ing)', sos:'var(--sos)', din:'var(--din)', par:'var(--par)' };
+var adMap   = { mat:'Mat', fen:'Fen', tur:'Türkçe', ing:'İngilizce', sos:'Sosyal', din:'Din', par:'Paragraf' };
+
 function hesaplaNet(prefix, ders) {
-  const d = parseFloat(document.getElementById(prefix+'_'+ders+'_d').value) || 0;
-  const y = parseFloat(document.getElementById(prefix+'_'+ders+'_y').value) || 0;
-  const net = (d - y/3).toFixed(2);
-  const el = document.getElementById(prefix+'_'+ders+'_net');
+  var d   = parseFloat(document.getElementById(prefix + '_' + ders + '_d').value) || 0;
+  var y   = parseFloat(document.getElementById(prefix + '_' + ders + '_y').value) || 0;
+  var net = (d - y / 3).toFixed(2);
+  var el  = document.getElementById(prefix + '_' + ders + '_net');
   if (el) {
     el.textContent = net;
     el.style.color = parseFloat(net) >= 0 ? 'var(--fen)' : '#dc2626';
@@ -415,84 +571,102 @@ function hesaplaNet(prefix, ders) {
 }
 
 function gorevDegisti(cb) {
-  const parent = cb.closest('.gorev-item');
+  var parent = cb.closest('.gorev-item');
   if (parent) {
-    const label = parent.querySelector('.gorev-metin');
+    var label = parent.querySelector('.gorev-metin');
     if (label) {
       if (cb.checked) label.classList.add('tamamlandi');
-      else label.classList.remove('tamamlandi');
+      else            label.classList.remove('tamamlandi');
     }
   }
 }
 
 function takipDersleriHTML(gun, durum) {
-  const dis = durum !== 'aktif' ? 'disabled' : '';
-  const takipDersListesi = [
-    { key:'mat', renk:'var(--mat)', ad:'Mat' },
-    { key:'fen', renk:'var(--fen)', ad:'Fen' },
-    { key:'ing', renk:'var(--ing)', ad:'İngilizce' },
-    { key:'tur', renk:'var(--tur)', ad:'Türkçe' },
-    { key:'sos', renk:'var(--sos)', ad:'Sosyal' },
-    { key:'din', renk:'var(--din)', ad:'Din' },
-    { key:'par', renk:'var(--par)', ad:'Paragraf' },
-  ];
+  var dis          = durum !== 'aktif' ? 'disabled' : '';
+  var takipDersler = gun.dersler.filter(function (d) { return d.takipKey; });
+  var pid          = gun.prefix;
 
-  let html = '<div class="takip-bolum"><div class="takip-baslik">Günlük takip — ' + gun.ad + '</div>';
-  html += '<div class="takip-dyb-header"><div class="takip-dyb-header-bos"></div><div class="takip-dyb-header-lbl">D</div><div class="takip-dyb-header-lbl">Y</div><div class="takip-dyb-header-lbl">B</div><div class="takip-dyb-header-lbl">Net</div></div>';
-  html += '<div class="takip-satirlar">';
-  takipDersListesi.forEach(function(d) {
-    const pid = gun.prefix;
-    const did = d.key;
-    html += '<div class="takip-satir"><div class="takip-satir-adi" style="color:'+d.renk+'">'+d.ad+'</div>';
-    html += '<input class="takip-input" type="number" min="0" id="'+pid+'_'+did+'_d" placeholder="0" '+dis+' data-p="'+pid+'" data-d="'+did+'" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">';
-    html += '<input class="takip-input" type="number" min="0" id="'+pid+'_'+did+'_y" placeholder="0" '+dis+' data-p="'+pid+'" data-d="'+did+'" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">';
-    html += '<input class="takip-input" type="number" min="0" id="'+pid+'_'+did+'_b" placeholder="0" '+dis+' data-p="'+pid+'" data-d="'+did+'" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">';
-    html += '<div class="net-goster" id="'+pid+'_'+did+'_net">—</div>';
-    html += '</div>';
+  var html = '<div class="takip-bolum">' +
+    '<div class="takip-baslik">Günlük takip — ' + gun.ad + '</div>' +
+    '<div class="takip-dyb-header">' +
+      '<div class="takip-dyb-header-bos"></div>' +
+      '<div class="takip-dyb-header-lbl">D</div>' +
+      '<div class="takip-dyb-header-lbl">Y</div>' +
+      '<div class="takip-dyb-header-lbl">B</div>' +
+      '<div class="takip-dyb-header-lbl">Net</div>' +
+    '</div>' +
+    '<div class="takip-satirlar">';
+
+  takipDersler.forEach(function (d) {
+    var renk = renkMap[d.takipKey] || 'var(--text)';
+    var ad   = adMap[d.takipKey]  || d.ad;
+    var did  = d.takipKey;
+    html +=
+      '<div class="takip-satir">' +
+        '<div class="takip-satir-adi" style="color:' + renk + '">' + ad + '</div>' +
+        '<input class="takip-input" type="number" min="0" id="' + pid+'_'+did+'_d" placeholder="0" '+dis+' data-p="'+pid+'" data-d="'+did+'" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">' +
+        '<input class="takip-input" type="number" min="0" id="' + pid+'_'+did+'_y" placeholder="0" '+dis+' data-p="'+pid+'" data-d="'+did+'" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">' +
+        '<input class="takip-input" type="number" min="0" id="' + pid+'_'+did+'_b" placeholder="0" '+dis+' data-p="'+pid+'" data-d="'+did+'" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">' +
+        '<div class="net-goster" id="' + pid+'_'+did+'_net">—</div>' +
+      '</div>';
   });
+
   html += '</div>';
-  html += '<input class="not-input" type="text" id="'+gun.prefix+'_not" placeholder="Bugünkü notun..." '+dis+'>';
+  html += '<div class="kp-row">' +
+    '<div class="kp-item"><div class="kp-label">Kitap (sayfa)</div>' +
+    '<input class="kp-input" type="number" min="0" id="' + pid + '_kitap" placeholder="0" ' + dis + '></div>' +
+    '<div class="kp-item" style="flex:1;min-width:100px"><div class="kp-label">Kitap adı</div>' +
+    '<input class="kp-input" style="width:100%;max-width:220px;text-align:left;padding:0 8px" type="text" id="' + pid + '_kitap_adi" placeholder="Kitabın adı..." ' + dis + '></div>' +
+    '</div>';
+  html += '<input class="not-input" type="text" id="' + pid + '_not" placeholder="Bugünkü notun..." ' + dis + '>';
 
   if (durum === 'aktif') {
-    html += '<div class="geri-sayim" id="'+gun.prefix+'_sayim">Hesaplanıyor...</div>';
-    html += '<button class="gonder-btn" id="'+gun.prefix+'_btn" data-gun="'+gun.ad+'" data-p="'+gun.prefix+'" onclick="gonder(this.dataset.gun,this.dataset.p)">Kaydet</button>';
+    html += '<div class="geri-sayim" id="' + pid + '_sayim">Hesaplanıyor...</div>';
+    html += '<button class="gonder-btn" id="' + pid + '_btn" data-gun="' + gun.ad + '" data-p="' + pid + '" onclick="gonder(this.dataset.gun,this.dataset.p)">Kaydet</button>';
   } else if (durum === 'suresi_doldu') {
     html += '<button class="gonder-btn" disabled>Giriş süresi doldu</button>';
   } else if (durum === 'kilitli') {
-    html += '<div class="kilit-overlay">Bu gün henüz gelmedi<br><small style="color:#94a3b8">' + gun.tarih + ' tarihinde açılacak</small></div>';
-  } else if (durum === 'gecmis') {
+    var d2 = gun.tarih.getDate();
+    var ay = gun.tarih.toLocaleString('tr-TR', { month: 'long' });
+    html += '<div class="kilit-overlay">Bu gün henüz gelmedi<br>' +
+      '<small style="color:#94a3b8">' + d2 + ' ' + ay + ' tarihinde açılacak</small></div>';
+  } else {
     html += '<button class="gonder-btn" disabled style="background:#854d0e">Giriş süresi geçti</button>';
   }
-  html += '<div class="gonder-mesaj" id="'+gun.prefix+'_mesaj"></div></div>';
+
+  html += '<div class="gonder-mesaj" id="' + pid + '_mesaj"></div></div>';
   return html;
 }
 
 function gunKartiHTML(gun) {
-  const durum = gunDurumu(gun);
-  const durumClass = durum === 'aktif' ? '' : durum === 'gecmis' ? ' gecmis' : ' kilitli';
-  const badgeMap = {
-    aktif:'<span class="gun-durum-badge badge-aktif">Bugün</span>',
-    kilitli:'<span class="gun-durum-badge badge-kilitli">Bekliyor</span>',
-    gecmis:'<span class="gun-durum-badge badge-gecmis">Geçti</span>',
-    suresi_doldu:'<span class="gun-durum-badge badge-gecmis">Doldu</span>'
+  var durum      = gunDurumu(gun);
+  var durumClass = durum === 'aktif' ? '' : (durum === 'gecmis' ? ' gecmis' : ' kilitli');
+  var badgeMap   = {
+    aktif:        '<span class="gun-durum-badge badge-aktif">Bugün</span>',
+    kilitli:      '<span class="gun-durum-badge badge-kilitli">Bekliyor</span>',
+    gecmis:       '<span class="gun-durum-badge badge-gecmis">Geçti</span>',
+    suresi_doldu: '<span class="gun-durum-badge badge-gecmis">Doldu</span>'
   };
-  let html = '<div class="gun-card'+durumClass+'" id="kart_'+gun.prefix+'"><div class="gun-baslik">'+gun.ad+' <span class="gun-tarih">'+gun.tarih+'</span>'+badgeMap[durum]+'</div>';
 
-  gun.dersler.forEach(function(d) {
-    html += '<div class="ders-blok"><div class="ders-baslik '+d.cls+'">'+d.ad+'</div>';
-    html += '<div class="gorev-list">';
-    d.gorevler.forEach(function(g) {
+  var tarihStr = gun.tarih.getDate() + ' ' + gun.tarih.toLocaleString('tr-TR', { month: 'long' });
+
+  var html = '<div class="gun-card' + durumClass + '" id="kart_' + gun.prefix + '">' +
+    '<div class="gun-baslik">' + gun.ad + ' <span class="gun-tarih">' + tarihStr + '</span>' + badgeMap[durum] + '</div>';
+
+  gun.dersler.forEach(function (d) {
+    html += '<div class="ders-blok"><div class="ders-baslik ' + d.cls + '">' + d.ad + '</div><div class="gorev-list">';
+    d.gorevler.forEach(function (g) {
       if (g.checkbox) {
-        const cbDis = durum !== 'aktif' ? 'disabled' : '';
-        html += '<div class="gorev-item">';
-        html += '<input type="checkbox" class="gorev-cb" id="'+g.id+'" '+cbDis+' onchange="gorevDegisti(this)">';
-        html += '<label class="gorev-metin" for="'+g.id+'">'+g.metin+'</label>';
-        html += '</div>';
+        var cbDis = durum !== 'aktif' ? 'disabled' : '';
+        html += '<div class="gorev-item">' +
+          '<input type="checkbox" class="gorev-cb" id="' + g.id + '" ' + cbDis + ' onchange="gorevDegisti(this)">' +
+          '<label class="gorev-metin" for="' + g.id + '">' + g.metin + '</label>' +
+        '</div>';
       } else {
-        html += '<div class="gorev-item soru-gorev">';
-        html += '<span class="gorev-nokta">✦</span>';
-        html += '<span class="gorev-metin">'+g.metin+'</span>';
-        html += '</div>';
+        html += '<div class="gorev-item soru-gorev">' +
+          '<span class="gorev-nokta">✦</span>' +
+          '<span class="gorev-metin">' + g.metin + '</span>' +
+        '</div>';
       }
     });
     html += '</div></div>';
@@ -503,194 +677,629 @@ function gunKartiHTML(gun) {
   return html;
 }
 
-document.getElementById('gunGrid').innerHTML = GUNLER.map(gunKartiHTML).join('');
+// ── HEDEF YOLU ──
+(function() {
+  var d = CONFIG.durum;
+  var aralik = d.hedef - d.oncekiPuan;
+  var ilerleme = d.sonPuan - d.oncekiPuan;
+  var pct = Math.min(Math.max(ilerleme / aralik * 100, 0), 100);
+  var kalan = (d.hedef - d.sonPuan).toFixed(2);
+  var topPct = pct.toFixed(1);
 
-const timerIds = {};
-GUNLER.forEach(function(gun) {
-  const durum = gunDurumu(gun);
-  if (durum !== 'aktif') return;
+  document.getElementById('hedef-yolu-wrap').innerHTML =
+    '<div class="hedef-yolu">' +
+      '<div class="hedef-yolu-baslik">🏁 Hedef Yolu</div>' +
+      '<div class="hedef-yolu-track">' +
+        '<div class="hedef-yolu-bg"></div>' +
+        '<div class="hedef-yolu-fill" id="hy-fill" style="width:0%"></div>' +
+        // Başlangıç noktası
+        '<div class="hedef-yolu-top" style="left:0%">' +
+          '<div class="hedef-yolu-top-dot" style="background:#94a3b8">🚩</div>' +
+        '</div>' +
+        // Şu anki puan
+        '<div class="hedef-yolu-top" id="hy-top" style="left:' + pct + '%">' +
+          '<div class="hedef-yolu-top-dot" style="background:#2563eb">⚽</div>' +
+        '</div>' +
+        // Hedef
+        '<div class="hedef-yolu-top" style="left:100%">' +
+          '<div class="hedef-yolu-top-dot" style="background:#16a34a">🎯</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="hedef-yolu-labels">' +
+        '<span>' + d.oncekiPuan.toFixed(0) + ' (Başlangıç)</span>' +
+        '<span style="color:#2563eb;font-weight:800">' + d.sonPuan.toFixed(2) + ' — %' + topPct + '</span>' +
+        '<span>' + d.hedef + ' (Hedef)</span>' +
+      '</div>' +
+      '<div class="hedef-yolu-bilgi">Hedefe <span>' + kalan + ' puan</span> kaldı — her derste +1 net büyük fark yaratır!</div>' +
+    '</div>';
+
+  // Animasyonlu doldur
+  setTimeout(function() {
+    var fill = document.getElementById('hy-fill');
+    if (fill) fill.style.width = pct + '%';
+  }, 200);
+}());
+
+// ── ACCORDION ──
+function gunTamamlanmaPct(gun) {
+  var total = 0, done = 0;
+  gun.dersler.forEach(function(d) {
+    d.gorevler.forEach(function(g) {
+      if (g.checkbox) {
+        total++;
+        var cb = document.getElementById(g.id);
+        if (cb && cb.checked) done++;
+      }
+    });
+  });
+  return total > 0 ? Math.round(done / total * 100) : 0;
+}
+
+function accToggle(prefix) {
+  var gun = GUNLER.find(function(g) { return g.prefix === prefix; });
+  if (!gun) return;
+  var durum = gunDurumu(gun);
+  if (durum === 'kilitli') return;
+
+  var item = document.getElementById('acc_' + prefix);
+  var isAcik = item.classList.contains('acik');
+
+  // Diğerlerini kapat (aktif günü kapatma)
+  GUNLER.forEach(function(g) {
+    if (g.prefix === prefix) return;
+    var el = document.getElementById('acc_' + g.prefix);
+    if (el) el.classList.remove('acik');
+  });
+
+  // Bu güne toggle uygula
+  if (isAcik) {
+    item.classList.remove('acik');
+  } else {
+    item.classList.add('acik');
+  }
+}
+
+function accGunHTML(gun) {
+  var durum = gunDurumu(gun);
+  var cls = 'acc-item';
+  if (durum === 'aktif') cls += ' aktif acik';
+  else if (durum === 'gecmis') cls += ' gecmis';
+  else if (durum === 'kilitli') cls += ' kilitli';
+  else if (durum === 'suresi_doldu') cls += ' gecmis';
+
+  var badgeMap = {
+    aktif:        '<span class="gun-durum-badge badge-aktif">Bugün</span>',
+    kilitli:      '<span class="gun-durum-badge badge-kilitli">🔒 Bekliyor</span>',
+    gecmis:       '<span class="gun-durum-badge badge-gecmis">Geçti</span>',
+    suresi_doldu: '<span class="gun-durum-badge badge-gecmis">Doldu</span>'
+  };
+
+  var tarihStr = gun.tarih.getDate() + ' ' + gun.tarih.toLocaleString('tr-TR', { month: 'long' });
+
+  // Geçmiş günler için mevcut checkpoint işareti
+  var checkIcon = durum === 'gecmis' ? '✓ ' : '';
+
+  var html = '<div class="acc-item ' + cls.replace('acc-item ','') + '" id="acc_' + gun.prefix + '">' +
+    '<div class="acc-header" onclick="accToggle(\'' + gun.prefix + '\')">' +
+      '<div>' +
+        '<div class="acc-gun-adi">' + checkIcon + gun.ad + '</div>' +
+        '<div class="acc-tarih">' + tarihStr + '</div>' +
+        '<div class="acc-soru" id="acc_soru_' + gun.prefix + '"></div>' +
+      '</div>' +
+      '<div class="acc-mini-bar"><div class="acc-mini-fill" id="acc_bar_' + gun.prefix + '" style="width:0%"></div></div>' +
+      '<div class="acc-badges">' + badgeMap[durum] + '</div>' +
+      '<div class="acc-chevron">' + (durum === 'kilitli' ? '' : '▼') + '</div>' +
+    '</div>' +
+    '<div class="acc-body">';
+
+  if (durum === 'kilitli') {
+    var d2 = gun.tarih.getDate();
+    var ay = gun.tarih.toLocaleString('tr-TR', { month: 'long' });
+    html += '<div class="kilit-overlay" style="padding:20px">Bu gün henüz gelmedi<br>' +
+      '<small style="color:#94a3b8">' + d2 + ' ' + ay + ' tarihinde açılacak</small></div>';
+  } else {
+    // Dersler ve görevler
+    gun.dersler.forEach(function(d) {
+      html += '<div class="ders-blok"><div class="ders-baslik ' + d.cls + '">' + d.ad + '</div><div class="gorev-list">';
+      d.gorevler.forEach(function(g) {
+        if (g.checkbox) {
+          var cbDis = (durum !== 'aktif') ? 'disabled' : '';
+          html += '<div class="gorev-item">' +
+            '<input type="checkbox" class="gorev-cb" id="' + g.id + '" ' + cbDis +
+            ' onchange="gorevDegisti(this);accBarGuncelle(\'' + gun.prefix + '\')">' +
+            '<label class="gorev-metin" for="' + g.id + '">' + g.metin + '</label>' +
+          '</div>';
+        } else {
+          html += '<div class="gorev-item soru-gorev"><span class="gorev-nokta">✦</span><span class="gorev-metin">' + g.metin + '</span></div>';
+        }
+      });
+      html += '</div></div>';
+    });
+    // Takip
+    html += takipDersleriHTML(gun, durum);
+  }
+
+  html += '</div></div>';
+  return html;
+}
+
+function accSoruGuncelle(prefix) {
+  var gun = GUNLER.find(function(g) { return g.prefix === prefix; });
+  if (!gun) return;
+  var takipDersler = gun.dersler.filter(function(d) { return d.takipKey; });
+  var toplam = 0;
+  takipDersler.forEach(function(d) {
+    var did = d.takipKey;
+    var dEl = document.getElementById(prefix + '_' + did + '_d');
+    var yEl = document.getElementById(prefix + '_' + did + '_y');
+    var bEl = document.getElementById(prefix + '_' + did + '_b');
+    toplam += (dEl ? parseInt(dEl.value) || 0 : 0)
+            + (yEl ? parseInt(yEl.value) || 0 : 0)
+            + (bEl ? parseInt(bEl.value) || 0 : 0);
+  });
+  var el = document.getElementById('acc_soru_' + prefix);
+  if (el) el.textContent = toplam > 0 ? toplam + ' soru' : '';
+}
+
+function accSoruGuncelleSunucu(gunAdi, toplam) {
+  // Server'dan gelen veriyle güncelle
+  var gun = GUNLER.find(function(g) { return g.ad === gunAdi; });
+  if (!gun) return;
+  var el = document.getElementById('acc_soru_' + gun.prefix);
+  if (el && toplam > 0) el.textContent = toplam + ' soru';
+}
+
+function accBarGuncelle(prefix) {
+  var gun = GUNLER.find(function(g) { return g.prefix === prefix; });
+  if (!gun) return;
+  var pct = gunTamamlanmaPct(gun);
+  var bar = document.getElementById('acc_bar_' + prefix);
+  if (bar) bar.style.width = pct + '%';
+}
+
+document.getElementById('accordionGunler').innerHTML = GUNLER.map(accGunHTML).join('');
+
+// ── TIMER'LAR ──
+var timerIds = {};
+GUNLER.forEach(function (gun) {
+  if (gunDurumu(gun) !== 'aktif') return;
+
   function guncelle() {
-    const kalan = kalanSure(gun);
-    const el = document.getElementById(gun.prefix + '_sayim');
-    const btn = document.getElementById(gun.prefix + '_btn');
-    if (!el) return;
+    var kalan = kalanSure(gun);
+    var el    = document.getElementById(gun.prefix + '_sayim');
+    var btn   = document.getElementById(gun.prefix + '_btn');
+    if (!el) { clearInterval(timerIds[gun.prefix]); return; }
+
     if (!kalan) {
       el.textContent = 'Giriş süresi doldu.';
       if (btn) { btn.disabled = true; btn.textContent = 'Giriş süresi doldu'; }
       clearInterval(timerIds[gun.prefix]);
-      document.querySelectorAll('#kart_'+gun.prefix+' input, #kart_'+gun.prefix+' .gorev-cb').forEach(function(i){i.disabled=true;});
+      document.querySelectorAll('#kart_' + gun.prefix + ' input, #kart_' + gun.prefix + ' .gorev-cb')
+        .forEach(function (i) { i.disabled = true; });
       return;
     }
-    const sure = (kalan.s > 0 ? kalan.s + ' sa ' : '') + kalan.d + ' dk ' + kalan.sn + ' sn';
+
+    var sure = (kalan.s > 0 ? kalan.s + ' sa ' : '') + kalan.d + ' dk ' + kalan.sn + ' sn';
     el.textContent = 'Son giriş saatine ' + sure + ' kaldı';
     if (kalan.toplam < 600000) el.classList.add('son-dakika');
   }
+
   guncelle();
   timerIds[gun.prefix] = setInterval(guncelle, 1000);
 });
 
-function val(id) { const el = document.getElementById(id); return el ? (el.value || '0') : '0'; }
-function strVal(id) { const el = document.getElementById(id); return el ? (el.value || '') : ''; }
+// ══════════════════════════════════════════════════════════════════
+//  VERİ GÖNDERME  (no-cors kaldırıldı — gerçek hata/başarı ayrımı)
+// ══════════════════════════════════════════════════════════════════
 
 function gonderiBilgisiTopla(gun) {
-  const dersGorevler = {};
-  gun.dersler.forEach(function(d) {
-    if (!d.key || d.key === 'kit') return;
-    const checkboxGorevler = d.gorevler.filter(function(g) { return g.checkbox; });
-    if (checkboxGorevler.length === 0) return;
-    const tamamlanan = checkboxGorevler.filter(function(g) {
-      const cb = document.getElementById(g.id);
+  var gorevBilgisi = {};
+  gun.dersler.forEach(function (d) {
+    if (!d.takipKey || d.takipKey === 'kit') return;
+    var cbGorevler = d.gorevler.filter(function (g) { return g.checkbox; });
+    if (!cbGorevler.length) return;
+    var tamamlanan = cbGorevler.filter(function (g) {
+      var cb = document.getElementById(g.id);
       return cb && cb.checked;
     }).length;
-    dersGorevler[d.key + '_gorev'] = tamamlanan + '/' + checkboxGorevler.length;
+    gorevBilgisi[d.takipKey + '_gorev'] = tamamlanan + '/' + cbGorevler.length;
   });
-  return dersGorevler;
+  return gorevBilgisi;
 }
 
-const SON_GUN_ADI = GUNLER.length > 0 ? GUNLER[GUNLER.length - 1].ad : null;
+function gonder(gunAdi, prefix) {
+  var btn     = document.getElementById(prefix + '_btn');
+  var mesajEl = document.getElementById(prefix + '_mesaj');
+  btn.disabled    = true;
+  btn.textContent = 'Kaydediliyor...';
 
-const TEBRIK_MESAJLARI = ["Bu hafta gerçekten harika bir performans sergiliyorsun! Rakamlar bunu açıkça söylüyor.","Haftayı güçlü bitirdin! Her gün biraz daha ileri gidiyorsun, bunu unutma.","Sayılara bak! Bu hafta kendini astın. Böyle devam edersen LGS'de istediğin yere gelirsin.","Harika bir hafta geçirdin! Bu temponu korursan hedef puanına ulaşman an meselesi.","Bu hafta yaptıkların boşa gitmiyor. Her soru, her sayfa seni bir adım öne taşıdı.","Süpersin! Bu haftaki çalışman gerçekten etkileyici. Kendinle gurur duyabilirsin."];
-const MOTIVASYON_HAFTALIK = ["Bu hafta istediğin kadar verimli olmadı ama bu bitti demek değil. Gelecek hafta daha güçlü başlayacaksın.","Bazı haftalar zor geçer. Önemli olan bırakmamak. Sen burada olmaya devam ediyorsun, bu başlı başına bir başarı.","Zor bir hafta geçirmiş olabilirsin. Pazar dinlen, pazartesi temiz sayfa aç.","Herkesin zorlandığı haftalar olur. Önemli olan pes etmemek. Gelecek hafta daha iyi olacak."];
+  var gun          = GUNLER.find(function (g) { return g.prefix === prefix; });
+  var gorevBilgisi = gun ? gonderiBilgisiTopla(gun) : {};
+
+  var konular = [];
+  if (gun) {
+    var dAd = { mat:'Matematik', fen:'Fen', tur:'Turkce', ing:'Ingilizce', sos:'Sosyal', din:'Din', par:'Paragraf' };
+    gun.dersler.forEach(function (d) {
+      d.gorevler.forEach(function (g) {
+        if (g.checkbox) {
+          var cb = document.getElementById(g.id);
+          if (cb && cb.checked) konular.push({ ders: dAd[d.takipKey] || d.takipKey, konu: g.metin });
+        }
+      });
+    });
+  }
+
+  // Sadece o günde gerçekten var olan dersleri gönder
+  // olmayan ders için val() uyarı vermez, Sheet'e 0 yazılır
+  var TUM_DERSLER = ['mat','fen','tur','ing','sos','din','par'];
+  var gunDersleri = gun
+    ? gun.dersler.filter(function(d){ return d.takipKey; }).map(function(d){ return d.takipKey; })
+    : [];
+
+  var dersVerisi = {};
+  TUM_DERSLER.forEach(function(k) {
+    var varMi = gunDersleri.indexOf(k) !== -1;
+    dersVerisi[k+'_d'] = varMi ? val(prefix+'_'+k+'_d') : '0';
+    dersVerisi[k+'_y'] = varMi ? val(prefix+'_'+k+'_y') : '0';
+    dersVerisi[k+'_b'] = varMi ? val(prefix+'_'+k+'_b') : '0';
+  });
+
+  var veri = Object.assign({
+    ogrenciAdi: OGRENCI_ADI, haftaNo: HAFTA_NO, gun: gunAdi,
+    kitap:     val(prefix+'_kitap'),
+    kitap_adi: strVal(prefix+'_kitap_adi'),
+    not:       strVal(prefix+'_not'),
+    konular: konular
+  }, dersVerisi, gorevBilgisi);
+
+  // 'application/json' → preflight (CORS sorun) yaratır.
+  // 'text/plain' → preflight gerekmez, Apps Script sorunsuz kabul eder.
+  fetch(SCRIPT_URL, {
+    method:  'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body:    JSON.stringify(veri)
+  })
+  .then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  })
+  .then(function (data) {
+    if (data.durum !== 'ok' && data.durum !== 'basarili') throw new Error(data.mesaj || 'Sunucu hatası');
+
+    var rastgele = MOTIVASYON_MESAJLARI[Math.floor(Math.random() * MOTIVASYON_MESAJLARI.length)];
+    mesajEl.textContent  = rastgele;
+    mesajEl.className    = 'gonder-mesaj mesaj-ok';
+    mesajEl.style.display = 'block';
+    btn.textContent = 'Güncelle ✓';
+    btn.classList.add('tamamlandi');
+    btn.disabled = false;
+    lsKaydet();
+    setTimeout(yukleOzet, 1500);
+
+    // Son gün gönderildi → haftalık özet popup
+    if (gunAdi === SON_GUN_ADI) {
+      setTimeout(function () {
+        fetch(SCRIPT_URL + '?ogrenciAdi=' + encodeURIComponent(OGRENCI_ADI) + '&haftaNo=' + encodeURIComponent(HAFTA_NO))
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            if (data.durum === 'basarili' && data.gunler && data.gunler.length) {
+              gosterHaftaOzetiPopup(data.gunler);
+            }
+          })
+          .catch(function (err) { console.error('Hafta özeti yüklenemedi:', err); });
+      }, 800);
+    }
+  })
+  .catch(function (err) {
+    console.error('Gönderim hatası:', err);
+    mesajEl.textContent   = 'Gönderilemedi: ' + err.message + ' — tekrar dene.';
+    mesajEl.className     = 'gonder-mesaj mesaj-hata';
+    mesajEl.style.display = 'block';
+    btn.disabled          = false;
+    btn.textContent       = 'Tekrar Dene';
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  LOCAL STORAGE  (debounce + temiz key)
+// ══════════════════════════════════════════════════════════════════
+
+function lsKaydet() {
+  GUNLER.forEach(function (gun) {
+    ['mat','fen','tur','ing','sos','din','par'].forEach(function (ders) {
+      ['d','y','b'].forEach(function (tip) {
+        var el = document.getElementById(gun.prefix + '_' + ders + '_' + tip);
+        if (el && !el.disabled) localStorage.setItem(LS_PREFIX + gun.prefix + '_' + ders + '_' + tip, el.value);
+      });
+    });
+    var kitap = document.getElementById(gun.prefix + '_kitap');
+    if (kitap && !kitap.disabled) localStorage.setItem(LS_PREFIX + gun.prefix + '_kitap', kitap.value);
+    var kitapAdi = document.getElementById(gun.prefix + '_kitap_adi');
+    if (kitapAdi && !kitapAdi.disabled) localStorage.setItem(LS_PREFIX + gun.prefix + '_kitap_adi', kitapAdi.value);
+    var not = document.getElementById(gun.prefix + '_not');
+    if (not && !not.disabled) localStorage.setItem(LS_PREFIX + gun.prefix + '_not', not.value);
+
+    gun.dersler.forEach(function (d) {
+      d.gorevler.forEach(function (g) {
+        if (g.checkbox) {
+          var cb = document.getElementById(g.id);
+          if (cb && !cb.disabled) localStorage.setItem(LS_PREFIX + 'cb_' + g.id, cb.checked ? '1' : '0');
+        }
+      });
+    });
+  });
+}
+
+// Her tuş vuruşunda değil, 500ms sonra kaydet
+var _lsTimer;
+function lsKaydetDebounced() {
+  clearTimeout(_lsTimer);
+  _lsTimer = setTimeout(lsKaydet, 500);
+}
+
+function lsYukle() {
+  GUNLER.forEach(function (gun) {
+    ['mat','fen','tur','ing','sos','din','par'].forEach(function (ders) {
+      ['d','y','b'].forEach(function (tip) {
+        var el = document.getElementById(gun.prefix + '_' + ders + '_' + tip);
+        if (el && !el.disabled) {
+          var v = localStorage.getItem(LS_PREFIX + gun.prefix + '_' + ders + '_' + tip);
+          if (v !== null && v !== '') { el.value = v; hesaplaNet(gun.prefix, ders); }
+        }
+      });
+    });
+    var kitap = document.getElementById(gun.prefix + '_kitap');
+    if (kitap && !kitap.disabled) {
+      var kv = localStorage.getItem(LS_PREFIX + gun.prefix + '_kitap');
+      if (kv !== null) kitap.value = kv;
+    }
+    var kitapAdi = document.getElementById(gun.prefix + '_kitap_adi');
+    if (kitapAdi && !kitapAdi.disabled) {
+      var kav = localStorage.getItem(LS_PREFIX + gun.prefix + '_kitap_adi');
+      if (kav !== null) kitapAdi.value = kav;
+    }
+    var not = document.getElementById(gun.prefix + '_not');
+    if (not && !not.disabled) {
+      var nv = localStorage.getItem(LS_PREFIX + gun.prefix + '_not');
+      if (nv !== null) not.value = nv;
+    }
+    gun.dersler.forEach(function (d) {
+      d.gorevler.forEach(function (g) {
+        if (g.checkbox) {
+          var cb = document.getElementById(g.id);
+          if (cb && !cb.disabled) {
+            var cv = localStorage.getItem(LS_PREFIX + 'cb_' + g.id);
+            if (cv !== null) {
+              cb.checked = (cv === '1');
+              var label = document.querySelector('label[for="' + g.id + '"]');
+              if (label) {
+                if (cb.checked) label.classList.add('tamamlandi');
+                else            label.classList.remove('tamamlandi');
+              }
+            }
+          }
+        }
+      });
+    });
+    // Accordion mini bar ve soru sayısı güncelle
+    accBarGuncelle(gun.prefix);
+    accSoruGuncelle(gun.prefix);
+  });
+}
+
+function lsDinleyiciEkle() {
+  document.querySelectorAll('.takip-input, .kp-input, .not-input, .kp-item input[type="text"]').forEach(function (el) {
+    el.addEventListener('input', lsKaydetDebounced);
+    el.addEventListener('input', function() {
+      // Hangi güne ait olduğunu id'den bul (prefix_ders_tip formatı)
+      var parts = (this.id || '').split('_');
+      if (parts.length >= 2) accSoruGuncelle(parts[0]);
+    });
+  });
+  document.querySelectorAll('.gorev-cb').forEach(function (el) {
+    el.addEventListener('change', lsKaydetDebounced);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════
+//  HAFTALIK ÖZET TABLOSU
+// ══════════════════════════════════════════════════════════════════
+
+var OZET_DERSLER = [
+  { key:'mat', ad:'Mat',      renk:'var(--mat)' },
+  { key:'fen', ad:'Fen',      renk:'var(--fen)' },
+  { key:'tur', ad:'Türkçe',   renk:'var(--tur)' },
+  { key:'ing', ad:'İng',      renk:'var(--ing)' },
+  { key:'sos', ad:'Sosyal',   renk:'var(--sos)' },
+  { key:'din', ad:'Din',      renk:'var(--din)' },
+  { key:'par', ad:'Paragraf', renk:'var(--par)' },
+];
+
+function renderOzetTablo(gunler) {
+  var el = document.getElementById('haftalikOzetIcerik');
+  if (!el) return;
+  if (!gunler || !gunler.length) {
+    el.innerHTML = '<div class="ozet-bos">Henüz bu haftaya ait kayıt yok.</div>';
+    return;
+  }
+  var html = '<div style="overflow-x:auto"><table class="ozet-tablo"><thead><tr><th>Gün</th>';
+  OZET_DERSLER.forEach(function (d) { html += '<th style="color:' + d.renk + '">' + d.ad + '</th>'; });
+  html += '<th style="color:var(--kit)">Kitap</th><th style="color:var(--mat);border-left:2px solid var(--border)">Günlük</th></tr></thead><tbody>';
+
+  var toplamSoru = 0;
+  var toplamKitap = 0;
+  // Her ders için toplam D, Y, B tut
+  var dersToplam = {};
+  OZET_DERSLER.forEach(function(d) { dersToplam[d.key] = {d:0, y:0, b:0}; });
+
+  gunler.forEach(function (g) {
+    html += '<tr><td>' + (g.gun || '—') + '</td>';
+    OZET_DERSLER.forEach(function (d) {
+      var dv = Number(g[d.key+'_d']||0), yv = Number(g[d.key+'_y']||0), bv = Number(g[d.key+'_b']||0);
+      var total = dv + yv + bv;
+      toplamSoru += total;
+      dersToplam[d.key].d += dv;
+      dersToplam[d.key].y += yv;
+      dersToplam[d.key].b += bv;
+      if (!total) {
+        html += '<td class="ozet-net-yok">—</td>';
+      } else {
+        var net  = dv - yv / 3;
+        var renk = net >= 0 ? d.renk : '#dc2626';
+        html += '<td style="color:' + renk + '">' + net.toFixed(1) +
+          '<span style="font-size:10px;color:var(--muted);font-weight:400"> (' + total + ')</span></td>';
+      }
+    });
+    var kitap = g.kitap && g.kitap > 0 ? g.kitap : 0;
+    toplamKitap += kitap;
+    html += '<td style="color:var(--kit)">' + (kitap > 0 ? kitap + ' s.' : '—') + '</td>';
+    // Günlük toplam soru
+    var gunSoru = OZET_DERSLER.reduce(function(acc, d) {
+      return acc + Number(g[d.key+'_d']||0) + Number(g[d.key+'_y']||0) + Number(g[d.key+'_b']||0);
+    }, 0);
+    html += '<td style="font-weight:800;color:var(--mat);font-size:13px;border-left:2px solid var(--border);text-align:center">' + (gunSoru > 0 ? gunSoru : '—') + '</td></tr>';
+  });
+
+  // ── TOPLAM SATIRI ──
+  html += '<tr style="border-top:2px solid var(--mat)">';
+  html += '<td style="font-size:11px;font-weight:800;color:var(--mat);letter-spacing:0.06em;text-transform:uppercase">Toplam</td>';
+  OZET_DERSLER.forEach(function(d) {
+    var dv = dersToplam[d.key].d, yv = dersToplam[d.key].y, bv = dersToplam[d.key].b;
+    var total = dv + yv + bv;
+    if (!total) {
+      html += '<td class="ozet-net-yok">—</td>';
+    } else {
+      var net  = dv - yv / 3;
+      var renk = net >= 0 ? d.renk : '#dc2626';
+      html += '<td style="color:' + renk + ';font-size:13px;font-weight:800">' + net.toFixed(1) +
+        '<span style="font-size:10px;color:var(--muted);font-weight:400"> (' + total + ')</span></td>';
+    }
+  });
+  html += '<td style="color:var(--kit);font-weight:800">' + (toplamKitap > 0 ? toplamKitap + ' s.' : '—') + '</td>';
+  html += '<td style="font-weight:800;color:var(--mat);font-size:13px;border-left:2px solid var(--border);text-align:center">' + toplamSoru + '</td>';
+  html += '</tr>';
+
+  html += '</tbody></table></div>';
+  html += '<div style="margin-top:10px;font-size:12px;color:var(--muted);text-align:right;font-weight:600">' +
+    '📊 ' + gunler.length + ' gün kayıtlı &nbsp;·&nbsp; ✏️ Toplam ' + toplamSoru + ' soru</div>';
+  el.innerHTML = html;
+}
+
+function yukleOzet() {
+  fetch(SCRIPT_URL + '?ogrenciAdi=' + encodeURIComponent(OGRENCI_ADI) + '&haftaNo=' + encodeURIComponent(HAFTA_NO))
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (data.durum === 'basarili') {
+        renderOzetTablo(data.gunler || []);
+        // Accordion başlıklarına soru sayısı yaz
+        (data.gunler || []).forEach(function(g) {
+          var DERSLER = ['mat','fen','tur','ing','sos','din','par'];
+          var toplam = DERSLER.reduce(function(acc, k) {
+            return acc + (Number(g[k+'_d'])||0) + (Number(g[k+'_y'])||0) + (Number(g[k+'_b'])||0);
+          }, 0);
+          accSoruGuncelleSunucu(g.gun, toplam);
+        });
+      } else {
+        document.getElementById('haftalikOzetIcerik').innerHTML =
+          '<div class="ozet-bos">Veri alınamadı.</div>';
+      }
+    })
+    .catch(function (err) {
+      console.error('Özet yüklenemedi:', err);
+      document.getElementById('haftalikOzetIcerik').innerHTML =
+        '<div class="ozet-bos">Bağlantı hatası — sayfayı yenile.</div>';
+    });
+}
+
+// ── HAFTALIK ÖZET POPUP ──
+var TEBRIK_MESAJLARI = [
+  'Bu hafta gerçekten harika bir performans sergiliyorsun! Rakamlar bunu açıkça söylüyor.',
+  'Haftayı güçlü bitirdin! Her gün biraz daha ileri gidiyorsun, bunu unutma.',
+  'Sayılara bak! Bu hafta kendini astın. Böyle devam edersen LGS\'de istediğin yere gelirsin.',
+  'Harika bir hafta geçirdin! Bu temponu korursan hedef puanına ulaşman an meselesi.'
+];
+var MOTIVASYON_HAFTALIK = [
+  'Bu hafta istediğin kadar verimli olmadı ama bu bitti demek değil. Gelecek hafta daha güçlü başlayacaksın.',
+  'Bazı haftalar zor geçer. Önemli olan bırakmamak. Devam et!',
+  'Zor bir hafta geçirdin. Pazar dinlen, pazartesi temiz sayfa aç.'
+];
 
 function rastgeleSecim(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
 function hesaplaHaftaOzeti(gunler) {
-  let toplamSoru = 0, toplamParagraf = 0;
-  let dersToplam = { mat:0, fen:0, tur:0, ing:0, sos:0, din:0 };
-  let dersGunSayisi = { mat:0, fen:0, tur:0, ing:0, sos:0, din:0 };
-  let enIyiGun = null, enIyiSoru = -1;
+  var toplamSoru = 0, toplamKitap = 0, toplamParagraf = 0;
+  var dersToplam    = { mat:0, fen:0, tur:0, ing:0, sos:0, din:0 };
+  var dersGunSayisi = { mat:0, fen:0, tur:0, ing:0, sos:0, din:0 };
+  var enIyiGun = null, enIyiSoru = -1;
 
-  gunler.forEach(function(g) {
-    const dersler = ['mat','fen','tur','ing','sos','din'];
-    let gunSoru = 0;
-    dersler.forEach(function(d) {
-      const net = (Number(g[d+'_d']) || 0) - (Number(g[d+'_y']) || 0) / 3;
-      const soru = (Number(g[d+'_d']) || 0) + (Number(g[d+'_y']) || 0) + (Number(g[d+'_b']) || 0);
-      if (soru > 0) {
-        dersToplam[d] += net;
-        dersGunSayisi[d]++;
-        gunSoru += soru;
-      }
+  gunler.forEach(function (g) {
+    var gunSoru = 0;
+    ['mat','fen','tur','ing','sos','din'].forEach(function (d) {
+      var net  = (Number(g[d+'_d'])||0) - (Number(g[d+'_y'])||0) / 3;
+      var soru = (Number(g[d+'_d'])||0) + (Number(g[d+'_y'])||0) + (Number(g[d+'_b'])||0);
+      if (soru > 0) { dersToplam[d] += net; dersGunSayisi[d]++; gunSoru += soru; }
     });
     toplamParagraf += Number(g.paragraf) || 0;
-    gunSoru += Number(g.paragraf) || 0;
+    gunSoru    += Number(g.paragraf) || 0;
     toplamSoru += gunSoru;
+    toplamKitap+= Number(g.kitap) || 0;
     if (gunSoru > enIyiSoru) { enIyiSoru = gunSoru; enIyiGun = g.gun; }
   });
 
-  const dersNetleri = {};
-  Object.keys(dersToplam).forEach(function(d) {
+  var dersNetleri = {};
+  Object.keys(dersToplam).forEach(function (d) {
     dersNetleri[d] = dersGunSayisi[d] > 0 ? (dersToplam[d] / dersGunSayisi[d]).toFixed(1) : null;
   });
-
-  return { toplamSoru, toplamParagraf, dersNetleri, enIyiGun, enIyiSoru };
+  return { toplamSoru:toplamSoru, toplamKitap:toplamKitap, toplamParagraf:toplamParagraf,
+           dersNetleri:dersNetleri, enIyiGun:enIyiGun, enIyiSoru:enIyiSoru };
 }
 
 function gosterHaftaOzetiPopup(gunler) {
-  const ozet = hesaplaHaftaOzeti(gunler);
-  const iyi = ozet.toplamSoru >= 150;
-  const mesaj = iyi ? rastgeleSecim(TEBRIK_MESAJLARI) : rastgeleSecim(MOTIVASYON_HAFTALIK);
+  var ozet  = hesaplaHaftaOzeti(gunler);
+  var iyi   = ozet.toplamSoru >= 150;
+  var mesaj = iyi ? rastgeleSecim(TEBRIK_MESAJLARI) : rastgeleSecim(MOTIVASYON_HAFTALIK);
+  var dAd   = { mat:'Matematik', fen:'Fen', tur:'Türkçe', ing:'İngilizce', sos:'Sosyal', din:'Din' };
+  var dRenk = { mat:'#2563eb',   fen:'#16a34a', tur:'#9333ea', ing:'#d97706', sos:'#0891b2', din:'#be185d' };
 
-  const dersAdMap = { mat:'Matematik', fen:'Fen', tur:'Türkçe', ing:'İngilizce', sos:'Sosyal', din:'Din' };
-  const dersRenkMap = { mat:'#2563eb', fen:'#16a34a', tur:'#9333ea', ing:'#d97706', sos:'#0891b2', din:'#be185d' };
-
-  let dersKartlariHTML = Object.keys(ozet.dersNetleri).map(function(d) {
-    const net = ozet.dersNetleri[d];
+  var kartlar = Object.keys(ozet.dersNetleri).map(function (d) {
+    var net = ozet.dersNetleri[d];
     if (net === null) return '';
-    const renk = dersRenkMap[d];
-    return '<div style="text-align:center;padding:8px 6px;border-radius:10px;border:2px solid ' + renk + '22;background:' + renk + '11">' +
-      '<div style="font-size:11px;font-weight:800;color:' + renk + ';text-transform:uppercase">' + dersAdMap[d] + '</div>' +
-      '<div style="font-size:20px;font-weight:900;color:' + renk + '">' + net + '</div>' +
-      '<div style="font-size:10px;color:#64748b">ort. net</div>' +
-      '</div>';
+    var r = dRenk[d];
+    return '<div style="text-align:center;padding:8px 6px;border-radius:10px;border:2px solid '+r+'22;background:'+r+'11">' +
+      '<div style="font-size:11px;font-weight:800;color:'+r+';text-transform:uppercase">'+dAd[d]+'</div>' +
+      '<div style="font-size:20px;font-weight:900;color:'+r+'">'+net+'</div>' +
+      '<div style="font-size:10px;color:#64748b">ort. net</div></div>';
   }).filter(Boolean).join('');
 
-  const overlay = document.createElement('div');
+  var overlay = document.createElement('div');
   overlay.id = 'hafta-ozeti-overlay';
   overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px';
-
   overlay.innerHTML =
     '<div style="background:white;border-radius:20px;padding:24px;max-width:420px;width:100%;max-height:90vh;overflow-y:auto;position:relative">' +
       '<button id="hafta-kapat-btn" style="position:absolute;top:12px;right:14px;background:none;border:none;font-size:22px;cursor:pointer;color:#94a3b8">×</button>' +
       '<div style="text-align:center;margin-bottom:16px">' +
-        '<div style="font-size:36px;margin-bottom:6px">' + (iyi ? '🏆' : '💪') + '</div>' +
+        '<div style="font-size:36px;margin-bottom:6px">'+(iyi?'🏆':'💪')+'</div>' +
         '<div style="font-size:18px;font-weight:900;color:#1a1a2e">Haftanı Tamamladın!</div>' +
-        '<div style="font-size:13px;color:#64748b;margin-top:2px">İşte bu haftanın özeti</div>' +
       '</div>' +
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">' +
-        '<div style="text-align:center;padding:10px 6px;border-radius:12px;background:#f0f4ff;border:2px solid #dde3f0">' +
-          '<div style="font-size:24px;font-weight:900;color:#0891b2">' + ozet.toplamSoru + '</div>' +
-          '<div style="font-size:11px;font-weight:700;color:#64748b">toplam soru</div>' +
-        '</div>' +
-        '<div style="text-align:center;padding:10px 6px;border-radius:12px;background:#fefce8;border:2px solid #fde68a">' +
-          '<div style="font-size:24px;font-weight:900;color:#b45309">' + ozet.toplamParagraf + '</div>' +
-          '<div style="font-size:11px;font-weight:700;color:#64748b">paragraf soru</div>' +
-        '</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">' +
+        '<div style="text-align:center;padding:10px 6px;border-radius:12px;background:#f0f4ff;border:2px solid #dde3f0"><div style="font-size:24px;font-weight:900;color:#2563eb">'+ozet.toplamSoru+'</div><div style="font-size:11px;font-weight:700;color:#64748b">toplam soru</div></div>' +
+        '<div style="text-align:center;padding:10px 6px;border-radius:12px;background:#f0fdf4;border:2px solid #bbf7d0"><div style="font-size:24px;font-weight:900;color:#16a34a">'+ozet.toplamKitap+'</div><div style="font-size:11px;font-weight:700;color:#64748b">sayfa kitap</div></div>' +
+        '<div style="text-align:center;padding:10px 6px;border-radius:12px;background:#fefce8;border:2px solid #fde68a"><div style="font-size:24px;font-weight:900;color:#b45309">'+ozet.toplamParagraf+'</div><div style="font-size:11px;font-weight:700;color:#64748b">paragraf</div></div>' +
       '</div>' +
-      (ozet.enIyiGun ? '<div style="text-align:center;margin-bottom:12px;padding:8px;background:#ecfeff;border-radius:10px;border:2px solid #a5f3fc"><span style="font-size:13px;font-weight:700;color:#0891b2">⭐ En iyi günün: ' + ozet.enIyiGun + ' (' + ozet.enIyiSoru + ' soru)</span></div>' : '') +
-      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px">' + dersKartlariHTML + '</div>' +
-      '<div style="padding:14px 16px;border-radius:12px;background:' + (iyi ? '#f0fdf4' : '#fefce8') + ';border:2px solid ' + (iyi ? '#86efac' : '#fde68a') + ';font-size:14px;font-weight:600;color:' + (iyi ? '#15803d' : '#854d0e') + ';line-height:1.6;text-align:center">' +
-        mesaj +
-      '</div>' +
+      (ozet.enIyiGun ? '<div style="text-align:center;margin-bottom:12px;padding:8px;background:#faf5ff;border-radius:10px;border:2px solid #e9d5ff"><span style="font-size:13px;font-weight:700;color:#7c3aed">⭐ En iyi günün: '+ozet.enIyiGun+' ('+ozet.enIyiSoru+' soru)</span></div>' : '') +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px">'+kartlar+'</div>' +
+      '<div style="padding:14px 16px;border-radius:12px;background:'+(iyi?'#f0fdf4':'#fefce8')+';border:2px solid '+(iyi?'#86efac':'#fde68a')+';font-size:14px;font-weight:600;color:'+(iyi?'#15803d':'#854d0e')+';line-height:1.6;text-align:center">'+mesaj+'</div>' +
     '</div>';
 
   document.body.appendChild(overlay);
-  document.getElementById('hafta-kapat-btn').addEventListener('click', function() { overlay.remove(); });
-  overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
+  document.getElementById('hafta-kapat-btn').addEventListener('click', function () { overlay.remove(); });
+  overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.remove(); });
 }
 
-function gonder(gunAdi, prefix) {
-  const btn = document.getElementById(prefix + '_btn');
-  btn.disabled = true;
-  btn.textContent = 'Kaydediliyor...';
-
-  const gun = GUNLER.find(function(g) { return g.prefix === prefix; });
-  const gorevBilgisi = gun ? gonderiBilgisiTopla(gun) : {};
-
-  const veri = Object.assign({
-    ogrenciAdi: OGRENCI_ADI, haftaNo: HAFTA_NO, gun: gunAdi,
-    mat_d: val(prefix+'_mat_d'), mat_y: val(prefix+'_mat_y'), mat_b: val(prefix+'_mat_b'),
-    fen_d: val(prefix+'_fen_d'), fen_y: val(prefix+'_fen_y'), fen_b: val(prefix+'_fen_b'),
-    tur_d: val(prefix+'_tur_d'), tur_y: val(prefix+'_tur_y'), tur_b: val(prefix+'_tur_b'),
-    ing_d: val(prefix+'_ing_d'), ing_y: val(prefix+'_ing_y'), ing_b: val(prefix+'_ing_b'),
-    sos_d: val(prefix+'_sos_d'), sos_y: val(prefix+'_sos_y'), sos_b: val(prefix+'_sos_b'),
-    din_d: val(prefix+'_din_d'), din_y: val(prefix+'_din_y'), din_b: val(prefix+'_din_b'),
-    par_d: val(prefix+'_par_d'), par_y: val(prefix+'_par_y'), par_b: val(prefix+'_par_b'),
-    not: strVal(prefix+'_not')
-  }, gorevBilgisi);
-
-  const mesajEl = document.getElementById(prefix + '_mesaj');
-  fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(veri) })
-  .then(function() {
-    const rastgeleMesaj = MOTIVASYON_MESAJLARI[Math.floor(Math.random() * MOTIVASYON_MESAJLARI.length)];
-    mesajEl.textContent = rastgeleMesaj;
-    mesajEl.className = 'gonder-mesaj mesaj-ok';
-    mesajEl.style.display = 'block';
-    btn.textContent = 'Güncelle';
-    btn.classList.add('tamamlandi');
-    btn.disabled = false;
-
-    if (gunAdi === SON_GUN_ADI) {
-      setTimeout(function() {
-        fetch(SCRIPT_URL + '?ogrenciAdi=' + encodeURIComponent(OGRENCI_ADI) + '&haftaNo=' + encodeURIComponent(HAFTA_NO))
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-          if (data.durum === 'basarili' && data.gunler && data.gunler.length > 0) {
-            gosterHaftaOzetiPopup(data.gunler);
-          }
-        })
-        .catch(function() {});
-      }, 800);
-    }
-  })
-  .catch(function() {
-    mesajEl.textContent = 'Bağlantı hatası. Tekrar dene.';
-    mesajEl.className = 'gonder-mesaj mesaj-hata';
-    mesajEl.style.display = 'block';
-    btn.disabled = false;
-    btn.textContent = 'Kaydet';
-  });
-}
+// ── BAŞLAT ──
+lsYukle();
+lsDinleyiciEkle();
+yukleOzet();
 </script>
 </body>
 </html>
