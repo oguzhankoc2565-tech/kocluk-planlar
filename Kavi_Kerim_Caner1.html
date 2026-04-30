@@ -842,7 +842,7 @@ function gonder(gunAdi, prefix) {
     return r.json();
   })
   .then(function (data) {
-    if (data.durum !== 'ok') throw new Error(data.mesaj || 'Sunucu hatası');
+    if (data.durum !== 'ok' && data.durum !== 'basarili') throw new Error(data.mesaj || 'Sunucu hatası');
 
     var rastgele = MOTIVASYON_MESAJLARI[Math.floor(Math.random() * MOTIVASYON_MESAJLARI.length)];
     mesajEl.textContent  = rastgele;
