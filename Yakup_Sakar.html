@@ -382,8 +382,7 @@ const CONFIG = {
 <body>
 <div class="page">
   <div class="header" id="hdr"></div>
-  <div id="dur-kart"></div>
-  <div id="stats-kart"></div>
+  <div id="dur-stats-wrap"><div id="dur-kart" style="flex:1;min-width:0"></div><div id="stats-kart" style="width:260px;flex-shrink:0"></div></div>
   <div id="koc-deg"></div>
   <div id="hdf-kart"></div>
   <div id="hedef-yolu-wrap"></div>
@@ -1201,8 +1200,30 @@ function renderOzetTablo(gunler) {
   html += '</tr>';
 
   html += '</tbody></table></div>';
-  html += '<div style="margin-top:10px;font-size:12px;color:var(--muted);text-align:right;font-weight:600">' +
-    '📊 ' + gunler.length + ' gün kayıtlı &nbsp;·&nbsp; ✏️ Toplam ' + toplamSoru + ' soru</div>';
+  // Kötü dersler hesapla (toplam başarı < %70)
+  var kotuDersler = [];
+  var OZET_ADI = {mat:'Matematik', fen:'Fen', tur:'Türkçe', ing:'İngilizce', sos:'Sosyal', din:'Din', par:'Paragraf'};
+  OZET_DERSLER.forEach(function(d) {
+    var totD = 0, totY = 0, totB = 0;
+    gunler.forEach(function(g) {
+      totD += Number(g[d.key+'_d']||0);
+      totY += Number(g[d.key+'_y']||0);
+      totB += Number(g[d.key+'_b']||0);
+    });
+    var tot = totD + totY + totB;
+    if (tot > 5) {
+      var pct = Math.round(totD / tot * 100);
+      if (pct < 70) kotuDersler.push('<span style="color:' + d.renk + ';font-weight:700">' + OZET_ADI[d.key] + '</span> <span style="color:#991b1b;background:#fee2e2;border-radius:4px;padding:1px 5px;font-size:11px">%' + pct + ' ▼</span>');
+    }
+  });
+
+  var kotuHtml = kotuDersler.length
+    ? '&nbsp;·&nbsp; ⚠️ Dikkat: ' + kotuDersler.join(' &nbsp; ')
+    : '';
+
+  html += '<div style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:600;display:flex;flex-wrap:wrap;gap:4px;align-items:center">' +
+    '<span>📊 ' + gunler.length + ' gün kayıtlı &nbsp;·&nbsp; ✏️ Toplam ' + toplamSoru + ' soru' + kotuHtml + '</span>' +
+    '</div>';
   el.innerHTML = html;
 }
 
@@ -1324,9 +1345,9 @@ function basariOku(d, y, b) {
   var total = d + y + b;
   if (total === 0) return '';
   var pct = d / total * 100;
-  if (pct >= 90) return '<span style="color:#16a34a;font-size:12px;margin-left:2px">↑</span>';
-  if (pct >= 70) return '<span style="color:#d97706;font-size:12px;margin-left:2px">→</span>';
-  return '<span style="color:#dc2626;font-size:12px;margin-left:2px">↓</span>';
+  if (pct >= 90) return '<span style="color:#15803d;font-size:11px;font-weight:900;margin-left:3px;background:#dcfce7;padding:1px 4px;border-radius:4px">▲</span>';
+  if (pct >= 70) return '<span style="color:#92400e;font-size:11px;font-weight:900;margin-left:3px;background:#fef3c7;padding:1px 4px;border-radius:4px">▶</span>';
+  return '<span style="color:#991b1b;font-size:11px;font-weight:900;margin-left:3px;background:#fee2e2;padding:1px 4px;border-radius:4px">▼</span>';
 }
 
 // ── STATS KARTI ──
