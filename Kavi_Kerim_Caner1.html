@@ -24,9 +24,10 @@ const CONFIG = {
   },
 
   durum: {
-    sonPuan:   402.90,
-    ortalama:  394.37,
-    hedef:     413,
+    sonPuan:    402.90,
+    oncekiPuan: 377.00,  // Hedef yolunda başlangıç noktası
+    ortalama:   394.37,
+    hedef:      413,
     gelisim:   'Mat (%56), İng (%52), Fen (%67), Türkçe (%79)',
     // Gösterilmesini istemediğin dersi bu nesneden çıkar.
     netler: {
@@ -340,8 +341,39 @@ const CONFIG = {
   .hedef-label { font-size: 12px; color: var(--muted); margin-bottom: 3px; font-weight: 600; }
   .hedef-val { font-size: 16px; font-weight: 800; }
   .plan-label { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; padding: 0 4px; }
-  .gun-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  @media (max-width: 600px) { .gun-grid { grid-template-columns: 1fr; } .hedef-grid { grid-template-columns: 1fr; } .durum-grid { grid-template-columns: 1fr; } .net-kartlar { justify-content: center; } }
+  @media (max-width: 600px) { .hedef-grid { grid-template-columns: 1fr; } .durum-grid { grid-template-columns: 1fr; } .net-kartlar { justify-content: center; } }
+
+  /* ── HEDEF YOLU ── */
+  .hedef-yolu { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 18px 22px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .hedef-yolu-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .hedef-yolu-track { position: relative; height: 36px; margin: 0 0 10px; }
+  .hedef-yolu-bg { position: absolute; top: 14px; left: 0; right: 0; height: 8px; background: var(--border); border-radius: 4px; }
+  .hedef-yolu-fill { position: absolute; top: 14px; left: 0; height: 8px; background: linear-gradient(90deg, #2563eb, #7c3aed); border-radius: 4px; transition: width 1s cubic-bezier(.16,1,.3,1); }
+  .hedef-yolu-top { position: absolute; top: 0; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .hedef-yolu-top-dot { width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; font-size: 10px; }
+  .hedef-yolu-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 4px; }
+  .hedef-yolu-bilgi { margin-top: 10px; font-size: 13px; color: var(--text); font-weight: 600; text-align: center; }
+  .hedef-yolu-bilgi span { color: var(--mat); font-weight: 800; }
+
+  /* ── ACCORDION ── */
+  .accordion { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+  .acc-item { background: var(--white); border: 2px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: border-color 0.2s; }
+  .acc-item.aktif { border-color: #2563eb; box-shadow: 0 4px 16px rgba(37,99,235,0.1); }
+  .acc-item.gecmis { opacity: 0.75; }
+  .acc-item.kilitli { opacity: 0.5; }
+  .acc-header { display: flex; align-items: center; gap: 12px; padding: 14px 18px; cursor: pointer; user-select: none; transition: background 0.15s; }
+  .acc-header:hover { background: var(--bg); }
+  .acc-item.kilitli .acc-header { cursor: not-allowed; }
+  .acc-gun-adi { font-size: 15px; font-weight: 800; color: var(--text); min-width: 90px; }
+  .acc-item.aktif .acc-gun-adi { color: #2563eb; }
+  .acc-tarih { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .acc-mini-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; min-width: 40px; max-width: 120px; }
+  .acc-mini-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #2563eb, #7c3aed); transition: width 0.4s; }
+  .acc-badges { display: flex; gap: 6px; align-items: center; }
+  .acc-chevron { font-size: 14px; color: var(--muted); transition: transform 0.25s; flex-shrink: 0; }
+  .acc-item.acik .acc-chevron { transform: rotate(180deg); }
+  .acc-body { display: none; padding: 0 18px 18px; border-top: 1px solid var(--border); }
+  .acc-item.acik .acc-body { display: block; }
   .gun-card { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 16px; position: relative; transition: opacity 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
   .gun-card.kilitli { opacity: 0.55; }
   .gun-card.gecmis { opacity: 0.65; }
@@ -429,8 +461,9 @@ const CONFIG = {
   <div id="dur-kart"></div>
   <div id="koc-deg"></div>
   <div id="hdf-kart"></div>
+  <div id="hedef-yolu-wrap"></div>
   <div class="plan-label">📅 Günlük plan &amp; takip</div>
-  <div class="gun-grid" id="gunGrid"></div>
+  <div class="accordion" id="accordionGunler"></div>
   <div class="koc-notu" id="koc-nt"></div>
   <div class="pazar-card">
     <div class="pazar-baslik">☀️ Pazar — veliye bırakılmıştır</div>
@@ -736,7 +769,155 @@ function gunKartiHTML(gun) {
   return html;
 }
 
-document.getElementById('gunGrid').innerHTML = GUNLER.map(gunKartiHTML).join('');
+// ── HEDEF YOLU ──
+(function() {
+  var d = CONFIG.durum;
+  var aralik = d.hedef - d.oncekiPuan;
+  var ilerleme = d.sonPuan - d.oncekiPuan;
+  var pct = Math.min(Math.max(ilerleme / aralik * 100, 0), 100);
+  var kalan = (d.hedef - d.sonPuan).toFixed(2);
+  var topPct = pct.toFixed(1);
+
+  document.getElementById('hedef-yolu-wrap').innerHTML =
+    '<div class="hedef-yolu">' +
+      '<div class="hedef-yolu-baslik">🏁 Hedef Yolu</div>' +
+      '<div class="hedef-yolu-track">' +
+        '<div class="hedef-yolu-bg"></div>' +
+        '<div class="hedef-yolu-fill" id="hy-fill" style="width:0%"></div>' +
+        // Başlangıç noktası
+        '<div class="hedef-yolu-top" style="left:0%">' +
+          '<div class="hedef-yolu-top-dot" style="background:#94a3b8">🚩</div>' +
+        '</div>' +
+        // Şu anki puan
+        '<div class="hedef-yolu-top" id="hy-top" style="left:' + pct + '%">' +
+          '<div class="hedef-yolu-top-dot" style="background:#2563eb">⚽</div>' +
+        '</div>' +
+        // Hedef
+        '<div class="hedef-yolu-top" style="left:100%">' +
+          '<div class="hedef-yolu-top-dot" style="background:#16a34a">🎯</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="hedef-yolu-labels">' +
+        '<span>' + d.oncekiPuan.toFixed(0) + ' (Başlangıç)</span>' +
+        '<span style="color:#2563eb;font-weight:800">' + d.sonPuan.toFixed(2) + ' — %' + topPct + '</span>' +
+        '<span>' + d.hedef + ' (Hedef)</span>' +
+      '</div>' +
+      '<div class="hedef-yolu-bilgi">Hedefe <span>' + kalan + ' puan</span> kaldı — her derste +1 net büyük fark yaratır!</div>' +
+    '</div>';
+
+  // Animasyonlu doldur
+  setTimeout(function() {
+    var fill = document.getElementById('hy-fill');
+    if (fill) fill.style.width = pct + '%';
+  }, 200);
+}());
+
+// ── ACCORDION ──
+function gunTamamlanmaPct(gun) {
+  var total = 0, done = 0;
+  gun.dersler.forEach(function(d) {
+    d.gorevler.forEach(function(g) {
+      if (g.checkbox) {
+        total++;
+        var cb = document.getElementById(g.id);
+        if (cb && cb.checked) done++;
+      }
+    });
+  });
+  return total > 0 ? Math.round(done / total * 100) : 0;
+}
+
+function accToggle(prefix) {
+  var gun = GUNLER.find(function(g) { return g.prefix === prefix; });
+  if (!gun) return;
+  var durum = gunDurumu(gun);
+  if (durum === 'kilitli') return;
+
+  var item = document.getElementById('acc_' + prefix);
+  var isAcik = item.classList.contains('acik');
+
+  // Hepsini kapat
+  GUNLER.forEach(function(g) {
+    var el = document.getElementById('acc_' + g.prefix);
+    if (el) { el.classList.remove('acik'); }
+  });
+
+  // Tıklanana toggle
+  if (!isAcik) item.classList.add('acik');
+}
+
+function accGunHTML(gun) {
+  var durum = gunDurumu(gun);
+  var cls = 'acc-item';
+  if (durum === 'aktif') cls += ' aktif acik';
+  else if (durum === 'gecmis') cls += ' gecmis acik';
+  else if (durum === 'kilitli') cls += ' kilitli';
+  else if (durum === 'suresi_doldu') cls += ' gecmis';
+
+  var badgeMap = {
+    aktif:        '<span class="gun-durum-badge badge-aktif">Bugün</span>',
+    kilitli:      '<span class="gun-durum-badge badge-kilitli">🔒 Bekliyor</span>',
+    gecmis:       '<span class="gun-durum-badge badge-gecmis">Geçti</span>',
+    suresi_doldu: '<span class="gun-durum-badge badge-gecmis">Doldu</span>'
+  };
+
+  var tarihStr = gun.tarih.getDate() + ' ' + gun.tarih.toLocaleString('tr-TR', { month: 'long' });
+
+  // Geçmiş günler için mevcut checkpoint işareti
+  var checkIcon = durum === 'gecmis' ? '✓ ' : '';
+
+  var html = '<div class="acc-item ' + cls.replace('acc-item ','') + '" id="acc_' + gun.prefix + '">' +
+    '<div class="acc-header" onclick="accToggle('' + gun.prefix + '')">' +
+      '<div>' +
+        '<div class="acc-gun-adi">' + checkIcon + gun.ad + '</div>' +
+        '<div class="acc-tarih">' + tarihStr + '</div>' +
+      '</div>' +
+      '<div class="acc-mini-bar"><div class="acc-mini-fill" id="acc_bar_' + gun.prefix + '" style="width:0%"></div></div>' +
+      '<div class="acc-badges">' + badgeMap[durum] + '</div>' +
+      '<div class="acc-chevron">' + (durum === 'kilitli' ? '' : '▼') + '</div>' +
+    '</div>' +
+    '<div class="acc-body">';
+
+  if (durum === 'kilitli') {
+    var d2 = gun.tarih.getDate();
+    var ay = gun.tarih.toLocaleString('tr-TR', { month: 'long' });
+    html += '<div class="kilit-overlay" style="padding:20px">Bu gün henüz gelmedi<br>' +
+      '<small style="color:#94a3b8">' + d2 + ' ' + ay + ' tarihinde açılacak</small></div>';
+  } else {
+    // Dersler ve görevler
+    gun.dersler.forEach(function(d) {
+      html += '<div class="ders-blok"><div class="ders-baslik ' + d.cls + '">' + d.ad + '</div><div class="gorev-list">';
+      d.gorevler.forEach(function(g) {
+        if (g.checkbox) {
+          var cbDis = (durum !== 'aktif') ? 'disabled' : '';
+          html += '<div class="gorev-item">' +
+            '<input type="checkbox" class="gorev-cb" id="' + g.id + '" ' + cbDis +
+            ' onchange="gorevDegisti(this);accBarGuncelle('' + gun.prefix + '')">' +
+            '<label class="gorev-metin" for="' + g.id + '">' + g.metin + '</label>' +
+          '</div>';
+        } else {
+          html += '<div class="gorev-item soru-gorev"><span class="gorev-nokta">✦</span><span class="gorev-metin">' + g.metin + '</span></div>';
+        }
+      });
+      html += '</div></div>';
+    });
+    // Takip
+    html += takipDersleriHTML(gun, durum);
+  }
+
+  html += '</div></div>';
+  return html;
+}
+
+function accBarGuncelle(prefix) {
+  var gun = GUNLER.find(function(g) { return g.prefix === prefix; });
+  if (!gun) return;
+  var pct = gunTamamlanmaPct(gun);
+  var bar = document.getElementById('acc_bar_' + prefix);
+  if (bar) bar.style.width = pct + '%';
+}
+
+document.getElementById('accordionGunler').innerHTML = GUNLER.map(accGunHTML).join('');
 
 // ── TIMER'LAR ──
 var timerIds = {};
@@ -952,6 +1133,8 @@ function lsYukle() {
         }
       });
     });
+    // Accordion mini bar güncelle
+    accBarGuncelle(gun.prefix);
   });
 }
 
