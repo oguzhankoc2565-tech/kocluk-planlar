@@ -65,6 +65,106 @@
     gap: 18px;
     color: white;
   }
+
+  /* ── STREAK & MOTİVASYON KARTLARI (header altı) ── */
+  .motiv-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .motiv-card {
+    background: var(--white);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .motiv-icon {
+    font-size: 28px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .motiv-streak  .motiv-icon { background: #fef3c7; }
+  .motiv-compare .motiv-icon { background: #dbeafe; }
+  .motiv-info { flex: 1; min-width: 0; }
+  .motiv-baslik {
+    font-size: 11px; font-weight: 800;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 2px;
+  }
+  .motiv-deger { font-size: 20px; font-weight: 800; line-height: 1.1; }
+  .motiv-altmesaj { font-size: 11px; font-weight: 600; color: var(--muted); margin-top: 2px; }
+  .motiv-deger .donus-yukari { color: var(--success); font-size: 14px; margin-left: 4px; }
+  .motiv-deger .donus-asagi  { color: var(--danger);  font-size: 14px; margin-left: 4px; }
+  .motiv-deger .donus-aynı   { color: var(--muted);   font-size: 14px; margin-left: 4px; }
+  @media (max-width: 600px) {
+    .motiv-row { grid-template-columns: 1fr; }
+  }
+
+  /* ── GÜNLÜK HEDEF İLERLEME ÇUBUĞU (aktif gün accordion'unda) ── */
+  .hedef-bar-wrap {
+    margin-top: 10px;
+    padding: 12px 14px;
+    background: linear-gradient(135deg, #f0fdfa, #ecfeff);
+    border: 2px solid #a5f3fc;
+    border-radius: 12px;
+  }
+  .hedef-bar-baslik {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .hedef-bar-label {
+    font-size: 11px; font-weight: 800;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--primary-2);
+  }
+  .hedef-bar-sayac {
+    font-size: 14px; font-weight: 800; color: var(--text);
+  }
+  .hedef-bar-sayac span.cur { color: var(--primary-2); }
+  .hedef-bar-track {
+    height: 10px;
+    background: var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+  }
+  .hedef-bar-fill {
+    height: 100%;
+    background: var(--primary-grad);
+    border-radius: 5px;
+    transition: width 0.4s ease-out, background 0.3s;
+    width: 0%;
+  }
+  .hedef-bar-fill.basarili {
+    background: linear-gradient(135deg, #16a34a, #4ade80);
+  }
+  .hedef-bar-fill.cokustun {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24, #f59e0b);
+    background-size: 200% 100%;
+    animation: kutlama 2s linear infinite;
+  }
+  @keyframes kutlama {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+  .hedef-bar-mesaj {
+    font-size: 12px; font-weight: 700;
+    margin-top: 6px; text-align: center;
+    transition: color 0.3s;
+  }
+  .hedef-bar-mesaj.basla    { color: var(--muted); }
+  .hedef-bar-mesaj.devam    { color: var(--primary-2); }
+  .hedef-bar-mesaj.basarili { color: var(--success); }
+  .hedef-bar-mesaj.cokustun { color: #d97706; }
   .avatar {
     width: 56px; height: 56px;
     border-radius: 50%;
@@ -539,6 +639,7 @@
 <body>
 <div class="page">
   <div class="header" id="hdr"></div>
+  <div class="motiv-row" id="motiv-row"></div>
   <div id="dur-stats-wrap">
     <div id="dur-kart" style="flex:1;min-width:0"></div>
     <div id="stats-kart" style="width:320px;flex-shrink:0"></div>
@@ -601,6 +702,16 @@ const CONFIG = {
       fen: { ort:  8.71, hedef:  9.5 },
     }
   },
+
+  // Geçen haftanın özeti (karşılaştırma için). İlk haftada null bırak.
+  // Çocuk her hafta önceki haftanın toplamını buraya yaz, otomatik karşılaştırılır.
+  gecenHafta: {
+    toplamSoru: null,    // örn: 250 — null ise gösterilmez
+    toplamKitap: null,   // örn: 80
+  },
+
+  // Günlük soru hedefi (ilerleme çubuğu için). hedefler.gunlukSoru'dan otomatik çıkarır.
+  gunlukSoruHedefi: { min: 50, max: 70 },
 
   koc: {
     degerlendirme: `Yakup, bursluluk sınavına girdin ve zor olmasına rağmen güzel bir performans sergilediğin görülüyor — bu gerçekten gurur verici! Şimdi bu motivasyonu LGS'ye taşıma zamanı. Türkçe'de en güçlü olduğun alan, ama kumulatif ortalamana bakıyorum ve tutarsızlıklar var. Bu hafta Bursluluk kitabından Türkçe çalışacaksın. Matematik'te Tonguç'un testleri sıra sıra gidecek. Fen ve Sosyal'de soru bankalarını düzenli bitireceğiz. Hedefin 440 — bu tamamen ulaşılabilir!`,
@@ -1046,6 +1157,8 @@ function guncelleToplam(prefix) {
     netEl.textContent = topNet.toFixed(2);
     netEl.style.color = topNet >= 0 ? 'var(--success)' : 'var(--danger)';
   }
+  // Hedef bar (sadece aktif günde gösteriliyor)
+  hedefBarGuncelle(prefix);
 }
 
 function gorevDegisti(cb) {
@@ -1113,6 +1226,11 @@ function takipDersleriHTML(gun, durum) {
     `<div class="takip-toplam-val takip-toplam-net" id="${pid}_top_net">0.00</div>` +
   `</div>`;
   html += `</div>`;
+
+  // ── GÜNLÜK HEDEF BAR (sadece aktif günde) ──
+  if (durum === 'aktif') {
+    html += hedefBarHTML(pid);
+  }
 
   html += `<div class="kp-row">` +
     `<div class="kp-item"><div class="kp-label">Kitap (sayfa)</div>` +
@@ -1685,6 +1803,7 @@ function yukleOzet() {
       const gunler = data.gunler || [];
       renderOzetTablo(gunler);
       renderStatsKart(gunler);
+      renderMotivRow(gunler);  // Faz 1: streak + karşılaştırma kartları
 
       // Cross-device sync — formdaki AKTİF OLMAYAN günlere yaz
       sunucudanFormaYaz(gunler);
@@ -1841,17 +1960,209 @@ function renderStatsKart(gunlerData) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
+//  FAZ 1: STREAK + HEDEF BAR + GEÇEN HAFTA KARŞILAŞTIRMA
+// ═══════════════════════════════════════════════════════════════════
+
+// Bir gün "dolu" mu? (En az 1 derste D+Y+B > 0 ya da bir checkbox işaretli)
+function gunDoluMu(g) {
+  for (const k of TUM_DERSLER) {
+    const tot = (Number(g[k+'_d'])||0) + (Number(g[k+'_y'])||0) + (Number(g[k+'_b'])||0);
+    if (tot > 0) return true;
+  }
+  if (Number(g.kitap||0) > 0) return true;
+  return false;
+}
+
+// Streak hesabı: bugünden geriye doğru ardışık dolu gün sayısı
+function streakHesapla(gunlerData) {
+  if (!gunlerData || !gunlerData.length) return 0;
+  const dolu = {};
+  gunlerData.forEach(g => { if (gunDoluMu(g)) dolu[g.gun] = true; });
+
+  // Bugünden geriye doğru git, ardışık dolu gün say
+  const simdi = trSaati();
+  const bugun = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
+
+  let streak = 0;
+  // Sırayla bugünden geriye GUNLER'i tara
+  for (let i = GUNLER.length - 1; i >= 0; i--) {
+    const gun = GUNLER[i];
+    const gunT = new Date(gun.tarih.getFullYear(), gun.tarih.getMonth(), gun.tarih.getDate());
+    if (gunT > bugun) continue; // geleceği atla
+
+    if (dolu[gun.ad]) {
+      streak++;
+    } else {
+      // Bugün ise henüz dolmamış olabilir → streak'i bozma, sonraki güne bak
+      if (gunT.getTime() === bugun.getTime()) continue;
+      // Geçmiş bir gün boşsa → streak biter
+      break;
+    }
+  }
+  return streak;
+}
+
+// Streak kartı motiv-row'a yazılır
+function renderStreakKarti(streak) {
+  let mesaj, icon;
+  if (streak === 0) {
+    icon = '🌱'; mesaj = 'İlk günü doldur, başla!';
+  } else if (streak === 1) {
+    icon = '✨'; mesaj = 'Güzel başlangıç!';
+  } else if (streak < 4) {
+    icon = '🔥'; mesaj = 'Devam et, ısınıyorsun!';
+  } else if (streak < 7) {
+    icon = '🚀'; mesaj = 'Müthiş gidiyorsun!';
+  } else {
+    icon = '👑'; mesaj = 'Efsane! Devam!';
+  }
+  return `<div class="motiv-card motiv-streak">` +
+    `<div class="motiv-icon">${icon}</div>` +
+    `<div class="motiv-info">` +
+      `<div class="motiv-baslik">Seri</div>` +
+      `<div class="motiv-deger">${streak} gün</div>` +
+      `<div class="motiv-altmesaj">${esc(mesaj)}</div>` +
+    `</div>` +
+  `</div>`;
+}
+
+// Geçen hafta karşılaştırma kartı
+function renderKarsilastirmaKarti(buHaftaSoru) {
+  const gh = CONFIG.gecenHafta;
+  if (!gh || gh.toplamSoru === null || gh.toplamSoru === undefined) {
+    // Geçen hafta verisi yok → motivasyonel mesaj göster
+    return `<div class="motiv-card motiv-compare">` +
+      `<div class="motiv-icon">📊</div>` +
+      `<div class="motiv-info">` +
+        `<div class="motiv-baslik">Bu Hafta</div>` +
+        `<div class="motiv-deger">${buHaftaSoru} soru</div>` +
+        `<div class="motiv-altmesaj">İlk haftan — yola devam!</div>` +
+      `</div>` +
+    `</div>`;
+  }
+
+  const fark = buHaftaSoru - gh.toplamSoru;
+  const yuzde = gh.toplamSoru > 0 ? Math.round(fark / gh.toplamSoru * 100) : 0;
+
+  let donusHtml, altmesaj;
+  if (fark > 0) {
+    donusHtml = `<span class="donus-yukari">↗ +%${yuzde}</span>`;
+    altmesaj = `Geçen hafta: ${gh.toplamSoru} · şampiyonsun!`;
+  } else if (fark < 0) {
+    donusHtml = `<span class="donus-asagi">↘ %${yuzde}</span>`;
+    altmesaj = `Geçen hafta: ${gh.toplamSoru} · daha iyisini yaparsın`;
+  } else {
+    donusHtml = `<span class="donus-aynı">→ aynı</span>`;
+    altmesaj = `Geçen hafta da: ${gh.toplamSoru}`;
+  }
+
+  return `<div class="motiv-card motiv-compare">` +
+    `<div class="motiv-icon">📊</div>` +
+    `<div class="motiv-info">` +
+      `<div class="motiv-baslik">Bu Hafta vs Geçen</div>` +
+      `<div class="motiv-deger">${buHaftaSoru} ${donusHtml}</div>` +
+      `<div class="motiv-altmesaj">${esc(altmesaj)}</div>` +
+    `</div>` +
+  `</div>`;
+}
+
+// Faz 1: motiv-row'u render et (streak + karşılaştırma)
+function renderMotivRow(gunlerData) {
+  const streak = streakHesapla(gunlerData);
+  const buHaftaSoru = (gunlerData || []).reduce((acc, g) => {
+    return acc + TUM_DERSLER.reduce((a, k) => a + (Number(g[k+'_d'])||0) + (Number(g[k+'_y'])||0) + (Number(g[k+'_b'])||0), 0);
+  }, 0);
+
+  const el = $('motiv-row');
+  if (!el) return;
+  el.innerHTML = renderStreakKarti(streak) + renderKarsilastirmaKarti(buHaftaSoru);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  GÜNLÜK HEDEF İLERLEME ÇUBUĞU (her aktif gün için)
+// ═══════════════════════════════════════════════════════════════════
+
+// Aktif günün accordion'una hedef bar HTML'i ekle (takip-bolum'un başına)
+function hedefBarHTML(prefix) {
+  return `<div class="hedef-bar-wrap" id="${prefix}_hedefbar_wrap">` +
+    `<div class="hedef-bar-baslik">` +
+      `<div class="hedef-bar-label">🎯 Günlük Hedef</div>` +
+      `<div class="hedef-bar-sayac"><span class="cur" id="${prefix}_hb_sayac">0</span> / ${CONFIG.gunlukSoruHedefi.min}–${CONFIG.gunlukSoruHedefi.max} soru</div>` +
+    `</div>` +
+    `<div class="hedef-bar-track"><div class="hedef-bar-fill" id="${prefix}_hb_fill"></div></div>` +
+    `<div class="hedef-bar-mesaj basla" id="${prefix}_hb_mesaj">Bugünkü çalışmana başla!</div>` +
+  `</div>`;
+}
+
+// Hedef bar değerlerini güncelle (toplam soru değiştiğinde çağrılır)
+function hedefBarGuncelle(prefix) {
+  const gun = GUNLER.find(g => g.prefix === prefix);
+  if (!gun) return;
+  // Toplam soru = takip dersleri D+Y+B + paragraf D+Y+B
+  let toplam = 0;
+  gun.dersler.forEach(d => {
+    if (!d.takipKey) return;
+    toplam += parseInt(val(prefix + '_' + d.takipKey + '_d')) || 0;
+    toplam += parseInt(val(prefix + '_' + d.takipKey + '_y')) || 0;
+    toplam += parseInt(val(prefix + '_' + d.takipKey + '_b')) || 0;
+  });
+
+  const sayacEl = $(prefix + '_hb_sayac');
+  const fillEl  = $(prefix + '_hb_fill');
+  const mesajEl = $(prefix + '_hb_mesaj');
+  if (!sayacEl || !fillEl || !mesajEl) return;
+
+  sayacEl.textContent = toplam;
+
+  const min = CONFIG.gunlukSoruHedefi.min;
+  const max = CONFIG.gunlukSoruHedefi.max;
+
+  // İlerleme: max'a göre yüzde, max'ı geçince %100+'a kadar genişle (max %150 cap)
+  const pct = Math.min(toplam / max * 100, 150);
+  fillEl.style.width = Math.min(pct, 100) + '%';
+
+  // Renk + mesaj durumu
+  fillEl.classList.remove('basarili', 'cokustun');
+  mesajEl.classList.remove('basla', 'devam', 'basarili', 'cokustun');
+
+  if (toplam === 0) {
+    mesajEl.textContent = 'Bugünkü çalışmana başla!';
+    mesajEl.classList.add('basla');
+  } else if (toplam < min) {
+    const kalan = min - toplam;
+    mesajEl.textContent = `Hedefe ${kalan} soru kaldı, devam!`;
+    mesajEl.classList.add('devam');
+  } else if (toplam <= max) {
+    mesajEl.textContent = `🎉 Günlük hedefe ulaştın! Süpersin!`;
+    mesajEl.classList.add('basarili');
+    fillEl.classList.add('basarili');
+  } else {
+    mesajEl.textContent = `🔥 Hedefi aştın! Bugün canavarsın!`;
+    mesajEl.classList.add('cokustun');
+    fillEl.classList.add('cokustun');
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
 //  BAŞLAT
 // ═══════════════════════════════════════════════════════════════════
+
+// Motiv-row için placeholder (sunucu cevabı gelene kadar boş kalmasın)
+renderMotivRow([]);
 
 lsYukle();
 lsDinleyiciEkle();
 yukleOzet();
 
-// Aktif gün accordion soru sayısını localStorage'dan hesapla
+// Aktif gün için soru sayısı + hedef bar başlangıç değerleri
 GUNLER.forEach(g => {
-  if (gunDurumu(g) === 'aktif') accSoruGuncelle(g.prefix);
+  if (gunDurumu(g) === 'aktif') {
+    accSoruGuncelle(g.prefix);
+    hedefBarGuncelle(g.prefix);
+  }
 });
+
 </script>
 </body>
 </html>
