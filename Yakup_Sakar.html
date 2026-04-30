@@ -598,6 +598,7 @@ function hesaplaNet(prefix, ders) {
     el.textContent = net;
     el.style.color = parseFloat(net) >= 0 ? 'var(--fen)' : '#dc2626';
   }
+  guncelleToplam(prefix);
 }
 
 function gorevDegisti(cb) {
@@ -851,6 +852,31 @@ function accGunHTML(gun) {
 
   html += '</div></div>';
   return html;
+}
+
+function guncelleToplam(prefix) {
+  var DERSLER = ['mat','fen','tur','ing','sos','din','par'];
+  var topD = 0, topY = 0, topB = 0, topNet = 0;
+  DERSLER.forEach(function(k) {
+    var dEl = document.getElementById(prefix+'_'+k+'_d');
+    var yEl = document.getElementById(prefix+'_'+k+'_y');
+    var bEl = document.getElementById(prefix+'_'+k+'_b');
+    var d = dEl ? (parseFloat(dEl.value)||0) : 0;
+    var y = yEl ? (parseFloat(yEl.value)||0) : 0;
+    var b = bEl ? (parseFloat(bEl.value)||0) : 0;
+    topD += d; topY += y; topB += b;
+    topNet += d - y/3;
+  });
+  var el = document.getElementById(prefix+'_toplam_satir');
+  if (!el) return;
+  var netStr = topNet.toFixed(1);
+  var netRenk = topNet >= 0 ? '#16a34a' : '#dc2626';
+  el.innerHTML =
+    '<td style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em">Toplam</td>' +
+    '<td style="font-weight:800;color:#2563eb;font-size:14px">' + topD + '</td>' +
+    '<td style="font-weight:800;color:#dc2626;font-size:14px">' + topY + '</td>' +
+    '<td style="font-weight:800;color:var(--muted);font-size:14px">' + topB + '</td>' +
+    '<td style="font-weight:800;font-size:14px;color:' + netRenk + '">' + netStr + '</td>';
 }
 
 function accSoruGuncelle(prefix) {
@@ -1111,9 +1137,10 @@ function lsYukle() {
         }
       });
     });
-    // Accordion mini bar ve soru sayısı güncelle
+    // Accordion mini bar, soru sayısı ve günlük toplam güncelle
     accBarGuncelle(gun.prefix);
     accSoruGuncelle(gun.prefix);
+    guncelleToplam(gun.prefix);
   });
 }
 
@@ -1355,9 +1382,9 @@ function basariOku(d, y, b) {
   var total = d + y + b;
   if (total === 0) return '';
   var pct = d / total * 100;
-  if (pct >= 90) return '<span style="color:#15803d;font-size:11px;font-weight:900;margin-left:3px;background:#dcfce7;padding:1px 4px;border-radius:4px">▲</span>';
-  if (pct >= 70) return '<span style="color:#92400e;font-size:11px;font-weight:900;margin-left:3px;background:#fef3c7;padding:1px 4px;border-radius:4px">▶</span>';
-  return '<span style="color:#991b1b;font-size:11px;font-weight:900;margin-left:3px;background:#fee2e2;padding:1px 4px;border-radius:4px">▼</span>';
+  if (pct >= 90) return '<span style="color:#15803d;font-size:13px;font-weight:900;margin-left:3px;vertical-align:middle">▲</span>';
+  if (pct >= 70) return '<span style="display:inline-block;width:14px;height:4px;background:#f59e0b;border-radius:3px;vertical-align:middle;margin-left:4px;margin-bottom:1px"></span>';
+  return '<span style="color:#dc2626;font-size:13px;font-weight:900;margin-left:3px;vertical-align:middle">▼</span>';
 }
 
 // ── STATS KARTI ──
