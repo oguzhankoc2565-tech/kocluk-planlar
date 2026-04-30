@@ -331,6 +331,26 @@ const CONFIG = {
   .koc-notu-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #7c3aed; margin-bottom: 8px; }
   .koc-notu-text { font-size: 14px; line-height: 1.75; }
   .dipnot { font-size: 12px; color: var(--muted); text-align: center; margin-top: 8px; font-weight: 600; }
+  /* ── İKİ SÜTUN LAYOUT ── */
+  .ana-icerik { display: grid; grid-template-columns: 1fr 320px; gap: 12px; align-items: start; }
+  .sol-sutun { min-width: 0; }
+  .sag-sutun { position: sticky; top: 12px; }
+  @media (max-width: 768px) { .ana-icerik { grid-template-columns: 1fr; } .sag-sutun { position: static; } }
+
+  /* ── STATS KARTI ── */
+  .stats-kart { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .stats-kart-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1.5px solid var(--border); }
+  .stats-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #7c3aed); color: white; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .stats-skorlar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 12px; }
+  .stats-skor { background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; padding: 8px 4px; text-align: center; }
+  .stats-skor-val { font-size: 20px; font-weight: 800; color: #2563eb; line-height: 1; }
+  .stats-skor-lbl { font-size: 9px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 3px; }
+  .stats-bar-row { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
+  .stats-gun-dots { display: flex; gap: 4px; justify-content: center; margin-top: 12px; padding-top: 12px; border-top: 1.5px solid var(--border); }
+  .stats-gun-dot { width: 26px; height: 26px; border-radius: 6px; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .stats-gun-on  { background: #dcfce7; color: #15803d; }
+  .stats-gun-off { background: #f1f5f9; color: #94a3b8; }
+
   .ozet-kart { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 18px 22px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
   .ozet-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
   .ozet-tablo { width: 100%; border-collapse: collapse; }
@@ -366,20 +386,27 @@ const CONFIG = {
   <div id="koc-deg"></div>
   <div id="hdf-kart"></div>
   <div id="hedef-yolu-wrap"></div>
-  <div class="plan-label">📅 Günlük plan &amp; takip</div>
-  <div class="accordion" id="accordionGunler"></div>
-  <div class="koc-notu" id="koc-nt"></div>
-  <div class="pazar-card">
-    <div class="pazar-baslik">☀️ Pazar — veliye bırakılmıştır</div>
-    <div class="pazar-text">
-      <span>Kitap okuma önerilir</span><span>·</span>
-      <span>Zorunlu ders çalışma yok</span><span>·</span>
-      <span>Ailenizin tercihine göre</span>
+  <div class="ana-icerik">
+    <div class="sol-sutun">
+      <div class="plan-label">📅 Günlük plan &amp; takip</div>
+      <div class="accordion" id="accordionGunler"></div>
+      <div class="koc-notu" id="koc-nt"></div>
+      <div class="pazar-card">
+        <div class="pazar-baslik">☀️ Pazar — veliye bırakılmıştır</div>
+        <div class="pazar-text">
+          <span>Kitap okuma önerilir</span><span>·</span>
+          <span>Zorunlu ders çalışma yok</span><span>·</span>
+          <span>Ailenizin tercihine göre</span>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="ozet-kart">
-    <div class="ozet-baslik">📈 Bu Haftanın Kayıtlarım</div>
-    <div id="haftalikOzetIcerik"><div class="ozet-yukleniyor">Yükleniyor...</div></div>
+    <div class="sag-sutun">
+      <div id="stats-kart"></div>
+      <div class="ozet-kart">
+        <div class="ozet-baslik">📈 Bu Haftanın Kayıtlarım</div>
+        <div id="haftalikOzetIcerik"><div class="ozet-yukleniyor">Yükleniyor...</div></div>
+      </div>
+    </div>
   </div>
   <div class="dipnot" id="dpnt"></div>
 </div>
@@ -1146,7 +1173,7 @@ function renderOzetTablo(gunler) {
       } else {
         var net  = dv - yv / 3;
         var renk = net >= 0 ? d.renk : '#dc2626';
-        html += '<td style="color:' + renk + '">' + net.toFixed(1) +
+        html += '<td style="color:' + renk + '">' + net.toFixed(1) + basariOku(dv, yv, bv) +
           '<span style="font-size:10px;color:var(--muted);font-weight:400"> (' + total + ')</span></td>';
       }
     });
@@ -1191,6 +1218,7 @@ function yukleOzet() {
     .then(function (data) {
       if (data.durum === 'basarili') {
         renderOzetTablo(data.gunler || []);
+        renderStatsKart(data.gunler || []);
         // Accordion başlıklarına soru sayısı yaz
         (data.gunler || []).forEach(function(g) {
           var DERSLER = ['mat','fen','tur','ing','sos','din','par'];
@@ -1294,6 +1322,73 @@ function gosterHaftaOzetiPopup(gunler) {
   document.body.appendChild(overlay);
   document.getElementById('hafta-kapat-btn').addEventListener('click', function () { overlay.remove(); });
   overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.remove(); });
+}
+
+
+// ── BAŞARI GÖSTERGESI ──
+function basariOku(d, y, b) {
+  var total = d + y + b;
+  if (total === 0) return '';
+  var pct = d / total * 100;
+  if (pct >= 90) return '<span style="color:#16a34a;font-size:12px;margin-left:2px">↑</span>';
+  if (pct >= 70) return '<span style="color:#d97706;font-size:12px;margin-left:2px">→</span>';
+  return '<span style="color:#dc2626;font-size:12px;margin-left:2px">↓</span>';
+}
+
+// ── STATS KARTI ──
+function renderStatsKart(gunlerData) {
+  var d = CONFIG.durum;
+  var ad = CONFIG.ogrenci.ad;
+  var ini = ad.split(' ').slice(0,2).map(function(w){return w[0]||'';}).join('').toUpperCase();
+  var DERS = [
+    {k:'mat', n:'Mat', c:'#2563eb', max:20},
+    {k:'fen', n:'Fen', c:'#16a34a', max:20},
+    {k:'tur', n:'Tür', c:'#9333ea', max:15},
+    {k:'sos', n:'Sos', c:'#0891b2', max:10},
+    {k:'ing', n:'İng', c:'#d97706', max:10},
+    {k:'din', n:'Din', c:'#be185d', max:10},
+  ];
+  var bars = DERS.map(function(d2) {
+    var ort = d.netler[d2.k] ? d.netler[d2.k].ort : 0;
+    if (!ort) return '';
+    var pct = Math.min(ort / d2.max * 100, 100);
+    return '<div class="stats-bar-row">' +
+      '<span style="font-size:10px;font-weight:700;color:var(--muted);width:22px">' + d2.n + '</span>' +
+      '<div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden">' +
+        '<div style="height:100%;width:' + pct + '%;background:' + d2.c + ';border-radius:3px"></div>' +
+      '</div>' +
+      '<span style="font-size:11px;font-weight:800;color:' + d2.c + ';width:28px;text-align:right">' + ort.toFixed(1) + '</span>' +
+    '</div>';
+  }).join('');
+
+  var GUN_ADL = ['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+  var GUN_KSA = ['Pt','Sa','Ça','Pe','Cu','Ct'];
+  var calisildi = {};
+  (gunlerData || []).forEach(function(g) { calisildi[g.gun] = true; });
+  var dots = GUN_ADL.map(function(a, i) {
+    var on = !!calisildi[a];
+    return '<div class="stats-gun-dot ' + (on ? 'stats-gun-on' : 'stats-gun-off') + '">' + GUN_KSA[i] + '</div>';
+  }).join('');
+
+  var el = document.getElementById('stats-kart');
+  if (!el) return;
+  el.innerHTML =
+    '<div class="stats-kart">' +
+      '<div class="stats-kart-head">' +
+        '<div class="stats-avatar">' + ini + '</div>' +
+        '<div style="flex:1">' +
+          '<div style="font-size:14px;font-weight:800;color:var(--text)">' + ad + '</div>' +
+          '<div style="font-size:11px;color:var(--muted);margin-top:2px">' + CONFIG.ogrenci.sinif + ' · Hafta ' + CONFIG.ogrenci.haftaNo + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="stats-skorlar">' +
+        '<div class="stats-skor"><div class="stats-skor-val">' + d.sonPuan.toFixed(0) + '</div><div class="stats-skor-lbl">Son</div></div>' +
+        '<div class="stats-skor"><div class="stats-skor-val" style="color:#7c3aed">' + d.ortalama.toFixed(0) + '</div><div class="stats-skor-lbl">Ort.</div></div>' +
+        '<div class="stats-skor"><div class="stats-skor-val" style="color:#16a34a">' + d.hedef + '</div><div class="stats-skor-lbl">Hedef</div></div>' +
+      '</div>' +
+      bars +
+      '<div class="stats-gun-dots">' + dots + '</div>' +
+    '</div>';
 }
 
 // ── BAŞLAT ──
