@@ -808,19 +808,27 @@ function gonder(gunAdi, prefix) {
     });
   }
 
+  // Sadece o günde gerçekten var olan dersleri gönder
+  // olmayan ders için val() uyarı vermez, Sheet'e 0 yazılır
+  var TUM_DERSLER = ['mat','fen','tur','ing','sos','din','par'];
+  var gunDersleri = gun
+    ? gun.dersler.filter(function(d){ return d.takipKey; }).map(function(d){ return d.takipKey; })
+    : [];
+
+  var dersVerisi = {};
+  TUM_DERSLER.forEach(function(k) {
+    var varMi = gunDersleri.indexOf(k) !== -1;
+    dersVerisi[k+'_d'] = varMi ? val(prefix+'_'+k+'_d') : '0';
+    dersVerisi[k+'_y'] = varMi ? val(prefix+'_'+k+'_y') : '0';
+    dersVerisi[k+'_b'] = varMi ? val(prefix+'_'+k+'_b') : '0';
+  });
+
   var veri = Object.assign({
     ogrenciAdi: OGRENCI_ADI, haftaNo: HAFTA_NO, gun: gunAdi,
-    mat_d: val(prefix+'_mat_d'), mat_y: val(prefix+'_mat_y'), mat_b: val(prefix+'_mat_b'),
-    fen_d: val(prefix+'_fen_d'), fen_y: val(prefix+'_fen_y'), fen_b: val(prefix+'_fen_b'),
-    tur_d: val(prefix+'_tur_d'), tur_y: val(prefix+'_tur_y'), tur_b: val(prefix+'_tur_b'),
-    ing_d: val(prefix+'_ing_d'), ing_y: val(prefix+'_ing_y'), ing_b: val(prefix+'_ing_b'),
-    sos_d: val(prefix+'_sos_d'), sos_y: val(prefix+'_sos_y'), sos_b: val(prefix+'_sos_b'),
-    din_d: val(prefix+'_din_d'), din_y: val(prefix+'_din_y'), din_b: val(prefix+'_din_b'),
-    par_d: val(prefix+'_par_d'), par_y: val(prefix+'_par_y'), par_b: val(prefix+'_par_b'),
     kitap: val(prefix+'_kitap'),
     not:   strVal(prefix+'_not'),
     konular: konular
-  }, gorevBilgisi);
+  }, dersVerisi, gorevBilgisi);
 
   // 'application/json' → preflight (CORS sorun) yaratır.
   // 'text/plain' → preflight gerekmez, Apps Script sorunsuz kabul eder.
