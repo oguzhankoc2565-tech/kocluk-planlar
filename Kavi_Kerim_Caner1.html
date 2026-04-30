@@ -867,7 +867,7 @@ function accGunHTML(gun) {
   var checkIcon = durum === 'gecmis' ? '✓ ' : '';
 
   var html = '<div class="acc-item ' + cls.replace('acc-item ','') + '" id="acc_' + gun.prefix + '">' +
-    '<div class="acc-header" onclick="accToggle('' + gun.prefix + '')">' +
+    '<div class="acc-header" onclick="accToggle(\'' + gun.prefix + '\')">' +
       '<div>' +
         '<div class="acc-gun-adi">' + checkIcon + gun.ad + '</div>' +
         '<div class="acc-tarih">' + tarihStr + '</div>' +
