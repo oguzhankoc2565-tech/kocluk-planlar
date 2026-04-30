@@ -990,12 +990,20 @@ function renderOzetTablo(gunler) {
   html += '<th style="color:var(--kit)">Kitap</th></tr></thead><tbody>';
 
   var toplamSoru = 0;
+  var toplamKitap = 0;
+  // Her ders için toplam D, Y, B tut
+  var dersToplam = {};
+  OZET_DERSLER.forEach(function(d) { dersToplam[d.key] = {d:0, y:0, b:0}; });
+
   gunler.forEach(function (g) {
     html += '<tr><td>' + (g.gun || '—') + '</td>';
     OZET_DERSLER.forEach(function (d) {
       var dv = Number(g[d.key+'_d']||0), yv = Number(g[d.key+'_y']||0), bv = Number(g[d.key+'_b']||0);
       var total = dv + yv + bv;
       toplamSoru += total;
+      dersToplam[d.key].d += dv;
+      dersToplam[d.key].y += yv;
+      dersToplam[d.key].b += bv;
       if (!total) {
         html += '<td class="ozet-net-yok">—</td>';
       } else {
@@ -1005,8 +1013,28 @@ function renderOzetTablo(gunler) {
           '<span style="font-size:10px;color:var(--muted);font-weight:400"> (' + total + ')</span></td>';
       }
     });
-    html += '<td style="color:var(--kit)">' + (g.kitap && g.kitap > 0 ? g.kitap + ' s.' : '—') + '</td></tr>';
+    var kitap = g.kitap && g.kitap > 0 ? g.kitap : 0;
+    toplamKitap += kitap;
+    html += '<td style="color:var(--kit)">' + (kitap > 0 ? kitap + ' s.' : '—') + '</td></tr>';
   });
+
+  // ── TOPLAM SATIRI ──
+  html += '<tr style="border-top:2px solid var(--border);background:var(--bg)">';
+  html += '<td style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:0.05em;text-transform:uppercase">Toplam</td>';
+  OZET_DERSLER.forEach(function(d) {
+    var dv = dersToplam[d.key].d, yv = dersToplam[d.key].y, bv = dersToplam[d.key].b;
+    var total = dv + yv + bv;
+    if (!total) {
+      html += '<td class="ozet-net-yok">—</td>';
+    } else {
+      var net  = dv - yv / 3;
+      var renk = net >= 0 ? d.renk : '#dc2626';
+      html += '<td style="color:' + renk + ';font-size:13px;font-weight:800">' + net.toFixed(1) +
+        '<span style="font-size:10px;color:var(--muted);font-weight:400"> (' + total + ')</span></td>';
+    }
+  });
+  html += '<td style="color:var(--kit);font-weight:800">' + (toplamKitap > 0 ? toplamKitap + ' s.' : '—') + '</td>';
+  html += '</tr>';
 
   html += '</tbody></table></div>';
   html += '<div style="margin-top:10px;font-size:12px;color:var(--muted);text-align:right;font-weight:600">' +
