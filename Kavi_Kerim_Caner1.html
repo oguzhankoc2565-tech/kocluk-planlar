@@ -836,21 +836,26 @@ function accToggle(prefix) {
   var item = document.getElementById('acc_' + prefix);
   var isAcik = item.classList.contains('acik');
 
-  // Hepsini kapat
+  // Diğerlerini kapat (aktif günü kapatma)
   GUNLER.forEach(function(g) {
+    if (g.prefix === prefix) return;
     var el = document.getElementById('acc_' + g.prefix);
-    if (el) { el.classList.remove('acik'); }
+    if (el) el.classList.remove('acik');
   });
 
-  // Tıklanana toggle
-  if (!isAcik) item.classList.add('acik');
+  // Bu güne toggle uygula
+  if (isAcik) {
+    item.classList.remove('acik');
+  } else {
+    item.classList.add('acik');
+  }
 }
 
 function accGunHTML(gun) {
   var durum = gunDurumu(gun);
   var cls = 'acc-item';
   if (durum === 'aktif') cls += ' aktif acik';
-  else if (durum === 'gecmis') cls += ' gecmis acik';
+  else if (durum === 'gecmis') cls += ' gecmis';
   else if (durum === 'kilitli') cls += ' kilitli';
   else if (durum === 'suresi_doldu') cls += ' gecmis';
 
