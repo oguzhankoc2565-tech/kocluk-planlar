@@ -686,8 +686,12 @@ function takipDersleriHTML(gun, durum) {
   });
 
   html += '</div>';
-  html += '<div class="kp-row"><div class="kp-item"><div class="kp-label">Kitap (sayfa)</div>' +
-    '<input class="kp-input" type="number" min="0" id="' + pid + '_kitap" placeholder="0" ' + dis + '></div></div>';
+  html += '<div class="kp-row">' +
+    '<div class="kp-item"><div class="kp-label">Kitap (sayfa)</div>' +
+    '<input class="kp-input" type="number" min="0" id="' + pid + '_kitap" placeholder="0" ' + dis + '></div>' +
+    '<div class="kp-item" style="flex:1;min-width:100px"><div class="kp-label">Kitap adı</div>' +
+    '<input class="kp-input" style="width:100%;max-width:220px;text-align:left;padding:0 8px" type="text" id="' + pid + '_kitap_adi" placeholder="Kitabın adı..." ' + dis + '></div>' +
+    '</div>';
   html += '<input class="not-input" type="text" id="' + pid + '_not" placeholder="Bugünkü notun..." ' + dis + '>';
 
   if (durum === 'aktif') {
@@ -1016,8 +1020,9 @@ function gonder(gunAdi, prefix) {
 
   var veri = Object.assign({
     ogrenciAdi: OGRENCI_ADI, haftaNo: HAFTA_NO, gun: gunAdi,
-    kitap: val(prefix+'_kitap'),
-    not:   strVal(prefix+'_not'),
+    kitap:     val(prefix+'_kitap'),
+    kitap_adi: strVal(prefix+'_kitap_adi'),
+    not:       strVal(prefix+'_not'),
     konular: konular
   }, dersVerisi, gorevBilgisi);
 
@@ -1083,6 +1088,8 @@ function lsKaydet() {
     });
     var kitap = document.getElementById(gun.prefix + '_kitap');
     if (kitap && !kitap.disabled) localStorage.setItem(LS_PREFIX + gun.prefix + '_kitap', kitap.value);
+    var kitapAdi = document.getElementById(gun.prefix + '_kitap_adi');
+    if (kitapAdi && !kitapAdi.disabled) localStorage.setItem(LS_PREFIX + gun.prefix + '_kitap_adi', kitapAdi.value);
     var not = document.getElementById(gun.prefix + '_not');
     if (not && !not.disabled) localStorage.setItem(LS_PREFIX + gun.prefix + '_not', not.value);
 
@@ -1120,6 +1127,11 @@ function lsYukle() {
       var kv = localStorage.getItem(LS_PREFIX + gun.prefix + '_kitap');
       if (kv !== null) kitap.value = kv;
     }
+    var kitapAdi = document.getElementById(gun.prefix + '_kitap_adi');
+    if (kitapAdi && !kitapAdi.disabled) {
+      var kav = localStorage.getItem(LS_PREFIX + gun.prefix + '_kitap_adi');
+      if (kav !== null) kitapAdi.value = kav;
+    }
     var not = document.getElementById(gun.prefix + '_not');
     if (not && !not.disabled) {
       var nv = localStorage.getItem(LS_PREFIX + gun.prefix + '_not');
@@ -1150,7 +1162,7 @@ function lsYukle() {
 }
 
 function lsDinleyiciEkle() {
-  document.querySelectorAll('.takip-input, .kp-input, .not-input').forEach(function (el) {
+  document.querySelectorAll('.takip-input, .kp-input, .not-input, .kp-item input[type="text"]').forEach(function (el) {
     el.addEventListener('input', lsKaydetDebounced);
     el.addEventListener('input', function() {
       // Hangi güne ait olduğunu id'den bul (prefix_ders_tip formatı)
