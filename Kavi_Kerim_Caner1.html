@@ -987,7 +987,7 @@ function renderOzetTablo(gunler) {
   }
   var html = '<div style="overflow-x:auto"><table class="ozet-tablo"><thead><tr><th>Gün</th>';
   OZET_DERSLER.forEach(function (d) { html += '<th style="color:' + d.renk + '">' + d.ad + '</th>'; });
-  html += '<th style="color:var(--kit)">Kitap</th></tr></thead><tbody>';
+  html += '<th style="color:var(--kit)">Kitap</th><th style="color:var(--muted)">Günlük</th></tr></thead><tbody>';
 
   var toplamSoru = 0;
   var toplamKitap = 0;
@@ -1015,7 +1015,12 @@ function renderOzetTablo(gunler) {
     });
     var kitap = g.kitap && g.kitap > 0 ? g.kitap : 0;
     toplamKitap += kitap;
-    html += '<td style="color:var(--kit)">' + (kitap > 0 ? kitap + ' s.' : '—') + '</td></tr>';
+    html += '<td style="color:var(--kit)">' + (kitap > 0 ? kitap + ' s.' : '—') + '</td>';
+    // Günlük toplam soru
+    var gunSoru = OZET_DERSLER.reduce(function(acc, d) {
+      return acc + Number(g[d.key+'_d']||0) + Number(g[d.key+'_y']||0) + Number(g[d.key+'_b']||0);
+    }, 0);
+    html += '<td style="font-weight:800;color:var(--text)">' + (gunSoru > 0 ? gunSoru : '—') + '</td></tr>';
   });
 
   // ── TOPLAM SATIRI ──
@@ -1034,6 +1039,7 @@ function renderOzetTablo(gunler) {
     }
   });
   html += '<td style="color:var(--kit);font-weight:800">' + (toplamKitap > 0 ? toplamKitap + ' s.' : '—') + '</td>';
+  html += '<td style="font-weight:800;color:var(--text)">' + toplamSoru + '</td>';
   html += '</tr>';
 
   html += '</tbody></table></div>';
