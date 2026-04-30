@@ -892,7 +892,7 @@ function accGunHTML(gun) {
           var cbDis = (durum !== 'aktif') ? 'disabled' : '';
           html += '<div class="gorev-item">' +
             '<input type="checkbox" class="gorev-cb" id="' + g.id + '" ' + cbDis +
-            ' onchange="gorevDegisti(this);accBarGuncelle('' + gun.prefix + '')">' +
+            ' onchange="gorevDegisti(this);accBarGuncelle(\'' + gun.prefix + '\')">' +
             '<label class="gorev-metin" for="' + g.id + '">' + g.metin + '</label>' +
           '</div>';
         } else {
