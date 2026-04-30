@@ -1020,12 +1020,12 @@ function renderOzetTablo(gunler) {
     var gunSoru = OZET_DERSLER.reduce(function(acc, d) {
       return acc + Number(g[d.key+'_d']||0) + Number(g[d.key+'_y']||0) + Number(g[d.key+'_b']||0);
     }, 0);
-    html += '<td style="font-weight:800;color:var(--text)">' + (gunSoru > 0 ? gunSoru : '—') + '</td></tr>';
+    html += '<td style="font-weight:800;color:white;background:var(--mat);border-radius:6px;text-align:center;font-size:13px">' + (gunSoru > 0 ? gunSoru : '—') + '</td></tr>';
   });
 
   // ── TOPLAM SATIRI ──
-  html += '<tr style="border-top:2px solid var(--border);background:var(--bg)">';
-  html += '<td style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:0.05em;text-transform:uppercase">Toplam</td>';
+  html += '<tr style="border-top:3px solid var(--mat);background:linear-gradient(135deg,#eff6ff,#faf5ff)">';
+  html += '<td style="font-size:12px;font-weight:800;color:var(--mat);letter-spacing:0.05em;text-transform:uppercase">Toplam</td>';
   OZET_DERSLER.forEach(function(d) {
     var dv = dersToplam[d.key].d, yv = dersToplam[d.key].y, bv = dersToplam[d.key].b;
     var total = dv + yv + bv;
@@ -1034,12 +1034,12 @@ function renderOzetTablo(gunler) {
     } else {
       var net  = dv - yv / 3;
       var renk = net >= 0 ? d.renk : '#dc2626';
-      html += '<td style="color:' + renk + ';font-size:13px;font-weight:800">' + net.toFixed(1) +
-        '<span style="font-size:10px;color:var(--muted);font-weight:400"> (' + total + ')</span></td>';
+      html += '<td style="color:' + renk + ';font-size:14px;font-weight:800">' + net.toFixed(1) +
+        '<span style="font-size:10px;color:var(--muted);font-weight:600"> (' + total + ')</span></td>';
     }
   });
-  html += '<td style="color:var(--kit);font-weight:800">' + (toplamKitap > 0 ? toplamKitap + ' s.' : '—') + '</td>';
-  html += '<td style="font-weight:800;color:var(--text)">' + toplamSoru + '</td>';
+  html += '<td style="color:var(--kit);font-weight:800;font-size:14px">' + (toplamKitap > 0 ? toplamKitap + ' s.' : '—') + '</td>';
+  html += '<td style="font-weight:800;color:white;background:var(--mat);border-radius:6px;text-align:center;font-size:14px">' + toplamSoru + '</td>';
   html += '</tr>';
 
   html += '</tbody></table></div>';
