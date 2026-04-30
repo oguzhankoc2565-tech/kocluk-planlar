@@ -325,6 +325,18 @@
     width: 40px; font-size: 12px; font-weight: 800;
     text-align: center; color: var(--success);
   }
+  /* Günlük toplam satırı (D/Y/B/Net) */
+  .takip-toplam {
+    margin-top: 6px; padding-top: 6px;
+    border-top: 1.5px dashed var(--border);
+  }
+  .takip-toplam-val {
+    width: 40px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: var(--text);
+    background: var(--bg); border-radius: 8px;
+  }
+  .takip-toplam-net { color: var(--success); }
   .kp-row { display: flex; gap: 10px; margin-top: 8px; }
   .kp-item { display: flex; flex-direction: column; gap: 3px; }
   .kp-label { font-size: 11px; color: var(--muted); font-weight: 600; }
@@ -1004,7 +1016,36 @@ function hesaplaNet(prefix, ders) {
     el.textContent = net;
     el.style.color = parseFloat(net) >= 0 ? 'var(--success)' : 'var(--danger)';
   }
+  guncelleToplam(prefix);
   accSoruGuncelle(prefix);
+}
+
+// Günlük toplam D/Y/B ve Net (takip bölümünün sonundaki "Toplam" satırı)
+function guncelleToplam(prefix) {
+  const gun = GUNLER.find(g => g.prefix === prefix);
+  if (!gun) return;
+  const takipDersler = gun.dersler.filter(d => d.takipKey);
+
+  let topD = 0, topY = 0, topB = 0;
+  takipDersler.forEach(d => {
+    const did = d.takipKey;
+    topD += parseInt(val(prefix + '_' + did + '_d')) || 0;
+    topY += parseInt(val(prefix + '_' + did + '_y')) || 0;
+    topB += parseInt(val(prefix + '_' + did + '_b')) || 0;
+  });
+  const topNet = topD - topY / 3;
+
+  const dEl   = $(prefix + '_top_d');
+  const yEl   = $(prefix + '_top_y');
+  const bEl   = $(prefix + '_top_b');
+  const netEl = $(prefix + '_top_net');
+  if (dEl)   dEl.textContent = topD;
+  if (yEl)   yEl.textContent = topY;
+  if (bEl)   bEl.textContent = topB;
+  if (netEl) {
+    netEl.textContent = topNet.toFixed(2);
+    netEl.style.color = topNet >= 0 ? 'var(--success)' : 'var(--danger)';
+  }
 }
 
 function gorevDegisti(cb) {
@@ -1063,6 +1104,14 @@ function takipDersleriHTML(gun, durum) {
         `<div class="net-goster" id="${pid}_${did}_net" aria-live="polite">—</div>` +
       `</div>`;
   });
+  // ── TOPLAM SATIRI ──
+  html += `<div class="takip-satir takip-toplam" id="${pid}_toplam_satir" aria-live="polite">` +
+    `<div class="takip-satir-adi" style="color:var(--text);font-weight:800">Toplam</div>` +
+    `<div class="takip-toplam-val" id="${pid}_top_d">0</div>` +
+    `<div class="takip-toplam-val" id="${pid}_top_y">0</div>` +
+    `<div class="takip-toplam-val" id="${pid}_top_b">0</div>` +
+    `<div class="takip-toplam-val takip-toplam-net" id="${pid}_top_net">0.00</div>` +
+  `</div>`;
   html += `</div>`;
 
   html += `<div class="kp-row">` +
@@ -1441,6 +1490,7 @@ function lsYukle() {
     });
     accBarGuncelle(gun.prefix);
     accSoruGuncelle(gun.prefix);
+    guncelleToplam(gun.prefix);
   });
 }
 
