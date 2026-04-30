@@ -148,6 +148,18 @@
   .koc-notu-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #7c3aed; margin-bottom: 8px; }
   .koc-notu-text { font-size: 14px; line-height: 1.75; }
   .dipnot { font-size: 12px; color: var(--muted); text-align: center; margin-top: 8px; font-weight: 600; }
+  .ozet-kart { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 18px 22px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .ozet-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .ozet-tablo { width: 100%; border-collapse: collapse; }
+  .ozet-tablo th { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); padding: 6px 8px; text-align: center; border-bottom: 2px solid var(--border); }
+  .ozet-tablo th:first-child { text-align: left; }
+  .ozet-tablo td { font-size: 13px; padding: 7px 8px; text-align: center; border-bottom: 1px solid var(--border); font-weight: 700; }
+  .ozet-tablo td:first-child { text-align: left; font-size: 13px; font-weight: 800; color: var(--text); }
+  .ozet-tablo tbody tr:last-child td { border-bottom: none; }
+  .ozet-tablo tbody tr:hover td { background: var(--bg); }
+  .ozet-yukleniyor { text-align: center; padding: 24px; color: var(--muted); font-size: 13px; font-weight: 600; }
+  .ozet-bos { text-align: center; padding: 24px; color: var(--muted); font-size: 13px; }
+  .ozet-net-yok { color: #d1d5db; font-weight: 400; font-size: 12px; }
   .satranc-badge { display: inline-block; background: linear-gradient(135deg, #1e293b, #334155); color: white; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 10px; margin-left: 6px; }
 </style>
 </head>
@@ -248,12 +260,17 @@
 
   <div class="koc-notu" style="margin-top:12px">
     <div class="koc-notu-baslik">🏆 Koç Notu — Stratejik Atılım Haftası</div>
-    <div class="koc-notu-text">Muhammed Taha, satranç tahtasında rakibini tanıdığın gibi bu hafta sınavını tanı. Türkçe'de "sözcükte anlam" konusu LGS'nin en çok soru çıkardığı alan — bu hafta tam 6 test çözüyoruz, bu sana büyük avantaj sağlayacak. Fen'de kuvvet ve üreme konularını kaynak testleriyle pekiştiriyoruz. İngilizce için daha başarılı olacağına inanıyorum. Kelime tekrarlarını yap ve ablanla ara sıra ing konuş. Salı günü kompozisyon yazarken düşüncelerini net ifade et, kaliteli yaz. Her gün küçük adımlar, haftanın sonunda büyük fark!</div>
+    <div class="koc-notu-text">Muhammed Taha, satranç tahtasında rakibini tanıdığın gibi bu hafta sınavını tanı. Türkçe'de "sözcükte anlam" konusu LGS'nin en çok soru çıkardığı alan — bu hafta tam 6 test çözüyoruz, bu sana büyük avantaj sağlayacak. Fen'de kuvvet ve üreme konularını kaynak testleriyle pekiştiriyoruz. İngilizce için kaygılanma — tek bir denemede düşüş yaşaman seni tanımlamaz, bu hafta düzelecek. Salı günü kompozisyon yazarken düşüncelerini net ifade et, kaliteli yaz. Her gün küçük adımlar, haftanın sonunda büyük fark!</div>
   </div>
 
   <div class="pazar-card">
     <div class="pazar-baslik">☀️ Pazar — veliye bırakılmıştır</div>
     <div class="pazar-text"><span>Dinlenme günü</span><span>·</span><span>Zorunlu ders çalışma yok</span><span>·</span><span>Ailenizin tercihine göre</span></div>
+  </div>
+
+  <div class="ozet-kart" style="margin-top:12px">
+    <div class="ozet-baslik">📈 Bu Haftanın Kayıtlarım</div>
+    <div id="haftalikOzetIcerik"><div class="ozet-yukleniyor">Yükleniyor...</div></div>
   </div>
 
   <div class="dipnot">Bu plan Muhammed Taha Gültepe için hazırlanmıştır · Hafta 2 · 29 Nisan – 6 Mayıs 2026</div>
@@ -683,7 +700,155 @@ function gonder(gunAdi, prefix) {
     btn.disabled = false;
     btn.textContent = 'Kaydet';
   });
+// ── LOCAL STORAGE — form alanlarını kaydet / yükle ──
+const LS_PREFIX = 'lgs_' + OGRENCI_ADI + '_H' + HAFTA_NO + '_';
+
+function lsKaydet() {
+  GUNLER.forEach(function(gun) {
+    ['mat','fen','tur','ing','sos','din','par'].forEach(function(ders) {
+      ['d','y','b'].forEach(function(tip) {
+        var el = document.getElementById(gun.prefix + '_' + ders + '_' + tip);
+        if (el && !el.disabled) localStorage.setItem(LS_PREFIX + gun.prefix + '_' + ders + '_' + tip, el.value);
+      });
+    });
+    var kitap = document.getElementById(gun.prefix + '_kitap');
+    if (kitap && !kitap.disabled) localStorage.setItem(LS_PREFIX + gun.prefix + '_kitap', kitap.value);
+    var not = document.getElementById(gun.prefix + '_not');
+    if (not && !not.disabled) localStorage.setItem(LS_PREFIX + gun.prefix + '_not', not.value);
+    gun.dersler.forEach(function(d) {
+      d.gorevler.forEach(function(g) {
+        if (g.checkbox) {
+          var cb = document.getElementById(g.id);
+          if (cb && !cb.disabled) localStorage.setItem(LS_PREFIX + 'cb_' + g.id, cb.checked ? '1' : '0');
+        }
+      });
+    });
+  });
 }
+
+function lsYukle() {
+  GUNLER.forEach(function(gun) {
+    ['mat','fen','tur','ing','sos','din','par'].forEach(function(ders) {
+      ['d','y','b'].forEach(function(tip) {
+        var el = document.getElementById(gun.prefix + '_' + ders + '_' + tip);
+        if (el && !el.disabled) {
+          var v = localStorage.getItem(LS_PREFIX + gun.prefix + '_' + ders + '_' + tip);
+          if (v !== null && v !== '') { el.value = v; hesaplaNet(gun.prefix, ders); }
+        }
+      });
+    });
+    var kitap = document.getElementById(gun.prefix + '_kitap');
+    if (kitap && !kitap.disabled) { var kv = localStorage.getItem(LS_PREFIX + gun.prefix + '_kitap'); if (kv !== null) kitap.value = kv; }
+    var not = document.getElementById(gun.prefix + '_not');
+    if (not && !not.disabled) { var nv = localStorage.getItem(LS_PREFIX + gun.prefix + '_not'); if (nv !== null) not.value = nv; }
+    gun.dersler.forEach(function(d) {
+      d.gorevler.forEach(function(g) {
+        if (g.checkbox) {
+          var cb = document.getElementById(g.id);
+          if (cb && !cb.disabled) {
+            var cv = localStorage.getItem(LS_PREFIX + 'cb_' + g.id);
+            if (cv !== null) {
+              cb.checked = cv === '1';
+              var label = document.querySelector('label[for="' + g.id + '"]');
+              if (label) { if (cb.checked) label.classList.add('tamamlandi'); else label.classList.remove('tamamlandi'); }
+            }
+          }
+        }
+      });
+    });
+  });
+}
+
+function lsDinleyiciEkle() {
+  document.querySelectorAll('.takip-input, .kp-input, .not-input').forEach(function(el) {
+    el.addEventListener('input', lsKaydet);
+  });
+  document.querySelectorAll('.gorev-cb').forEach(function(el) {
+    el.addEventListener('change', lsKaydet);
+  });
+}
+
+lsYukle();
+lsDinleyiciEkle();
+
+// ── HAFTALIK ÖZET TABLOSU ──
+const OZET_DERSLER = [
+  {key:'mat', ad:'Mat', renk:'var(--mat)'},
+  {key:'fen', ad:'Fen', renk:'var(--fen)'},
+  {key:'tur', ad:'Türkçe', renk:'var(--tur)'},
+  {key:'ing', ad:'İng', renk:'var(--ing)'},
+  {key:'sos', ad:'Sosyal', renk:'var(--sos)'},
+  {key:'din', ad:'Din', renk:'var(--din)'},
+  {key:'par', ad:'Paragraf', renk:'var(--par)'},
+];
+
+function renderOzetTablo(gunler) {
+  var el = document.getElementById('haftalikOzetIcerik');
+  if (!el) return;
+  if (!gunler || gunler.length === 0) {
+    el.innerHTML = '<div class="ozet-bos">Henüz bu haftaya ait kayıt yok.</div>';
+    return;
+  }
+  var html = '<div style="overflow-x:auto"><table class="ozet-tablo"><thead><tr>';
+  html += '<th>Gün</th>';
+  OZET_DERSLER.forEach(function(d) {
+    html += '<th style="color:' + d.renk + '">' + d.ad + '</th>';
+  });
+  html += '<th style="color:var(--kit)">Kitap</th>';
+  html += '</tr></thead><tbody>';
+
+  var toplamSoru = 0;
+  gunler.forEach(function(g) {
+    html += '<tr>';
+    html += '<td>' + (g.gun || '—') + '</td>';
+    OZET_DERSLER.forEach(function(d) {
+      var dv = Number(g[d.key+'_d'] || 0);
+      var yv = Number(g[d.key+'_y'] || 0);
+      var bv = Number(g[d.key+'_b'] || 0);
+      var total = dv + yv + bv;
+      toplamSoru += total;
+      if (total === 0) {
+        html += '<td class="ozet-net-yok">—</td>';
+      } else {
+        var net = (dv - yv / 3);
+        var renk = net >= 0 ? d.renk : '#dc2626';
+        html += '<td style="color:' + renk + '">' + net.toFixed(1) + '<span style="font-size:10px;color:var(--muted);font-weight:400"> (' + total + ')</span></td>';
+      }
+    });
+    html += '<td style="color:var(--kit)">' + (g.kitap && g.kitap > 0 ? g.kitap + ' s.' : '—') + '</td>';
+    html += '</tr>';
+  });
+
+  html += '</tbody></table></div>';
+  html += '<div style="margin-top:10px;font-size:12px;color:var(--muted);text-align:right;font-weight:600">';
+  html += '📊 ' + gunler.length + ' gün kayıtlı &nbsp;·&nbsp; ';
+  html += '✏️ Toplam ' + toplamSoru + ' soru</div>';
+  el.innerHTML = html;
+}
+
+function yukleOzet() {
+  fetch(SCRIPT_URL + '?ogrenciAdi=' + encodeURIComponent(OGRENCI_ADI) + '&haftaNo=' + encodeURIComponent(HAFTA_NO))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.durum === 'basarili') {
+        renderOzetTablo(data.gunler || []);
+      } else {
+        document.getElementById('haftalikOzetIcerik').innerHTML = '<div class="ozet-bos">Veri alınamadı.</div>';
+      }
+    })
+    .catch(function() {
+      document.getElementById('haftalikOzetIcerik').innerHTML = '<div class="ozet-bos">Bağlantı hatası — lütfen sayfayı yenile.</div>';
+    });
+}
+
+yukleOzet();
+
+// Kaydet butonuna basıldıktan sonra özeti güncelle
+var _origGonder = gonder;
+gonder = function(gunAdi, prefix) {
+  _origGonder(gunAdi, prefix);
+  setTimeout(function() { lsKaydet(); yukleOzet(); }, 2000);
+};
 </script>
 </body>
 </html>
