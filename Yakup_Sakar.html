@@ -54,11 +54,13 @@
   [data-theme="dark"] .ozet-kart,
   [data-theme="dark"] .stats-kart,
   [data-theme="dark"] .acc-item,
-  [data-theme="dark"] .motiv-card { background: var(--white); }
+  [data-theme="dark"] .motiv-card,
+  [data-theme="dark"] .deneme-acc { background: var(--white); }
   [data-theme="dark"] .durum-item,
   [data-theme="dark"] .hedef-item,
   [data-theme="dark"] .stats-skor { background: #0f172a; }
-  [data-theme="dark"] .acc-header:hover { background: #0f172a; }
+  [data-theme="dark"] .acc-header:hover,
+  [data-theme="dark"] .deneme-acc-header:hover { background: #0f172a; }
   [data-theme="dark"] .takip-input,
   [data-theme="dark"] .kp-input,
   [data-theme="dark"] .not-input { background: #0f172a; color: var(--text); border-color: var(--border); }
@@ -74,7 +76,8 @@
   [data-theme="dark"] .ortalama-notu { background: #292109; border-color: #854d0e; color: #fde68a; }
   [data-theme="dark"] .pazar-card { background: #052e16; border-color: #166534; }
   [data-theme="dark"] .pazar-text { color: #bbf7d0; }
-  [data-theme="dark"] .ozet-tablo tbody tr:hover td { background: #0f172a; }
+  [data-theme="dark"] .ozet-tablo tbody tr:hover td,
+  [data-theme="dark"] .deneme-tablo tbody tr:hover td { background: #0f172a; }
   [data-theme="dark"] .ovl-card { background: #1e293b; color: var(--text); }
   [data-theme="dark"] .insight-champion { background: linear-gradient(135deg,#292109,#1c1700); border-color: #854d0e; color: #fde68a; }
   [data-theme="dark"] .insight-weak { background: #2d0a0a; border-color: #7f1d1d; color: #fca5a5; }
@@ -84,6 +87,8 @@
   [data-theme="dark"] .insight-missed strong { color: inherit; }
   [data-theme="dark"] .hedef-bar-track { background: #334155; }
   [data-theme="dark"] #pr-indicator { background: var(--white); border-color: var(--border); }
+  [data-theme="dark"] .deneme-grafik-wrap,
+  [data-theme="dark"] .deneme-ozet-kart { background: #0f172a; }
 
   /* ═══════════════════════════════════════════════════════════════════
      DARK MODE TOGGLE BUTONU
@@ -129,16 +134,13 @@
   .insight-icon { font-size: 26px; flex-shrink: 0; }
   .insight-text { flex: 1; }
   .insight-text strong { font-weight: 800; }
-  /* Champion */
   .insight-champion {
     background: linear-gradient(135deg,#fef9c3,#fefce8);
     border: 2px solid #fbbf24; color: #78350f;
   }
-  /* Weak subject warning */
   .insight-weak {
     background: #fef2f2; border: 2px solid #fecaca; color: #991b1b;
   }
-  /* Missed day */
   .insight-missed {
     background: #fff7ed; border: 2px solid #fed7aa; color: #9a3412;
   }
@@ -274,6 +276,112 @@
   .hedef-yolu-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 4px; }
   .hedef-yolu-bilgi { margin-top: 10px; font-size: 13px; color: var(--text); font-weight: 600; text-align: center; }
   .hedef-yolu-bilgi span { color: var(--mat); font-weight: 800; }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     DENEME SONUÇLARI ACCORDION
+  ═══════════════════════════════════════════════════════════════════ */
+  .deneme-acc {
+    background: var(--white); border: 2px solid var(--border);
+    border-radius: 16px; margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    overflow: hidden; transition: background 0.3s, border-color 0.3s;
+  }
+  .deneme-acc-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 20px; cursor: pointer; user-select: none;
+    transition: background 0.15s;
+  }
+  .deneme-acc-header:hover { background: var(--bg); }
+  .deneme-acc-icon { font-size: 22px; flex-shrink: 0; }
+  .deneme-acc-baslik {
+    flex: 1; font-size: 15px; font-weight: 800; color: var(--text);
+  }
+  .deneme-acc-ozet-ufak {
+    font-size: 12px; font-weight: 700; color: var(--muted);
+    white-space: nowrap;
+  }
+  .deneme-acc-ozet-ufak strong { color: var(--mat); }
+  .deneme-acc-chevron {
+    font-size: 14px; color: var(--muted);
+    transition: transform 0.25s; flex-shrink: 0;
+  }
+  .deneme-acc.acik .deneme-acc-chevron { transform: rotate(180deg); }
+  .deneme-acc-body {
+    display: none; padding: 0 20px 20px;
+    border-top: 1px solid var(--border);
+  }
+  .deneme-acc.acik .deneme-acc-body { display: block; }
+
+  .deneme-ozet-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px; margin: 16px 0;
+  }
+  .deneme-ozet-kart {
+    background: var(--bg); border: 2px solid var(--border);
+    border-radius: 12px; padding: 14px 8px; text-align: center;
+  }
+  .deneme-ozet-val { font-size: 22px; font-weight: 800; line-height: 1.1; }
+  .deneme-ozet-lbl {
+    font-size: 11px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px;
+  }
+  @media (max-width: 600px) {
+    .deneme-ozet-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .deneme-grafik-wrap {
+    background: var(--bg); border: 2px solid var(--border);
+    border-radius: 12px; padding: 16px 8px 8px;
+    margin-bottom: 16px;
+  }
+  .deneme-grafik-baslik {
+    font-size: 12px; font-weight: 800; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    padding: 0 12px 8px; display: flex; gap: 16px;
+    align-items: center; flex-wrap: wrap;
+  }
+  .deneme-grafik-legend {
+    display: flex; gap: 14px; font-size: 11px; font-weight: 700;
+    color: var(--muted); text-transform: none; letter-spacing: 0;
+  }
+  .deneme-grafik-legend span { display: flex; align-items: center; gap: 5px; }
+  .deneme-grafik-legend i {
+    display: inline-block; width: 14px; height: 3px; border-radius: 2px;
+  }
+  .deneme-svg { width: 100%; height: auto; display: block; }
+
+  .deneme-tablo-wrap { overflow-x: auto; }
+  .deneme-tablo {
+    width: 100%; border-collapse: collapse; font-size: 12px;
+  }
+  .deneme-tablo th {
+    font-size: 10px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--muted);
+    padding: 8px 6px; text-align: center;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .deneme-tablo th:first-child { text-align: left; padding-left: 4px; }
+  .deneme-tablo td {
+    padding: 8px 6px; text-align: center;
+    border-bottom: 1px solid var(--border);
+    font-weight: 700;
+  }
+  .deneme-tablo td:first-child {
+    text-align: left; font-weight: 800; color: var(--text);
+    padding-left: 4px;
+  }
+  .deneme-tablo tbody tr:hover td { background: var(--bg); }
+  .deneme-tablo tbody tr:last-child td { border-bottom: none; }
+  .deneme-puan-yuksek { color: var(--success); font-weight: 800; }
+  .deneme-puan-dusuk { color: var(--danger); font-weight: 800; }
+  .deneme-fark-yukari { color: var(--success); font-size: 11px; font-weight: 800; }
+  .deneme-fark-asagi { color: var(--danger); font-size: 11px; font-weight: 800; }
+  .deneme-fark-ayni { color: var(--muted); font-size: 11px; }
+  .deneme-yukleniyor {
+    text-align: center; padding: 30px; color: var(--muted);
+    font-size: 13px; font-weight: 600;
+  }
 
   /* ── ACCORDION ── */
   .accordion { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
@@ -428,7 +536,7 @@
   <!-- Pull-to-refresh göstergesi -->
   <div id="pr-indicator">🔄 Yenileniyor...</div>
   <div class="motiv-row" id="motiv-row"></div>
-  <!-- Faz 2: Insight kartları (zayıf ders, boş gün, şampiyon) -->
+  <!-- Faz 2: Insight kartları -->
   <div class="insight-row" id="insight-row"></div>
   <div id="dur-stats-wrap">
     <div id="dur-kart" style="flex:1;min-width:0"></div>
@@ -437,6 +545,22 @@
   <div id="koc-deg"></div>
   <div id="hdf-kart"></div>
   <div id="hedef-yolu-wrap"></div>
+
+  <!-- ═══ DENEME SONUÇLARI ACCORDION ═══ -->
+  <div class="deneme-acc" id="deneme-acc">
+    <div class="deneme-acc-header" onclick="denemeAccToggle()">
+      <div class="deneme-acc-icon">📊</div>
+      <div class="deneme-acc-baslik">Deneme Sonuçları</div>
+      <div class="deneme-acc-ozet-ufak" id="deneme-acc-ozet">—</div>
+      <div class="deneme-acc-chevron">▼</div>
+    </div>
+    <div class="deneme-acc-body">
+      <div id="deneme-icerik">
+        <div class="deneme-yukleniyor">Yükleniyor...</div>
+      </div>
+    </div>
+  </div>
+
   <div class="plan-label">📅 Günlük plan &amp; takip</div>
   <div class="accordion" id="accordionGunler"></div>
   <div class="ozet-kart">
@@ -715,17 +839,14 @@ function ini(ad)    { return (ad||'').split(' ').slice(0,2).map(w=>w[0]||'').joi
 function rastgele(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
 // ═══════════════════════════════════════════════════════════════════
-//  FAZ 3: KARANLIK MOD
+//  KARANLIK MOD
 // ═══════════════════════════════════════════════════════════════════
 
 const DM_KEY = 'lgs_darkmode';
 
 function darkModeUygula(karanlik) {
-  if (karanlik) {
-    document.documentElement.setAttribute('data-theme', 'dark');
-  } else {
-    document.documentElement.removeAttribute('data-theme');
-  }
+  if (karanlik) document.documentElement.setAttribute('data-theme', 'dark');
+  else          document.documentElement.removeAttribute('data-theme');
 }
 
 function darkModeToggle() {
@@ -737,7 +858,6 @@ function darkModeToggle() {
   if (btn) btn.textContent = yeni ? '☀️' : '🌙';
 }
 
-// Başlangıçta dark mode yükle (header render'dan önce)
 (function() {
   const saved = LS.get(DM_KEY);
   if (saved === '1') darkModeUygula(true);
@@ -751,12 +871,10 @@ $('page-title').textContent = 'Haftalık Plan — ' + OGRENCI_ADI;
 $('dpnt').textContent =
   'Bu plan ' + OGRENCI_ADI + ' için hazırlanmıştır · Hafta ' + HAFTA_NO + ' · ' + CONFIG.ogrenci.tarihAralik;
 
-// ── HEADER (dark mode butonu dahil) ──
 (function renderHeader() {
   const karanlik = document.documentElement.getAttribute('data-theme') === 'dark';
   const rozetlerHtml = (CONFIG.ogrenci.rozetler || [])
-    .map(r => `<span class="badge ${esc(r[1])}">${esc(r[0])}</span>`)
-    .join('');
+    .map(r => `<span class="badge ${esc(r[1])}">${esc(r[0])}</span>`).join('');
   const ekstraHtml = CONFIG.ogrenci.ekstraBaslik
     ? ` <span class="bursluluk-badge">${esc(CONFIG.ogrenci.ekstraBaslik)}</span>` : '';
 
@@ -772,7 +890,6 @@ $('dpnt').textContent =
     `</button>`;
 }());
 
-// ── DURUM KARTI ──
 (function renderDurum() {
   const d = CONFIG.durum;
   const SIRALI = ['tur','sos','din','ing','mat','fen'];
@@ -806,14 +923,12 @@ $('dpnt').textContent =
     `</div>`;
 }());
 
-// ── KOÇ DEĞERLENDİRMESİ ──
 $('koc-deg').innerHTML =
   `<div class="card">` +
     `<div class="card-label">📝 Koç Değerlendirmesi</div>` +
     `<div class="kocundan-text">${esc(CONFIG.koc.degerlendirme)}</div>` +
   `</div>`;
 
-// ── HEDEFLER ──
 (function renderHedefler() {
   const h = CONFIG.hedefler;
   $('hdf-kart').innerHTML =
@@ -828,12 +943,10 @@ $('koc-deg').innerHTML =
     `</div>`;
 }());
 
-// ── KOÇ NOTU ──
 $('koc-nt').innerHTML =
   `<div class="koc-notu-baslik">🏆 Koç Notu — Hafta ${esc(HAFTA_NO)}</div>` +
   `<div class="koc-notu-text">${esc(CONFIG.koc.haftalikNot)}</div>`;
 
-// ── HEDEF YOLU ──
 (function renderHedefYolu() {
   const d = CONFIG.durum;
   const aralik    = d.hedef - d.oncekiPuan;
@@ -1292,7 +1405,7 @@ function sunucudanCheckboxYaz(konular) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-//  FAZ 2: INSIGHT ROW — Şampiyon, Zayıf Ders, Boş Gün
+//  FAZ 2: INSIGHT ROW
 // ═══════════════════════════════════════════════════════════════════
 
 const INSIGHT_DERS_ADI  = { mat:'Matematik', fen:'Fen', tur:'Türkçe', ing:'İngilizce', sos:'Sosyal', din:'Din', par:'Paragraf' };
@@ -1302,7 +1415,6 @@ function renderInsightRow(gunlerData) {
   const el = $('insight-row'); if (!el) return;
   const cards = [];
 
-  // ── 1. EN ÇOK ÇALIŞILAN DERS (Şampiyon rozeti) ──
   const dersSoru = {};
   TUM_DERSLER.forEach(k => { dersSoru[k] = 0; });
   (gunlerData || []).forEach(g => {
@@ -1326,7 +1438,6 @@ function renderInsightRow(gunlerData) {
     );
   }
 
-  // ── 2. ZAYIF DERS UYARISI (Bu haftaki gerçek veri) ──
   const zaifDersler = [];
   ANA_DERSLER.forEach(k => {
     let totD = 0, totY = 0, totB = 0;
@@ -1356,7 +1467,6 @@ function renderInsightRow(gunlerData) {
     );
   }
 
-  // ── 3. BOŞ GÜN UYARISI ──
   const simdi = trSaati();
   const bugun = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
   const doluGunler = {};
@@ -1437,7 +1547,6 @@ function renderOzetTablo(gunler) {
     html += `<td style="font-weight:800;color:var(--mat);font-size:13px;border-left:2px solid var(--border);text-align:center">${gunSoru>0?gunSoru:'—'}</td></tr>`;
   });
 
-  // Toplam satırı
   html += '<tr style="border-top:2px solid var(--mat)"><td style="font-size:11px;font-weight:800;color:var(--mat);letter-spacing:0.06em;text-transform:uppercase">Toplam</td>';
   OZET_DERSLER.forEach(d => {
     const dv=dersToplam[d.key].d, yv=dersToplam[d.key].y, bv=dersToplam[d.key].b, total=dv+yv+bv;
@@ -1460,7 +1569,7 @@ function yukleOzet() {
       renderOzetTablo(gunler);
       renderStatsKart(gunler);
       renderMotivRow(gunler);
-      renderInsightRow(gunler);   // ← Faz 2: insight kartlarını güncelle
+      renderInsightRow(gunler);
       sunucudanFormaYaz(gunler);
       sunucudanCheckboxYaz(data.konular || []);
       gunler.forEach(g => {
@@ -1583,7 +1692,7 @@ function renderStatsKart(gunlerData) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-//  FAZ 1: STREAK + GEÇEN HAFTA KARŞILAŞTIRMA
+//  STREAK + KARŞILAŞTIRMA
 // ═══════════════════════════════════════════════════════════════════
 
 function gunDoluMu(g) {
@@ -1674,7 +1783,7 @@ function hedefBarGuncelle(prefix) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-//  FAZ 3: PULL-TO-REFRESH (mobil)
+//  PULL-TO-REFRESH (mobil)
 // ═══════════════════════════════════════════════════════════════════
 
 (function initPullToRefresh() {
@@ -1694,17 +1803,228 @@ function hedefBarGuncelle(prefix) {
       const ind = $('pr-indicator');
       if (ind) ind.style.display = 'block';
       yukleOzet();
+      // Deneme verisini de zorla yenile
+      denemeYukle(true);
       setTimeout(() => { if (ind) ind.style.display = 'none'; refreshing = false; }, 2000);
     }
   }, { passive: true });
 }());
 
 // ═══════════════════════════════════════════════════════════════════
+//  DENEME SONUÇLARI MODÜLÜ
+// ═══════════════════════════════════════════════════════════════════
+
+const DENEME_CACHE_KEY = 'lgs_deneme_' + OGRENCI_ADI.replace(/\s+/g, '_');
+const DENEME_CACHE_GUN_KEY = DENEME_CACHE_KEY + '_gun';
+
+function bugunStr() {
+  const d = trSaati();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function denemeCacheOku() {
+  try {
+    const gun = LS.get(DENEME_CACHE_GUN_KEY);
+    const veri = LS.get(DENEME_CACHE_KEY);
+    if (gun === bugunStr() && veri) return JSON.parse(veri);
+  } catch (e) {}
+  return null;
+}
+
+function denemeCacheYaz(veri) {
+  try {
+    LS.set(DENEME_CACHE_KEY, JSON.stringify(veri));
+    LS.set(DENEME_CACHE_GUN_KEY, bugunStr());
+  } catch (e) {}
+}
+
+function denemeYukle(zorla) {
+  if (!zorla) {
+    const cache = denemeCacheOku();
+    if (cache) { denemeRender(cache); return Promise.resolve(cache); }
+  }
+  const url = SCRIPT_URL + '?tip=denemeler&ogrenciAdi=' + encodeURIComponent(OGRENCI_ADI);
+  return fetch(url)
+    .then(r => r.json())
+    .then(data => {
+      if (data.durum !== 'basarili') throw new Error(data.mesaj || 'Veri alınamadı');
+      denemeCacheYaz(data);
+      denemeRender(data);
+      return data;
+    })
+    .catch(err => {
+      warn('Deneme yükleme hatası:', err);
+      const el = $('deneme-icerik');
+      if (el) el.innerHTML = '<div class="deneme-yukleniyor" style="color:var(--danger)">⚠️ Veri alınamadı: ' + esc(err.message) + '</div>';
+    });
+}
+
+function denemeOzetUfak(ozet) {
+  if (!ozet || !ozet.toplam) return '—';
+  return ozet.toplam + ' deneme · <strong>' + Math.round(ozet.sonPuan) + '</strong>';
+}
+
+function denemeRender(data) {
+  const el = $('deneme-icerik'); if (!el) return;
+  const denemeler = data.denemeler || [];
+  const ozet = data.ozet || {};
+  const ozetEl = $('deneme-acc-ozet');
+  if (ozetEl) ozetEl.innerHTML = denemeOzetUfak(ozet);
+
+  if (!denemeler.length) {
+    el.innerHTML = '<div class="deneme-yukleniyor">Henüz deneme kaydı yok.</div>';
+    return;
+  }
+
+  const hedef = CONFIG.durum.hedef;
+
+  let html = '<div class="deneme-ozet-grid">' +
+    `<div class="deneme-ozet-kart"><div class="deneme-ozet-val" style="color:var(--mat)">${Math.round(ozet.sonPuan)}</div><div class="deneme-ozet-lbl">Son puan</div></div>` +
+    `<div class="deneme-ozet-kart"><div class="deneme-ozet-val" style="color:#7c3aed">${Math.round(ozet.ortalama)}</div><div class="deneme-ozet-lbl">Ortalama</div></div>` +
+    `<div class="deneme-ozet-kart"><div class="deneme-ozet-val" style="color:var(--success)">${hedef}</div><div class="deneme-ozet-lbl">Hedef</div></div>` +
+    `<div class="deneme-ozet-kart"><div class="deneme-ozet-val" style="color:var(--text)">${ozet.toplam}</div><div class="deneme-ozet-lbl">Deneme</div></div>` +
+    '</div>';
+
+  html += denemeSVGGrafik(denemeler, hedef);
+  html += denemeTabloHTML(denemeler);
+
+  el.innerHTML = html;
+}
+
+function denemeSVGGrafik(denemeler, hedef) {
+  const W = 700, H = 280, padL = 45, padR = 20, padT = 20, padB = 50;
+  const innerW = W - padL - padR;
+  const innerH = H - padT - padB;
+
+  const puanlar = denemeler.map(d => d.puan).filter(p => p > 0);
+  if (!puanlar.length) return '';
+
+  const minP = Math.min(Math.min.apply(null, puanlar), hedef) - 30;
+  const maxP = Math.max(Math.max.apply(null, puanlar), hedef) + 30;
+  const minY = Math.floor(minP / 20) * 20;
+  const maxY = Math.ceil(maxP / 20) * 20;
+  const rangeY = maxY - minY;
+
+  const xFor = (i) => padL + (denemeler.length === 1 ? innerW/2 : (i / (denemeler.length - 1)) * innerW);
+  const yFor = (p) => padT + innerH - ((p - minY) / rangeY) * innerH;
+
+  const yLabels = [];
+  const step = Math.max(20, Math.ceil(rangeY / 4 / 20) * 20);
+  for (let v = minY; v <= maxY; v += step) yLabels.push(v);
+
+  let svg = `<div class="deneme-grafik-wrap">` +
+    `<div class="deneme-grafik-baslik">📈 Puan Trendi` +
+      `<div class="deneme-grafik-legend">` +
+        `<span><i style="background:var(--mat)"></i>Puan</span>` +
+        `<span><i style="background:transparent;border-top:2px dashed var(--success);height:0"></i>Hedef (${hedef})</span>` +
+      `</div>` +
+    `</div>` +
+    `<svg class="deneme-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
+
+  yLabels.forEach(v => {
+    const y = yFor(v);
+    svg += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="var(--border)" stroke-width="1" opacity="0.5"/>`;
+    svg += `<text x="${padL-8}" y="${y+4}" text-anchor="end" fill="var(--muted)" font-size="11" font-family="Nunito,sans-serif" font-weight="600">${v}</text>`;
+  });
+
+  const hedefY = yFor(hedef);
+  svg += `<line x1="${padL}" y1="${hedefY}" x2="${W-padR}" y2="${hedefY}" stroke="var(--success)" stroke-width="2" stroke-dasharray="6,4"/>`;
+
+  svg += `<defs><linearGradient id="deneme-grad" x1="0" y1="0" x2="0" y2="1">` +
+    `<stop offset="0%" stop-color="var(--mat)" stop-opacity="0.25"/>` +
+    `<stop offset="100%" stop-color="var(--mat)" stop-opacity="0"/>` +
+    `</linearGradient></defs>`;
+
+  // Polyline noktaları
+  const polyPoints = denemeler.map((d, i) => xFor(i) + ',' + yFor(d.puan)).join(' ');
+
+  // Alan polygon
+  const ilkX = xFor(0), sonX = xFor(denemeler.length - 1), altY = yFor(minY);
+  let alanPoints = ilkX + ',' + altY + ' ';
+  denemeler.forEach((d, i) => { alanPoints += xFor(i) + ',' + yFor(d.puan) + ' '; });
+  alanPoints += sonX + ',' + altY;
+  svg += `<polygon points="${alanPoints}" fill="url(#deneme-grad)"/>`;
+
+  svg += `<polyline points="${polyPoints}" fill="none" stroke="var(--mat)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`;
+
+  denemeler.forEach((d, i) => {
+    const x = xFor(i), y = yFor(d.puan);
+    const renk = d.puan >= hedef ? 'var(--success)' : 'var(--danger)';
+    svg += `<circle cx="${x}" cy="${y}" r="5" fill="${renk}" stroke="white" stroke-width="2"/>`;
+
+    let kisa = d.ad;
+    if (kisa.length > 10) kisa = kisa.substring(0, 9) + '…';
+    svg += `<text x="${x}" y="${H-padB+18}" text-anchor="middle" fill="var(--muted)" font-size="10" font-family="Nunito,sans-serif" font-weight="700">${esc(kisa)}</text>`;
+    svg += `<text x="${x}" y="${H-padB+32}" text-anchor="middle" fill="var(--muted)" font-size="9" font-family="Nunito,sans-serif" font-weight="600" opacity="0.7">${esc(d.tarih)}</text>`;
+  });
+
+  svg += `</svg></div>`;
+  return svg;
+}
+
+function denemeTabloHTML(denemeler) {
+  const dersler = [
+    { k: 'tur', ad: 'TÜR', renk: '#9333ea' },
+    { k: 'sos', ad: 'SOS', renk: '#0891b2' },
+    { k: 'din', ad: 'DİN', renk: '#be185d' },
+    { k: 'ing', ad: 'İNG', renk: '#d97706' },
+    { k: 'mat', ad: 'MAT', renk: '#2563eb' },
+    { k: 'fen', ad: 'FEN', renk: '#16a34a' },
+  ];
+
+  let html = '<div class="deneme-tablo-wrap"><table class="deneme-tablo">' +
+    '<thead><tr><th>Deneme</th><th>Tarih</th>';
+  dersler.forEach(d => { html += `<th style="color:${d.renk}">${d.ad}</th>`; });
+  html += '<th style="color:var(--mat)">Puan</th><th>±</th></tr></thead><tbody>';
+
+  denemeler.forEach((d, i) => {
+    const oncekiPuan = i > 0 ? denemeler[i-1].puan : null;
+    let farkHtml = '—';
+    if (oncekiPuan !== null && oncekiPuan > 0 && d.puan > 0) {
+      const fark = d.puan - oncekiPuan;
+      const farkAbs = Math.abs(fark).toFixed(0);
+      if (fark > 0.5)       farkHtml = `<span class="deneme-fark-yukari">▲${farkAbs}</span>`;
+      else if (fark < -0.5) farkHtml = `<span class="deneme-fark-asagi">▼${farkAbs}</span>`;
+      else                  farkHtml = `<span class="deneme-fark-ayni">→0</span>`;
+    }
+
+    const puanCls = d.puan >= CONFIG.durum.hedef ? 'deneme-puan-yuksek' : 'deneme-puan-dusuk';
+
+    html += `<tr><td>${esc(d.ad)}</td><td style="color:var(--muted);font-weight:600">${esc(d.tarih)}</td>`;
+    dersler.forEach(ders => {
+      const v = d[ders.k];
+      html += `<td style="color:${ders.renk}">${v ? v.toFixed(2) : '—'}</td>`;
+    });
+    html += `<td class="${puanCls}">${d.puan ? d.puan.toFixed(0) : '—'}</td>`;
+    html += `<td>${farkHtml}</td></tr>`;
+  });
+
+  html += '</tbody></table></div>';
+  return html;
+}
+
+function denemeAccToggle() {
+  const acc = $('deneme-acc'); if (!acc) return;
+  const acik = acc.classList.toggle('acik');
+  if (acik && !denemeCacheOku()) denemeYukle(false);
+}
+
+(function denemeBaslat() {
+  const cache = denemeCacheOku();
+  if (cache) {
+    denemeRender(cache);
+  } else {
+    const ozetEl = $('deneme-acc-ozet');
+    if (ozetEl) ozetEl.textContent = 'Açmak için tıkla';
+  }
+}());
+
+// ═══════════════════════════════════════════════════════════════════
 //  BAŞLAT
 // ═══════════════════════════════════════════════════════════════════
 
-renderMotivRow([]);    // placeholder (sunucu gelene kadar)
-renderInsightRow([]); // placeholder
+renderMotivRow([]);
+renderInsightRow([]);
 
 lsYukle();
 lsDinleyiciEkle();
