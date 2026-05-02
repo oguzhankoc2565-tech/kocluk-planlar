@@ -711,7 +711,8 @@
   // ─── 4. VERİ ÇEKME ────────────────────────────────────────────────
   setStatus('Yükleniyor…', 'Plan verileri alınıyor', slug + (hafta ? ' · Hafta ' + hafta : ''));
 
-  let url = API_URL + (API_URL.indexOf('?') >= 0 ? '&' : '?') + 'ogrenci=' + encodeURIComponent(slug);
+  const sep = (API_URL.indexOf('?') >= 0 ? '&' : '?');
+  let url = API_URL + sep + 'istek=ogrenciSayfasi&ogrenci=' + encodeURIComponent(slug);
   if (hafta) url += '&hafta=' + encodeURIComponent(hafta);
 
   fetch(url, { method: 'GET', redirect: 'follow' })
