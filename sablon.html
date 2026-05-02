@@ -1,0 +1,2185 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title id="page-title">Haftalık Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ═══════════════════════════════════════════════════════════════════
+     TEMA — Tek noktada tanımlı
+  ═══════════════════════════════════════════════════════════════════ */
+  :root {
+    --primary-1: #0f766e;
+    --primary-2: #0891b2;
+    --primary-grad: linear-gradient(135deg, var(--primary-1) 0%, var(--primary-2) 100%);
+    --bg: #f0f4ff;
+    --white: #fff;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --border: #dde3f0;
+    --mat: #2563eb; --mat-bg: #eff6ff;
+    --ing: #d97706; --ing-bg: #fffbeb;
+    --fen: #16a34a; --fen-bg: #f0fdf4;
+    --tur: #9333ea; --tur-bg: #faf5ff;
+    --sos: #0891b2; --sos-bg: #ecfeff;
+    --din: #be185d; --din-bg: #fdf2f8;
+    --kit: #475569; --kit-bg: #f8fafc;
+    --par: #b45309; --par-bg: #fefce8;
+    --pazar: #4d7c0f; --pazar-bg: #f7fee7;
+    --success: #16a34a;
+    --danger: #dc2626;
+    --warning: #d97706;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     KARANLIK MOD
+  ═══════════════════════════════════════════════════════════════════ */
+  [data-theme="dark"] {
+    --bg: #0f172a;
+    --white: #1e293b;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #334155;
+    --mat-bg: #172554; --ing-bg: #451a03; --fen-bg: #052e16;
+    --tur-bg: #2e1065; --sos-bg: #082f49; --din-bg: #500724;
+    --kit-bg: #1a2535; --par-bg: #292109; --pazar-bg: #052e16;
+  }
+  [data-theme="dark"] body { background: #0a0f1e; }
+  [data-theme="dark"] .card,
+  [data-theme="dark"] .hedef-yolu,
+  [data-theme="dark"] .ozet-kart,
+  [data-theme="dark"] .stats-kart,
+  [data-theme="dark"] .acc-item,
+  [data-theme="dark"] .motiv-card,
+  [data-theme="dark"] .deneme-acc { background: var(--white); }
+  [data-theme="dark"] .durum-item,
+  [data-theme="dark"] .hedef-item,
+  [data-theme="dark"] .stats-skor { background: #0f172a; }
+  [data-theme="dark"] .acc-header:hover,
+  [data-theme="dark"] .deneme-acc-header:hover { background: #0f172a; }
+  [data-theme="dark"] .takip-input,
+  [data-theme="dark"] .kp-input,
+  [data-theme="dark"] .not-input { background: #0f172a; color: var(--text); border-color: var(--border); }
+  [data-theme="dark"] .takip-input:focus,
+  [data-theme="dark"] .kp-input:focus,
+  [data-theme="dark"] .not-input:focus { background: #1e293b; }
+  [data-theme="dark"] .takip-input:disabled,
+  [data-theme="dark"] .kp-input:disabled,
+  [data-theme="dark"] .not-input:disabled { background: #1a2535; color: #475569; }
+  [data-theme="dark"] .hedef-bar-wrap { background: linear-gradient(135deg,#0a2a25,#082233); border-color: #0e4d60; }
+  [data-theme="dark"] .koc-notu { background: linear-gradient(135deg,#082233,#0a2a25); border-color: #0e4d60; }
+  [data-theme="dark"] .kocundan-text { background: linear-gradient(135deg,#082233,#0a2a25); }
+  [data-theme="dark"] .ortalama-notu { background: #292109; border-color: #854d0e; color: #fde68a; }
+  [data-theme="dark"] .pazar-card { background: #052e16; border-color: #166534; }
+  [data-theme="dark"] .pazar-text { color: #bbf7d0; }
+  [data-theme="dark"] .ozet-tablo tbody tr:hover td,
+  [data-theme="dark"] .deneme-tablo tbody tr:hover td { background: #0f172a; }
+  [data-theme="dark"] .ovl-card { background: #1e293b; color: var(--text); }
+  [data-theme="dark"] .insight-champion { background: linear-gradient(135deg,#292109,#1c1700); border-color: #854d0e; color: #fde68a; }
+  [data-theme="dark"] .insight-weak { background: #2d0a0a; border-color: #7f1d1d; color: #fca5a5; }
+  [data-theme="dark"] .insight-missed { background: #2d1500; border-color: #7c2d12; color: #fdba74; }
+  [data-theme="dark"] .insight-champion strong,
+  [data-theme="dark"] .insight-weak strong,
+  [data-theme="dark"] .insight-missed strong { color: inherit; }
+  [data-theme="dark"] .hedef-bar-track { background: #334155; }
+  [data-theme="dark"] #pr-indicator { background: var(--white); border-color: var(--border); }
+  [data-theme="dark"] .deneme-grafik-wrap,
+  [data-theme="dark"] .deneme-ozet-kart { background: #0f172a; }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     DARK MODE TOGGLE BUTONU
+  ═══════════════════════════════════════════════════════════════════ */
+  .dm-btn {
+    background: rgba(255,255,255,0.18);
+    border: 1.5px solid rgba(255,255,255,0.4);
+    color: white; border-radius: 50%;
+    width: 38px; height: 38px; font-size: 18px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, transform 0.15s;
+    flex-shrink: 0; margin-left: auto;
+  }
+  .dm-btn:hover { background: rgba(255,255,255,0.32); transform: scale(1.08); }
+  .dm-btn:active { transform: scale(0.95); }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     PULL-TO-REFRESH GÖSTERGESİ
+  ═══════════════════════════════════════════════════════════════════ */
+  #pr-indicator {
+    display: none; text-align: center; padding: 10px;
+    font-size: 13px; color: var(--primary-2); font-weight: 700;
+    background: var(--white); border: 2px solid var(--border);
+    border-radius: 12px; margin-bottom: 10px;
+    animation: pr-pulse 0.8s ease-in-out infinite alternate;
+  }
+  @keyframes pr-pulse { from { opacity: 0.7; } to { opacity: 1; } }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     INSIGHT ROW — Faz 2 kartları
+  ═══════════════════════════════════════════════════════════════════ */
+  .insight-row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+  .insight-card {
+    border-radius: 14px; padding: 12px 16px;
+    display: flex; align-items: center; gap: 14px;
+    font-size: 13px; font-weight: 600; line-height: 1.45;
+    animation: fadeSlideIn 0.35s ease-out both;
+  }
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .insight-icon { font-size: 26px; flex-shrink: 0; }
+  .insight-text { flex: 1; }
+  .insight-text strong { font-weight: 800; }
+  .insight-champion {
+    background: linear-gradient(135deg,#fef9c3,#fefce8);
+    border: 2px solid #fbbf24; color: #78350f;
+  }
+  .insight-weak {
+    background: #fef2f2; border: 2px solid #fecaca; color: #991b1b;
+  }
+  .insight-missed {
+    background: #fff7ed; border: 2px solid #fed7aa; color: #9a3412;
+  }
+  .insight-badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; font-weight: 800; padding: 2px 7px;
+    border-radius: 6px; white-space: nowrap;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px; line-height: 1.6; padding: 20px;
+    transition: background 0.3s, color 0.3s;
+  }
+  .page { max-width: 880px; margin: 0 auto; }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--primary-grad);
+    border-radius: 20px; padding: 22px 28px; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 18px; color: white;
+    transition: background 0.3s;
+  }
+
+  /* ── STREAK & MOTİVASYON KARTLARI ── */
+  .motiv-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; margin-bottom: 12px;
+  }
+  .motiv-card {
+    background: var(--white); border: 2px solid var(--border);
+    border-radius: 14px; padding: 12px 16px;
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .motiv-icon {
+    font-size: 28px; width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .motiv-streak  .motiv-icon { background: #fef3c7; }
+  .motiv-compare .motiv-icon { background: #dbeafe; }
+  .motiv-info { flex: 1; min-width: 0; }
+  .motiv-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+  .motiv-deger { font-size: 20px; font-weight: 800; line-height: 1.1; }
+  .motiv-altmesaj { font-size: 11px; font-weight: 600; color: var(--muted); margin-top: 2px; }
+  .motiv-deger .donus-yukari { color: var(--success); font-size: 14px; margin-left: 4px; }
+  .motiv-deger .donus-asagi  { color: var(--danger);  font-size: 14px; margin-left: 4px; }
+  .motiv-deger .donus-ayni   { color: var(--muted);   font-size: 14px; margin-left: 4px; }
+  @media (max-width: 600px) { .motiv-row { grid-template-columns: 1fr; } }
+
+  /* ── GÜNLÜK HEDEF İLERLEME ÇUBUĞU ── */
+  .hedef-bar-wrap {
+    margin-top: 10px; padding: 12px 14px;
+    background: linear-gradient(135deg,#f0fdfa,#ecfeff);
+    border: 2px solid #a5f3fc; border-radius: 12px;
+  }
+  .hedef-bar-baslik { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .hedef-bar-label { font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary-2); }
+  .hedef-bar-sayac { font-size: 14px; font-weight: 800; color: var(--text); }
+  .hedef-bar-sayac span.cur { color: var(--primary-2); }
+  .hedef-bar-track { height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; position: relative; }
+  .hedef-bar-fill { height: 100%; background: var(--primary-grad); border-radius: 5px; transition: width 0.4s ease-out, background 0.3s; width: 0%; }
+  .hedef-bar-fill.basarili { background: linear-gradient(135deg,#16a34a,#4ade80); }
+  .hedef-bar-fill.cokustun { background: linear-gradient(135deg,#f59e0b,#fbbf24,#f59e0b); background-size: 200% 100%; animation: kutlama 2s linear infinite; }
+  @keyframes kutlama { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+  .hedef-bar-mesaj { font-size: 12px; font-weight: 700; margin-top: 6px; text-align: center; transition: color 0.3s; }
+  .hedef-bar-mesaj.basla    { color: var(--muted); }
+  .hedef-bar-mesaj.devam    { color: var(--primary-2); }
+  .hedef-bar-mesaj.basarili { color: var(--success); }
+  .hedef-bar-mesaj.cokustun { color: #d97706; }
+  .avatar { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.25); font-weight: 800; font-size: 18px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 2px solid rgba(255,255,255,0.5); }
+  .header-info h1 { font-size: 22px; font-weight: 800; color: white; }
+  .header-info .meta { font-size: 13px; color: rgba(255,255,255,0.8); margin-top: 2px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .badge { font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 700; background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); }
+  .badge-mat { background: rgba(255,255,255,0.2); }
+  .badge-ing { background: rgba(255,200,0,0.3); border-color: rgba(255,200,0,0.5); }
+  .badge-fen { background: rgba(0,255,100,0.2); border-color: rgba(0,255,100,0.4); }
+  .badge-tur { background: rgba(200,100,255,0.3); border-color: rgba(200,100,255,0.5); }
+  .badge-sos { background: rgba(0,200,255,0.2); border-color: rgba(0,200,255,0.4); }
+  .badge-din { background: rgba(255,100,150,0.3); border-color: rgba(255,100,150,0.5); }
+  .bursluluk-badge { display: inline-block; background: linear-gradient(135deg,#fbbf24,#f59e0b); color: white; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
+
+  /* ── KARTLAR ── */
+  .card { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 18px 22px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: background 0.3s, border-color 0.3s; }
+  .card-label { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+
+  /* ── DURUM GRID ── */
+  .durum-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .durum-item { background: var(--bg); border: 2px solid var(--border); border-radius: 12px; padding: 12px 16px; }
+  .durum-label { font-size: 12px; color: var(--muted); margin-bottom: 3px; font-weight: 600; }
+  .durum-val { font-size: 20px; font-weight: 800; }
+  .durum-val.puan { color: var(--mat); }
+  .durum-val.hedef { color: var(--success); }
+
+  /* ── NET KARTLAR ── */
+  .net-kartlar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .net-kart { border-radius: 10px; padding: 8px 12px; text-align: center; min-width: 72px; border: 2px solid var(--border); }
+  .ders-mat-bg { background: var(--mat-bg); border-color: #bfdbfe; }
+  .ders-ing-bg { background: var(--ing-bg); border-color: #fde68a; }
+  .ders-fen-bg { background: var(--fen-bg); border-color: #bbf7d0; }
+  .ders-tur-bg { background: var(--tur-bg); border-color: #e9d5ff; }
+  .ders-sos-bg { background: var(--sos-bg); border-color: #a5f3fc; }
+  .ders-din-bg { background: var(--din-bg); border-color: #fbcfe8; }
+  .net-kart-ders { font-size: 11px; font-weight: 700; color: var(--muted); margin-bottom: 2px; }
+  .net-kart-sayi { font-size: 18px; font-weight: 800; }
+  .net-kart-label { font-size: 10px; color: var(--muted); font-weight: 600; }
+  .net-kart-hedef { font-size: 11px; font-weight: 700; color: var(--success); margin-top: 3px; border-top: 1px dashed #d1d5db; padding-top: 3px; }
+  .ortalama-notu { margin-top: 12px; padding: 10px 14px; background: #fefce8; border: 2px solid #fde68a; border-radius: 10px; font-size: 13px; font-weight: 700; color: #854d0e; }
+
+  /* ── KOÇ DEĞERLENDİRMESİ ── */
+  .kocundan-text { font-size: 15px; line-height: 1.85; padding: 16px 20px; background: linear-gradient(135deg,#ecfeff,#f0fdfa); border-left: 4px solid var(--primary-2); border-radius: 0 12px 12px 0; }
+
+  /* ── HEDEF GRID ── */
+  .hedef-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .hedef-item { background: var(--bg); border: 2px solid var(--border); border-radius: 12px; padding: 12px 16px; }
+  .hedef-label { font-size: 12px; color: var(--muted); margin-bottom: 3px; font-weight: 600; }
+  .hedef-val { font-size: 16px; font-weight: 800; }
+  .plan-label { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; padding: 0 4px; }
+
+  /* ── HEDEF YOLU ── */
+  .hedef-yolu { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 18px 22px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .hedef-yolu-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .hedef-yolu-track { position: relative; height: 36px; margin: 0 0 10px; }
+  .hedef-yolu-bg { position: absolute; top: 14px; left: 0; right: 0; height: 8px; background: var(--border); border-radius: 4px; }
+  .hedef-yolu-fill { position: absolute; top: 14px; left: 0; height: 8px; background: var(--primary-grad); border-radius: 4px; transition: width 1s cubic-bezier(.16,1,.3,1); }
+  .hedef-yolu-top { position: absolute; top: 0; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .hedef-yolu-top-dot { width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; font-size: 10px; }
+  .hedef-yolu-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 4px; }
+  .hedef-yolu-bilgi { margin-top: 10px; font-size: 13px; color: var(--text); font-weight: 600; text-align: center; }
+  .hedef-yolu-bilgi span { color: var(--mat); font-weight: 800; }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     DENEME SONUÇLARI ACCORDION
+  ═══════════════════════════════════════════════════════════════════ */
+  .deneme-acc {
+    background: var(--white); border: 2px solid var(--border);
+    border-radius: 16px; margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    overflow: hidden; transition: background 0.3s, border-color 0.3s;
+  }
+  .deneme-acc-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 20px; cursor: pointer; user-select: none;
+    transition: background 0.15s;
+  }
+  .deneme-acc-header:hover { background: var(--bg); }
+  .deneme-acc-icon { font-size: 22px; flex-shrink: 0; }
+  .deneme-acc-baslik {
+    flex: 1; font-size: 15px; font-weight: 800; color: var(--text);
+  }
+  .deneme-acc-ozet-ufak {
+    font-size: 12px; font-weight: 700; color: var(--muted);
+    white-space: nowrap;
+  }
+  .deneme-acc-ozet-ufak strong { color: var(--mat); }
+  .deneme-acc-chevron {
+    font-size: 14px; color: var(--muted);
+    transition: transform 0.25s; flex-shrink: 0;
+  }
+  .deneme-acc.acik .deneme-acc-chevron { transform: rotate(180deg); }
+  .deneme-acc-body {
+    display: none; padding: 0 20px 20px;
+    border-top: 1px solid var(--border);
+  }
+  .deneme-acc.acik .deneme-acc-body { display: block; }
+
+  .deneme-ozet-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px; margin: 16px 0;
+  }
+  .deneme-ozet-kart {
+    background: var(--bg); border: 2px solid var(--border);
+    border-radius: 12px; padding: 14px 8px; text-align: center;
+  }
+  .deneme-ozet-val { font-size: 22px; font-weight: 800; line-height: 1.1; }
+  .deneme-ozet-lbl {
+    font-size: 11px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px;
+  }
+  @media (max-width: 600px) {
+    .deneme-ozet-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .deneme-grafik-wrap {
+    background: var(--bg); border: 2px solid var(--border);
+    border-radius: 12px; padding: 16px 8px 8px;
+    margin-bottom: 16px;
+  }
+  .deneme-grafik-baslik {
+    font-size: 12px; font-weight: 800; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    padding: 0 12px 8px; display: flex; gap: 16px;
+    align-items: center; flex-wrap: wrap;
+  }
+  .deneme-grafik-legend {
+    display: flex; gap: 14px; font-size: 11px; font-weight: 700;
+    color: var(--muted); text-transform: none; letter-spacing: 0;
+  }
+  .deneme-grafik-legend span { display: flex; align-items: center; gap: 5px; }
+  .deneme-grafik-legend i {
+    display: inline-block; width: 14px; height: 3px; border-radius: 2px;
+  }
+  .deneme-svg { width: 100%; height: auto; display: block; }
+
+  .deneme-tablo-wrap { overflow-x: auto; }
+  .deneme-tablo {
+    width: 100%; border-collapse: collapse; font-size: 12px;
+  }
+  .deneme-tablo th {
+    font-size: 10px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--muted);
+    padding: 8px 6px; text-align: center;
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+  }
+  .deneme-tablo th:first-child { text-align: left; padding-left: 4px; }
+  .deneme-tablo td {
+    padding: 8px 6px; text-align: center;
+    border-bottom: 1px solid var(--border);
+    font-weight: 700;
+  }
+  .deneme-tablo td:first-child {
+    text-align: left; font-weight: 800; color: var(--text);
+    padding-left: 4px;
+  }
+  .deneme-tablo tbody tr:hover td { background: var(--bg); }
+  .deneme-tablo tbody tr:last-child td { border-bottom: none; }
+  .deneme-puan-yuksek { color: var(--success); font-weight: 800; }
+  .deneme-puan-dusuk { color: var(--danger); font-weight: 800; }
+  .deneme-fark-yukari { color: var(--success); font-size: 11px; font-weight: 800; }
+  .deneme-fark-asagi { color: var(--danger); font-size: 11px; font-weight: 800; }
+  .deneme-fark-ayni { color: var(--muted); font-size: 11px; }
+  .deneme-yukleniyor {
+    text-align: center; padding: 30px; color: var(--muted);
+    font-size: 13px; font-weight: 600;
+  }
+
+  /* ── ACCORDION ── */
+  .accordion { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+  .acc-item { background: var(--white); border: 2px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: border-color 0.2s, background 0.3s; }
+  .acc-item.aktif { border-color: var(--primary-2); box-shadow: 0 4px 16px rgba(8,145,178,0.1); }
+  .acc-item.gecmis { opacity: 0.75; }
+  .acc-item.kilitli { opacity: 0.5; }
+  .acc-header { display: flex; align-items: center; gap: 12px; padding: 14px 18px; cursor: pointer; user-select: none; transition: background 0.15s; }
+  .acc-header:hover { background: var(--bg); }
+  .acc-item.kilitli .acc-header { cursor: not-allowed; }
+  .acc-gun-adi { font-size: 15px; font-weight: 800; color: var(--text); min-width: 90px; }
+  .acc-item.aktif .acc-gun-adi { color: var(--primary-2); }
+  .acc-tarih { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .acc-soru { font-size: 11px; font-weight: 700; color: var(--mat); margin-top: 2px; min-height: 14px; }
+  .acc-mini-bar { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; min-width: 40px; max-width: 120px; }
+  .acc-mini-fill { height: 100%; border-radius: 3px; background: var(--primary-grad); transition: width 0.4s; }
+  .acc-badges { display: flex; gap: 6px; align-items: center; }
+  .acc-chevron { font-size: 14px; color: var(--muted); transition: transform 0.25s; flex-shrink: 0; }
+  .acc-item.acik .acc-chevron { transform: rotate(180deg); }
+  .acc-body { display: none; padding: 0 18px 18px; border-top: 1px solid var(--border); }
+  .acc-item.acik .acc-body { display: block; }
+
+  /* ── GÜN KARTI İÇİ ── */
+  .gun-baslik { font-size: 14px; font-weight: 800; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 2px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .gun-tarih { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .gun-durum-badge { font-size: 11px; padding: 3px 10px; border-radius: 10px; font-weight: 700; }
+  .badge-aktif { background: #dcfce7; color: #15803d; }
+  .badge-kilitli { background: #f1f5f9; color: #64748b; }
+  .badge-gecmis { background: #fef9c3; color: #854d0e; }
+
+  /* ── DERS BLOĞU ── */
+  .ders-blok { margin-bottom: 10px; }
+  .ders-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 5px; padding: 3px 8px; border-radius: 6px; display: inline-block; }
+  .ders-mat { color: var(--mat); background: var(--mat-bg); }
+  .ders-ing { color: var(--ing); background: var(--ing-bg); }
+  .ders-fen { color: var(--fen); background: var(--fen-bg); }
+  .ders-tur { color: var(--tur); background: var(--tur-bg); }
+  .ders-sos { color: var(--sos); background: var(--sos-bg); }
+  .ders-din { color: var(--din); background: var(--din-bg); }
+  .ders-kit { color: var(--kit); background: var(--kit-bg); }
+  .ders-par { color: var(--par); background: var(--par-bg); }
+  .gorev-list { padding: 0; }
+  .gorev-item { display: flex; align-items: flex-start; gap: 8px; padding: 4px 0; }
+  .gorev-item.soru-gorev { padding-left: 4px; }
+  .gorev-cb { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; accent-color: var(--mat); cursor: pointer; }
+  .gorev-cb:disabled { cursor: not-allowed; opacity: 0.5; }
+  .gorev-metin { font-size: 13px; line-height: 1.5; transition: all 0.2s; }
+  .gorev-metin.tamamlandi { text-decoration: line-through; color: var(--muted); opacity: 0.7; }
+  .gorev-nokta { font-size: 9px; color: var(--muted); margin-top: 5px; flex-shrink: 0; }
+
+  /* ── TAKİP BÖLÜMÜ ── */
+  .takip-bolum { margin-top: 12px; padding-top: 12px; border-top: 2px dashed var(--border); }
+  .takip-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .takip-dyb-header { display: flex; gap: 4px; margin-bottom: 4px; align-items: center; }
+  .takip-dyb-header-bos { width: 70px; }
+  .takip-dyb-header-lbl { width: 40px; font-size: 10px; color: var(--muted); text-align: center; font-weight: 700; }
+  .takip-satirlar { display: flex; flex-direction: column; gap: 6px; }
+  .takip-satir { display: flex; align-items: center; gap: 4px; }
+  .takip-satir-adi { font-size: 12px; font-weight: 700; min-width: 70px; }
+  .takip-input { width: 40px; height: 30px; border: 2px solid var(--border); border-radius: 8px; background: #fafafa; font-size: 13px; text-align: center; font-family: 'Nunito', sans-serif; color: var(--text); font-weight: 700; }
+  .takip-input:focus { outline: none; border-color: var(--primary-2); background: #fff; }
+  .takip-input:disabled { background: #f1f5f9; color: #aaa; cursor: not-allowed; }
+  .net-goster { width: 40px; font-size: 12px; font-weight: 800; text-align: center; color: var(--success); }
+  .takip-toplam { margin-top: 6px; padding-top: 6px; border-top: 1.5px dashed var(--border); }
+  .takip-toplam-val { width: 40px; height: 30px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: var(--text); background: var(--bg); border-radius: 8px; }
+  .takip-toplam-net { color: var(--success); }
+  .kp-row { display: flex; gap: 10px; margin-top: 8px; }
+  .kp-item { display: flex; flex-direction: column; gap: 3px; }
+  .kp-label { font-size: 11px; color: var(--muted); font-weight: 600; }
+  .kp-input { width: 80px; height: 30px; border: 2px solid var(--border); border-radius: 8px; background: #fafafa; font-size: 13px; text-align: center; font-family: 'Nunito', sans-serif; color: var(--text); font-weight: 700; }
+  .kp-input:focus { outline: none; border-color: var(--primary-2); background: #fff; }
+  .kp-input:disabled { background: #f1f5f9; color: #aaa; cursor: not-allowed; }
+  .not-input { width: 100%; margin-top: 8px; height: 34px; border: 2px solid var(--border); border-radius: 8px; background: #fafafa; font-size: 13px; padding: 0 10px; font-family: 'Nunito', sans-serif; color: var(--text); }
+  .not-input:focus { outline: none; border-color: var(--primary-2); background: #fff; }
+  .not-input:disabled { background: #f1f5f9; color: #aaa; cursor: not-allowed; }
+
+  /* ── GERİ SAYIM & BUTON ── */
+  .geri-sayim { font-size: 12px; color: var(--primary-2); font-weight: 700; margin-top: 8px; text-align: center; }
+  .geri-sayim.son-dakika { color: var(--danger); }
+  .gonder-btn { width: 100%; margin-top: 10px; padding: 10px; background: var(--primary-grad); color: white; border: none; border-radius: 10px; font-size: 13px; font-weight: 800; font-family: 'Nunito', sans-serif; cursor: pointer; transition: opacity 0.2s; }
+  .gonder-btn:hover:not(:disabled) { opacity: 0.88; }
+  .gonder-btn:active:not(:disabled) { transform: scale(0.98); }
+  .gonder-btn:disabled { background: #94a3b8; cursor: not-allowed; }
+  .gonder-btn.tamamlandi { background: linear-gradient(135deg,#15803d,#16a34a); }
+  .gonder-mesaj { display: none; margin-top: 8px; padding: 10px 14px; border-radius: 10px; font-size: 14px; font-weight: 700; text-align: center; }
+  .mesaj-ok   { background: var(--fen-bg); color: #15803d; border: 2px solid #bbf7d0; }
+  .mesaj-hata { background: #fef2f2; color: var(--danger); border: 2px solid #fecaca; }
+  .kilit-overlay { text-align: center; padding: 14px 8px; font-size: 13px; color: var(--muted); font-weight: 600; }
+
+  /* ── PAZAR & KOÇ NOTU ── */
+  .pazar-card { background: var(--pazar-bg); border: 2px solid #bbf7d0; border-radius: 16px; padding: 14px 20px; margin-bottom: 12px; }
+  .pazar-baslik { font-size: 13px; font-weight: 800; color: var(--pazar); margin-bottom: 4px; }
+  .pazar-text { font-size: 13px; color: #365314; }
+  .pazar-text span { margin-right: 12px; }
+  .koc-notu { background: linear-gradient(135deg,#ecfeff,#f0fdfa); border: 2px solid #a5f3fc; border-radius: 16px; padding: 18px 22px; margin-bottom: 12px; }
+  .koc-notu-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--primary-2); margin-bottom: 8px; }
+  .koc-notu-text { font-size: 14px; line-height: 1.75; }
+  .dipnot { font-size: 12px; color: var(--muted); text-align: center; margin-top: 8px; font-weight: 600; }
+
+  /* ── DURUM + STATS YAN YANA ── */
+  #dur-stats-wrap { display: grid; grid-template-columns: 1fr 320px; gap: 0; margin-bottom: 12px; align-items: stretch; }
+  #dur-stats-wrap > div { margin-bottom: 0; }
+  #dur-stats-wrap #dur-kart .card { border-top-right-radius: 0; border-bottom-right-radius: 0; border-right: none; margin-bottom: 0; height: 100%; box-sizing: border-box; }
+  #dur-stats-wrap #stats-kart .stats-kart { border-top-left-radius: 0; border-bottom-left-radius: 0; margin-bottom: 0; height: 100%; box-sizing: border-box; }
+
+  /* ── STATS KARTI ── */
+  .stats-kart { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: background 0.3s; }
+  .stats-skor { background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; padding: 8px 4px; text-align: center; }
+  .stats-skor-val { font-size: 20px; font-weight: 800; line-height: 1; }
+  .stats-skor-lbl { font-size: 9px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 3px; }
+  .stats-bar-row { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
+  .stats-gun-dots { display: flex; gap: 4px; justify-content: center; margin-top: 12px; padding-top: 12px; border-top: 1.5px solid var(--border); }
+  .stats-gun-dot { width: 26px; height: 26px; border-radius: 6px; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .stats-gun-on  { background: #dcfce7; color: #15803d; }
+  .stats-gun-off { background: #f1f5f9; color: #94a3b8; }
+
+  /* ── ÖZET TABLO ── */
+  .ozet-kart { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 18px 22px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .ozet-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .ozet-tablo { width: 100%; border-collapse: collapse; }
+  .ozet-tablo th { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); padding: 6px 8px; text-align: center; border-bottom: 2px solid var(--border); }
+  .ozet-tablo th:first-child { text-align: left; }
+  .ozet-tablo td { font-size: 13px; padding: 7px 8px; text-align: center; border-bottom: 1px solid var(--border); font-weight: 700; }
+  .ozet-tablo td:first-child { text-align: left; font-size: 13px; font-weight: 800; color: var(--text); }
+  .ozet-tablo tbody tr:last-child td { border-bottom: none; }
+  .ozet-tablo tbody tr:hover td { background: var(--bg); }
+  .ozet-yukleniyor { text-align: center; padding: 24px; color: var(--muted); font-size: 13px; font-weight: 600; }
+  .ozet-bos { text-align: center; padding: 24px; color: var(--muted); font-size: 13px; }
+  .ozet-net-yok { color: #d1d5db; font-weight: 400; font-size: 12px; }
+
+  /* ── POPUP (overlay) ── */
+  .ovl { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .ovl-card { background: white; border-radius: 20px; padding: 24px; max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
+  .ovl-close { position: absolute; top: 12px; right: 14px; background: none; border: none; font-size: 22px; cursor: pointer; color: #94a3b8; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    #dur-stats-wrap { grid-template-columns: 1fr; }
+    #dur-stats-wrap #dur-kart .card { border-top-right-radius: 16px; border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-right: 2px solid var(--border); }
+    #dur-stats-wrap #stats-kart .stats-kart { border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; border-top: none; margin-bottom: 12px; }
+  }
+  @media (max-width: 600px) {
+    .hedef-grid { grid-template-columns: 1fr; }
+    .durum-grid { grid-template-columns: 1fr; }
+    .net-kartlar { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header" id="hdr"></div>
+  <!-- Pull-to-refresh göstergesi -->
+  <div id="pr-indicator">🔄 Yenileniyor...</div>
+  <div class="motiv-row" id="motiv-row"></div>
+  <!-- Faz 2: Insight kartları -->
+  <div class="insight-row" id="insight-row"></div>
+  <div id="dur-stats-wrap">
+    <div id="dur-kart" style="flex:1;min-width:0"></div>
+    <div id="stats-kart" style="width:320px;flex-shrink:0"></div>
+  </div>
+  <div id="koc-deg"></div>
+  <div id="hdf-kart"></div>
+  <div id="hedef-yolu-wrap"></div>
+
+  <!-- ═══ DENEME SONUÇLARI ACCORDION ═══ -->
+  <div class="deneme-acc" id="deneme-acc">
+    <div class="deneme-acc-header" onclick="denemeAccToggle()">
+      <div class="deneme-acc-icon">📊</div>
+      <div class="deneme-acc-baslik">Deneme Sonuçları</div>
+      <div class="deneme-acc-ozet-ufak" id="deneme-acc-ozet">—</div>
+      <div class="deneme-acc-chevron">▼</div>
+    </div>
+    <div class="deneme-acc-body">
+      <div id="deneme-icerik">
+        <div class="deneme-yukleniyor">Yükleniyor...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-label">📅 Günlük plan &amp; takip</div>
+  <div class="accordion" id="accordionGunler"></div>
+  <div class="ozet-kart">
+    <div class="ozet-baslik">📈 Bu Haftanın Kayıtlarım</div>
+    <div id="haftalikOzetIcerik"><div class="ozet-yukleniyor">Yükleniyor...</div></div>
+  </div>
+  <div class="koc-notu" id="koc-nt"></div>
+  <div class="pazar-card">
+    <div class="pazar-baslik">☀️ Pazar — veliye bırakılmıştır</div>
+    <div class="pazar-text">
+      <span>Kitap okuma önerilir</span><span>·</span>
+      <span>Zorunlu ders çalışma yok</span><span>·</span>
+      <span>Ailenizin tercihine göre</span>
+    </div>
+  </div>
+  <div class="dipnot" id="dpnt"></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   LOADER — Sayfa açılışında Apps Script'ten veri çeker, CONFIG'i
+   runtime'da kurar, sonra ana şablonu çalıştırır.
+
+   KULLANIM:
+     sablon.html?ogrenci=yakup
+     sablon.html?ogrenci=yakup&hafta=2          (opsiyonel: belirli hafta)
+     sablon.html?ogrenci=yakup&api=https://...  (opsiyonel: API override)
+
+   KONFIGÜRASYON:
+     - API_URL: master Apps Script web app URL'si. Tüm öğrenciler aynı
+       endpoint'i kullanır, slug parametresi ile ayrılır.
+═══════════════════════════════════════════════════════════════════ */
+(function lgsLoader() {
+  'use strict';
+
+  // ─── 1. KONFIGÜRASYON ─────────────────────────────────────────────
+  const API_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbwuYEaEdXqLK4xSSKsHIvMgZopzfmumuqi79OoQjA3lTt2CVb5Xmt1GozBLV-AFnCh9/exec';
+
+  const params = new URLSearchParams(location.search);
+  const slug   = (params.get('ogrenci') || '').trim().toLowerCase();
+  const hafta  = (params.get('hafta')   || '').trim();
+  const apiOverride = (params.get('api') || '').trim();
+  const API_URL = apiOverride || API_URL_DEFAULT;
+
+  // ─── 2. LOADING / HATA OVERLAY ────────────────────────────────────
+  const overlay = document.createElement('div');
+  overlay.id = 'lgs-loader-overlay';
+  overlay.innerHTML = `
+    <style>
+      #lgs-loader-overlay {
+        position: fixed; inset: 0;
+        background: linear-gradient(135deg, #0f766e 0%, #0891b2 100%);
+        display: flex; align-items: center; justify-content: center;
+        z-index: 99999;
+        font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+        color: #fff;
+      }
+      #lgs-loader-overlay .lgs-box {
+        max-width: 480px; width: 90%;
+        background: rgba(255,255,255,0.10);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.20);
+        border-radius: 20px;
+        padding: 32px 28px;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      }
+      #lgs-loader-overlay .lgs-spinner {
+        width: 56px; height: 56px;
+        border: 4px solid rgba(255,255,255,0.25);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: lgsSpin 0.8s linear infinite;
+        margin: 0 auto 18px;
+      }
+      @keyframes lgsSpin { to { transform: rotate(360deg); } }
+      #lgs-loader-overlay h2 {
+        margin: 0 0 8px; font-size: 22px; font-weight: 800;
+      }
+      #lgs-loader-overlay p {
+        margin: 0; font-size: 15px; opacity: 0.92; line-height: 1.5;
+      }
+      #lgs-loader-overlay.lgs-error .lgs-spinner { display: none; }
+      #lgs-loader-overlay.lgs-error .lgs-box {
+        background: rgba(220,38,38,0.18);
+        border-color: rgba(255,255,255,0.30);
+      }
+      #lgs-loader-overlay .lgs-detail {
+        margin-top: 14px; font-size: 13px; opacity: 0.80;
+        font-family: ui-monospace, 'JetBrains Mono', monospace;
+        word-break: break-all;
+      }
+      #lgs-loader-overlay .lgs-retry {
+        margin-top: 18px;
+        background: #fff; color: #0f766e;
+        border: none; border-radius: 10px;
+        padding: 10px 22px; font-weight: 700; font-size: 14px;
+        cursor: pointer; font-family: inherit;
+      }
+      #lgs-loader-overlay .lgs-retry:hover { background: #f0fdfa; }
+    </style>
+    <div class="lgs-box">
+      <div class="lgs-spinner"></div>
+      <h2 id="lgs-loader-title">Yükleniyor…</h2>
+      <p id="lgs-loader-msg">Haftalık planın hazırlanıyor</p>
+      <div class="lgs-detail" id="lgs-loader-detail"></div>
+    </div>
+  `;
+  // body henüz hazır olmayabilir; documentElement'e ekleyelim
+  (document.body || document.documentElement).appendChild(overlay);
+
+  function setStatus(title, msg, detail) {
+    const t = document.getElementById('lgs-loader-title');
+    const m = document.getElementById('lgs-loader-msg');
+    const d = document.getElementById('lgs-loader-detail');
+    if (t) t.textContent = title;
+    if (m) m.textContent = msg;
+    if (d) d.textContent = detail || '';
+  }
+  function showError(title, msg, detail) {
+    overlay.classList.add('lgs-error');
+    setStatus(title, msg, detail);
+    const box = overlay.querySelector('.lgs-box');
+    if (box && !box.querySelector('.lgs-retry')) {
+      const btn = document.createElement('button');
+      btn.className = 'lgs-retry';
+      btn.textContent = '🔄 Tekrar Dene';
+      btn.onclick = () => location.reload();
+      box.appendChild(btn);
+    }
+  }
+  function hideOverlay() {
+    overlay.style.transition = 'opacity 0.4s';
+    overlay.style.opacity = '0';
+    setTimeout(() => overlay.remove(), 400);
+  }
+
+  // ─── 3. SLUG KONTROLÜ ─────────────────────────────────────────────
+  if (!slug) {
+    showError(
+      'Öğrenci belirtilmedi',
+      'URL\'ye ?ogrenci=... parametresi eklemen gerekiyor.',
+      'Örn: sablon.html?ogrenci=yakup'
+    );
+    return;
+  }
+
+  // ─── 4. VERİ ÇEKME ────────────────────────────────────────────────
+  setStatus('Yükleniyor…', 'Plan verileri alınıyor', slug + (hafta ? ' · Hafta ' + hafta : ''));
+
+  let url = API_URL + (API_URL.indexOf('?') >= 0 ? '&' : '?') + 'ogrenci=' + encodeURIComponent(slug);
+  if (hafta) url += '&hafta=' + encodeURIComponent(hafta);
+
+  fetch(url, { method: 'GET', redirect: 'follow' })
+    .then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.text();
+    })
+    .then(text => {
+      let data;
+      try { data = JSON.parse(text); }
+      catch (e) {
+        throw new Error('JSON parse hatası: ' + text.substring(0, 100));
+      }
+      if (data.durum && data.durum !== 'basarili') {
+        throw new Error(data.mesaj || 'Sunucu hatası: ' + data.durum);
+      }
+      if (!data.ogrenci || !data.hafta || !data.gunler) {
+        throw new Error('Eksik veri: ogrenci/hafta/gunler alanları yok');
+      }
+      bootWithData(data);
+    })
+    .catch(err => {
+      console.error('[LGS Loader] Hata:', err);
+      showError(
+        'Veri yüklenemedi',
+        'Apps Script\'e bağlanılamadı veya veri eksik.',
+        (err && err.message) || String(err)
+      );
+    });
+
+  // ─── 5. JSON → CONFIG DÖNÜŞÜMÜ ────────────────────────────────────
+  const GUN_SIRA = ['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+  const GUN_OFFSET = { 'Pazartesi':0, 'Salı':1, 'Çarşamba':2, 'Perşembe':3, 'Cuma':4, 'Cumartesi':5 };
+
+  function buildConfig(data) {
+    const o = data.ogrenci || {};
+    const h = data.hafta   || {};
+    const n = data.netler  || {};
+
+    // Tarih parse
+    let baslangic = null;
+    if (h.baslangic_tarih) {
+      // "YYYY-MM-DD" formatını local time olarak parse et
+      const m = String(h.baslangic_tarih).match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (m) baslangic = new Date(parseInt(m[1],10), parseInt(m[2],10)-1, parseInt(m[3],10));
+    }
+
+    // Günleri dönüştür
+    const gunlerArr = [];
+    GUN_SIRA.forEach(gunAd => {
+      const gorevler = data.gunler[gunAd];
+      if (!Array.isArray(gorevler) || gorevler.length === 0) return;
+
+      // Sıraya göre sırala (sira alanı varsa)
+      const sirali = gorevler.slice().sort((a,b) => (a.sira||0) - (b.sira||0));
+
+      // ders_kod'a göre ardışık grupla
+      const dersler = [];
+      let cur = null;
+      sirali.forEach(g => {
+        const kod = g.ders_kod || 'kit';
+        if (!cur || cur._kod !== kod) {
+          if (cur) { delete cur._kod; dersler.push(cur); }
+          cur = {
+            _kod: kod,
+            cls: 'ders-' + kod,
+            ad:  g.ders_baslik || kod,
+            takipKey: (kod === 'kit') ? null : kod,
+            gorevler: []
+          };
+        }
+        const gorev = { metin: g.gorev_metin || '' };
+        if (g.checkbox_mu) gorev.checkbox = true;
+        cur.gorevler.push(gorev);
+      });
+      if (cur) { delete cur._kod; dersler.push(cur); }
+
+      // Tarih hesapla
+      let tarih = null;
+      if (baslangic) {
+        tarih = new Date(baslangic);
+        tarih.setDate(baslangic.getDate() + (GUN_OFFSET[gunAd] || 0));
+      }
+
+      gunlerArr.push({
+        ad: gunAd,
+        tarih: tarih,
+        sonGiris: 23,
+        dersler: dersler
+      });
+    });
+
+    // Netler dönüşümü (eski format birebir)
+    const netler = {};
+    ['tur','sos','din','ing','mat','fen'].forEach(k => {
+      if (n[k]) netler[k] = { ort: n[k].ort, hedef: n[k].hedef };
+    });
+
+    return {
+      ogrenci: {
+        ad:          o.ad   || '',
+        sinif:       o.sinif|| '',
+        haftaNo:     String(o.aktif_hafta != null ? o.aktif_hafta : (h.no || '')),
+        tarihAralik: h.tarih_aralik || '',
+        scriptUrl:   o.scriptUrl || API_URL,
+        rozetler:    Array.isArray(o.rozetler) ? o.rozetler : [],
+        ekstraBaslik: o.sayfa_baslik || null,
+        motivasyon:  null
+      },
+      durum: {
+        sonPuan:    h.son_puan,
+        oncekiPuan: h.onceki_puan,
+        ortalama:   h.ortalama,
+        hedef:      h.hedef,
+        gelisim:    h.gelisim_notu || '',
+        netler:     netler
+      },
+      gecenHafta: { toplamSoru: null, toplamKitap: null },
+      gunlukSoruHedefi: {
+        min: (h.gunluk_soru_min != null) ? h.gunluk_soru_min : 50,
+        max: (h.gunluk_soru_max != null) ? h.gunluk_soru_max : 70
+      },
+      koc: {
+        degerlendirme: h.koc_degerlendirme || '',
+        haftalikNot:   h.koc_haftalik_not  || ''
+      },
+      hedefler: {
+        paragraf:   h.paragraf_hedef || '',
+        kitap:      h.kitap_hedef    || '',
+        gunlukSoru: ((h.gunluk_soru_min!=null && h.gunluk_soru_max!=null)
+                       ? (h.gunluk_soru_min + '–' + h.gunluk_soru_max + ' soru / gün')
+                       : ''),
+        odak:       h.odak || ''
+      },
+      gunler: gunlerArr,
+      _meta: { kaynak: 'apps-script', ham: data }
+    };
+  }
+
+  // ─── 6. ANA ŞABLONU BAŞLAT ───────────────────────────────────────
+  function bootWithData(data) {
+    try {
+      const cfg = buildConfig(data);
+
+      // Avatar renklerini öğrenciye özel ayarla
+      const r1 = data.ogrenci && data.ogrenci.avatar_renk1;
+      const r2 = data.ogrenci && data.ogrenci.avatar_renk2;
+      if (r1) document.documentElement.style.setProperty('--primary-1', r1);
+      if (r2) document.documentElement.style.setProperty('--primary-2', r2);
+      if (r1 && r2) {
+        document.documentElement.style.setProperty(
+          '--primary-grad',
+          'linear-gradient(135deg, ' + r1 + ' 0%, ' + r2 + ' 100%)'
+        );
+      }
+
+      // Global CONFIG'i kur (ana şablon `const CONFIG = ...` yerine
+      // window.CONFIG'i kullanacak — aşağıdaki tag dönüşümü bunu sağlar)
+      window.CONFIG = cfg;
+
+      // Deferred main script'i etkinleştir
+      const deferredEl = document.getElementById('lgs-main');
+      if (!deferredEl) {
+        showError('Şablon hatası', 'Ana şablon bloğu bulunamadı (id=lgs-main)', '');
+        return;
+      }
+      const code = deferredEl.textContent;
+      const newScript = document.createElement('script');
+      // Ana şablon "const CONFIG = ..." tanımlamıyor artık, window.CONFIG'i okuyacak.
+      // Şablonun başına `const CONFIG = window.CONFIG;` enjekte ediyoruz.
+      newScript.textContent = 'const CONFIG = window.CONFIG;\n' + code;
+      document.head.appendChild(newScript);
+
+      // Loader'ı kapat
+      hideOverlay();
+    } catch (err) {
+      console.error('[LGS Loader] Boot hatası:', err);
+      showError('Başlatma hatası', 'Veri işlenirken bir hata oluştu.', (err && err.message) || String(err));
+    }
+  }
+})();
+</script>
+
+<script type="text/lgs-deferred" id="lgs-main">
+/* ═══════════════════════════════════════════════════════════════════
+   ŞABLON — DOKUNMA
+═══════════════════════════════════════════════════════════════════ */
+'use strict';
+
+const DEBUG = false;
+const log  = (...a) => { if (DEBUG) console.log(...a); };
+const warn = (...a) => { if (DEBUG) console.warn(...a); };
+
+const TUM_DERSLER  = ['mat','fen','tur','ing','sos','din','par'];
+const ANA_DERSLER  = ['mat','fen','tur','ing','sos','din'];
+const SON_DAKIKA_MS = 10 * 60 * 1000;
+const IYI_HAFTA_ESIK = 150;
+const LS_DEBOUNCE_MS = 500;
+const TIMER_INTERVAL_MS = 1000;
+const POPUP_GECIKME_MS = 800;
+const OZET_GECIKME_MS = 1500;
+
+const SLUG_MAP = {
+  'Pazartesi': 'pzt', 'Salı': 'sal', 'Çarşamba': 'car',
+  'Perşembe':  'per', 'Cuma': 'cum', 'Cumartesi': 'cmt'
+};
+const RENK_MAP = {
+  mat:'var(--mat)', fen:'var(--fen)', tur:'var(--tur)',
+  ing:'var(--ing)', sos:'var(--sos)', din:'var(--din)', par:'var(--par)'
+};
+const AD_MAP = {
+  mat:'Mat', fen:'Fen', tur:'Türkçe', ing:'İngilizce',
+  sos:'Sosyal', din:'Din', par:'Paragraf'
+};
+const DERS_GONDERIM_AD = {
+  mat:'Matematik', fen:'Fen', tur:'Turkce', ing:'Ingilizce',
+  sos:'Sosyal', din:'Din', par:'Paragraf'
+};
+
+const MOTIVASYON_MESAJLARI = [
+  'Süper gol! Bugünkü antrenman tamamlandı ⚽',
+  'Penaltı gol gibi kesin! Harika bir gün 🏆',
+  'Sahaya hakim oldun! Yarın da böyle devam 💪',
+  'Takım kaptanı gibi! Bugün de kazandın ⚽'
+];
+const TEBRIK_MESAJLARI = [
+  'Bu hafta gerçekten harika bir performans sergiliyorsun! Rakamlar bunu açıkça söylüyor.',
+  'Haftayı güçlü bitirdin! Her gün biraz daha ileri gidiyorsun, bunu unutma.',
+  'Sayılara bak! Bu hafta kendini astın. Böyle devam edersen LGS\'de istediğin yere gelirsin.',
+  'Harika bir hafta geçirdin! Bu temponu korursan hedef puanına ulaşman an meselesi.'
+];
+const MOTIVASYON_HAFTALIK = [
+  'Bu hafta istediğin kadar verimli olmadı ama bu bitti demek değil. Gelecek hafta daha güçlü başlayacaksın.',
+  'Bazı haftalar zor geçer. Önemli olan bırakmamak. Devam et!',
+  'Zor bir hafta geçirdin. Pazar dinlen, pazartesi temiz sayfa aç.'
+];
+
+CONFIG.gunler.forEach((gun, gi) => {
+  gun.prefix = SLUG_MAP[gun.ad] || ('g' + gi);
+  gun.dersler.forEach((d, di) => {
+    d.gorevler.forEach((g, gj) => {
+      g.id = gun.prefix + '_' + (d.takipKey || ('k' + di)) + '_g' + gj;
+    });
+  });
+});
+
+const SCRIPT_URL  = CONFIG.ogrenci.scriptUrl;
+const OGRENCI_ADI = CONFIG.ogrenci.ad;
+const HAFTA_NO    = CONFIG.ogrenci.haftaNo;
+const GUNLER      = CONFIG.gunler;
+const SON_GUN_ADI = GUNLER[GUNLER.length - 1].ad;
+const LS_PREFIX   = 'lgs_' + OGRENCI_ADI.replace(/\s+/g, '_') + '_H' + HAFTA_NO + '_';
+
+function esc(s) {
+  if (s === null || s === undefined) return '';
+  const div = document.createElement('div');
+  div.textContent = String(s);
+  return div.innerHTML;
+}
+
+const LS = {
+  get(key)      { try { return localStorage.getItem(key); }      catch(e) { return null; } },
+  set(key, val) { try { localStorage.setItem(key, val); return true; } catch(e) { return false; } },
+  remove(key)   { try { localStorage.removeItem(key); }          catch(e) {} }
+};
+
+function $(id) { return document.getElementById(id); }
+function val(id)    { const e = $(id); return e ? (e.value || '0') : '0'; }
+function strVal(id) { const e = $(id); return e ? (e.value || '') : ''; }
+function ini(ad)    { return (ad||'').split(' ').slice(0,2).map(w=>w[0]||'').join('').toUpperCase(); }
+function rastgele(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+// ═══════════════════════════════════════════════════════════════════
+//  KARANLIK MOD
+// ═══════════════════════════════════════════════════════════════════
+
+const DM_KEY = 'lgs_darkmode';
+
+function darkModeUygula(karanlik) {
+  if (karanlik) document.documentElement.setAttribute('data-theme', 'dark');
+  else          document.documentElement.removeAttribute('data-theme');
+}
+
+function darkModeToggle() {
+  const karanlik = document.documentElement.getAttribute('data-theme') === 'dark';
+  const yeni = !karanlik;
+  darkModeUygula(yeni);
+  LS.set(DM_KEY, yeni ? '1' : '0');
+  const btn = $('dm-toggle');
+  if (btn) btn.textContent = yeni ? '☀️' : '🌙';
+}
+
+(function() {
+  const saved = LS.get(DM_KEY);
+  if (saved === '1') darkModeUygula(true);
+}());
+
+// ═══════════════════════════════════════════════════════════════════
+//  SAYFA META & STATIC RENDER
+// ═══════════════════════════════════════════════════════════════════
+
+$('page-title').textContent = 'Haftalık Plan — ' + OGRENCI_ADI;
+$('dpnt').textContent =
+  'Bu plan ' + OGRENCI_ADI + ' için hazırlanmıştır · Hafta ' + HAFTA_NO + ' · ' + CONFIG.ogrenci.tarihAralik;
+
+(function renderHeader() {
+  const karanlik = document.documentElement.getAttribute('data-theme') === 'dark';
+  const rozetlerHtml = (CONFIG.ogrenci.rozetler || [])
+    .map(r => `<span class="badge ${esc(r[1])}">${esc(r[0])}</span>`).join('');
+  const ekstraHtml = CONFIG.ogrenci.ekstraBaslik
+    ? ` <span class="bursluluk-badge">${esc(CONFIG.ogrenci.ekstraBaslik)}</span>` : '';
+
+  $('hdr').innerHTML =
+    `<div class="avatar">${esc(ini(OGRENCI_ADI))}</div>` +
+    `<div class="header-info" style="flex:1">` +
+      `<h1>${esc(OGRENCI_ADI)}${ekstraHtml}</h1>` +
+      `<div class="meta">${esc(CONFIG.ogrenci.sinif)} · Hafta ${esc(HAFTA_NO)} · ${esc(CONFIG.ogrenci.tarihAralik)}</div>` +
+      `<div class="badges">${rozetlerHtml}</div>` +
+    `</div>` +
+    `<button class="dm-btn" id="dm-toggle" onclick="darkModeToggle()" title="Karanlık/Aydınlık Mod" aria-label="Karanlık mod değiştir">` +
+      (karanlik ? '☀️' : '🌙') +
+    `</button>`;
+}());
+
+(function renderDurum() {
+  const d = CONFIG.durum;
+  const SIRALI = ['tur','sos','din','ing','mat','fen'];
+  const RENK   = { tur:'#9333ea', sos:'#0891b2', din:'#be185d', ing:'#d97706', mat:'#2563eb', fen:'#16a34a' };
+  const ADI    = { tur:'Türkçe', sos:'Sosyal', din:'Din', ing:'İngilizce', mat:'Matematik', fen:'Fen' };
+  const BGCLS  = { tur:'ders-tur-bg', sos:'ders-sos-bg', din:'ders-din-bg', ing:'ders-ing-bg', mat:'ders-mat-bg', fen:'ders-fen-bg' };
+
+  const netKartlar = SIRALI.map(k => {
+    const v = d.netler[k]; if (!v) return '';
+    return `<div class="net-kart ${BGCLS[k]}">` +
+      `<div class="net-kart-ders">${ADI[k]}</div>` +
+      `<div class="net-kart-sayi" style="color:${RENK[k]}">${v.ort.toFixed(2)}</div>` +
+      `<div class="net-kart-label">net ort.</div>` +
+      `<div class="net-kart-hedef">hedef: ${v.hedef}</div>` +
+    `</div>`;
+  }).join('');
+
+  $('dur-kart').innerHTML =
+    `<div class="card">` +
+      `<div class="card-label">📊 Genel durumun</div>` +
+      `<div class="durum-grid">` +
+        `<div class="durum-item"><div class="durum-label">🎯 Son deneme puanın</div><div class="durum-val puan">${d.sonPuan.toFixed(2)}</div></div>` +
+        `<div class="durum-item"><div class="durum-label">📊 Deneme ortalaması</div><div class="durum-val" style="color:#7c3aed">${d.ortalama.toFixed(2)}</div></div>` +
+        `<div class="durum-item"><div class="durum-label">🚀 Sonraki denemedeki hedefin</div><div class="durum-val hedef">${d.hedef}</div></div>` +
+      `</div>` +
+      `<div style="margin-bottom:10px"><span style="font-size:12px;font-weight:700;color:var(--muted)">⚠️ Gelişim: </span>` +
+        `<span style="font-size:13px;font-weight:700;color:var(--danger)">${esc(d.gelisim)}</span></div>` +
+      `<div class="card-label" style="margin-top:4px">📈 Ders ortalama netlerin &amp; hedefler</div>` +
+      `<div class="net-kartlar">${netKartlar}</div>` +
+      `<div class="ortalama-notu">⚡ Altın kural: Ne olursa olsun ortalama netinin altına düşme. Her gün biraz, her hafta ileri!</div>` +
+    `</div>`;
+}());
+
+$('koc-deg').innerHTML =
+  `<div class="card">` +
+    `<div class="card-label">📝 Koç Değerlendirmesi</div>` +
+    `<div class="kocundan-text">${esc(CONFIG.koc.degerlendirme)}</div>` +
+  `</div>`;
+
+(function renderHedefler() {
+  const h = CONFIG.hedefler;
+  $('hdf-kart').innerHTML =
+    `<div class="card">` +
+      `<div class="card-label">🎯 Sabit haftalık hedefler</div>` +
+      `<div class="hedef-grid">` +
+        `<div class="hedef-item"><div class="hedef-label">📖 Paragraf sorusu</div><div class="hedef-val">${esc(h.paragraf)}</div></div>` +
+        `<div class="hedef-item"><div class="hedef-label">📚 Kitap okuma</div><div class="hedef-val">${esc(h.kitap)}</div></div>` +
+        `<div class="hedef-item"><div class="hedef-label">✏️ Günlük toplam soru</div><div class="hedef-val">${esc(h.gunlukSoru)}</div></div>` +
+        `<div class="hedef-item"><div class="hedef-label">🔥 Bu hafta odak</div><div class="hedef-val" style="font-size:14px">${esc(h.odak)}</div></div>` +
+      `</div>` +
+    `</div>`;
+}());
+
+$('koc-nt').innerHTML =
+  `<div class="koc-notu-baslik">🏆 Koç Notu — Hafta ${esc(HAFTA_NO)}</div>` +
+  `<div class="koc-notu-text">${esc(CONFIG.koc.haftalikNot)}</div>`;
+
+(function renderHedefYolu() {
+  const d = CONFIG.durum;
+  const aralik    = d.hedef - d.oncekiPuan;
+  const ilerleme  = d.sonPuan - d.oncekiPuan;
+  const pct       = Math.min(Math.max(ilerleme / aralik * 100, 0), 100);
+  const kalan     = (d.hedef - d.sonPuan).toFixed(2);
+  const topPct    = pct.toFixed(1);
+
+  $('hedef-yolu-wrap').innerHTML =
+    `<div class="hedef-yolu">` +
+      `<div class="hedef-yolu-baslik">🏁 Hedef Yolu</div>` +
+      `<div class="hedef-yolu-track">` +
+        `<div class="hedef-yolu-bg"></div>` +
+        `<div class="hedef-yolu-fill" id="hy-fill" style="width:0%"></div>` +
+        `<div class="hedef-yolu-top" style="left:0%"><div class="hedef-yolu-top-dot" style="background:#94a3b8">🚩</div></div>` +
+        `<div class="hedef-yolu-top" id="hy-top" style="left:${pct}%"><div class="hedef-yolu-top-dot" style="background:var(--mat)">⚽</div></div>` +
+        `<div class="hedef-yolu-top" style="left:100%"><div class="hedef-yolu-top-dot" style="background:var(--success)">🎯</div></div>` +
+      `</div>` +
+      `<div class="hedef-yolu-labels">` +
+        `<span>${d.oncekiPuan.toFixed(0)} (Başlangıç)</span>` +
+        `<span style="color:var(--mat);font-weight:800">${d.sonPuan.toFixed(2)} — %${topPct}</span>` +
+        `<span>${d.hedef} (Hedef)</span>` +
+      `</div>` +
+      `<div class="hedef-yolu-bilgi">Hedefe <span>${kalan} puan</span> kaldı — her derste +1 net büyük fark yaratır!</div>` +
+    `</div>`;
+
+  setTimeout(() => { const f = $('hy-fill'); if (f) f.style.width = pct + '%'; }, 200);
+}());
+
+// ═══════════════════════════════════════════════════════════════════
+//  ZAMAN
+// ═══════════════════════════════════════════════════════════════════
+
+function trSaati() {
+  const now = new Date();
+  return new Date(now.getTime() + now.getTimezoneOffset() * 60000 + 3 * 3600000);
+}
+
+function gunDurumu(gun) {
+  const simdi = trSaati();
+  const bugun = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
+  const gunT  = new Date(gun.tarih.getFullYear(), gun.tarih.getMonth(), gun.tarih.getDate());
+  if (gunT > bugun) return 'kilitli';
+  if (gunT < bugun) return 'gecmis';
+  if (simdi.getHours() >= gun.sonGiris) return 'suresi_doldu';
+  return 'aktif';
+}
+
+function kalanSure(gun) {
+  const simdi = trSaati();
+  const son   = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate(), gun.sonGiris, 0, 0, 0);
+  const fark  = son - simdi;
+  if (fark <= 0) return null;
+  return { toplam: fark, s: Math.floor(fark/3600000), d: Math.floor((fark%3600000)/60000), sn: Math.floor((fark%60000)/1000) };
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  HESAPLAMA
+// ═══════════════════════════════════════════════════════════════════
+
+function hesaplaNet(prefix, ders) {
+  const dEl = $(prefix+'_'+ders+'_d'), yEl = $(prefix+'_'+ders+'_y');
+  if (!dEl || !yEl) return;
+  const d = parseFloat(dEl.value)||0, y = parseFloat(yEl.value)||0;
+  const net = (d - y/3).toFixed(2);
+  const el = $(prefix+'_'+ders+'_net');
+  if (el) { el.textContent = net; el.style.color = parseFloat(net) >= 0 ? 'var(--success)' : 'var(--danger)'; }
+  guncelleToplam(prefix);
+  accSoruGuncelle(prefix);
+}
+
+function guncelleToplam(prefix) {
+  const gun = GUNLER.find(g => g.prefix === prefix); if (!gun) return;
+  const takipDersler = gun.dersler.filter(d => d.takipKey);
+  let topD = 0, topY = 0, topB = 0;
+  takipDersler.forEach(d => {
+    topD += parseInt(val(prefix+'_'+d.takipKey+'_d'))||0;
+    topY += parseInt(val(prefix+'_'+d.takipKey+'_y'))||0;
+    topB += parseInt(val(prefix+'_'+d.takipKey+'_b'))||0;
+  });
+  const topNet = topD - topY/3;
+  const dEl = $(prefix+'_top_d'), yEl = $(prefix+'_top_y'), bEl = $(prefix+'_top_b'), netEl = $(prefix+'_top_net');
+  if (dEl)   dEl.textContent = topD;
+  if (yEl)   yEl.textContent = topY;
+  if (bEl)   bEl.textContent = topB;
+  if (netEl) { netEl.textContent = topNet.toFixed(2); netEl.style.color = topNet >= 0 ? 'var(--success)' : 'var(--danger)'; }
+  hedefBarGuncelle(prefix);
+}
+
+function gorevDegisti(cb) {
+  const parent = cb.closest('.gorev-item'); if (!parent) return;
+  const label = parent.querySelector('.gorev-metin'); if (!label) return;
+  if (cb.checked) label.classList.add('tamamlandi');
+  else            label.classList.remove('tamamlandi');
+}
+
+function gunTamamlanmaPct(gun) {
+  let total = 0, done = 0;
+  gun.dersler.forEach(d => d.gorevler.forEach(g => {
+    if (g.checkbox) { total++; const cb = $(g.id); if (cb && cb.checked) done++; }
+  }));
+  return total > 0 ? Math.round(done/total*100) : 0;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  HTML RENDER — ACCORDION & TAKİP
+// ═══════════════════════════════════════════════════════════════════
+
+function takipDersleriHTML(gun, durum) {
+  const dis = durum !== 'aktif' ? 'disabled' : '';
+  const takipDersler = gun.dersler.filter(d => d.takipKey);
+  const pid = gun.prefix;
+
+  let html = `<div class="takip-bolum">` +
+    `<div class="takip-baslik">Günlük takip — ${esc(gun.ad)}</div>` +
+    `<div class="takip-dyb-header">` +
+      `<div class="takip-dyb-header-bos"></div>` +
+      `<div class="takip-dyb-header-lbl">D</div>` +
+      `<div class="takip-dyb-header-lbl">Y</div>` +
+      `<div class="takip-dyb-header-lbl">B</div>` +
+      `<div class="takip-dyb-header-lbl">Net</div>` +
+    `</div><div class="takip-satirlar">`;
+
+  takipDersler.forEach(d => {
+    const renk = RENK_MAP[d.takipKey]||'var(--text)', ad = AD_MAP[d.takipKey]||d.ad, did = d.takipKey;
+    html +=
+      `<div class="takip-satir">` +
+        `<div class="takip-satir-adi" style="color:${renk}">${esc(ad)}</div>` +
+        `<input class="takip-input" type="number" min="0" id="${pid}_${did}_d" placeholder="0" ${dis} aria-label="${esc(ad)} doğru" data-p="${pid}" data-d="${did}" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">` +
+        `<input class="takip-input" type="number" min="0" id="${pid}_${did}_y" placeholder="0" ${dis} aria-label="${esc(ad)} yanlış" data-p="${pid}" data-d="${did}" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">` +
+        `<input class="takip-input" type="number" min="0" id="${pid}_${did}_b" placeholder="0" ${dis} aria-label="${esc(ad)} boş" data-p="${pid}" data-d="${did}" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">` +
+        `<div class="net-goster" id="${pid}_${did}_net" aria-live="polite">—</div>` +
+      `</div>`;
+  });
+
+  html += `<div class="takip-satir takip-toplam" aria-live="polite">` +
+    `<div class="takip-satir-adi" style="color:var(--text);font-weight:800">Toplam</div>` +
+    `<div class="takip-toplam-val" id="${pid}_top_d">0</div>` +
+    `<div class="takip-toplam-val" id="${pid}_top_y">0</div>` +
+    `<div class="takip-toplam-val" id="${pid}_top_b">0</div>` +
+    `<div class="takip-toplam-val takip-toplam-net" id="${pid}_top_net">0.00</div>` +
+  `</div></div>`;
+
+  if (durum === 'aktif') html += hedefBarHTML(pid);
+
+  html += `<div class="kp-row">` +
+    `<div class="kp-item"><div class="kp-label">Kitap (sayfa)</div>` +
+    `<input class="kp-input" type="number" min="0" id="${pid}_kitap" placeholder="0" ${dis} aria-label="Okunan sayfa"></div>` +
+    `<div class="kp-item" style="flex:1;min-width:100px"><div class="kp-label">Kitap adı</div>` +
+    `<input class="kp-input" style="width:100%;max-width:220px;text-align:left;padding:0 8px" type="text" id="${pid}_kitap_adi" placeholder="Kitabın adı..." ${dis} aria-label="Kitap adı"></div>` +
+    `</div>`;
+  html += `<input class="not-input" type="text" id="${pid}_not" placeholder="Bugünkü notun..." ${dis} aria-label="Günlük not">`;
+
+  if (durum === 'aktif') {
+    html += `<div class="geri-sayim" id="${pid}_sayim" aria-live="polite">Hesaplanıyor...</div>`;
+    html += `<button class="gonder-btn" id="${pid}_btn" data-gun="${esc(gun.ad)}" data-p="${pid}" onclick="gonder(this.dataset.gun,this.dataset.p)">Kaydet</button>`;
+  } else if (durum === 'suresi_doldu') {
+    html += `<button class="gonder-btn" disabled>Giriş süresi doldu</button>`;
+  } else if (durum === 'kilitli') {
+    const d2 = gun.tarih.getDate(), ay = gun.tarih.toLocaleString('tr-TR',{month:'long'});
+    html += `<div class="kilit-overlay">Bu gün henüz gelmedi<br><small style="color:#94a3b8">${d2} ${esc(ay)} tarihinde açılacak</small></div>`;
+  } else {
+    html += `<button class="gonder-btn" disabled style="background:#854d0e">Giriş süresi geçti</button>`;
+  }
+
+  html += `<div class="gonder-mesaj" id="${pid}_mesaj" role="status"></div></div>`;
+  return html;
+}
+
+function accGunHTML(gun) {
+  const durum = gunDurumu(gun);
+  let cls = 'acc-item';
+  if (durum === 'aktif')         cls += ' aktif acik';
+  else if (durum === 'gecmis' || durum === 'suresi_doldu') cls += ' gecmis';
+  else if (durum === 'kilitli')  cls += ' kilitli';
+
+  const badgeMap = {
+    aktif:        '<span class="gun-durum-badge badge-aktif">Bugün</span>',
+    kilitli:      '<span class="gun-durum-badge badge-kilitli">🔒 Bekliyor</span>',
+    gecmis:       '<span class="gun-durum-badge badge-gecmis">Geçti</span>',
+    suresi_doldu: '<span class="gun-durum-badge badge-gecmis">Doldu</span>'
+  };
+
+  const tarihStr = gun.tarih.getDate() + ' ' + gun.tarih.toLocaleString('tr-TR',{month:'long'});
+  const checkIcon = durum === 'gecmis' ? '✓ ' : '';
+
+  let html = `<div class="${cls}" id="acc_${gun.prefix}">` +
+    `<div class="acc-header" onclick="accToggle('${gun.prefix}')" role="button" aria-expanded="${durum==='aktif'}">` +
+      `<div>` +
+        `<div class="acc-gun-adi">${checkIcon}${esc(gun.ad)}</div>` +
+        `<div class="acc-tarih">${tarihStr}</div>` +
+        `<div class="acc-soru" id="acc_soru_${gun.prefix}"></div>` +
+      `</div>` +
+      `<div class="acc-mini-bar"><div class="acc-mini-fill" id="acc_bar_${gun.prefix}" style="width:0%"></div></div>` +
+      `<div class="acc-badges">${badgeMap[durum]}</div>` +
+      `<div class="acc-chevron">${durum==='kilitli'?'':'▼'}</div>` +
+    `</div>` +
+    `<div class="acc-body">`;
+
+  if (durum === 'kilitli') {
+    const d2 = gun.tarih.getDate(), ay = gun.tarih.toLocaleString('tr-TR',{month:'long'});
+    html += `<div class="kilit-overlay" style="padding:20px">Bu gün henüz gelmedi<br><small style="color:#94a3b8">${d2} ${esc(ay)} tarihinde açılacak</small></div>`;
+  } else {
+    gun.dersler.forEach(d => {
+      html += `<div class="ders-blok"><div class="ders-baslik ${esc(d.cls)}">${esc(d.ad)}</div><div class="gorev-list">`;
+      d.gorevler.forEach(g => {
+        if (g.checkbox) {
+          const cbDis = (durum !== 'aktif') ? 'disabled' : '';
+          html += `<div class="gorev-item">` +
+            `<input type="checkbox" class="gorev-cb" id="${g.id}" ${cbDis} onchange="gorevDegisti(this);accBarGuncelle('${gun.prefix}')">` +
+            `<label class="gorev-metin" for="${g.id}">${esc(g.metin)}</label>` +
+          `</div>`;
+        } else {
+          html += `<div class="gorev-item soru-gorev"><span class="gorev-nokta">✦</span><span class="gorev-metin">${esc(g.metin)}</span></div>`;
+        }
+      });
+      html += `</div></div>`;
+    });
+    html += takipDersleriHTML(gun, durum);
+  }
+  html += `</div></div>`;
+  return html;
+}
+
+function accToggle(prefix) {
+  const gun = GUNLER.find(g => g.prefix === prefix);
+  if (!gun || gunDurumu(gun) === 'kilitli') return;
+  const item = $('acc_'+prefix); if (!item) return;
+  const isAcik = item.classList.contains('acik');
+  GUNLER.forEach(g => { if (g.prefix !== prefix) { const el = $('acc_'+g.prefix); if (el) el.classList.remove('acik'); } });
+  if (isAcik) item.classList.remove('acik');
+  else        item.classList.add('acik');
+}
+
+function accSoruGuncelle(prefix) {
+  const gun = GUNLER.find(g => g.prefix === prefix); if (!gun) return;
+  let toplam = 0;
+  gun.dersler.filter(d => d.takipKey).forEach(d => {
+    const did = d.takipKey;
+    const dEl = $(prefix+'_'+did+'_d'), yEl = $(prefix+'_'+did+'_y'), bEl = $(prefix+'_'+did+'_b');
+    toplam += (dEl?parseInt(dEl.value)||0:0) + (yEl?parseInt(yEl.value)||0:0) + (bEl?parseInt(bEl.value)||0:0);
+  });
+  const el = $('acc_soru_'+prefix);
+  if (el) el.textContent = toplam > 0 ? toplam + ' soru' : '';
+}
+
+function accSoruGuncelleSunucu(gunAdi, toplam) {
+  const gun = GUNLER.find(g => g.ad === gunAdi); if (!gun) return;
+  if (gunDurumu(gun) === 'aktif') return;
+  const el = $('acc_soru_'+gun.prefix);
+  if (el && toplam > 0) el.textContent = toplam + ' soru';
+}
+
+function accBarGuncelle(prefix) {
+  const gun = GUNLER.find(g => g.prefix === prefix); if (!gun) return;
+  const pct = gunTamamlanmaPct(gun);
+  const bar = $('acc_bar_'+prefix); if (bar) bar.style.width = pct + '%';
+}
+
+$('accordionGunler').innerHTML = GUNLER.map(accGunHTML).join('');
+
+// ═══════════════════════════════════════════════════════════════════
+//  TIMER YÖNETİMİ
+// ═══════════════════════════════════════════════════════════════════
+
+const timerIds = {};
+GUNLER.forEach(gun => {
+  if (gunDurumu(gun) !== 'aktif') return;
+  function guncelle() {
+    const kalan = kalanSure(gun), el = $(gun.prefix+'_sayim'), btn = $(gun.prefix+'_btn');
+    if (!el) { clearInterval(timerIds[gun.prefix]); delete timerIds[gun.prefix]; return; }
+    if (!kalan) {
+      el.textContent = 'Giriş süresi doldu.';
+      if (btn) { btn.disabled = true; btn.textContent = 'Giriş süresi doldu'; }
+      clearInterval(timerIds[gun.prefix]); delete timerIds[gun.prefix];
+      document.querySelectorAll('#acc_'+gun.prefix+' input, #acc_'+gun.prefix+' .gorev-cb').forEach(i => { i.disabled = true; });
+      return;
+    }
+    const sure = (kalan.s>0?kalan.s+' sa ':'')+kalan.d+' dk '+kalan.sn+' sn';
+    el.textContent = 'Son giriş saatine ' + sure + ' kaldı';
+    if (kalan.toplam < SON_DAKIKA_MS) el.classList.add('son-dakika');
+  }
+  guncelle();
+  timerIds[gun.prefix] = setInterval(guncelle, TIMER_INTERVAL_MS);
+});
+
+window.addEventListener('beforeunload', () => { Object.values(timerIds).forEach(clearInterval); });
+
+// ═══════════════════════════════════════════════════════════════════
+//  VERİ GÖNDERME
+// ═══════════════════════════════════════════════════════════════════
+
+function gonderiBilgisiTopla(gun) {
+  const gorevBilgisi = {};
+  gun.dersler.forEach(d => {
+    if (!d.takipKey || d.takipKey === 'kit') return;
+    const cbGorevler = d.gorevler.filter(g => g.checkbox); if (!cbGorevler.length) return;
+    const tamamlanan = cbGorevler.filter(g => { const cb = $(g.id); return cb && cb.checked; }).length;
+    gorevBilgisi[d.takipKey+'_gorev'] = tamamlanan+'/'+cbGorevler.length;
+  });
+  return gorevBilgisi;
+}
+
+function gonder(gunAdi, prefix) {
+  const btn = $(prefix+'_btn'), mesajEl = $(prefix+'_mesaj');
+  if (!btn || !mesajEl) return;
+  btn.disabled = true; btn.textContent = 'Kaydediliyor...';
+
+  const gun = GUNLER.find(g => g.prefix === prefix);
+  const gorevBilgisi = gun ? gonderiBilgisiTopla(gun) : {};
+  const konular = [];
+  if (gun) {
+    gun.dersler.forEach(d => d.gorevler.forEach(g => {
+      if (g.checkbox) { const cb = $(g.id); if (cb && cb.checked) konular.push({ ders: DERS_GONDERIM_AD[d.takipKey]||d.takipKey, konu: g.metin }); }
+    }));
+  }
+  const gunDersleri = gun ? gun.dersler.filter(d=>d.takipKey).map(d=>d.takipKey) : [];
+  const dersVerisi = {};
+  TUM_DERSLER.forEach(k => {
+    const varMi = gunDersleri.indexOf(k) !== -1;
+    dersVerisi[k+'_d'] = varMi ? val(prefix+'_'+k+'_d') : '0';
+    dersVerisi[k+'_y'] = varMi ? val(prefix+'_'+k+'_y') : '0';
+    dersVerisi[k+'_b'] = varMi ? val(prefix+'_'+k+'_b') : '0';
+  });
+
+  const veri = Object.assign({
+    ogrenciAdi: OGRENCI_ADI, haftaNo: HAFTA_NO, gun: gunAdi,
+    kitap: val(prefix+'_kitap'), kitap_adi: strVal(prefix+'_kitap_adi'),
+    not: strVal(prefix+'_not'), konular
+  }, dersVerisi, gorevBilgisi);
+
+  fetch(SCRIPT_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(veri) })
+    .then(r => { if (!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(data => {
+      if (data.durum !== 'ok' && data.durum !== 'basarili') throw new Error(data.mesaj||'Sunucu hatası');
+      mesajEl.textContent = rastgele(MOTIVASYON_MESAJLARI);
+      mesajEl.className = 'gonder-mesaj mesaj-ok'; mesajEl.style.display = 'block';
+      btn.textContent = 'Güncelle ✓'; btn.classList.add('tamamlandi'); btn.disabled = false;
+      lsKaydet();
+      setTimeout(yukleOzet, OZET_GECIKME_MS);
+      if (gunAdi === SON_GUN_ADI) {
+        setTimeout(() => {
+          fetch(SCRIPT_URL+'?ogrenciAdi='+encodeURIComponent(OGRENCI_ADI)+'&haftaNo='+encodeURIComponent(HAFTA_NO))
+            .then(r=>r.json()).then(data => {
+              if (data.durum==='basarili' && data.gunler && data.gunler.length) gosterHaftaOzetiPopup(data.gunler);
+            }).catch(err => warn('Hafta özeti popup hatası:', err));
+        }, POPUP_GECIKME_MS);
+      }
+    })
+    .catch(err => {
+      warn('Gönderim hatası:', err);
+      mesajEl.textContent = 'Gönderilemedi: '+err.message+' — tekrar dene.';
+      mesajEl.className = 'gonder-mesaj mesaj-hata'; mesajEl.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Tekrar Dene';
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  LOCAL STORAGE
+// ═══════════════════════════════════════════════════════════════════
+
+function lsKaydet() {
+  GUNLER.forEach(gun => {
+    TUM_DERSLER.forEach(ders => {
+      ['d','y','b'].forEach(tip => {
+        const el = $(gun.prefix+'_'+ders+'_'+tip);
+        if (el && !el.disabled) LS.set(LS_PREFIX+gun.prefix+'_'+ders+'_'+tip, el.value);
+      });
+    });
+    ['kitap','kitap_adi','not'].forEach(f => {
+      const el = $(gun.prefix+'_'+f); if (el && !el.disabled) LS.set(LS_PREFIX+gun.prefix+'_'+f, el.value);
+    });
+    gun.dersler.forEach(d => d.gorevler.forEach(g => {
+      if (g.checkbox) { const cb = $(g.id); if (cb && !cb.disabled) LS.set(LS_PREFIX+'cb_'+g.id, cb.checked?'1':'0'); }
+    }));
+  });
+}
+
+let _lsTimer;
+function lsKaydetDebounced() { clearTimeout(_lsTimer); _lsTimer = setTimeout(lsKaydet, LS_DEBOUNCE_MS); }
+
+function lsYukle() {
+  GUNLER.forEach(gun => {
+    TUM_DERSLER.forEach(ders => {
+      ['d','y','b'].forEach(tip => {
+        const el = $(gun.prefix+'_'+ders+'_'+tip);
+        if (el && !el.disabled) { const v = LS.get(LS_PREFIX+gun.prefix+'_'+ders+'_'+tip); if (v !== null && v !== '') { el.value = v; hesaplaNet(gun.prefix, ders); } }
+      });
+    });
+    ['kitap','kitap_adi','not'].forEach(f => {
+      const el = $(gun.prefix+'_'+f); if (el && !el.disabled) { const v = LS.get(LS_PREFIX+gun.prefix+'_'+f); if (v !== null) el.value = v; }
+    });
+    gun.dersler.forEach(d => d.gorevler.forEach(g => {
+      if (g.checkbox) {
+        const cb = $(g.id);
+        if (cb && !cb.disabled) {
+          const cv = LS.get(LS_PREFIX+'cb_'+g.id);
+          if (cv !== null) {
+            cb.checked = (cv === '1');
+            const label = document.querySelector('label[for="'+g.id+'"]');
+            if (label) { if (cb.checked) label.classList.add('tamamlandi'); else label.classList.remove('tamamlandi'); }
+          }
+        }
+      }
+    }));
+    accBarGuncelle(gun.prefix);
+    accSoruGuncelle(gun.prefix);
+    guncelleToplam(gun.prefix);
+  });
+}
+
+function lsDinleyiciEkle() {
+  document.querySelectorAll('.takip-input, .kp-input, .not-input').forEach(el => {
+    el.addEventListener('input', lsKaydetDebounced);
+    el.addEventListener('input', function() {
+      const parts = (this.id||'').split('_'); if (parts.length >= 2) accSoruGuncelle(parts[0]);
+    });
+  });
+  document.querySelectorAll('.gorev-cb').forEach(el => { el.addEventListener('change', lsKaydetDebounced); });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  CROSS-DEVICE SYNC
+// ═══════════════════════════════════════════════════════════════════
+
+function sunucudanFormaYaz(gunler) {
+  if (!gunler || !gunler.length) return;
+  gunler.forEach(g => {
+    const gun = GUNLER.find(x => x.ad === g.gun); if (!gun) return;
+    if (gunDurumu(gun) === 'aktif') return;
+    const prefix = gun.prefix;
+    TUM_DERSLER.forEach(k => {
+      ['d','y','b'].forEach(tip => {
+        const el = $(prefix+'_'+k+'_'+tip), sv = g[k+'_'+tip];
+        if (el && sv !== undefined && Number(sv) > 0) { el.value = sv; if (tip==='d'||tip==='y') hesaplaNet(prefix, k); }
+      });
+    });
+    const kitapEl = $(prefix+'_kitap'); if (kitapEl && Number(g.kitap)>0) kitapEl.value = g.kitap;
+    const kitapAdiEl = $(prefix+'_kitap_adi'); if (kitapAdiEl && g.kitap_adi) kitapAdiEl.value = g.kitap_adi;
+    const notEl = $(prefix+'_not'); if (notEl && g.not) notEl.value = g.not;
+  });
+}
+
+function sunucudanCheckboxYaz(konular) {
+  if (!konular || !konular.length) return;
+  konular.forEach(k => {
+    const gun = GUNLER.find(x => x.ad === k.gun); if (!gun) return;
+    if (gunDurumu(gun) === 'aktif') return;
+    gun.dersler.forEach(d => d.gorevler.forEach(g => {
+      if (g.checkbox && g.metin === k.konu) {
+        const cb = $(g.id); if (cb) { cb.checked = true; const label = document.querySelector('label[for="'+g.id+'"]'); if (label) label.classList.add('tamamlandi'); }
+      }
+    }));
+    accBarGuncelle(gun.prefix);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  FAZ 2: INSIGHT ROW
+// ═══════════════════════════════════════════════════════════════════
+
+const INSIGHT_DERS_ADI  = { mat:'Matematik', fen:'Fen', tur:'Türkçe', ing:'İngilizce', sos:'Sosyal', din:'Din', par:'Paragraf' };
+const INSIGHT_DERS_RENK = { mat:'#2563eb', fen:'#16a34a', tur:'#9333ea', ing:'#d97706', sos:'#0891b2', din:'#be185d', par:'#b45309' };
+
+function renderInsightRow(gunlerData) {
+  const el = $('insight-row'); if (!el) return;
+  const cards = [];
+
+  const dersSoru = {};
+  TUM_DERSLER.forEach(k => { dersSoru[k] = 0; });
+  (gunlerData || []).forEach(g => {
+    TUM_DERSLER.forEach(k => {
+      dersSoru[k] += (Number(g[k+'_d'])||0) + (Number(g[k+'_y'])||0) + (Number(g[k+'_b'])||0);
+    });
+  });
+  let champDers = null, champSoru = 0;
+  Object.entries(dersSoru).forEach(([k, v]) => { if (v > champSoru) { champSoru = v; champDers = k; } });
+
+  if (champDers && champSoru > 0) {
+    const renk = INSIGHT_DERS_RENK[champDers] || 'var(--mat)';
+    cards.push(
+      `<div class="insight-card insight-champion">` +
+        `<span class="insight-icon">🥇</span>` +
+        `<div class="insight-text">` +
+          `Bu hafta <strong>${esc(INSIGHT_DERS_ADI[champDers]||champDers)}</strong> şampiyonu! ` +
+          `<span style="color:${renk};font-weight:800">${champSoru} soru</span> çözüldü.` +
+        `</div>` +
+      `</div>`
+    );
+  }
+
+  const zaifDersler = [];
+  ANA_DERSLER.forEach(k => {
+    let totD = 0, totY = 0, totB = 0;
+    (gunlerData || []).forEach(g => { totD += Number(g[k+'_d'])||0; totY += Number(g[k+'_y'])||0; totB += Number(g[k+'_b'])||0; });
+    const tot = totD + totY + totB;
+    if (tot >= 5) {
+      const pct = Math.round(totD / tot * 100);
+      if (pct < 70) {
+        const renk = INSIGHT_DERS_RENK[k] || '#991b1b';
+        zaifDersler.push(
+          `<span class="insight-badge" style="background:${renk}22;color:${renk}">` +
+          `${esc(INSIGHT_DERS_ADI[k])} %${pct}` +
+          `</span>`
+        );
+      }
+    }
+  });
+
+  if (zaifDersler.length > 0) {
+    cards.push(
+      `<div class="insight-card insight-weak">` +
+        `<span class="insight-icon">⚠️</span>` +
+        `<div class="insight-text">` +
+          `<strong>Bu hafta dikkat:</strong> ${zaifDersler.join(' ')} — hatalı sorulara dön, tekrar çöz!` +
+        `</div>` +
+      `</div>`
+    );
+  }
+
+  const simdi = trSaati();
+  const bugun = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
+  const doluGunler = {};
+  (gunlerData || []).forEach(g => {
+    const tot = TUM_DERSLER.reduce((a, k) => a + (Number(g[k+'_d'])||0) + (Number(g[k+'_y'])||0) + (Number(g[k+'_b'])||0), 0);
+    if (tot > 0 || Number(g.kitap||0) > 0) doluGunler[g.gun] = true;
+  });
+
+  const bosGunler = [];
+  GUNLER.forEach(gun => {
+    const gunT = new Date(gun.tarih.getFullYear(), gun.tarih.getMonth(), gun.tarih.getDate());
+    if (gunT < bugun && !doluGunler[gun.ad]) bosGunler.push(gun.ad);
+  });
+
+  if (bosGunler.length > 0) {
+    const bosStr = bosGunler.join(', ');
+    const cog = bosGunler.length > 1;
+    cards.push(
+      `<div class="insight-card insight-missed">` +
+        `<span class="insight-icon">👀</span>` +
+        `<div class="insight-text">` +
+          `<strong>${esc(bosStr)}</strong> ${cog ? 'günleri' : 'günü'} için takip girişi yok. ` +
+          `${cog ? 'Unuttun mu?' : 'Unuttun mu?'} Girdiysen güncelle.` +
+        `</div>` +
+      `</div>`
+    );
+  }
+
+  el.innerHTML = cards.join('');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  HAFTALIK ÖZET TABLOSU
+// ═══════════════════════════════════════════════════════════════════
+
+const OZET_DERSLER = [
+  { key:'mat', ad:'Mat',      renk:'var(--mat)' },
+  { key:'fen', ad:'Fen',      renk:'var(--fen)' },
+  { key:'tur', ad:'Türkçe',   renk:'var(--tur)' },
+  { key:'ing', ad:'İng',      renk:'var(--ing)' },
+  { key:'sos', ad:'Sosyal',   renk:'var(--sos)' },
+  { key:'din', ad:'Din',      renk:'var(--din)' },
+  { key:'par', ad:'Paragraf', renk:'var(--par)' },
+];
+
+function basariOku(d, y, b) {
+  const total = d+y+b; if (!total) return '';
+  const pct = d/total*100;
+  if (pct >= 90) return '<span style="color:#15803d;font-size:13px;font-weight:900;margin-left:3px;vertical-align:middle">▲</span>';
+  if (pct >= 70) return '<span style="display:inline-block;width:14px;height:4px;background:#f59e0b;border-radius:3px;vertical-align:middle;margin-left:4px;margin-bottom:1px"></span>';
+  return '<span style="color:var(--danger);font-size:13px;font-weight:900;margin-left:3px;vertical-align:middle">▼</span>';
+}
+
+function renderOzetTablo(gunler) {
+  const el = $('haftalikOzetIcerik'); if (!el) return;
+  if (!gunler || !gunler.length) { el.innerHTML = '<div class="ozet-bos">Henüz bu haftaya ait kayıt yok.</div>'; return; }
+
+  let html = '<div style="overflow-x:auto"><table class="ozet-tablo"><thead><tr><th>Gün</th>';
+  OZET_DERSLER.forEach(d => { html += `<th style="color:${d.renk}">${d.ad}</th>`; });
+  html += '<th style="color:var(--kit)">Kitap</th><th style="color:var(--mat);border-left:2px solid var(--border)">Günlük</th></tr></thead><tbody>';
+
+  let toplamSoru = 0, toplamKitap = 0;
+  const dersToplam = {};
+  OZET_DERSLER.forEach(d => { dersToplam[d.key] = {d:0,y:0,b:0}; });
+
+  gunler.forEach(g => {
+    html += `<tr><td>${esc(g.gun||'—')}</td>`;
+    OZET_DERSLER.forEach(d => {
+      const dv = Number(g[d.key+'_d'])||0, yv = Number(g[d.key+'_y'])||0, bv = Number(g[d.key+'_b'])||0;
+      const total = dv+yv+bv; toplamSoru += total;
+      dersToplam[d.key].d += dv; dersToplam[d.key].y += yv; dersToplam[d.key].b += bv;
+      if (!total) { html += '<td class="ozet-net-yok">—</td>'; }
+      else { const net=dv-yv/3, renk=net>=0?d.renk:'var(--danger)'; html += `<td style="color:${renk}">${net.toFixed(1)}${basariOku(dv,yv,bv)}<span style="font-size:10px;color:var(--muted);font-weight:400"> (${total})</span></td>`; }
+    });
+    const kitap = g.kitap && g.kitap>0 ? g.kitap : 0; toplamKitap += kitap;
+    html += `<td style="color:var(--kit)">${kitap>0?kitap+' s.':'—'}</td>`;
+    const gunSoru = OZET_DERSLER.reduce((acc,d)=>acc+(Number(g[d.key+'_d']||0))+(Number(g[d.key+'_y']||0))+(Number(g[d.key+'_b']||0)),0);
+    html += `<td style="font-weight:800;color:var(--mat);font-size:13px;border-left:2px solid var(--border);text-align:center">${gunSoru>0?gunSoru:'—'}</td></tr>`;
+  });
+
+  html += '<tr style="border-top:2px solid var(--mat)"><td style="font-size:11px;font-weight:800;color:var(--mat);letter-spacing:0.06em;text-transform:uppercase">Toplam</td>';
+  OZET_DERSLER.forEach(d => {
+    const dv=dersToplam[d.key].d, yv=dersToplam[d.key].y, bv=dersToplam[d.key].b, total=dv+yv+bv;
+    if (!total) { html += '<td class="ozet-net-yok">—</td>'; }
+    else { const net=dv-yv/3, renk=net>=0?d.renk:'var(--danger)'; html += `<td style="color:${renk};font-size:13px;font-weight:800">${net.toFixed(1)}<span style="font-size:10px;color:var(--muted);font-weight:400"> (${total})</span></td>`; }
+  });
+  html += `<td style="color:var(--kit);font-weight:800">${toplamKitap>0?toplamKitap+' s.':'—'}</td>`;
+  html += `<td style="font-weight:800;color:var(--mat);font-size:13px;border-left:2px solid var(--border);text-align:center">${toplamSoru}</td></tr>`;
+  html += '</tbody></table></div>';
+  html += `<div style="margin-top:10px;font-size:12px;color:var(--muted);font-weight:600">📊 ${gunler.length} gün kayıtlı &nbsp;·&nbsp; ✏️ Toplam ${toplamSoru} soru</div>`;
+  el.innerHTML = html;
+}
+
+function yukleOzet() {
+  fetch(SCRIPT_URL+'?ogrenciAdi='+encodeURIComponent(OGRENCI_ADI)+'&haftaNo='+encodeURIComponent(HAFTA_NO))
+    .then(r => r.json())
+    .then(data => {
+      if (data.durum !== 'basarili') { $('haftalikOzetIcerik').innerHTML = '<div class="ozet-bos">Veri alınamadı.</div>'; return; }
+      const gunler = data.gunler || [];
+      renderOzetTablo(gunler);
+      renderStatsKart(gunler);
+      renderMotivRow(gunler);
+      renderInsightRow(gunler);
+      sunucudanFormaYaz(gunler);
+      sunucudanCheckboxYaz(data.konular || []);
+      gunler.forEach(g => {
+        const toplam = TUM_DERSLER.reduce((acc,k)=>acc+(Number(g[k+'_d'])||0)+(Number(g[k+'_y'])||0)+(Number(g[k+'_b'])||0), 0);
+        accSoruGuncelleSunucu(g.gun, toplam);
+      });
+    })
+    .catch(err => {
+      warn('Özet yüklenemedi:', err);
+      $('haftalikOzetIcerik').innerHTML = '<div class="ozet-bos">Bağlantı hatası — sayfayı yenile.</div>';
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  HAFTALIK ÖZET POPUP
+// ═══════════════════════════════════════════════════════════════════
+
+function hesaplaHaftaOzeti(gunler) {
+  let toplamSoru = 0, toplamKitap = 0, toplamParagraf = 0;
+  const dersToplam = {mat:0,fen:0,tur:0,ing:0,sos:0,din:0}, dersGunSayisi = {mat:0,fen:0,tur:0,ing:0,sos:0,din:0};
+  let enIyiGun = null, enIyiSoru = -1;
+  gunler.forEach(g => {
+    let gunSoru = 0;
+    ANA_DERSLER.forEach(d => {
+      const net=(Number(g[d+'_d'])||0)-(Number(g[d+'_y'])||0)/3;
+      const soru=(Number(g[d+'_d'])||0)+(Number(g[d+'_y'])||0)+(Number(g[d+'_b'])||0);
+      if (soru>0) { dersToplam[d]+=net; dersGunSayisi[d]++; gunSoru+=soru; }
+    });
+    toplamParagraf += Number(g.par_d||0)+Number(g.par_y||0)+Number(g.par_b||0);
+    gunSoru += Number(g.par_d||0)+Number(g.par_y||0)+Number(g.par_b||0);
+    toplamSoru += gunSoru; toplamKitap += Number(g.kitap)||0;
+    if (gunSoru > enIyiSoru) { enIyiSoru = gunSoru; enIyiGun = g.gun; }
+  });
+  const dersNetleri = {};
+  Object.keys(dersToplam).forEach(d => { dersNetleri[d] = dersGunSayisi[d]>0?(dersToplam[d]/dersGunSayisi[d]).toFixed(1):null; });
+  return { toplamSoru, toplamKitap, toplamParagraf, dersNetleri, enIyiGun, enIyiSoru };
+}
+
+function gosterHaftaOzetiPopup(gunler) {
+  const ozet  = hesaplaHaftaOzeti(gunler);
+  const iyi   = ozet.toplamSoru >= IYI_HAFTA_ESIK;
+  const mesaj = iyi ? rastgele(TEBRIK_MESAJLARI) : rastgele(MOTIVASYON_HAFTALIK);
+  const dAd   = {mat:'Matematik',fen:'Fen',tur:'Türkçe',ing:'İngilizce',sos:'Sosyal',din:'Din'};
+  const dRenk = {mat:'#2563eb',fen:'#16a34a',tur:'#9333ea',ing:'#d97706',sos:'#0891b2',din:'#be185d'};
+
+  const kartlar = Object.keys(ozet.dersNetleri).map(d => {
+    const net = ozet.dersNetleri[d]; if (net === null) return '';
+    const r = dRenk[d];
+    return `<div style="text-align:center;padding:8px 6px;border-radius:10px;border:2px solid ${r}22;background:${r}11">` +
+      `<div style="font-size:11px;font-weight:800;color:${r};text-transform:uppercase">${dAd[d]}</div>` +
+      `<div style="font-size:20px;font-weight:900;color:${r}">${net}</div>` +
+      `<div style="font-size:10px;color:#64748b">ort. net</div></div>`;
+  }).filter(Boolean).join('');
+
+  const overlay = document.createElement('div');
+  overlay.id = 'hafta-ozeti-overlay'; overlay.className = 'ovl';
+  overlay.innerHTML =
+    `<div class="ovl-card">` +
+      `<button class="ovl-close" id="hafta-kapat-btn" aria-label="Kapat">×</button>` +
+      `<div style="text-align:center;margin-bottom:16px"><div style="font-size:36px;margin-bottom:6px">${iyi?'🏆':'💪'}</div><div style="font-size:18px;font-weight:900;color:var(--text)">Haftanı Tamamladın!</div></div>` +
+      `<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">` +
+        `<div style="text-align:center;padding:10px 6px;border-radius:12px;background:#f0f4ff;border:2px solid #dde3f0"><div style="font-size:24px;font-weight:900;color:#2563eb">${ozet.toplamSoru}</div><div style="font-size:11px;font-weight:700;color:#64748b">toplam soru</div></div>` +
+        `<div style="text-align:center;padding:10px 6px;border-radius:12px;background:#f0fdf4;border:2px solid #bbf7d0"><div style="font-size:24px;font-weight:900;color:#16a34a">${ozet.toplamKitap}</div><div style="font-size:11px;font-weight:700;color:#64748b">sayfa kitap</div></div>` +
+        `<div style="text-align:center;padding:10px 6px;border-radius:12px;background:#fefce8;border:2px solid #fde68a"><div style="font-size:24px;font-weight:900;color:#b45309">${ozet.toplamParagraf}</div><div style="font-size:11px;font-weight:700;color:#64748b">paragraf</div></div>` +
+      `</div>` +
+      (ozet.enIyiGun?`<div style="text-align:center;margin-bottom:12px;padding:8px;background:#faf5ff;border-radius:10px;border:2px solid #e9d5ff"><span style="font-size:13px;font-weight:700;color:#7c3aed">⭐ En iyi günün: ${esc(ozet.enIyiGun)} (${ozet.enIyiSoru} soru)</span></div>`:'') +
+      `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px">${kartlar}</div>` +
+      `<div style="padding:14px 16px;border-radius:12px;background:${iyi?'#f0fdf4':'#fefce8'};border:2px solid ${iyi?'#86efac':'#fde68a'};font-size:14px;font-weight:600;color:${iyi?'#15803d':'#854d0e'};line-height:1.6;text-align:center">${esc(mesaj)}</div>` +
+    `</div>`;
+  document.body.appendChild(overlay);
+  $('hafta-kapat-btn').addEventListener('click', () => overlay.remove());
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  STATS KARTI
+// ═══════════════════════════════════════════════════════════════════
+
+function renderStatsKart(gunlerData) {
+  const d = CONFIG.durum;
+  const DERS = [{k:'mat',n:'Mat',c:'#2563eb',max:20},{k:'fen',n:'Fen',c:'#16a34a',max:20},{k:'tur',n:'Tür',c:'#9333ea',max:15},{k:'sos',n:'Sos',c:'#0891b2',max:10},{k:'ing',n:'İng',c:'#d97706',max:10},{k:'din',n:'Din',c:'#be185d',max:10}];
+  const bars = DERS.map(d2 => {
+    const ort = d.netler[d2.k] ? d.netler[d2.k].ort : 0; if (!ort) return '';
+    const pct = Math.min(ort/d2.max*100, 100);
+    return `<div class="stats-bar-row"><span style="font-size:10px;font-weight:700;color:var(--muted);width:22px">${d2.n}</span><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${d2.c};border-radius:3px"></div></div><span style="font-size:11px;font-weight:800;color:${d2.c};width:28px;text-align:right">${ort.toFixed(1)}</span></div>`;
+  }).join('');
+
+  const GUN_ADL = ['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+  const GUN_KSA = ['Pt','Sa','Ça','Pe','Cu','Ct'];
+  const calisildi = {};
+  (gunlerData||[]).forEach(g => { calisildi[g.gun] = true; });
+  const dots = GUN_ADL.map((a,i) => {
+    const on = !!calisildi[a];
+    return `<div class="stats-gun-dot ${on?'stats-gun-on':'stats-gun-off'}">${GUN_KSA[i]}</div>`;
+  }).join('');
+
+  let toplamSoru = 0, toplamKitap = 0, enIyiGunAd = '—', enIyiGunSoru = 0;
+  (gunlerData||[]).forEach(g => {
+    const gs = TUM_DERSLER.reduce((a,k)=>a+(Number(g[k+'_d'])||0)+(Number(g[k+'_y'])||0)+(Number(g[k+'_b'])||0),0);
+    toplamSoru += gs; toplamKitap += Number(g.kitap)||0;
+    if (gs > enIyiGunSoru) { enIyiGunSoru = gs; enIyiGunAd = g.gun||'—'; }
+  });
+
+  const el = $('stats-kart'); if (!el) return;
+  el.innerHTML =
+    `<div class="stats-kart">` +
+      `<div style="font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">📊 Ders Ortalama Netleri</div>` +
+      bars +
+      `<div style="margin-top:12px;padding-top:12px;border-top:1.5px solid var(--border)">` +
+        `<div style="font-size:10px;font-weight:800;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">📅 Bu Haftanın Özeti</div>` +
+        `<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px">` +
+          `<div class="stats-skor"><div class="stats-skor-val" style="color:#2563eb">${toplamSoru}</div><div class="stats-skor-lbl">Soru</div></div>` +
+          `<div class="stats-skor"><div class="stats-skor-val" style="color:#16a34a">${toplamKitap}</div><div class="stats-skor-lbl">Sayfa</div></div>` +
+          `<div class="stats-skor"><div class="stats-skor-val" style="color:#9333ea;font-size:13px">${esc(enIyiGunAd.substring(0,2)||'—')}</div><div class="stats-skor-lbl">En İyi</div></div>` +
+        `</div>` +
+      `</div>` +
+      `<div style="font-size:10px;font-weight:800;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">📬 Rapor Gönderilen Günler</div>` +
+      `<div class="stats-gun-dots">${dots}</div>` +
+    `</div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  STREAK + KARŞILAŞTIRMA
+// ═══════════════════════════════════════════════════════════════════
+
+function gunDoluMu(g) {
+  for (const k of TUM_DERSLER) {
+    if ((Number(g[k+'_d'])||0)+(Number(g[k+'_y'])||0)+(Number(g[k+'_b'])||0) > 0) return true;
+  }
+  return Number(g.kitap||0) > 0;
+}
+
+function streakHesapla(gunlerData) {
+  if (!gunlerData || !gunlerData.length) return 0;
+  const dolu = {}; gunlerData.forEach(g => { if (gunDoluMu(g)) dolu[g.gun] = true; });
+  const simdi = trSaati();
+  const bugun = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
+  let streak = 0;
+  for (let i = GUNLER.length-1; i >= 0; i--) {
+    const gun = GUNLER[i];
+    const gunT = new Date(gun.tarih.getFullYear(), gun.tarih.getMonth(), gun.tarih.getDate());
+    if (gunT > bugun) continue;
+    if (dolu[gun.ad]) { streak++; }
+    else { if (gunT.getTime() === bugun.getTime()) continue; break; }
+  }
+  return streak;
+}
+
+function renderStreakKarti(streak) {
+  let mesaj, icon;
+  if (streak === 0)       { icon = '🌱'; mesaj = 'İlk günü doldur, başla!'; }
+  else if (streak === 1)  { icon = '✨'; mesaj = 'Güzel başlangıç!'; }
+  else if (streak < 4)    { icon = '🔥'; mesaj = 'Devam et, ısınıyorsun!'; }
+  else if (streak < 7)    { icon = '🚀'; mesaj = 'Müthiş gidiyorsun!'; }
+  else                    { icon = '👑'; mesaj = 'Efsane! Devam!'; }
+  return `<div class="motiv-card motiv-streak"><div class="motiv-icon">${icon}</div><div class="motiv-info"><div class="motiv-baslik">Seri</div><div class="motiv-deger">${streak} gün</div><div class="motiv-altmesaj">${esc(mesaj)}</div></div></div>`;
+}
+
+function renderKarsilastirmaKarti(buHaftaSoru) {
+  const gh = CONFIG.gecenHafta;
+  if (!gh || gh.toplamSoru === null || gh.toplamSoru === undefined) {
+    return `<div class="motiv-card motiv-compare"><div class="motiv-icon">📊</div><div class="motiv-info"><div class="motiv-baslik">Bu Hafta</div><div class="motiv-deger">${buHaftaSoru} soru</div><div class="motiv-altmesaj">İlk haftan — yola devam!</div></div></div>`;
+  }
+  const fark = buHaftaSoru - gh.toplamSoru;
+  const yuzde = gh.toplamSoru > 0 ? Math.round(fark / gh.toplamSoru * 100) : 0;
+  let donusHtml, altmesaj;
+  if (fark > 0)      { donusHtml = `<span class="donus-yukari">↗ +%${yuzde}</span>`; altmesaj = `Geçen hafta: ${gh.toplamSoru} · şampiyonsun!`; }
+  else if (fark < 0) { donusHtml = `<span class="donus-asagi">↘ %${yuzde}</span>`;   altmesaj = `Geçen hafta: ${gh.toplamSoru} · daha iyisini yaparsın`; }
+  else               { donusHtml = `<span class="donus-ayni">→ aynı</span>`;          altmesaj = `Geçen hafta da: ${gh.toplamSoru}`; }
+  return `<div class="motiv-card motiv-compare"><div class="motiv-icon">📊</div><div class="motiv-info"><div class="motiv-baslik">Bu Hafta vs Geçen</div><div class="motiv-deger">${buHaftaSoru} ${donusHtml}</div><div class="motiv-altmesaj">${esc(altmesaj)}</div></div></div>`;
+}
+
+function renderMotivRow(gunlerData) {
+  const streak = streakHesapla(gunlerData);
+  const buHaftaSoru = (gunlerData||[]).reduce((acc,g) => acc + TUM_DERSLER.reduce((a,k)=>a+(Number(g[k+'_d'])||0)+(Number(g[k+'_y'])||0)+(Number(g[k+'_b'])||0),0), 0);
+  const el = $('motiv-row'); if (!el) return;
+  el.innerHTML = renderStreakKarti(streak) + renderKarsilastirmaKarti(buHaftaSoru);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  GÜNLÜK HEDEF İLERLEME ÇUBUĞU
+// ═══════════════════════════════════════════════════════════════════
+
+function hedefBarHTML(prefix) {
+  return `<div class="hedef-bar-wrap" id="${prefix}_hedefbar_wrap">` +
+    `<div class="hedef-bar-baslik"><div class="hedef-bar-label">🎯 Günlük Hedef</div><div class="hedef-bar-sayac"><span class="cur" id="${prefix}_hb_sayac">0</span> / ${CONFIG.gunlukSoruHedefi.min}–${CONFIG.gunlukSoruHedefi.max} soru</div></div>` +
+    `<div class="hedef-bar-track"><div class="hedef-bar-fill" id="${prefix}_hb_fill"></div></div>` +
+    `<div class="hedef-bar-mesaj basla" id="${prefix}_hb_mesaj">Bugünkü çalışmana başla!</div>` +
+  `</div>`;
+}
+
+function hedefBarGuncelle(prefix) {
+  const gun = GUNLER.find(g => g.prefix === prefix); if (!gun) return;
+  let toplam = 0;
+  gun.dersler.forEach(d => {
+    if (!d.takipKey) return;
+    toplam += parseInt(val(prefix+'_'+d.takipKey+'_d'))||0;
+    toplam += parseInt(val(prefix+'_'+d.takipKey+'_y'))||0;
+    toplam += parseInt(val(prefix+'_'+d.takipKey+'_b'))||0;
+  });
+  const sayacEl = $(prefix+'_hb_sayac'), fillEl = $(prefix+'_hb_fill'), mesajEl = $(prefix+'_hb_mesaj');
+  if (!sayacEl || !fillEl || !mesajEl) return;
+  sayacEl.textContent = toplam;
+  const min = CONFIG.gunlukSoruHedefi.min, max = CONFIG.gunlukSoruHedefi.max;
+  fillEl.style.width = Math.min(toplam/max*100, 100) + '%';
+  fillEl.classList.remove('basarili','cokustun'); mesajEl.classList.remove('basla','devam','basarili','cokustun');
+  if (toplam === 0)     { mesajEl.textContent = 'Bugünkü çalışmana başla!'; mesajEl.classList.add('basla'); }
+  else if (toplam < min){ mesajEl.textContent = `Hedefe ${min-toplam} soru kaldı, devam!`; mesajEl.classList.add('devam'); }
+  else if (toplam <= max){ mesajEl.textContent = '🎉 Günlük hedefe ulaştın! Süpersin!'; mesajEl.classList.add('basarili'); fillEl.classList.add('basarili'); }
+  else                  { mesajEl.textContent = '🔥 Hedefi aştın! Bugün canavarsın!'; mesajEl.classList.add('cokustun'); fillEl.classList.add('cokustun'); }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  PULL-TO-REFRESH (mobil)
+// ═══════════════════════════════════════════════════════════════════
+
+(function initPullToRefresh() {
+  const PR_THRESHOLD = 80;
+  let startY = 0, pulling = false, refreshing = false;
+
+  document.addEventListener('touchstart', e => {
+    if (window.scrollY === 0 && !refreshing) { startY = e.touches[0].clientY; pulling = true; }
+  }, { passive: true });
+
+  document.addEventListener('touchend', e => {
+    if (!pulling) return;
+    pulling = false;
+    const dist = e.changedTouches[0].clientY - startY;
+    if (dist > PR_THRESHOLD && !refreshing) {
+      refreshing = true;
+      const ind = $('pr-indicator');
+      if (ind) ind.style.display = 'block';
+      yukleOzet();
+      // Deneme verisini de zorla yenile
+      denemeYukle(true);
+      setTimeout(() => { if (ind) ind.style.display = 'none'; refreshing = false; }, 2000);
+    }
+  }, { passive: true });
+}());
+
+// ═══════════════════════════════════════════════════════════════════
+//  DENEME SONUÇLARI MODÜLÜ
+// ═══════════════════════════════════════════════════════════════════
+
+const DENEME_CACHE_KEY = 'lgs_deneme_' + OGRENCI_ADI.replace(/\s+/g, '_');
+const DENEME_CACHE_GUN_KEY = DENEME_CACHE_KEY + '_gun';
+
+function bugunStr() {
+  const d = trSaati();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function denemeCacheOku() {
+  try {
+    const gun = LS.get(DENEME_CACHE_GUN_KEY);
+    const veri = LS.get(DENEME_CACHE_KEY);
+    if (gun === bugunStr() && veri) return JSON.parse(veri);
+  } catch (e) {}
+  return null;
+}
+
+function denemeCacheYaz(veri) {
+  try {
+    LS.set(DENEME_CACHE_KEY, JSON.stringify(veri));
+    LS.set(DENEME_CACHE_GUN_KEY, bugunStr());
+  } catch (e) {}
+}
+
+function denemeYukle(zorla) {
+  if (!zorla) {
+    const cache = denemeCacheOku();
+    if (cache) { denemeRender(cache); return Promise.resolve(cache); }
+  }
+  const url = SCRIPT_URL + '?tip=denemeler&ogrenciAdi=' + encodeURIComponent(OGRENCI_ADI);
+  return fetch(url)
+    .then(r => r.json())
+    .then(data => {
+      if (data.durum !== 'basarili') throw new Error(data.mesaj || 'Veri alınamadı');
+      denemeCacheYaz(data);
+      denemeRender(data);
+      return data;
+    })
+    .catch(err => {
+      warn('Deneme yükleme hatası:', err);
+      const el = $('deneme-icerik');
+      if (el) el.innerHTML = '<div class="deneme-yukleniyor" style="color:var(--danger)">⚠️ Veri alınamadı: ' + esc(err.message) + '</div>';
+    });
+}
+
+function denemeOzetUfak(ozet) {
+  if (!ozet || !ozet.toplam) return '—';
+  return ozet.toplam + ' deneme · <strong>' + Math.round(ozet.sonPuan) + '</strong>';
+}
+
+function denemeRender(data) {
+  const el = $('deneme-icerik'); if (!el) return;
+  const denemeler = data.denemeler || [];
+  const ozet = data.ozet || {};
+  const ozetEl = $('deneme-acc-ozet');
+  if (ozetEl) ozetEl.innerHTML = denemeOzetUfak(ozet);
+
+  if (!denemeler.length) {
+    el.innerHTML = '<div class="deneme-yukleniyor">Henüz deneme kaydı yok.</div>';
+    return;
+  }
+
+  const hedef = CONFIG.durum.hedef;
+
+  let html = '<div class="deneme-ozet-grid">' +
+    `<div class="deneme-ozet-kart"><div class="deneme-ozet-val" style="color:var(--mat)">${Math.round(ozet.sonPuan)}</div><div class="deneme-ozet-lbl">Son puan</div></div>` +
+    `<div class="deneme-ozet-kart"><div class="deneme-ozet-val" style="color:#7c3aed">${Math.round(ozet.ortalama)}</div><div class="deneme-ozet-lbl">Ortalama</div></div>` +
+    `<div class="deneme-ozet-kart"><div class="deneme-ozet-val" style="color:var(--success)">${hedef}</div><div class="deneme-ozet-lbl">Hedef</div></div>` +
+    `<div class="deneme-ozet-kart"><div class="deneme-ozet-val" style="color:var(--text)">${ozet.toplam}</div><div class="deneme-ozet-lbl">Deneme</div></div>` +
+    '</div>';
+
+  html += denemeSVGGrafik(denemeler, hedef);
+  html += denemeTabloHTML(denemeler);
+
+  el.innerHTML = html;
+}
+
+function denemeSVGGrafik(denemeler, hedef) {
+  const W = 700, H = 280, padL = 45, padR = 20, padT = 20, padB = 50;
+  const innerW = W - padL - padR;
+  const innerH = H - padT - padB;
+
+  const puanlar = denemeler.map(d => d.puan).filter(p => p > 0);
+  if (!puanlar.length) return '';
+
+  const minP = Math.min(Math.min.apply(null, puanlar), hedef) - 30;
+  const maxP = Math.max(Math.max.apply(null, puanlar), hedef) + 30;
+  const minY = Math.floor(minP / 20) * 20;
+  const maxY = Math.ceil(maxP / 20) * 20;
+  const rangeY = maxY - minY;
+
+  const xFor = (i) => padL + (denemeler.length === 1 ? innerW/2 : (i / (denemeler.length - 1)) * innerW);
+  const yFor = (p) => padT + innerH - ((p - minY) / rangeY) * innerH;
+
+  const yLabels = [];
+  const step = Math.max(20, Math.ceil(rangeY / 4 / 20) * 20);
+  for (let v = minY; v <= maxY; v += step) yLabels.push(v);
+
+  let svg = `<div class="deneme-grafik-wrap">` +
+    `<div class="deneme-grafik-baslik">📈 Puan Trendi` +
+      `<div class="deneme-grafik-legend">` +
+        `<span><i style="background:var(--mat)"></i>Puan</span>` +
+        `<span><i style="background:transparent;border-top:2px dashed var(--success);height:0"></i>Hedef (${hedef})</span>` +
+      `</div>` +
+    `</div>` +
+    `<svg class="deneme-svg" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">`;
+
+  yLabels.forEach(v => {
+    const y = yFor(v);
+    svg += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="var(--border)" stroke-width="1" opacity="0.5"/>`;
+    svg += `<text x="${padL-8}" y="${y+4}" text-anchor="end" fill="var(--muted)" font-size="11" font-family="Nunito,sans-serif" font-weight="600">${v}</text>`;
+  });
+
+  const hedefY = yFor(hedef);
+  svg += `<line x1="${padL}" y1="${hedefY}" x2="${W-padR}" y2="${hedefY}" stroke="var(--success)" stroke-width="2" stroke-dasharray="6,4"/>`;
+
+  svg += `<defs><linearGradient id="deneme-grad" x1="0" y1="0" x2="0" y2="1">` +
+    `<stop offset="0%" stop-color="var(--mat)" stop-opacity="0.25"/>` +
+    `<stop offset="100%" stop-color="var(--mat)" stop-opacity="0"/>` +
+    `</linearGradient></defs>`;
+
+  // Polyline noktaları
+  const polyPoints = denemeler.map((d, i) => xFor(i) + ',' + yFor(d.puan)).join(' ');
+
+  // Alan polygon
+  const ilkX = xFor(0), sonX = xFor(denemeler.length - 1), altY = yFor(minY);
+  let alanPoints = ilkX + ',' + altY + ' ';
+  denemeler.forEach((d, i) => { alanPoints += xFor(i) + ',' + yFor(d.puan) + ' '; });
+  alanPoints += sonX + ',' + altY;
+  svg += `<polygon points="${alanPoints}" fill="url(#deneme-grad)"/>`;
+
+  svg += `<polyline points="${polyPoints}" fill="none" stroke="var(--mat)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`;
+
+  denemeler.forEach((d, i) => {
+    const x = xFor(i), y = yFor(d.puan);
+    const renk = d.puan >= hedef ? 'var(--success)' : 'var(--danger)';
+    svg += `<circle cx="${x}" cy="${y}" r="5" fill="${renk}" stroke="white" stroke-width="2"/>`;
+
+    let kisa = d.ad;
+    if (kisa.length > 10) kisa = kisa.substring(0, 9) + '…';
+    svg += `<text x="${x}" y="${H-padB+18}" text-anchor="middle" fill="var(--muted)" font-size="10" font-family="Nunito,sans-serif" font-weight="700">${esc(kisa)}</text>`;
+    svg += `<text x="${x}" y="${H-padB+32}" text-anchor="middle" fill="var(--muted)" font-size="9" font-family="Nunito,sans-serif" font-weight="600" opacity="0.7">${esc(d.tarih)}</text>`;
+  });
+
+  svg += `</svg></div>`;
+  return svg;
+}
+
+function denemeTabloHTML(denemeler) {
+  const dersler = [
+    { k: 'tur', ad: 'TÜR', renk: '#9333ea' },
+    { k: 'sos', ad: 'SOS', renk: '#0891b2' },
+    { k: 'din', ad: 'DİN', renk: '#be185d' },
+    { k: 'ing', ad: 'İNG', renk: '#d97706' },
+    { k: 'mat', ad: 'MAT', renk: '#2563eb' },
+    { k: 'fen', ad: 'FEN', renk: '#16a34a' },
+  ];
+
+  let html = '<div class="deneme-tablo-wrap"><table class="deneme-tablo">' +
+    '<thead><tr><th>Deneme</th><th>Tarih</th>';
+  dersler.forEach(d => { html += `<th style="color:${d.renk}">${d.ad}</th>`; });
+  html += '<th style="color:var(--mat)">Puan</th><th>±</th></tr></thead><tbody>';
+
+  denemeler.forEach((d, i) => {
+    const oncekiPuan = i > 0 ? denemeler[i-1].puan : null;
+    let farkHtml = '—';
+    if (oncekiPuan !== null && oncekiPuan > 0 && d.puan > 0) {
+      const fark = d.puan - oncekiPuan;
+      const farkAbs = Math.abs(fark).toFixed(0);
+      if (fark > 0.5)       farkHtml = `<span class="deneme-fark-yukari">▲${farkAbs}</span>`;
+      else if (fark < -0.5) farkHtml = `<span class="deneme-fark-asagi">▼${farkAbs}</span>`;
+      else                  farkHtml = `<span class="deneme-fark-ayni">→0</span>`;
+    }
+
+    const puanCls = d.puan >= CONFIG.durum.hedef ? 'deneme-puan-yuksek' : 'deneme-puan-dusuk';
+
+    html += `<tr><td>${esc(d.ad)}</td><td style="color:var(--muted);font-weight:600">${esc(d.tarih)}</td>`;
+    dersler.forEach(ders => {
+      const v = d[ders.k];
+      html += `<td style="color:${ders.renk}">${v ? v.toFixed(2) : '—'}</td>`;
+    });
+    html += `<td class="${puanCls}">${d.puan ? d.puan.toFixed(0) : '—'}</td>`;
+    html += `<td>${farkHtml}</td></tr>`;
+  });
+
+  html += '</tbody></table></div>';
+  return html;
+}
+
+function denemeAccToggle() {
+  const acc = $('deneme-acc'); if (!acc) return;
+  const acik = acc.classList.toggle('acik');
+  if (acik && !denemeCacheOku()) denemeYukle(false);
+}
+
+(function denemeBaslat() {
+  const cache = denemeCacheOku();
+  if (cache) {
+    denemeRender(cache);
+  } else {
+    const ozetEl = $('deneme-acc-ozet');
+    if (ozetEl) ozetEl.textContent = 'Açmak için tıkla';
+  }
+}());
+
+// ═══════════════════════════════════════════════════════════════════
+//  BAŞLAT
+// ═══════════════════════════════════════════════════════════════════
+
+renderMotivRow([]);
+renderInsightRow([]);
+
+lsYukle();
+lsDinleyiciEkle();
+yukleOzet();
+
+GUNLER.forEach(g => {
+  if (gunDurumu(g) === 'aktif') { accSoruGuncelle(g.prefix); hedefBarGuncelle(g.prefix); }
+});
+
+</script>
+</body>
+</html>
