@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LGS Focus · Öğrenci Paneli</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --primary: #0d9488;
+        --bg: #f8fafc;
+        --card-bg: #ffffff;
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+    }
+    body { 
+        font-family: 'Plus Jakarta Sans', sans-serif; 
+        background-color: var(--bg); 
+        color: var(--text-main);
+        -webkit-tap-highlight-color: transparent;
+    }
+    .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .chart-container { position: relative; height: 250px; width: 100%; }
+    .nav-active { color: var(--primary); border-bottom: 3px solid var(--primary); }
+    .streak-badge { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-up { animation: slideUp 0.5s ease forwards; }
+</style>
+</head>
+<body class="pb-24">
+
+<header class="sticky top-0 z-50 glass-card px-6 py-4 flex justify-between items-center shadow-sm">
+    <div class="flex items-center gap-3">
+        <div id="user-avatar" class="w-10 h-10 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold">?</div>
+        <div>
+            <h1 id="user-name" class="font-bold text-sm leading-none">Yükleniyor...</h1>
+            <span id="week-info" class="text-[10px] text-teal-600 font-extrabold uppercase tracking-widest">Hafta --</span>
+        </div>
+    </div>
+    <div class="streak-badge px-3 py-1 rounded-full text-white text-[10px] font-black flex items-center gap-1 shadow-md">
+        🔥 <span id="streak-count">12</span> GÜN
+    </div>
+</header>
+
+<main class="max-w-md mx-auto p-4 space-y-6">
+    
+    <section id="chart-section" class="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100 animate-up hidden">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="font-extrabold text-sm text-slate-400 uppercase tracking-tighter">Deneme Analizi</h2>
+            <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded-lg font-bold">Son 5 Deneme</span>
+        </div>
+        <div class="chart-container">
+            <canvas id="netChart"></canvas>
+        </div>
+    </section>
+
+    <section id="plan-section" class="space-y-3 animate-up" style="animation-delay: 0.1s;">
+        <div class="flex items-center justify-between px-2">
+            <h2 class="font-extrabold text-sm text-slate-400 uppercase">Haftalık Plan</h2>
+            <div id="plan-status" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+        </div>
+        <div id="plan-list" class="space-y-3">
+            <div class="p-8 text-center text-slate-300 italic text-sm">Plan yükleniyor...</div>
+        </div>
+    </section>
+
+    <section class="bg-teal-900 rounded-[2rem] p-6 text-white shadow-xl relative overflow-hidden animate-up" style="animation-delay: 0.2s;">
+        <div class="relative z-10">
+            <h3 class="text-[10px] font-black text-teal-300 uppercase tracking-widest mb-2">Koç Mesajı</h3>
+            <p id="koc-notu" class="text-sm font-medium italic leading-relaxed">Veriler işleniyor...</p>
+        </div>
+        <div class="absolute -right-4 -bottom-4 opacity-10">
+            <svg width="100" height="100" viewBox="0 0 24 24" fill="white"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10z"/></svg>
+        </div>
+    </section>
+
+</main>
+
+<nav class="fixed bottom-0 left-0 right-0 glass-card p-4 flex justify-around items-center border-t border-slate-100 rounded-t-[2rem]">
+    <button onclick="changeTab('plan')" class="flex flex-col items-center gap-1 nav-active transition-all">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <span class="text-[10px] font-bold">PLAN</span>
+    </button>
+    <button onclick="changeTab('deneme')" class="flex flex-col items-center gap-1 text-slate-400">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        <span class="text-[10px] font-bold">ANALİZ</span>
+    </button>
+</nav>
+
+<script>
+/**
+ * ÖNEMLİ: Aşağıdaki GAS_URL kısmına kendi Web App linkini yapıştırmalısın.
+ */
+const GAS_URL = "BURAYA_APPS_SCRIPT_URL_GELECEK"; 
+
+const urlParams = new URLSearchParams(window.location.search);
+const CONFIG = {
+    ad: urlParams.get('id') || 'Yakup Şakar', // Test için varsayılan isim eklendi
+    hafta: urlParams.get('hafta') || 'aktif',
+    hedef: 450
+};
+
+const $ = id => document.getElementById(id);
+
+async function apiCek(islem) {
+    // URL kontrolü
+    if (GAS_URL.includes("BURAYA_APPS_SCRIPT_URL")) {
+        console.warn("Lütfen GAS_URL değişkenini güncelleyin!");
+        return null;
+    }
+
+    const url = `${GAS_URL}?islem=${islem}&ogrenci=${encodeURIComponent(CONFIG.ad)}&hafta=${CONFIG.hafta}`;
+    try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Network response was not ok');
+        return await res.json();
+    } catch (e) {
+        console.error("API Hatası:", e);
+        return null;
+    }
+}
+
+async function sayfaBaslat() {
+    $('user-name').innerText = CONFIG.ad;
+    $('user-avatar').innerText = CONFIG.ad[0];
+    $('week-info').innerText = `HAFTA ${CONFIG.hafta === 'aktif' ? '...' : CONFIG.hafta}`;
+
+    const planData = await apiCek('plan');
+    if (planData) renderPlan(planData);
+
+    const denemeData = await apiCek('deneme');
+    if (denemeData && denemeData.liste && denemeData.liste.length > 0) {
+        $('chart-section').classList.remove('hidden');
+        renderGrafik(denemeData.liste);
+        $('koc-notu').innerText = denemeData.ozet?.koc_notu || "Henüz bir koç notu girilmemiş.";
+    } else {
+        $('koc-notu').innerText = "Veriler yüklenemedi veya henüz girilmemiş.";
+    }
+}
+
+function renderPlan(data) {
+    const gunler = ["pazartesi", "sali", "carsamba", "persembe", "cuma", "cumartesi", "pazar"];
+    let html = "";
+    gunler.forEach(gun => {
+        if (data[gun]) {
+            html += `
+            <div class="bg-white p-4 rounded-2xl border border-slate-100 flex gap-4 items-start shadow-sm hover:border-teal-200 transition-all">
+                <div class="w-10 h-10 bg-slate-50 rounded-xl flex flex-col items-center justify-center shrink-0 border border-slate-100">
+                    <span class="text-[8px] font-black text-slate-300 uppercase">${gun.substring(0,3)}</span>
+                    <div class="w-1.5 h-1.5 rounded-full bg-teal-500 mt-1"></div>
+                </div>
+                <p class="text-sm font-medium text-slate-600 leading-snug pt-1">${data[gun]}</p>
+            </div>`;
+        }
+    });
+    $('plan-list').innerHTML = html || '<div class="p-8 text-center text-slate-300">Bu hafta için plan atanmamış.</div>';
+}
+
+function renderGrafik(liste) {
+    const canvas = $('netChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    
+    const sonBes = liste.slice(-5);
+    const labels = sonBes.map(d => d.ad ? (d.ad.substring(0, 8) + "..") : "Deneme");
+    const puanlar = sonBes.map(d => d.puan || 0);
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Puan',
+                data: puanlar,
+                borderColor: '#0d9488',
+                backgroundColor: 'rgba(13, 148, 136, 0.1)',
+                borderWidth: 4,
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: '#fff',
+                pointBorderColor: '#0d9488',
+                pointBorderWidth: 2,
+                pointRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { display: false, beginAtZero: false },
+                x: { grid: { display: false }, ticks: { font: { size: 9, weight: '600' }, color: '#94a3b8' } }
+            }
+        }
+    });
+}
+
+function changeTab(tab) {
+    console.log("Tab değiştirildi:", tab);
+}
+
+window.onload = sayfaBaslat;
+</script>
+
+</body>
+</html>
