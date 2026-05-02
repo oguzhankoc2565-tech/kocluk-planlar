@@ -744,8 +744,8 @@
     });
 
   // ─── 5. JSON → CONFIG DÖNÜŞÜMÜ ────────────────────────────────────
-  const GUN_SIRA = ['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
-  const GUN_OFFSET = { 'Pazartesi':0, 'Salı':1, 'Çarşamba':2, 'Perşembe':3, 'Cuma':4, 'Cumartesi':5 };
+  // Gün adı → JS getDay() eşlemesi (0=Pazar, 1=Pazartesi, ..., 6=Cumartesi)
+  const GUN_JS = { 'Pazar':0, 'Pazartesi':1, 'Salı':2, 'Çarşamba':3, 'Perşembe':4, 'Cuma':5, 'Cumartesi':6 };
 
   function buildConfig(data) {
     const o = data.ogrenci || {};
@@ -755,18 +755,27 @@
     // Tarih parse
     let baslangic = null;
     if (h.baslangic_tarih) {
-      // "YYYY-MM-DD" formatını local time olarak parse et
       const m = String(h.baslangic_tarih).match(/^(\d{4})-(\d{2})-(\d{2})/);
       if (m) baslangic = new Date(parseInt(m[1],10), parseInt(m[2],10)-1, parseInt(m[3],10));
     }
+    const baslangicGun = baslangic ? baslangic.getDay() : 1; // varsayılan Pazartesi
+
+    // Plandaki günleri bul ve kronolojik sırala
+    const mevcutGunler = Object.keys(data.gunler || {}).filter(g =>
+      Array.isArray(data.gunler[g]) && data.gunler[g].length > 0 && GUN_JS[g] !== undefined
+    );
+    mevcutGunler.sort((a, b) => {
+      const offA = (GUN_JS[a] - baslangicGun + 7) % 7;
+      const offB = (GUN_JS[b] - baslangicGun + 7) % 7;
+      return offA - offB;
+    });
 
     // Günleri dönüştür
     const gunlerArr = [];
-    GUN_SIRA.forEach(gunAd => {
+    mevcutGunler.forEach(gunAd => {
       const gorevler = data.gunler[gunAd];
-      if (!Array.isArray(gorevler) || gorevler.length === 0) return;
 
-      // Sıraya göre sırala (sira alanı varsa)
+      // Sıraya göre sırala
       const sirali = gorevler.slice().sort((a,b) => (a.sira||0) - (b.sira||0));
 
       // ders_kod'a göre ardışık grupla
@@ -790,11 +799,12 @@
       });
       if (cur) { delete cur._kod; dersler.push(cur); }
 
-      // Tarih hesapla
+      // Tarih hesapla — başlangıç gününden otomatik offset
       let tarih = null;
       if (baslangic) {
+        const offset = (GUN_JS[gunAd] - baslangicGun + 7) % 7;
         tarih = new Date(baslangic);
-        tarih.setDate(baslangic.getDate() + (GUN_OFFSET[gunAd] || 0));
+        tarih.setDate(baslangic.getDate() + offset);
       }
 
       gunlerArr.push({
@@ -1804,13 +1814,12 @@ function renderStatsKart(gunlerData) {
     return `<div class="stats-bar-row"><span style="font-size:10px;font-weight:700;color:var(--muted);width:22px">${d2.n}</span><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${d2.c};border-radius:3px"></div></div><span style="font-size:11px;font-weight:800;color:${d2.c};width:28px;text-align:right">${ort.toFixed(1)}</span></div>`;
   }).join('');
 
-  const GUN_ADL = ['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
-  const GUN_KSA = ['Pt','Sa','Ça','Pe','Cu','Ct'];
+  const GUN_KSA_MAP = {'Pazartesi':'Pt','Salı':'Sa','Çarşamba':'Ça','Perşembe':'Pe','Cuma':'Cu','Cumartesi':'Ct','Pazar':'Pz'};
   const calisildi = {};
   (gunlerData||[]).forEach(g => { calisildi[g.gun] = true; });
-  const dots = GUN_ADL.map((a,i) => {
-    const on = !!calisildi[a];
-    return `<div class="stats-gun-dot ${on?'stats-gun-on':'stats-gun-off'}">${GUN_KSA[i]}</div>`;
+  const dots = GUNLER.map(gun => {
+    const on = !!calisildi[gun.ad];
+    return `<div class="stats-gun-dot ${on?'stats-gun-on':'stats-gun-off'}">${GUN_KSA_MAP[gun.ad]||gun.ad.substring(0,2)}</div>`;
   }).join('');
 
   let toplamSoru = 0, toplamKitap = 0, enIyiGunAd = '—', enIyiGunSoru = 0;
