@@ -1060,7 +1060,7 @@ $('dpnt').textContent =
       `<div class="net-kart-ders">${ADI[k]}</div>` +
       `<div class="net-kart-sayi" style="color:${RENK[k]}">${v.ort.toFixed(2)}</div>` +
       `<div class="net-kart-label">net ort.</div>` +
-      `<div class="net-kart-hedef">hedef: ${v.hedef}</div>` +
+      `<div class="net-kart-hedef">hedef: ${parseFloat(v.hedef).toFixed(2)}</div>` +
     `</div>`;
   }).join('');
 
