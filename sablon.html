@@ -2032,7 +2032,7 @@ function denemeRender(data) {
     return;
   }
 
-  const hedef = CONFIG.durum.hedef;
+  const hedef = parseFloat(CONFIG.durum.hedef).toFixed(2);
 
   let html = '<div class="deneme-ozet-grid">' +
     `<div class="deneme-ozet-kart"><div class="deneme-ozet-val" style="color:var(--mat)">${Math.round(ozet.sonPuan)}</div><div class="deneme-ozet-lbl">Son puan</div></div>` +
