@@ -1807,7 +1807,7 @@ function gosterHaftaOzetiPopup(gunler) {
 
 function renderStatsKart(gunlerData) {
   const d = CONFIG.durum;
-  const DERS = [{k:'mat',n:'Mat',c:'#2563eb',max:20},{k:'fen',n:'Fen',c:'#16a34a',max:20},{k:'tur',n:'Tür',c:'#9333ea',max:15},{k:'sos',n:'Sos',c:'#0891b2',max:10},{k:'ing',n:'İng',c:'#d97706',max:10},{k:'din',n:'Din',c:'#be185d',max:10}];
+  const DERS = [{k:'mat',n:'Mat',c:'#2563eb',max:15},{k:'fen',n:'Fen',c:'#16a34a',max:15},{k:'tur',n:'Tür',c:'#9333ea',max:15},{k:'sos',n:'Sos',c:'#0891b2',max:10},{k:'ing',n:'İng',c:'#d97706',max:10},{k:'din',n:'Din',c:'#be185d',max:10}];
   const bars = DERS.map(d2 => {
     const ort = d.netler[d2.k] ? d.netler[d2.k].ort : 0; if (!ort) return '';
     const pct = Math.min(ort/d2.max*100, 100);
