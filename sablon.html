@@ -973,7 +973,7 @@ const SCRIPT_URL  = CONFIG.ogrenci.scriptUrl;
 const OGRENCI_ADI = CONFIG.ogrenci.ad;
 const HAFTA_NO    = CONFIG.ogrenci.haftaNo;
 const GUNLER      = CONFIG.gunler;
-const SON_GUN_ADI = GUNLER[GUNLER.length - 1].ad;
+const SON_GUN_ADI = GUNLER.length > 0 ? GUNLER[GUNLER.length - 1].ad : '';
 const LS_PREFIX   = 'lgs_' + OGRENCI_ADI.replace(/\s+/g, '_') + '_H' + HAFTA_NO + '_';
 
 function esc(s) {
