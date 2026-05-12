@@ -833,12 +833,11 @@
         motivasyon:  null
       },
       durum: {
-        sonPuan:    h.son_puan,
-        oncekiPuan: h.onceki_puan,
-        ortalama:   h.ortalama,
-        hedef:      h.hedef,
-        gelisim:    h.gelisim_notu || '',
-        netler:     netler
+        sonPuan:  h.son_puan,
+        ortalama: h.ortalama,
+        hedef:    h.hedef,
+        gelisim:  h.gelisim_notu || '',
+        netler:   netler
       },
       gecenHafta: { toplamSoru: null, toplamKitap: null },
       gunlukSoruHedefi: {
@@ -1068,9 +1067,9 @@ $('dpnt').textContent =
     `<div class="card">` +
       `<div class="card-label">📊 Genel durumum</div>` +
       `<div class="durum-grid">` +
-        `<div class="durum-item"><div class="durum-label">🎯 Son deneme puanın</div><div class="durum-val puan">${d.sonPuan.toFixed(2)}</div></div>` +
-        `<div class="durum-item"><div class="durum-label">📊 Deneme ortalaması</div><div class="durum-val" style="color:#7c3aed">${d.ortalama.toFixed(2)}</div></div>` +
-        `<div class="durum-item"><div class="durum-label">🚀 Sonraki hedefin</div><div class="durum-val hedef">${parseFloat(d.hedef).toFixed(2)}</div></div>` +
+        `<div class="durum-item"><div class="durum-label">🎯 Son deneme puanın</div><div class="durum-val puan">${d.sonPuan != null ? parseFloat(d.sonPuan).toFixed(2) : '—'}</div></div>` +
+        `<div class="durum-item"><div class="durum-label">📊 Deneme ortalaması</div><div class="durum-val" style="color:#7c3aed">${d.ortalama != null ? parseFloat(d.ortalama).toFixed(2) : '—'}</div></div>` +
+        `<div class="durum-item"><div class="durum-label">🚀 Sonraki hedefin</div><div class="durum-val hedef">${d.hedef != null ? parseFloat(d.hedef).toFixed(2) : '—'}</div></div>` +
       `</div>` +
       `<div style="margin-bottom:10px"><span style="font-size:12px;font-weight:700;color:var(--muted)">⚠️ Gelişim: </span>` +
         `<span style="font-size:13px;font-weight:700;color:var(--danger)">${esc(d.gelisim)}</span></div>` +
@@ -1104,34 +1103,47 @@ $('koc-nt').innerHTML =
   `<div class="koc-notu-baslik">🏆 Koç Notu — Hafta ${esc(HAFTA_NO)}</div>` +
   `<div class="koc-notu-text">${esc(CONFIG.koc.haftalikNot)}</div>`;
 
-(function renderHedefYolu() {
-  const d = CONFIG.durum;
-  const aralik    = d.hedef - d.oncekiPuan;
-  const ilerleme  = d.sonPuan - d.oncekiPuan;
-  const pct       = Math.min(Math.max(ilerleme / aralik * 100, 0), 100);
-  const kalan     = (d.hedef - d.sonPuan).toFixed(2);
-  const topPct    = pct.toFixed(1);
+function renderHedefYolu(denemeler) {
+  const wrap = $('hedef-yolu-wrap');
+  if (!wrap) return;
 
-  $('hedef-yolu-wrap').innerHTML =
+  const hedef   = parseFloat(CONFIG.durum.hedef);
+  const puanlar = (denemeler || []).filter(d => d.puan > 0);
+
+  if (!hedef || isNaN(hedef) || !puanlar.length) { wrap.innerHTML = ''; return; }
+
+  const ilkPuan  = puanlar[0].puan;
+  const sonPuan  = puanlar[puanlar.length - 1].puan;
+  const aralik   = hedef - ilkPuan;
+  const ilerleme = sonPuan - ilkPuan;
+  const pct      = aralik <= 0 ? 100 : Math.min(Math.max(ilerleme / aralik * 100, 0), 100);
+  const kalan    = hedef - sonPuan;
+  const topPct   = pct.toFixed(1);
+
+  const kalanMetin = kalan > 0
+    ? `Hedefe <span>${kalan.toFixed(1)} puan</span> kaldı — her derste +1 net büyük fark yaratır!`
+    : `<span>🎉 Hedef puanına ulaştın! Süpersin!</span>`;
+
+  wrap.innerHTML =
     `<div class="hedef-yolu">` +
       `<div class="hedef-yolu-baslik">🏁 Hedef Yolu</div>` +
       `<div class="hedef-yolu-track">` +
         `<div class="hedef-yolu-bg"></div>` +
         `<div class="hedef-yolu-fill" id="hy-fill" style="width:0%"></div>` +
         `<div class="hedef-yolu-top" style="left:0%"><div class="hedef-yolu-top-dot" style="background:#94a3b8">🚩</div></div>` +
-        `<div class="hedef-yolu-top" id="hy-top" style="left:${pct}%"><div class="hedef-yolu-top-dot" style="background:var(--mat)">⚽</div></div>` +
+        `<div class="hedef-yolu-top" id="hy-top" style="left:${topPct}%"><div class="hedef-yolu-top-dot" style="background:var(--mat)">⚽</div></div>` +
         `<div class="hedef-yolu-top" style="left:100%"><div class="hedef-yolu-top-dot" style="background:var(--success)">🎯</div></div>` +
       `</div>` +
       `<div class="hedef-yolu-labels">` +
-        `<span>${d.oncekiPuan.toFixed(0)} (Başlangıç)</span>` +
-        `<span style="color:var(--mat);font-weight:800">${d.sonPuan.toFixed(2)} — %${topPct}</span>` +
-        `<span>${d.hedef} (Hedef)</span>` +
+        `<span>${ilkPuan.toFixed(0)} (İlk Deneme)</span>` +
+        `<span style="color:var(--mat);font-weight:800">${sonPuan.toFixed(1)} — %${topPct}</span>` +
+        `<span>${hedef.toFixed(0)} (Hedef)</span>` +
       `</div>` +
-      `<div class="hedef-yolu-bilgi">Hedefe <span>${kalan} puan</span> kaldı — her derste +1 net büyük fark yaratır!</div>` +
+      `<div class="hedef-yolu-bilgi">${kalanMetin}</div>` +
     `</div>`;
 
-  setTimeout(() => { const f = $('hy-fill'); if (f) f.style.width = pct + '%'; }, 200);
-}());
+  setTimeout(() => { const f = $('hy-fill'); if (f) f.style.width = topPct + '%'; }, 200);
+}
 
 // ═══════════════════════════════════════════════════════════════════
 //  ZAMAN
@@ -2045,6 +2057,7 @@ function denemeRender(data) {
   html += denemeTabloHTML(denemeler);
 
   el.innerHTML = html;
+  renderHedefYolu(denemeler);
 }
 
 function denemeSVGGrafik(denemeler, hedef) {
@@ -2185,6 +2198,7 @@ renderInsightRow([]);
 lsYukle();
 lsDinleyiciEkle();
 yukleOzet();
+denemeYukle(false);
 
 GUNLER.forEach(g => {
   if (gunDurumu(g) === 'aktif') { accSoruGuncelle(g.prefix); hedefBarGuncelle(g.prefix); }
