@@ -69,8 +69,6 @@
   .badge-aktif { background: #dcfce7; color: #15803d; }
   .badge-kilitli { background: #f1f5f9; color: #64748b; }
   .badge-gecmis { background: #fef9c3; color: #854d0e; }
-
-  /* Ders plan grid */
   .ders-plan-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
   .ders-plan-grid { display: flex; flex-direction: column; gap: 7px; margin-bottom: 12px; }
   .ders-plan-row { display: flex; gap: 6px; align-items: center; }
@@ -82,14 +80,10 @@
   .konu-input:focus { outline: none; border-color: var(--mat); background: #fff; }
   .konu-input:disabled { background: #f1f5f9; color: #aaa; cursor: not-allowed; }
   .konu-input::placeholder { color: #c4c9d4; }
-
-  /* Paragraf bloğu */
   .paragraf-blok { margin-bottom: 12px; padding: 9px 12px; background: var(--par-bg); border: 2px solid #fde68a; border-radius: 12px; }
   .paragraf-blok-baslik { font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--par); margin-bottom: 5px; }
   .paragraf-icerik { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #92400e; }
   .paragraf-icerik .par-icon { font-size: 15px; }
-
-  /* Takip bölümü */
   .takip-bolum { margin-top: 10px; padding-top: 10px; border-top: 2px dashed var(--border); }
   .takip-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
   .takip-dyb-header { display: flex; gap: 4px; margin-bottom: 5px; align-items: center; }
@@ -106,15 +100,11 @@
   .par-satir .takip-input { background: #fffbeb; border-color: #fde68a; }
   .par-satir .takip-input:focus { border-color: var(--par); }
   .par-satir .takip-input:disabled { background: #f1f5f9; border-color: var(--border); }
-
-  /* Toplam satırı */
   .toplam-satir { display: flex; align-items: center; gap: 4px; margin-top: 8px; padding: 8px 0 6px 0; border-top: 2px solid var(--border); }
   .toplam-label { font-size: 11px; font-weight: 800; min-width: 78px; color: var(--text); }
   .toplam-val { width: 38px; font-size: 12px; font-weight: 800; text-align: center; color: var(--mat); background: #eff6ff; border-radius: 6px; padding: 3px 0; }
   .toplam-soru-wrap { margin-left: 6px; font-size: 12px; font-weight: 800; color: #7c3aed; white-space: nowrap; }
   .toplam-soru-wrap span { font-size: 14px; }
-
-  /* Kitap & Not */
   .kitap-row { display: flex; gap: 8px; margin-top: 10px; align-items: flex-end; }
   .kitap-ad-wrap { flex: 1; display: flex; flex-direction: column; gap: 3px; }
   .kitap-sayfa-wrap { display: flex; flex-direction: column; gap: 3px; }
@@ -128,8 +118,6 @@
   .not-input { width: 100%; margin-top: 8px; height: 34px; border: 2px solid var(--border); border-radius: 8px; background: #fafafa; font-size: 13px; padding: 0 10px; font-family: 'Nunito', sans-serif; color: var(--text); }
   .not-input:focus { outline: none; border-color: #7c3aed; background: #fff; }
   .not-input:disabled { background: #f1f5f9; color: #aaa; cursor: not-allowed; }
-
-  /* Timer & Gönder */
   .geri-sayim { font-size: 12px; color: var(--mat); font-weight: 700; margin-top: 8px; text-align: center; }
   .geri-sayim.son-dakika { color: #dc2626; }
   .gonder-btn { width: 100%; margin-top: 10px; padding: 10px; background: linear-gradient(135deg, #2563eb, #7c3aed); color: white; border: none; border-radius: 10px; font-size: 13px; font-weight: 800; font-family: 'Nunito', sans-serif; cursor: pointer; transition: opacity 0.2s; }
@@ -301,7 +289,6 @@ function dersSecildi(prefix, slotNo) {
   var row = document.getElementById(prefix + '_drow' + slotNo);
   var konuEl = document.getElementById(prefix + '_konu' + slotNo);
   if (!sel || !labelEl) return;
-
   if (sel.value) {
     var ders = null;
     for (var i = 0; i < DERSLER_LIST.length; i++) {
@@ -311,9 +298,6 @@ function dersSecildi(prefix, slotNo) {
       labelEl.textContent = ders.emoji + ' ' + ders.ad.split(' ')[0];
       labelEl.style.color = ders.renk;
       if (row) { row.style.borderLeft = '3px solid ' + ders.renk; row.style.paddingLeft = '6px'; row.style.borderRadius = '6px'; }
-      if (konuEl) { konuEl.style.borderColor = ''; }
-      // Update select border color via style
-      sel.style.borderColor = ders.renk.replace('var(--','').replace(')','');
     }
   } else {
     labelEl.textContent = '— Ders ' + slotNo;
@@ -348,14 +332,10 @@ function hesaplaToplam(prefix) {
   totalY += parseFloat(document.getElementById(prefix + '_par_y') ? document.getElementById(prefix + '_par_y').value : 0) || 0;
   totalB += parseFloat(document.getElementById(prefix + '_par_b') ? document.getElementById(prefix + '_par_b').value : 0) || 0;
   var total = totalD + totalY + totalB;
-  var tdEl = document.getElementById(prefix + '_toplam_d');
-  var tyEl = document.getElementById(prefix + '_toplam_y');
-  var tbEl = document.getElementById(prefix + '_toplam_b');
-  var tsEl = document.getElementById(prefix + '_toplam_soru');
-  if (tdEl) tdEl.textContent = totalD;
-  if (tyEl) tyEl.textContent = totalY;
-  if (tbEl) tbEl.textContent = totalB;
-  if (tsEl) tsEl.textContent = total;
+  if (document.getElementById(prefix + '_toplam_d')) document.getElementById(prefix + '_toplam_d').textContent = totalD;
+  if (document.getElementById(prefix + '_toplam_y')) document.getElementById(prefix + '_toplam_y').textContent = totalY;
+  if (document.getElementById(prefix + '_toplam_b')) document.getElementById(prefix + '_toplam_b').textContent = totalB;
+  if (document.getElementById(prefix + '_toplam_soru')) document.getElementById(prefix + '_toplam_soru').textContent = total;
 }
 
 function takipHTML(gun, durum) {
@@ -363,19 +343,8 @@ function takipHTML(gun, durum) {
   var p = gun.prefix;
   var html = '<div class="takip-bolum">';
   html += '<div class="takip-baslik">📊 Günlük Takip — ' + gun.ad + '</div>';
-
-  // Header row
-  html += '<div class="takip-dyb-header">';
-  html += '<div class="takip-dyb-header-bos"></div>';
-  html += '<div class="takip-dyb-header-lbl">✅ D</div>';
-  html += '<div class="takip-dyb-header-lbl">❌ Y</div>';
-  html += '<div class="takip-dyb-header-lbl">⬜ B</div>';
-  html += '<div class="takip-dyb-header-lbl">📊 Net</div>';
-  html += '</div>';
-
+  html += '<div class="takip-dyb-header"><div class="takip-dyb-header-bos"></div><div class="takip-dyb-header-lbl">✅ D</div><div class="takip-dyb-header-lbl">❌ Y</div><div class="takip-dyb-header-lbl">⬜ B</div><div class="takip-dyb-header-lbl">📊 Net</div></div>';
   html += '<div class="takip-satirlar">';
-
-  // 6 slot rows
   for (var i = 1; i <= 6; i++) {
     html += '<div class="takip-satir">';
     html += '<div class="takip-satir-adi" id="' + p + '_tlbl' + i + '" style="color:var(--muted)">— Ders ' + i + '</div>';
@@ -385,43 +354,16 @@ function takipHTML(gun, durum) {
     html += '<div class="net-goster" id="' + p + '_s' + i + '_net">—</div>';
     html += '</div>';
   }
-
-  // Paragraf row (always)
   html += '<div class="takip-satir par-satir">';
   html += '<div class="takip-satir-adi">📜 Paragraf</div>';
   html += '<input class="takip-input" type="number" min="0" id="' + p + '_par_d" placeholder="0" ' + dis + ' data-p="' + p + '" data-s="par" oninput="hesaplaNetSlot(this.dataset.p,this.dataset.s)">';
   html += '<input class="takip-input" type="number" min="0" id="' + p + '_par_y" placeholder="0" ' + dis + ' data-p="' + p + '" data-s="par" oninput="hesaplaNetSlot(this.dataset.p,this.dataset.s)">';
   html += '<input class="takip-input" type="number" min="0" id="' + p + '_par_b" placeholder="0" ' + dis + ' data-p="' + p + '" data-s="par" oninput="hesaplaNetSlot(this.dataset.p,this.dataset.s)">';
   html += '<div class="net-goster" id="' + p + '_par_net">—</div>';
-  html += '</div>';
-
-  html += '</div>'; // takip-satirlar
-
-  // Toplam row
-  html += '<div class="toplam-satir">';
-  html += '<div class="toplam-label">📈 Toplam</div>';
-  html += '<div class="toplam-val" id="' + p + '_toplam_d">0</div>';
-  html += '<div class="toplam-val" id="' + p + '_toplam_y">0</div>';
-  html += '<div class="toplam-val" id="' + p + '_toplam_b">0</div>';
-  html += '<div class="toplam-soru-wrap">= <span id="' + p + '_toplam_soru">0</span> soru</div>';
-  html += '</div>';
-
-  // Kitap adı + sayfa
-  html += '<div class="kitap-row">';
-  html += '<div class="kitap-ad-wrap">';
-  html += '<div class="kp-label">📖 Okunan Kitap</div>';
-  html += '<input class="kitap-ad-input" type="text" id="' + p + '_kitap_ad" placeholder="Kitap adını yaz..." ' + dis + '>';
-  html += '</div>';
-  html += '<div class="kitap-sayfa-wrap">';
-  html += '<div class="kp-label">Sayfa</div>';
-  html += '<input class="kp-input" type="number" min="0" id="' + p + '_kitap" placeholder="0" ' + dis + '>';
-  html += '</div>';
-  html += '</div>';
-
-  // Koça not
+  html += '</div></div>';
+  html += '<div class="toplam-satir"><div class="toplam-label">📈 Toplam</div><div class="toplam-val" id="' + p + '_toplam_d">0</div><div class="toplam-val" id="' + p + '_toplam_y">0</div><div class="toplam-val" id="' + p + '_toplam_b">0</div><div class="toplam-soru-wrap">= <span id="' + p + '_toplam_soru">0</span> soru</div></div>';
+  html += '<div class="kitap-row"><div class="kitap-ad-wrap"><div class="kp-label">📖 Okunan Kitap</div><input class="kitap-ad-input" type="text" id="' + p + '_kitap_ad" placeholder="Kitap adını yaz..." ' + dis + '></div><div class="kitap-sayfa-wrap"><div class="kp-label">Sayfa</div><input class="kp-input" type="number" min="0" id="' + p + '_kitap" placeholder="0" ' + dis + '></div></div>';
   html += '<input class="not-input" type="text" id="' + p + '_not" placeholder="✏️ Koça notun..." ' + dis + '>';
-
-  // Timer & Button
   if (durum === 'aktif') {
     html += '<div class="geri-sayim" id="' + p + '_sayim">Hesaplanıyor...</div>';
     html += '<button class="gonder-btn" id="' + p + '_btn" data-gun="' + gun.ad + '" data-p="' + p + '" onclick="gonder(this.dataset.gun,this.dataset.p)">💾 Kaydet</button>';
@@ -432,9 +374,8 @@ function takipHTML(gun, durum) {
   } else if (durum === 'gecmis') {
     html += '<button class="gonder-btn" disabled style="background:#854d0e">Giriş süresi geçti</button>';
   }
-
   html += '<div class="gonder-mesaj" id="' + p + '_mesaj"></div>';
-  html += '</div>'; // takip-bolum
+  html += '</div>';
   return html;
 }
 
@@ -448,17 +389,10 @@ function gunKartiHTML(gun) {
     gecmis: '<span class="gun-durum-badge badge-gecmis">Geçti</span>',
     suresi_doldu: '<span class="gun-durum-badge badge-gecmis">Doldu</span>'
   };
-
   var p = gun.prefix;
   var html = '<div class="gun-card' + durumClass + '" id="kart_' + p + '">';
-
-  // Başlık
   html += '<div class="gun-baslik">' + gun.ad + ' <span class="gun-tarih">' + gun.tarih + '</span>' + badgeMap[durum] + '</div>';
-
-  // Ders plan başlık
   html += '<div class="ders-plan-baslik">📚 Günün Dersleri & Konular</div>';
-
-  // 6 dropdown + konu satırı
   html += '<div class="ders-plan-grid">';
   for (var i = 1; i <= 6; i++) {
     html += '<div class="ders-plan-row" id="' + p + '_drow' + i + '">';
@@ -473,24 +407,15 @@ function gunKartiHTML(gun) {
     html += '<input class="konu-input" type="text" id="' + p + '_konu' + i + '" placeholder="Konu..." ' + dis + '>';
     html += '</div>';
   }
-  html += '</div>'; // ders-plan-grid
-
-  // Paragraf bloğu (sabit)
-  html += '<div class="paragraf-blok">';
-  html += '<div class="paragraf-blok-baslik">📜 Paragraf</div>';
-  html += '<div class="paragraf-icerik"><span class="par-icon">+</span><span>📘 Paragraf Çalışması → (10 soru)</span></div>';
   html += '</div>';
-
-  // Takip bölümü
+  html += '<div class="paragraf-blok"><div class="paragraf-blok-baslik">📜 Paragraf</div><div class="paragraf-icerik"><span class="par-icon">+</span><span>📘 Paragraf Çalışması → (10 soru)</span></div></div>';
   html += takipHTML(gun, durum);
-
-  html += '</div>'; // gun-card
+  html += '</div>';
   return html;
 }
 
 document.getElementById('gunGrid').innerHTML = GUNLER.map(gunKartiHTML).join('');
 
-// Geri sayım timer'ları
 var timerIds = {};
 GUNLER.forEach(function(gun) {
   var durum = gunDurumu(gun);
@@ -522,7 +447,6 @@ function gonder(gunAdi, prefix) {
   btn.disabled = true;
   btn.textContent = 'Kaydediliyor...';
 
-  // Slot verilerini topla
   var slots = [];
   for (var i = 1; i <= 6; i++) {
     var dersKey = document.getElementById(prefix + '_ders' + i) ? document.getElementById(prefix + '_ders' + i).value : '';
@@ -548,8 +472,19 @@ function gonder(gunAdi, prefix) {
     not: document.getElementById(prefix + '_not') ? document.getElementById(prefix + '_not').value : ''
   };
 
+  // FormData olarak gönder — no-cors modunda tek çalışan yöntem
+  var formData = new FormData();
+  Object.keys(veri).forEach(function(key) {
+    formData.append(key, veri[key]);
+  });
+
   var mesajEl = document.getElementById(prefix + '_mesaj');
-  fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(veri) })
+
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    body: formData
+  })
   .then(function() {
     var rastgeleMesaj = MOTIVASYON_MESAJLARI[Math.floor(Math.random() * MOTIVASYON_MESAJLARI.length)];
     mesajEl.textContent = rastgeleMesaj;
@@ -559,7 +494,7 @@ function gonder(gunAdi, prefix) {
     btn.classList.add('tamamlandi');
     btn.disabled = false;
   })
-  .catch(function() {
+  .catch(function(err) {
     mesajEl.textContent = 'Bağlantı hatası. Tekrar dene.';
     mesajEl.className = 'gonder-mesaj mesaj-hata';
     mesajEl.style.display = 'block';
