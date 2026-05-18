@@ -415,6 +415,79 @@ function gunKartiHTML(gun) {
 
 document.getElementById('gunGrid').innerHTML = GUNLER.map(gunKartiHTML).join('');
 
+// Sayfa açılınca her günün kaydını Sheets'ten çek
+function kayitYukle(gun) {
+  var p = gun.prefix;
+  fetch(SCRIPT_URL + '?gun=' + encodeURIComponent(gun.ad) + '&hafta=' + HAFTA_NO)
+  .then(function(r) { return r.json(); })
+  .then(function(res) {
+    if (!res.kayit) return;
+    var k = res.kayit;
+
+    // Ders takip değerlerini doldur — sütun sırası: tur sos din ing mat fen
+    var dersMap = [
+      { key:'tur', s:1 }, { key:'sos', s:2 }, { key:'din', s:3 },
+      { key:'ing', s:4 }, { key:'mat', s:5 }, { key:'fen', s:6 }
+    ];
+
+    // Önce slot label'larını güncelle (ders seçili değilse label güncellenmez)
+    dersMap.forEach(function(dm) {
+      var d = document.getElementById(p + '_s' + dm.s + '_d');
+      var y = document.getElementById(p + '_s' + dm.s + '_y');
+      var b = document.getElementById(p + '_s' + dm.s + '_b');
+      if (d) d.value = k[dm.key + '_d'] || 0;
+      if (y) y.value = k[dm.key + '_y'] || 0;
+      if (b) b.value = k[dm.key + '_b'] || 0;
+
+      // Takip label'ını da güncelle
+      var lbl = document.getElementById(p + '_tlbl' + dm.s);
+      if (lbl) {
+        var dersObj = null;
+        for (var i = 0; i < DERSLER_LIST.length; i++) {
+          if (DERSLER_LIST[i].key === dm.key) { dersObj = DERSLER_LIST[i]; break; }
+        }
+        if (dersObj) {
+          lbl.textContent = dersObj.emoji + ' ' + dersObj.ad.split(' ')[0];
+          lbl.style.color = dersObj.renk;
+        }
+      }
+
+      hesaplaNetSlot(p, dm.s);
+    });
+
+    // Paragraf
+    var pd = document.getElementById(p + '_par_d');
+    var py = document.getElementById(p + '_par_y');
+    var pb = document.getElementById(p + '_par_b');
+    if (pd) pd.value = k.par_d || 0;
+    if (py) py.value = k.par_y || 0;
+    if (pb) pb.value = k.par_b || 0;
+    hesaplaNetSlot(p, 'par');
+
+    // Kitap ve not
+    var ka = document.getElementById(p + '_kitap_ad');
+    var ki = document.getElementById(p + '_kitap');
+    var no = document.getElementById(p + '_not');
+    if (ka) ka.value = k.kitap_ad || '';
+    if (ki) ki.value = k.kitap || 0;
+    if (no) no.value = k.not || '';
+
+    // Kayıtlı olduğunu göster
+    var btn = document.getElementById(p + '_btn');
+    var mesaj = document.getElementById(p + '_mesaj');
+    if (btn) { btn.textContent = '✅ Güncelle'; btn.classList.add('tamamlandi'); }
+    if (mesaj) {
+      mesaj.textContent = '📋 Önceki kayıt yüklendi — güncellemek için tekrar kaydet.';
+      mesaj.className = 'gonder-mesaj mesaj-ok';
+      mesaj.style.display = 'block';
+    }
+  })
+  .catch(function() { /* sessiz hata — kayıt yoksa bir şey yapma */ });
+}
+
+// Tüm günler için kayıt yükle
+GUNLER.forEach(function(gun) { kayitYukle(gun); });
+
 var timerIds = {};
 GUNLER.forEach(function(gun) {
   var durum = gunDurumu(gun);
