@@ -287,7 +287,6 @@ function dersSecildi(prefix, slotNo) {
   var sel = document.getElementById(prefix + '_ders' + slotNo);
   var labelEl = document.getElementById(prefix + '_tlbl' + slotNo);
   var row = document.getElementById(prefix + '_drow' + slotNo);
-  var konuEl = document.getElementById(prefix + '_konu' + slotNo);
   if (!sel || !labelEl) return;
   if (sel.value) {
     var ders = null;
@@ -472,18 +471,13 @@ function gonder(gunAdi, prefix) {
     not: document.getElementById(prefix + '_not') ? document.getElementById(prefix + '_not').value : ''
   };
 
-  // FormData olarak gönder — no-cors modunda tek çalışan yöntem
-  var formData = new FormData();
-  Object.keys(veri).forEach(function(key) {
-    formData.append(key, veri[key]);
-  });
-
   var mesajEl = document.getElementById(prefix + '_mesaj');
 
   fetch(SCRIPT_URL, {
     method: 'POST',
     mode: 'no-cors',
-    body: formData
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(veri)
   })
   .then(function() {
     var rastgeleMesaj = MOTIVASYON_MESAJLARI[Math.floor(Math.random() * MOTIVASYON_MESAJLARI.length)];
