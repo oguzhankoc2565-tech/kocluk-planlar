@@ -271,7 +271,19 @@ function trSaati() {
 }
 
 function gunDurumu(gun) {
-  return 'aktif';
+  var simdi = trSaati();
+  var gunTarihler = {
+    1: new Date(2026, 4, 18),
+    2: new Date(2026, 4, 19),
+    3: new Date(2026, 4, 20),
+    4: new Date(2026, 4, 21),
+    5: new Date(2026, 4, 22),
+    6: new Date(2026, 4, 23)
+  };
+  var gunTarih = gunTarihler[gun.jsGun];
+  var bugun = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
+  if (gunTarih <= bugun) return 'aktif';
+  return 'kilitli';
 }
 
 function kalanSure(gun) {
