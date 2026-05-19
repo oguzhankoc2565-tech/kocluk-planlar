@@ -1545,8 +1545,15 @@ function sunucudanFormaYaz(gunler) {
   if (!gunler || !gunler.length) return;
   gunler.forEach(g => {
     const gun = GUNLER.find(x => x.ad === g.gun); if (!gun) return;
-    if (gunDurumu(gun) === 'aktif') return;
     const prefix = gun.prefix;
+    const isAktif = gunDurumu(gun) === 'aktif';
+    if (isAktif) {
+      // Aktif gün: formdaki tüm alanlar hâlâ sıfırsa sunucu verisini yükle (localStorage boş kalmış)
+      const formBosMu = TUM_DERSLER.every(k =>
+        ['d','y','b'].every(tip => { const el = $(prefix+'_'+k+'_'+tip); return !el || Number(el.value||0) === 0; })
+      );
+      if (!formBosMu) return;
+    }
     TUM_DERSLER.forEach(k => {
       ['d','y','b'].forEach(tip => {
         const el = $(prefix+'_'+k+'_'+tip), sv = g[k+'_'+tip];
@@ -1556,6 +1563,7 @@ function sunucudanFormaYaz(gunler) {
     const kitapEl = $(prefix+'_kitap'); if (kitapEl && Number(g.kitap)>0) kitapEl.value = g.kitap;
     const kitapAdiEl = $(prefix+'_kitap_adi'); if (kitapAdiEl && g.kitap_adi) kitapAdiEl.value = g.kitap_adi;
     const notEl = $(prefix+'_not'); if (notEl && g.not) notEl.value = g.not;
+    if (isAktif) { guncelleToplam(prefix); accSoruGuncelle(prefix); }
   });
 }
 
