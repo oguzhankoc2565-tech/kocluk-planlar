@@ -1991,7 +1991,7 @@ function renderStreakKarti(streak) {
 function renderKarsilastirmaKarti(buHaftaSoru) {
   const gh = CONFIG.gecenHafta;
   if (!gh || gh.toplamSoru === null || gh.toplamSoru === undefined) {
-    return `<div class="motiv-card motiv-compare"><div class="motiv-icon">📊</div><div class="motiv-info"><div class="motiv-baslik">Bu Hafta</div><div class="motiv-deger">${buHaftaSoru} soru</div><div class="motiv-altmesaj">İlk haftan — yola devam!</div></div></div>`;
+    return `<div class="motiv-card motiv-compare"><div class="motiv-icon">📊</div><div class="motiv-info"><div class="motiv-baslik">Bu Hafta</div><div class="motiv-deger">${buHaftaSoru} soru</div><div class="motiv-altmesaj">Devam et!</div></div></div>`;
   }
   const fark = buHaftaSoru - gh.toplamSoru;
   const yuzde = gh.toplamSoru > 0 ? Math.round(fark / gh.toplamSoru * 100) : 0;
