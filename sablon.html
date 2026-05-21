@@ -82,6 +82,7 @@
   [data-theme="dark"] .insight-champion { background: linear-gradient(135deg,#292109,#1c1700); border-color: #854d0e; color: #fde68a; }
   [data-theme="dark"] .insight-weak { background: #2d0a0a; border-color: #7f1d1d; color: #fca5a5; }
   [data-theme="dark"] .insight-missed { background: #2d1500; border-color: #7c2d12; color: #fdba74; }
+  [data-theme="dark"] .insight-remind { background: #052e16; border-color: #166534; color: #bbf7d0; }
   [data-theme="dark"] .insight-champion strong,
   [data-theme="dark"] .insight-weak strong,
   [data-theme="dark"] .insight-missed strong { color: inherit; }
@@ -170,7 +171,7 @@
 
   /* ── STREAK & MOTİVASYON KARTLARI ── */
   .motiv-row {
-    display: grid; grid-template-columns: 1fr 1fr;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 10px; margin-bottom: 12px;
   }
   .motiv-card {
@@ -389,9 +390,19 @@
   .acc-item.aktif { border-color: var(--primary-2); box-shadow: 0 4px 16px rgba(8,145,178,0.1); }
   .acc-item.gecmis { opacity: 0.75; }
   .acc-item.kilitli { opacity: 0.5; }
+  .acc-item.onizleme { opacity: 0.88; border-style: dashed; }
+  .acc-item.onizleme .acc-header { cursor: pointer; }
+  .onizleme-not {
+    text-align: center; padding: 10px 8px;
+    font-size: 12px; color: var(--muted); font-weight: 600;
+    font-style: italic; border-top: 1px dashed var(--border); margin-top: 8px;
+  }
   .acc-header { display: flex; align-items: center; gap: 12px; padding: 14px 18px; cursor: pointer; user-select: none; transition: background 0.15s; }
   .acc-header:hover { background: var(--bg); }
   .acc-item.kilitli .acc-header { cursor: not-allowed; }
+  .insight-remind {
+    background: #f0fdf4; border: 2px solid #bbf7d0; color: #166534;
+  }
   .acc-gun-adi { font-size: 15px; font-weight: 800; color: var(--text); min-width: 90px; }
   .acc-item.aktif .acc-gun-adi { color: var(--primary-2); }
   .acc-tarih { font-size: 12px; color: var(--muted); font-weight: 600; }
@@ -1154,11 +1165,24 @@ function trSaati() {
   return new Date(now.getTime() + now.getTimezoneOffset() * 60000 + 3 * 3600000);
 }
 
+// ─── dayStatus.js — Koçluk durumu makinesi (panel.html ile senkron) ───
+function dayStatus(opts) {
+  const { hasData, isToday, isPastDay, isSunday } = opts || {};
+  if (isToday && hasData) return 'TAMAM';
+  if (isToday && !hasData) return 'BUGUN';
+  if (!isPastDay && !isToday) return 'BEKLIYOR';
+  if (isSunday && hasData) return 'TELAFI';
+  if (isSunday && !hasData) return 'IZINLI';
+  if (isPastDay && hasData) return 'TAMAM';
+  if (isPastDay && !hasData) return 'EKSIK';
+  return 'BEKLIYOR';
+}
+
 function gunDurumu(gun) {
   const simdi = trSaati();
   const bugun = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
   const gunT  = new Date(gun.tarih.getFullYear(), gun.tarih.getMonth(), gun.tarih.getDate());
-  if (gunT > bugun) return 'kilitli';
+  if (gunT > bugun) return 'onizleme';
   if (gunT < bugun) return 'gecmis';
   if (simdi.getHours() >= gun.sonGiris) return 'suresi_doldu';
   return 'aktif';
@@ -1225,6 +1249,10 @@ function gunTamamlanmaPct(gun) {
 // ═══════════════════════════════════════════════════════════════════
 
 function takipDersleriHTML(gun, durum) {
+  if (durum === 'onizleme') {
+    const tarihStr = gun.tarih.getDate() + ' ' + gun.tarih.toLocaleString('tr-TR', {month:'long'});
+    return `<div class="onizleme-not">📋 Plan hazır — D/Y/B girişi ${esc(tarihStr)} tarihinde açılır</div>`;
+  }
   const dis = durum !== 'aktif' ? 'disabled' : '';
   const takipDersler = gun.dersler.filter(d => d.takipKey);
   const pid = gun.prefix;
@@ -1290,11 +1318,24 @@ function accGunHTML(gun) {
   let cls = 'acc-item';
   if (durum === 'aktif')         cls += ' aktif acik';
   else if (durum === 'gecmis' || durum === 'suresi_doldu') cls += ' gecmis';
-  else if (durum === 'kilitli')  cls += ' kilitli';
+  else if (durum === 'onizleme') cls += ' onizleme';
+
+  // Önizleme günü için dinamik rozet etiketi
+  let onizmeBadge = '';
+  if (durum === 'onizleme') {
+    const simdi = trSaati();
+    const bugun = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
+    const gunT  = new Date(gun.tarih.getFullYear(), gun.tarih.getMonth(), gun.tarih.getDate());
+    const diff  = Math.round((gunT - bugun) / 86400000);
+    const etiket = diff === 1 ? 'Yarın'
+      : diff === 2 ? 'Öbür gün'
+      : gun.tarih.getDate() + ' ' + gun.tarih.toLocaleString('tr-TR', {month:'short'});
+    onizmeBadge = `<span class="gun-durum-badge badge-kilitli">📅 ${esc(etiket)}</span>`;
+  }
 
   const badgeMap = {
     aktif:        '<span class="gun-durum-badge badge-aktif">Bugün</span>',
-    kilitli:      '<span class="gun-durum-badge badge-kilitli">🔒 Bekliyor</span>',
+    onizleme:     onizmeBadge,
     gecmis:       '<span class="gun-durum-badge badge-gecmis">Geçti</span>',
     suresi_doldu: '<span class="gun-durum-badge badge-gecmis">Doldu</span>'
   };
@@ -1310,39 +1351,34 @@ function accGunHTML(gun) {
         `<div class="acc-soru" id="acc_soru_${gun.prefix}"></div>` +
       `</div>` +
       `<div class="acc-mini-bar"><div class="acc-mini-fill" id="acc_bar_${gun.prefix}" style="width:0%"></div></div>` +
-      `<div class="acc-badges">${badgeMap[durum]}</div>` +
-      `<div class="acc-chevron">${durum==='kilitli'?'':'▼'}</div>` +
+      `<div class="acc-badges">${badgeMap[durum]||''}</div>` +
+      `<div class="acc-chevron">▼</div>` +
     `</div>` +
     `<div class="acc-body">`;
 
-  if (durum === 'kilitli') {
-    const d2 = gun.tarih.getDate(), ay = gun.tarih.toLocaleString('tr-TR',{month:'long'});
-    html += `<div class="kilit-overlay" style="padding:20px">Bu gün henüz gelmedi<br><small style="color:#94a3b8">${d2} ${esc(ay)} tarihinde açılacak</small></div>`;
-  } else {
-    gun.dersler.forEach(d => {
-      html += `<div class="ders-blok"><div class="ders-baslik ${esc(d.cls)}">${esc(d.ad)}</div><div class="gorev-list">`;
-      d.gorevler.forEach(g => {
-        if (g.checkbox) {
-          const cbDis = (durum !== 'aktif') ? 'disabled' : '';
-          html += `<div class="gorev-item">` +
-            `<input type="checkbox" class="gorev-cb" id="${g.id}" ${cbDis} onchange="gorevDegisti(this);accBarGuncelle('${gun.prefix}')">` +
-            `<label class="gorev-metin" for="${g.id}">${esc(g.metin)}</label>` +
-          `</div>`;
-        } else {
-          html += `<div class="gorev-item soru-gorev"><span class="gorev-nokta">✦</span><span class="gorev-metin">${esc(g.metin)}</span></div>`;
-        }
-      });
-      html += `</div></div>`;
+  gun.dersler.forEach(d => {
+    html += `<div class="ders-blok"><div class="ders-baslik ${esc(d.cls)}">${esc(d.ad)}</div><div class="gorev-list">`;
+    d.gorevler.forEach(g => {
+      if (g.checkbox) {
+        const cbDis = (durum !== 'aktif') ? 'disabled' : '';
+        html += `<div class="gorev-item">` +
+          `<input type="checkbox" class="gorev-cb" id="${g.id}" ${cbDis} onchange="gorevDegisti(this);accBarGuncelle('${gun.prefix}')">` +
+          `<label class="gorev-metin" for="${g.id}">${esc(g.metin)}</label>` +
+        `</div>`;
+      } else {
+        html += `<div class="gorev-item soru-gorev"><span class="gorev-nokta">✦</span><span class="gorev-metin">${esc(g.metin)}</span></div>`;
+      }
     });
-    html += takipDersleriHTML(gun, durum);
-  }
+    html += `</div></div>`;
+  });
+  html += takipDersleriHTML(gun, durum);
   html += `</div></div>`;
   return html;
 }
 
 function accToggle(prefix) {
   const gun = GUNLER.find(g => g.prefix === prefix);
-  if (!gun || gunDurumu(gun) === 'kilitli') return;
+  if (!gun) return;
   const item = $('acc_'+prefix); if (!item) return;
   const isAcik = item.classList.contains('acik');
   GUNLER.forEach(g => { if (g.prefix !== prefix) { const el = $('acc_'+g.prefix); if (el) el.classList.remove('acik'); } });
@@ -1672,6 +1708,33 @@ function renderInsightRow(gunlerData) {
     );
   }
 
+  // Dünün özel uyarıları: giriş yapılmış ama kitap/paragraf sıfırsa uyar
+  const dunDate = new Date(bugun); dunDate.setDate(bugun.getDate() - 1);
+  const dunGun = GUNLER.find(g => {
+    const gunT = new Date(g.tarih.getFullYear(), g.tarih.getMonth(), g.tarih.getDate());
+    return gunT.getTime() === dunDate.getTime();
+  });
+  if (dunGun && doluGunler[dunGun.ad]) {
+    const dunData = (gunlerData || []).find(g => g.gun === dunGun.ad);
+    if (dunData) {
+      const parSoru = (Number(dunData.par_d||0) + Number(dunData.par_y||0) + Number(dunData.par_b||0));
+      const kitap = Number(dunData.kitap || 0);
+      const dunUyarilar = [];
+      if (kitap === 0)    dunUyarilar.push('kitap okumayı unuttun 📚');
+      if (parSoru === 0)  dunUyarilar.push('paragraf çözmedin 📝');
+      if (dunUyarilar.length > 0) {
+        cards.push(
+          `<div class="insight-card insight-remind">` +
+            `<span class="insight-icon">💬</span>` +
+            `<div class="insight-text">` +
+              `<strong>Dün</strong> ${dunUyarilar.join(' ve ')}. Bugün telafi edebilirsin!` +
+            `</div>` +
+          `</div>`
+        );
+      }
+    }
+  }
+
   el.innerHTML = cards.join('');
 }
 
@@ -1894,6 +1957,27 @@ function streakHesapla(gunlerData) {
   return streak;
 }
 
+function renderLgsKarti() {
+  const lgsDate = new Date('2028-06-01');
+  const simdi = trSaati();
+  const bugun = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
+  const gunKalan = Math.max(0, Math.ceil((lgsDate - bugun) / 86400000));
+  const haftaKalan = Math.floor(gunKalan / 7);
+  let mesaj, icon;
+  if (gunKalan > 700)      { icon = '🌟'; mesaj = haftaKalan + ' hafta var'; }
+  else if (gunKalan > 365) { icon = '🚀'; mesaj = haftaKalan + ' hafta · odaklan'; }
+  else if (gunKalan > 100) { icon = '⚡'; mesaj = haftaKalan + ' hafta · çalış!'; }
+  else                     { icon = '🏁'; mesaj = gunKalan + ' gün · son sprint!'; }
+  return `<div class="motiv-card">` +
+    `<div class="motiv-icon" style="background:#ede9fe">${icon}</div>` +
+    `<div class="motiv-info">` +
+      `<div class="motiv-baslik">LGS'ye</div>` +
+      `<div class="motiv-deger">${gunKalan} gün</div>` +
+      `<div class="motiv-altmesaj">${esc(mesaj)}</div>` +
+    `</div>` +
+  `</div>`;
+}
+
 function renderStreakKarti(streak) {
   let mesaj, icon;
   if (streak === 0)       { icon = '🌱'; mesaj = 'İlk günü doldur, başla!'; }
@@ -1922,7 +2006,7 @@ function renderMotivRow(gunlerData) {
   const streak = streakHesapla(gunlerData);
   const buHaftaSoru = (gunlerData||[]).reduce((acc,g) => acc + TUM_DERSLER.reduce((a,k)=>a+(Number(g[k+'_d'])||0)+(Number(g[k+'_y'])||0)+(Number(g[k+'_b'])||0),0), 0);
   const el = $('motiv-row'); if (!el) return;
-  el.innerHTML = renderStreakKarti(streak) + renderKarsilastirmaKarti(buHaftaSoru);
+  el.innerHTML = renderLgsKarti() + renderStreakKarti(streak) + renderKarsilastirmaKarti(buHaftaSoru);
 }
 
 // ═══════════════════════════════════════════════════════════════════
