@@ -581,7 +581,7 @@
   <div class="accordion" id="accordionGunler"></div>
   <div class="ozet-kart" style="padding:14px 18px">
     <div class="ozet-baslik">📊 Bu Haftaki Performansım</div>
-    <div id="gun-kartlari-wrap" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px"></div>
+    <div id="gun-kartlari-wrap"></div>
   </div>
   <div class="ozet-kart">
     <div class="ozet-baslik">📈 Bu Haftanın Kayıtlarım</div>
@@ -1711,15 +1711,29 @@ function renderGunKartlariStudent(gunlerData) {
         <span style="width:28px;text-align:right">Net</span>
       </div>
       <div style="margin-bottom:6px">${dersRows || '<div style="font-size:10px;color:var(--muted);text-align:center;padding:4px">—</div>'}</div>
-      <div style="display:flex;justify-content:space-between;align-items:center;border-top:1.5px solid ${BORDER[st]};padding-top:4px">
-        <span style="font-size:10px;font-weight:800;color:${kitapOk?'var(--success)':'var(--danger)'}">📚 ${kitap>0?kitap+' sf':'0'}</span>
-        <span style="font-size:10px;font-weight:800;color:${totNet>=0?'var(--mat)':'var(--danger)'}">=${totNet.toFixed(1)}</span>
-        <span style="font-size:10px;font-weight:800;color:${parOk?'var(--success)':'var(--danger)'}">📝 ${par>0?par:'0'}</span>
+      <div style="border-top:1.5px solid ${BORDER[st]};padding-top:5px;margin-top:2px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+          <div style="color:${kitapOk?'var(--success)':'var(--danger)'}">
+            <div style="font-size:8px;font-weight:700">📚 Kitap</div>
+            <div style="font-size:10px;font-weight:800">${kitap>0?kitap+' sf':'Okumadı'}</div>
+          </div>
+          <div style="color:${parOk?'var(--success)':'var(--danger)'};text-align:right">
+            <div style="font-size:8px;font-weight:700">📝 Paragraf</div>
+            <div style="font-size:10px;font-weight:800">${par>0?par+' soru':'Çözmedi'}</div>
+          </div>
+        </div>
+        <div style="text-align:center;font-size:8px;color:var(--muted)">Net <span style="font-size:11px;font-weight:800;color:${totNet>=0?'var(--mat)':'var(--danger)'}">${totNet.toFixed(1)}</span></div>
       </div>
     </div>`;
   });
 
-  el.innerHTML = cards.join('');
+  el.innerHTML = `<div style="font-size:10px;color:var(--muted);margin-bottom:7px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    <span style="font-weight:600">Kart rengi:</span>
+    <span><span style="color:var(--success)">●</span> Kitap + Paragraf tamam</span>
+    <span><span style="color:#f59e0b">●</span> Biri eksik</span>
+    <span><span style="color:var(--danger)">●</span> İkisi de yok</span>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px">${cards.join('')}</div>`;
 }
 
 // ═══════════════════════════════════════════════════════════════════
