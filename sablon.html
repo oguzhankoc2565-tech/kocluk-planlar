@@ -83,6 +83,7 @@
   [data-theme="dark"] .insight-weak { background: #2d0a0a; border-color: #7f1d1d; color: #fca5a5; }
   [data-theme="dark"] .insight-missed { background: #2d1500; border-color: #7c2d12; color: #fdba74; }
   [data-theme="dark"] .insight-remind { background: #052e16; border-color: #166534; color: #bbf7d0; }
+  [data-theme="dark"] .insight-alert  { background: #450a0a; border-color: #7f1d1d; color: #fca5a5; }
   [data-theme="dark"] .insight-champion strong,
   [data-theme="dark"] .insight-weak strong,
   [data-theme="dark"] .insight-missed strong { color: inherit; }
@@ -403,6 +404,10 @@
   .insight-remind {
     background: #f0fdf4; border: 2px solid #bbf7d0; color: #166534;
   }
+  .insight-alert {
+    background: #fef2f2; border: 2px solid #fca5a5; color: #991b1b;
+  }
+  .insight-alert .insight-icon { font-size: 20px; }
   .acc-gun-adi { font-size: 15px; font-weight: 800; color: var(--text); min-width: 90px; }
   .acc-item.aktif .acc-gun-adi { color: var(--primary-2); }
   .acc-tarih { font-size: 12px; color: var(--muted); font-weight: 600; }
@@ -1708,31 +1713,63 @@ function renderInsightRow(gunlerData) {
     );
   }
 
-  // Dünün özel uyarıları: giriş yapılmış ama kitap/paragraf sıfırsa uyar
-  const dunDate = new Date(bugun); dunDate.setDate(bugun.getDate() - 1);
-  const dunGun = GUNLER.find(g => {
-    const gunT = new Date(g.tarih.getFullYear(), g.tarih.getMonth(), g.tarih.getDate());
-    return gunT.getTime() === dunDate.getTime();
-  });
-  if (dunGun && doluGunler[dunGun.ad]) {
-    const dunData = (gunlerData || []).find(g => g.gun === dunGun.ad);
-    if (dunData) {
-      const parSoru = (Number(dunData.par_d||0) + Number(dunData.par_y||0) + Number(dunData.par_b||0));
-      const kitap = Number(dunData.kitap || 0);
-      const dunUyarilar = [];
-      if (kitap === 0)    dunUyarilar.push('kitap okumayı unuttun 📚');
-      if (parSoru === 0)  dunUyarilar.push('paragraf çözmedin 📝');
-      if (dunUyarilar.length > 0) {
-        cards.push(
-          `<div class="insight-card insight-remind">` +
-            `<span class="insight-icon">💬</span>` +
-            `<div class="insight-text">` +
-              `<strong>Dün</strong> ${dunUyarilar.join(' ve ')}. Bugün telafi edebilirsin!` +
-            `</div>` +
-          `</div>`
-        );
-      }
-    }
+  // Kitap / paragraf streak uyarıları — kaç gündür sıfır
+  const gunDataMap = {};
+  (gunlerData || []).forEach(g => { gunDataMap[g.gun] = g; });
+
+  // Geçmiş günleri en yeniden en eskiye sırala
+  const gecmisSirali = [...(GUNLER || [])].filter(gun => {
+    const gunT = new Date(gun.tarih.getFullYear(), gun.tarih.getMonth(), gun.tarih.getDate());
+    return gunT < bugun;
+  }).reverse();
+
+  let kitapStreak = 0, parStreak = 0;
+  let kitapDone = false, parDone = false;
+  for (const gun of gecmisSirali) {
+    const d = gunDataMap[gun.ad];
+    if (!d) { break; } // rapor girilmemiş gün — streaki durdur
+    const kitapV = Number(d.kitap || 0);
+    const parV   = (Number(d.par_d||0) + Number(d.par_y||0) + Number(d.par_b||0));
+    if (!kitapDone) { if (kitapV === 0) kitapStreak++; else kitapDone = true; }
+    if (!parDone)   { if (parV   === 0) parStreak++;   else parDone   = true; }
+    if (kitapDone && parDone) break;
+  }
+
+  // Ciddi uyarı (≥2 gün üst üste)
+  if (kitapStreak >= 2) {
+    cards.push(
+      `<div class="insight-card insight-alert">` +
+        `<span class="insight-icon">📚</span>` +
+        `<div class="insight-text">` +
+          `<strong>${kitapStreak} gündür kitap okumadın!</strong> Her gün en az 10 sayfa okumayı unutma.` +
+        `</div>` +
+      `</div>`
+    );
+  }
+  if (parStreak >= 2) {
+    cards.push(
+      `<div class="insight-card insight-alert">` +
+        `<span class="insight-icon">📝</span>` +
+        `<div class="insight-text">` +
+          `<strong>${parStreak} gündür paragraf çözmüyorsun!</strong> Paragraf her gün yapılmalı, pas atmaya bırakma.` +
+        `</div>` +
+      `</div>`
+    );
+  }
+
+  // Hafif hatırlatma (sadece dün = streak 1)
+  const dunUyarilar = [];
+  if (kitapStreak === 1) dunUyarilar.push('kitap okumayı unuttun 📚');
+  if (parStreak   === 1) dunUyarilar.push('paragraf çözmedin 📝');
+  if (dunUyarilar.length > 0) {
+    cards.push(
+      `<div class="insight-card insight-remind">` +
+        `<span class="insight-icon">💬</span>` +
+        `<div class="insight-text">` +
+          `<strong>Dün</strong> ${dunUyarilar.join(' ve ')}. Bugün telafi edebilirsin!` +
+        `</div>` +
+      `</div>`
+    );
   }
 
   el.innerHTML = cards.join('');
@@ -1991,7 +2028,7 @@ function renderStreakKarti(streak) {
 function renderKarsilastirmaKarti(buHaftaSoru) {
   const gh = CONFIG.gecenHafta;
   if (!gh || gh.toplamSoru === null || gh.toplamSoru === undefined) {
-    return `<div class="motiv-card motiv-compare"><div class="motiv-icon">📊</div><div class="motiv-info"><div class="motiv-baslik">Bu Hafta</div><div class="motiv-deger">${buHaftaSoru} soru</div><div class="motiv-altmesaj">Devam et!</div></div></div>`;
+    return `<div class="motiv-card motiv-compare"><div class="motiv-icon">📊</div><div class="motiv-info"><div class="motiv-baslik">Bu Hafta</div><div class="motiv-deger">${buHaftaSoru} soru</div><div class="motiv-altmesaj">İlk haftan — yola devam!</div></div></div>`;
   }
   const fark = buHaftaSoru - gh.toplamSoru;
   const yuzde = gh.toplamSoru > 0 ? Math.round(fark / gh.toplamSoru * 100) : 0;
