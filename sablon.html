@@ -558,6 +558,10 @@
     <div id="dur-kart" style="flex:1;min-width:0"></div>
     <div id="stats-kart" style="width:320px;flex-shrink:0"></div>
   </div>
+  <div class="ozet-kart" style="padding:14px 18px">
+    <div class="ozet-baslik">📊 Bu Haftaki Performansım</div>
+    <div id="gun-kartlari-wrap"></div>
+  </div>
   <div id="koc-deg"></div>
   <div id="hdf-kart"></div>
   <div id="hedef-yolu-wrap"></div>
@@ -579,10 +583,6 @@
 
   <div class="plan-label">📅 Günlük plan &amp; takip</div>
   <div class="accordion" id="accordionGunler"></div>
-  <div class="ozet-kart" style="padding:14px 18px">
-    <div class="ozet-baslik">📊 Bu Haftaki Performansım</div>
-    <div id="gun-kartlari-wrap"></div>
-  </div>
   <div class="ozet-kart">
     <div class="ozet-baslik">📈 Bu Haftanın Kayıtlarım</div>
     <div id="haftalikOzetIcerik"><div class="ozet-yukleniyor">Yükleniyor...</div></div>
@@ -1099,11 +1099,13 @@ $('dpnt').textContent =
     `</div>`;
 }());
 
-$('koc-deg').innerHTML =
-  `<div class="card">` +
-    `<div class="card-label">📝 Koç Değerlendirmesi</div>` +
-    `<div class="kocundan-text">${esc(CONFIG.koc.degerlendirme)}</div>` +
-  `</div>`;
+if ((CONFIG.koc.degerlendirme || '').trim()) {
+  $('koc-deg').innerHTML =
+    `<div class="card">` +
+      `<div class="card-label">📝 Koç Değerlendirmesi</div>` +
+      `<div class="kocundan-text">${esc(CONFIG.koc.degerlendirme)}</div>` +
+    `</div>`;
+}
 
 (function renderHedefler() {
   const h = CONFIG.hedefler;
