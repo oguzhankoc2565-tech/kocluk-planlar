@@ -582,6 +582,9 @@
   #sohbet-input:focus { border-color:var(--primary-2); }
   #sohbet-gonder { background:var(--primary-grad); border:none; border-radius:10px; color:#fff; padding:9px 13px; cursor:pointer; font-size:16px; flex-shrink:0; }
   #sohbet-gonder:disabled { opacity:0.5; cursor:default; }
+  #sohbet-resim-btn { background:var(--bg); border:1.5px solid var(--border); border-radius:10px; color:var(--muted); padding:9px 10px; cursor:pointer; font-size:16px; flex-shrink:0; transition:background 0.15s; }
+  #sohbet-resim-btn:hover:not(:disabled) { background:var(--border); }
+  #sohbet-resim-btn:disabled { opacity:0.5; cursor:default; }
   .sohbet-bos { text-align:center; color:var(--muted); font-size:13px; padding:28px 12px; }
   [data-theme="dark"] .sohbet-mesaj.diger .sohbet-balon { background:#1e293b; border-color:#334155; }
   @media (max-width:400px) { #sohbet-panel { width:calc(100vw - 20px); right:10px; } }
@@ -2535,7 +2538,9 @@ GUNLER.forEach(g => {
   <div class="sohbet-input-wrap" style="flex-direction:column;align-items:stretch;">
     <div id="sohbet-kapali-notice" style="display:none;padding:8px;text-align:center;font-size:12px;font-weight:700;color:#dc2626;background:#fee2e2;border-radius:8px;margin-bottom:6px;">Koç sohbeti geçici olarak kapattı.</div>
     <div style="display:flex;gap:8px;align-items:flex-end;">
+      <input type="file" id="sohbet-resim-input" accept="image/*" style="display:none">
       <textarea id="sohbet-input" placeholder="Mesajını yaz..." rows="1"></textarea>
+      <button id="sohbet-resim-btn" title="Resim gönder" onclick="document.getElementById('sohbet-resim-input').click()">📎</button>
       <button id="sohbet-gonder" onclick="sohbetGonder()">➤</button>
     </div>
   </div>
@@ -2602,9 +2607,14 @@ GUNLER.forEach(g => {
       var saat = m.zaman ? new Date(m.zaman).toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'}) : '';
       var isimHtml = (!ben && m.kimden !== oncekiKimden) ? '<div class="sohbet-isim">' + esc(m.isim||m.kimden) + '</div>' : '';
       oncekiKimden = m.kimden;
+      var resimSrc = m.resimBase64 || m.resimUrl || '';
+      var balon = resimSrc
+        ? '<img src="' + resimSrc + '" style="max-width:200px;max-height:200px;border-radius:10px;display:block;cursor:pointer" onclick="sohbetResimAc(this)" loading="lazy">' +
+          (m.metin ? '<span style="display:block;margin-top:4px">' + esc(m.metin) + '</span>' : '')
+        : esc(m.metin);
       return '<div class="sohbet-mesaj ' + (ben?'ben':'diger') + '">' +
         isimHtml +
-        '<div class="sohbet-balon">' + esc(m.metin) + '</div>' +
+        '<div class="sohbet-balon">' + balon + '</div>' +
         '<div class="sohbet-zaman">' + saat + '</div>' +
       '</div>';
     }).join('');
@@ -2639,6 +2649,66 @@ GUNLER.forEach(g => {
       .then(function() { btn.disabled = false; })
       .catch(function(e) { console.error('Mesaj gönderilemedi:', e); btn.disabled = false; });
   };
+
+  window.sohbetResimAc = function(img) {
+    if (img.dataset.expanded) {
+      img.style.maxWidth = '200px';
+      img.style.maxHeight = '200px';
+      delete img.dataset.expanded;
+    } else {
+      img.style.maxWidth = 'none';
+      img.style.maxHeight = 'none';
+      img.dataset.expanded = '1';
+    }
+  };
+
+  function resimYukle(file) {
+    if (!file || !sohbetRef) return;
+    var resimBtn = document.getElementById('sohbet-resim-btn');
+    var gonderBtn = document.getElementById('sohbet-gonder');
+    var fileInp = document.getElementById('sohbet-resim-input');
+    if (resimBtn) { resimBtn.disabled = true; resimBtn.textContent = '⏳'; }
+    if (gonderBtn) gonderBtn.disabled = true;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      var img = new Image();
+      img.onload = function() {
+        var MAX = 800, Q = 0.65;
+        var w = img.width, h = img.height;
+        if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+        if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
+        var canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        canvas.toBlob(function(blob) {
+          var r2 = new FileReader();
+          r2.onload = function(ev2) {
+            sohbetRef.push({ kimden: SLUG, isim: ISIM, metin: '', resimBase64: ev2.target.result, zaman: firebase.database.ServerValue.TIMESTAMP })
+            .then(function() {
+              if (resimBtn) { resimBtn.disabled = false; resimBtn.textContent = '📎'; }
+              if (gonderBtn) gonderBtn.disabled = false;
+              if (fileInp) fileInp.value = '';
+            })
+            .catch(function(err) {
+              console.error('Resim gönderilemedi:', err);
+              alert('Resim gönderilemedi: ' + err.message);
+              if (resimBtn) { resimBtn.disabled = false; resimBtn.textContent = '📎'; }
+              if (gonderBtn) gonderBtn.disabled = false;
+              if (fileInp) fileInp.value = '';
+            });
+          };
+          r2.readAsDataURL(blob);
+        }, 'image/jpeg', Q);
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  document.getElementById('sohbet-resim-input').addEventListener('change', function(e) {
+    var file = e.target.files && e.target.files[0];
+    if (file) resimYukle(file);
+  });
 
   document.addEventListener('keydown', function(e) {
     if (e.target && e.target.id === 'sohbet-input' && e.key === 'Enter' && !e.shiftKey) {
