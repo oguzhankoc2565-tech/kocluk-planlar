@@ -2493,9 +2493,12 @@ GUNLER.forEach(g => {
     <button class="sohbet-header-kapat" onclick="sohbetToggle()" aria-label="Kapat">×</button>
   </div>
   <div id="sohbet-liste"><div class="sohbet-bos">Mesajlar yükleniyor...</div></div>
-  <div class="sohbet-input-wrap">
-    <textarea id="sohbet-input" placeholder="Mesajını yaz..." rows="1"></textarea>
-    <button id="sohbet-gonder" onclick="sohbetGonder()">➤</button>
+  <div class="sohbet-input-wrap" style="flex-direction:column;align-items:stretch;">
+    <div id="sohbet-kapali-notice" style="display:none;padding:8px;text-align:center;font-size:12px;font-weight:700;color:#dc2626;background:#fee2e2;border-radius:8px;margin-bottom:6px;">Koç sohbeti geçici olarak kapattı.</div>
+    <div style="display:flex;gap:8px;align-items:flex-end;">
+      <textarea id="sohbet-input" placeholder="Mesajını yaz..." rows="1"></textarea>
+      <button id="sohbet-gonder" onclick="sohbetGonder()">➤</button>
+    </div>
   </div>
 </div>
 
@@ -2528,6 +2531,15 @@ GUNLER.forEach(g => {
     SLUG  = slug;
     ISIM  = isim;
     initFirebase();
+    firebase.database().ref('sohbet/durum').on('value', function(snap) {
+      var acik = snap.val() !== 'kapali';
+      var inp = document.getElementById('sohbet-input');
+      var btn = document.getElementById('sohbet-gonder');
+      var notice = document.getElementById('sohbet-kapali-notice');
+      if (inp) { inp.disabled = !acik; inp.placeholder = acik ? 'Mesajını yaz...' : 'Sohbet kapalı'; }
+      if (btn) btn.disabled = !acik;
+      if (notice) notice.style.display = acik ? 'none' : 'block';
+    });
     sohbetRef.limitToLast(50).on('value', function(snap) {
       var liste = [];
       snap.forEach(function(c) { liste.push(Object.assign({ _id: c.key }, c.val())); });
