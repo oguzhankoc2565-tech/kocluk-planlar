@@ -559,6 +559,33 @@
   .ovl-card { background: white; border-radius: 20px; padding: 24px; max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
   .ovl-close { position: absolute; top: 12px; right: 14px; background: none; border: none; font-size: 22px; cursor: pointer; color: #94a3b8; }
 
+  /* ── SOHBET WIDGET ── */
+  #sohbet-btn { position:fixed; bottom:20px; right:20px; z-index:1000; width:54px; height:54px; border-radius:50%; background:var(--primary-grad); border:none; cursor:pointer; box-shadow:0 4px 16px rgba(8,145,178,0.4); display:flex; align-items:center; justify-content:center; font-size:22px; transition:transform 0.2s; }
+  #sohbet-btn:hover { transform:scale(1.08); }
+  #sohbet-badge { position:absolute; top:-3px; right:-3px; background:#dc2626; color:#fff; font-size:10px; font-weight:800; border-radius:10px; padding:1px 5px; min-width:16px; text-align:center; display:none; line-height:14px; }
+  #sohbet-panel { position:fixed; bottom:84px; right:16px; z-index:1001; width:340px; max-height:520px; background:var(--white); border-radius:20px; box-shadow:0 8px 40px rgba(0,0,0,0.18); border:2px solid var(--border); display:none; flex-direction:column; overflow:hidden; }
+  #sohbet-panel.acik { display:flex; }
+  .sohbet-header { padding:12px 16px; background:var(--primary-grad); color:#fff; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:space-between; }
+  .sohbet-header-kapat { background:none; border:none; color:#fff; font-size:20px; cursor:pointer; padding:0 4px; line-height:1; }
+  #sohbet-liste { flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:8px; scroll-behavior:smooth; }
+  .sohbet-mesaj { max-width:82%; }
+  .sohbet-mesaj.ben { align-self:flex-end; }
+  .sohbet-mesaj.diger { align-self:flex-start; }
+  .sohbet-balon { padding:9px 13px; border-radius:16px; font-size:13px; line-height:1.5; word-wrap:break-word; }
+  .sohbet-mesaj.ben .sohbet-balon { background:var(--primary-grad); color:#fff; border-bottom-right-radius:4px; }
+  .sohbet-mesaj.diger .sohbet-balon { background:var(--bg); color:var(--text); border-bottom-left-radius:4px; border:1px solid var(--border); }
+  .sohbet-isim { font-size:10px; font-weight:700; color:var(--muted); margin-bottom:3px; padding:0 2px; }
+  .sohbet-zaman { font-size:10px; color:var(--muted); margin-top:3px; padding:0 2px; }
+  .sohbet-mesaj.ben .sohbet-zaman { text-align:right; }
+  .sohbet-input-wrap { padding:10px 12px; border-top:1px solid var(--border); display:flex; gap:8px; align-items:flex-end; }
+  #sohbet-input { flex:1; border:2px solid var(--border); border-radius:12px; padding:8px 12px; font-size:13px; font-family:inherit; resize:none; max-height:80px; outline:none; background:var(--white); color:var(--text); line-height:1.5; }
+  #sohbet-input:focus { border-color:var(--primary-2); }
+  #sohbet-gonder { background:var(--primary-grad); border:none; border-radius:10px; color:#fff; padding:9px 13px; cursor:pointer; font-size:16px; flex-shrink:0; }
+  #sohbet-gonder:disabled { opacity:0.5; cursor:default; }
+  .sohbet-bos { text-align:center; color:var(--muted); font-size:13px; padding:28px 12px; }
+  [data-theme="dark"] .sohbet-mesaj.diger .sohbet-balon { background:#1e293b; border-color:#334155; }
+  @media (max-width:400px) { #sohbet-panel { width:calc(100vw - 20px); right:10px; } }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 700px) {
     #dur-stats-wrap { grid-template-columns: 1fr; }
@@ -2454,6 +2481,136 @@ GUNLER.forEach(g => {
   if (gunDurumu(g) === 'aktif') { accSoruGuncelle(g.prefix); hedefBarGuncelle(g.prefix); }
 });
 
+</script>
+
+<!-- ═══ SOHBET WIDGET ═══ -->
+<button id="sohbet-btn" onclick="sohbetToggle()" title="Koçluk Sohbet">
+  💬<span id="sohbet-badge"></span>
+</button>
+<div id="sohbet-panel">
+  <div class="sohbet-header">
+    <span>💬 Koçluk Sohbeti</span>
+    <button class="sohbet-header-kapat" onclick="sohbetToggle()" aria-label="Kapat">×</button>
+  </div>
+  <div id="sohbet-liste"><div class="sohbet-bos">Mesajlar yükleniyor...</div></div>
+  <div class="sohbet-input-wrap">
+    <textarea id="sohbet-input" placeholder="Mesajını yaz..." rows="1"></textarea>
+    <button id="sohbet-gonder" onclick="sohbetGonder()">➤</button>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+(function() {
+  var FB_CFG = {
+    apiKey: "AIzaSyAi60DYIr-tAnGGd9PEP3WK-MATAPkQyrg",
+    authDomain: "lgs-kocluk-b8ee4.firebaseapp.com",
+    databaseURL: "https://lgs-kocluk-b8ee4-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "lgs-kocluk-b8ee4",
+    storageBucket: "lgs-kocluk-b8ee4.firebasestorage.app",
+    messagingSenderId: "229385167119",
+    appId: "1:229385167119:web:030732c458bc01f238de7a"
+  };
+
+  var panelAcik = false;
+  var okunanZaman = 0;
+  var SLUG = '';
+  var ISIM = '';
+  var sohbetRef = null;
+
+  function initFirebase() {
+    if (!firebase.apps.length) firebase.initializeApp(FB_CFG);
+    sohbetRef = firebase.database().ref('sohbet/mesajlar');
+  }
+
+  function initSohbet(slug, isim) {
+    SLUG  = slug;
+    ISIM  = isim;
+    initFirebase();
+    sohbetRef.limitToLast(50).on('value', function(snap) {
+      var liste = [];
+      snap.forEach(function(c) { liste.push(Object.assign({ _id: c.key }, c.val())); });
+      renderMesajlar(liste);
+      if (!panelAcik) {
+        var yeni = liste.filter(function(m) { return (m.zaman||0) > okunanZaman && m.kimden !== SLUG; }).length;
+        var badge = document.getElementById('sohbet-badge');
+        if (yeni > 0) { badge.textContent = yeni > 9 ? '9+' : yeni; badge.style.display = 'block'; }
+        else { badge.style.display = 'none'; }
+      }
+    });
+  }
+
+  function renderMesajlar(liste) {
+    var el = document.getElementById('sohbet-liste');
+    if (!el) return;
+    if (!liste.length) { el.innerHTML = '<div class="sohbet-bos">Henüz mesaj yok. İlk mesajı sen at! 👋</div>'; return; }
+    var oncekiKimden = null;
+    el.innerHTML = liste.map(function(m) {
+      var ben  = m.kimden === SLUG;
+      var saat = m.zaman ? new Date(m.zaman).toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'}) : '';
+      var isimHtml = (!ben && m.kimden !== oncekiKimden) ? '<div class="sohbet-isim">' + esc(m.isim||m.kimden) + '</div>' : '';
+      oncekiKimden = m.kimden;
+      return '<div class="sohbet-mesaj ' + (ben?'ben':'diger') + '">' +
+        isimHtml +
+        '<div class="sohbet-balon">' + esc(m.metin) + '</div>' +
+        '<div class="sohbet-zaman">' + saat + '</div>' +
+      '</div>';
+    }).join('');
+    el.scrollTop = el.scrollHeight;
+    if (panelAcik) { okunanZaman = Date.now(); document.getElementById('sohbet-badge').style.display='none'; }
+  }
+
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+
+  window.sohbetToggle = function() {
+    panelAcik = !panelAcik;
+    document.getElementById('sohbet-panel').classList.toggle('acik', panelAcik);
+    if (panelAcik) {
+      okunanZaman = Date.now();
+      document.getElementById('sohbet-badge').style.display = 'none';
+      var liste = document.getElementById('sohbet-liste');
+      setTimeout(function() { liste.scrollTop = liste.scrollHeight; }, 60);
+      setTimeout(function() { var inp=document.getElementById('sohbet-input'); if(inp) inp.focus(); }, 80);
+    }
+  };
+
+  window.sohbetGonder = function() {
+    if (!sohbetRef) return;
+    var inp  = document.getElementById('sohbet-input');
+    var metin = (inp.value || '').trim();
+    if (!metin) return;
+    inp.value = '';
+    inp.style.height = '';
+    var btn = document.getElementById('sohbet-gonder');
+    btn.disabled = true;
+    sohbetRef.push({ kimden:SLUG, isim:ISIM, metin:metin, zaman:firebase.database.ServerValue.TIMESTAMP })
+      .then(function() { btn.disabled = false; })
+      .catch(function(e) { console.error('Mesaj gönderilemedi:', e); btn.disabled = false; });
+  };
+
+  document.addEventListener('keydown', function(e) {
+    if (e.target && e.target.id === 'sohbet-input' && e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault(); window.sohbetGonder();
+    }
+  });
+
+  document.addEventListener('input', function(e) {
+    if (e.target && e.target.id === 'sohbet-input') {
+      e.target.style.height = '';
+      e.target.style.height = Math.min(e.target.scrollHeight, 80) + 'px';
+    }
+  });
+
+  function bekleConfig() {
+    if (window.CONFIG && window.CONFIG.ogrenci && window.CONFIG.ogrenci.slug) {
+      initSohbet(window.CONFIG.ogrenci.slug, window.CONFIG.ogrenci.ad || window.CONFIG.ogrenci.slug);
+    } else {
+      setTimeout(bekleConfig, 200);
+    }
+  }
+  bekleConfig();
+})();
 </script>
 </body>
 </html>
