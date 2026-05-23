@@ -2603,8 +2603,12 @@ GUNLER.forEach(g => {
   });
 
   function bekleConfig() {
-    if (window.CONFIG && window.CONFIG.ogrenci && window.CONFIG.ogrenci.slug) {
-      initSohbet(window.CONFIG.ogrenci.slug, window.CONFIG.ogrenci.ad || window.CONFIG.ogrenci.slug);
+    if (window.CONFIG && window.CONFIG.ogrenci) {
+      var urlSlug = (new URLSearchParams(location.search).get('ogrenci') || '').trim().toLowerCase();
+      var slug = window.CONFIG.ogrenci.slug || urlSlug;
+      var isim = window.CONFIG.ogrenci.ad || slug;
+      if (slug) { initSohbet(slug, isim); }
+      else { setTimeout(bekleConfig, 200); }
     } else {
       setTimeout(bekleConfig, 200);
     }
