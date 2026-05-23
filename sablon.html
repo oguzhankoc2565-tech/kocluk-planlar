@@ -1358,12 +1358,12 @@ function accGunHTML(gun) {
   const badgeMap = {
     aktif:        '<span class="gun-durum-badge badge-aktif">Bugün</span>',
     onizleme:     onizmeBadge,
-    gecmis:       '<span class="gun-durum-badge badge-gecmis">Geçti</span>',
-    suresi_doldu: '<span class="gun-durum-badge badge-gecmis">Doldu</span>'
+    gecmis:       `<span class="gun-durum-badge badge-gecmis" id="acc_badge_${gun.prefix}">—</span>`,
+    suresi_doldu: `<span class="gun-durum-badge badge-gecmis" id="acc_badge_${gun.prefix}">—</span>`
   };
 
   const tarihStr = gun.tarih.getDate() + ' ' + gun.tarih.toLocaleString('tr-TR',{month:'long'});
-  const checkIcon = durum === 'gecmis' ? '✓ ' : '';
+  const checkIcon = '';
 
   let html = `<div class="${cls}" id="acc_${gun.prefix}">` +
     `<div class="acc-header" onclick="accToggle('${gun.prefix}')" role="button" aria-expanded="${durum==='aktif'}">` +
@@ -1425,6 +1425,43 @@ function accSoruGuncelleSunucu(gunAdi, toplam) {
   if (gunDurumu(gun) === 'aktif') return;
   const el = $('acc_soru_'+gun.prefix);
   if (el && toplam > 0) el.textContent = toplam + ' soru';
+}
+
+function accDurumBadgeGuncelle(gunAdi, hasData) {
+  const gun = GUNLER.find(g => g.ad === gunAdi); if (!gun) return;
+  const durum = gunDurumu(gun);
+  if (durum !== 'gecmis' && durum !== 'suresi_doldu') return;
+  const el = $('acc_badge_' + gun.prefix); if (!el) return;
+
+  const isSunday  = gun.ad === 'Pazar';
+  const simdi     = trSaati();
+  const bugun     = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
+  const gunT      = new Date(gun.tarih.getFullYear(), gun.tarih.getMonth(), gun.tarih.getDate());
+  const isPastDay = gunT < bugun;
+  const isToday   = gunT.getTime() === bugun.getTime();
+
+  const status = dayStatus({ hasData, isToday, isPastDay, isSunday });
+
+  el.removeAttribute('style');
+  if (status === 'TAMAM') {
+    el.className = 'gun-durum-badge badge-aktif'; el.textContent = '✓ Tamamlandı';
+  } else if (status === 'EKSIK') {
+    el.className = 'gun-durum-badge'; el.style.background = '#fef2f2'; el.style.color = '#dc2626'; el.textContent = '✗ Eksik';
+  } else if (status === 'TELAFI') {
+    el.className = 'gun-durum-badge badge-aktif'; el.textContent = '💪 Telafi';
+  } else if (status === 'IZINLI') {
+    el.className = 'gun-durum-badge badge-kilitli'; el.textContent = '☀️ İzinli';
+  } else {
+    el.className = 'gun-durum-badge badge-gecmis'; el.textContent = 'Geçti';
+  }
+
+  const item = $('acc_' + gun.prefix);
+  if (item) {
+    const gunAdiEl = item.querySelector('.acc-gun-adi');
+    if (gunAdiEl) {
+      gunAdiEl.textContent = (status === 'TAMAM' || status === 'TELAFI') ? '✓ ' + gun.ad : gun.ad;
+    }
+  }
 }
 
 function accBarGuncelle(prefix) {
@@ -2001,6 +2038,8 @@ function yukleOzet() {
         const toplam = TUM_DERSLER.reduce((acc,k)=>acc+(Number(g[k+'_d'])||0)+(Number(g[k+'_y'])||0)+(Number(g[k+'_b'])||0), 0);
         accSoruGuncelleSunucu(g.gun, toplam);
       });
+      const doluGunSet = new Set(gunler.map(g => g.gun));
+      GUNLER.forEach(gun => accDurumBadgeGuncelle(gun.ad, doluGunSet.has(gun.ad)));
     })
     .catch(err => {
       warn('Özet yüklenemedi:', err);
