@@ -579,6 +579,10 @@
 
   <div class="plan-label">📅 Günlük plan &amp; takip</div>
   <div class="accordion" id="accordionGunler"></div>
+  <div class="ozet-kart" style="padding:14px 18px">
+    <div class="ozet-baslik">📊 Bu Haftaki Performansım</div>
+    <div id="gun-kartlari-wrap" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px"></div>
+  </div>
   <div class="ozet-kart">
     <div class="ozet-baslik">📈 Bu Haftanın Kayıtlarım</div>
     <div id="haftalikOzetIcerik"><div class="ozet-yukleniyor">Yükleniyor...</div></div>
@@ -1623,6 +1627,102 @@ function sunucudanCheckboxYaz(konular) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
+//  GÜN KARTLARI — Öğrenci günlük D/Y/B özeti
+// ═══════════════════════════════════════════════════════════════════
+
+function renderGunKartlariStudent(gunlerData) {
+  const el = $('gun-kartlari-wrap'); if (!el) return;
+
+  const DERS_SIRASI = [
+    {k:'mat',n:'Mat',c:'var(--mat)'},{k:'fen',n:'Fen',c:'var(--fen)'},
+    {k:'tur',n:'Tür',c:'var(--tur)'},{k:'sos',n:'Sos',c:'var(--sos)'},
+    {k:'ing',n:'İng',c:'var(--ing)'},{k:'din',n:'Din',c:'var(--din)'},
+    {k:'par',n:'Par',c:'var(--par)'},
+  ];
+  const GUN_KISA = {'Pazartesi':'Pt','Salı':'Sa','Çarşamba':'Ça','Perşembe':'Pe','Cuma':'Cu','Cumartesi':'Ct','Pazar':'Pz'};
+
+  const simdi = trSaati();
+  const bugun = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
+
+  const gunDataMap = {};
+  (gunlerData || []).forEach(g => { gunDataMap[g.gun] = g; });
+
+  const cards = (GUNLER || []).map(gun => {
+    const gunT = new Date(gun.tarih.getFullYear(), gun.tarih.getMonth(), gun.tarih.getDate());
+    const isBugun  = gunT.getTime() === bugun.getTime();
+    const isGecmis = gunT < bugun;
+    const kisa = GUN_KISA[gun.ad] || gun.ad.substring(0,2);
+    const data = gunDataMap[gun.ad];
+
+    if (!data) {
+      return `<div style="background:var(--white);border:1.5px ${isBugun?'dashed':'solid'} ${isBugun?'var(--primary-2)':'var(--border)'};border-radius:12px;padding:10px 8px;text-align:center;opacity:${isGecmis?0.4:isBugun?1:0.65}">
+        ${isBugun?`<div style="font-size:8px;color:var(--primary-2);font-weight:800;margin-bottom:3px">BUGÜN</div>`:''}
+        <div style="font-size:13px;font-weight:800;color:${isBugun?'var(--primary-2)':'var(--muted)'}">${kisa}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:10px">${isGecmis?'girilmedi':'—'}</div>
+      </div>`;
+    }
+
+    let totD = 0, totY = 0, totB = 0;
+    DERS_SIRASI.forEach(d => {
+      totD += Number(data[d.k+'_d']||0);
+      totY += Number(data[d.k+'_y']||0);
+      totB += Number(data[d.k+'_b']||0);
+    });
+    const totSoru = totD + totY + totB;
+    const totNet  = totD - totY / 3;
+    const kitap   = Number(data.kitap || 0);
+    const par     = Number(data.par_d||0) + Number(data.par_y||0) + Number(data.par_b||0);
+    const kitapOk = kitap > 0;
+    const parOk   = par   > 0;
+    const st = (kitapOk && parOk) ? 'green' : (!kitapOk && !parOk) ? 'red' : 'amber';
+    const BG     = {green:'#f0fdf4', amber:'#fffbeb', red:'#fef2f2'};
+    const BORDER = {green:'#bbf7d0', amber:'#fde68a', red:'#fecaca'};
+
+    const dersRows = DERS_SIRASI.map(d => {
+      const dv = Number(data[d.k+'_d']||0);
+      const yv = Number(data[d.k+'_y']||0);
+      const bv = Number(data[d.k+'_b']||0);
+      if (!dv && !yv && !bv) return '';
+      const net = dv - yv / 3;
+      return `<div style="display:flex;align-items:center;justify-content:space-between;padding:2px 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:9px;font-weight:800;color:${d.c};width:22px">${d.n}</span>
+        <span style="font-size:9px;color:var(--success);font-weight:700;width:20px;text-align:right">${dv}</span>
+        <span style="font-size:9px;color:var(--danger);font-weight:700;width:20px;text-align:right">${yv}</span>
+        <span style="font-size:9px;color:var(--muted);font-weight:700;width:16px;text-align:right">${bv}</span>
+        <span style="font-size:9px;color:var(--mat);font-weight:800;width:28px;text-align:right">${net.toFixed(1)}</span>
+      </div>`;
+    }).filter(Boolean).join('');
+
+    return `<div style="background:${BG[st]};border:1.5px solid ${BORDER[st]};border-radius:12px;padding:10px 8px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <div>
+          ${isBugun?`<div style="font-size:8px;color:var(--primary-2);font-weight:800;line-height:1">BUGÜN</div>`:''}
+          <div style="font-size:13px;font-weight:800;color:var(--text)">${kisa}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:16px;font-weight:800;color:var(--mat);line-height:1">${totSoru}</div>
+          <div style="font-size:8px;color:var(--muted)">soru</div>
+        </div>
+      </div>
+      <div style="font-size:8px;color:var(--muted);font-weight:700;display:flex;justify-content:flex-end;gap:4px;margin-bottom:2px;padding-right:2px">
+        <span style="width:20px;text-align:right">D</span>
+        <span style="width:20px;text-align:right">Y</span>
+        <span style="width:16px;text-align:right">B</span>
+        <span style="width:28px;text-align:right">Net</span>
+      </div>
+      <div style="margin-bottom:6px">${dersRows || '<div style="font-size:10px;color:var(--muted);text-align:center;padding:4px">—</div>'}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;border-top:1.5px solid ${BORDER[st]};padding-top:4px">
+        <span style="font-size:10px;font-weight:800;color:${kitapOk?'var(--success)':'var(--danger)'}">📚 ${kitap>0?kitap+' sf':'0'}</span>
+        <span style="font-size:10px;font-weight:800;color:${totNet>=0?'var(--mat)':'var(--danger)'}">=${totNet.toFixed(1)}</span>
+        <span style="font-size:10px;font-weight:800;color:${parOk?'var(--success)':'var(--danger)'}">📝 ${par>0?par:'0'}</span>
+      </div>
+    </div>`;
+  });
+
+  el.innerHTML = cards.join('');
+}
+
+// ═══════════════════════════════════════════════════════════════════
 //  FAZ 2: INSIGHT ROW
 // ═══════════════════════════════════════════════════════════════════
 
@@ -1843,6 +1943,7 @@ function yukleOzet() {
     .then(data => {
       if (data.durum !== 'basarili') { $('haftalikOzetIcerik').innerHTML = '<div class="ozet-bos">Veri alınamadı.</div>'; return; }
       const gunler = data.gunler || [];
+      renderGunKartlariStudent(gunler);
       renderOzetTablo(gunler);
       renderStatsKart(gunler);
       renderMotivRow(gunler);
@@ -2321,6 +2422,7 @@ function denemeAccToggle() {
 //  BAŞLAT
 // ═══════════════════════════════════════════════════════════════════
 
+renderGunKartlariStudent([]);
 renderMotivRow([]);
 renderInsightRow([]);
 
