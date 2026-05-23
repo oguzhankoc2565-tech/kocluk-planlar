@@ -50,7 +50,6 @@
   }
   [data-theme="dark"] body { background: #0a0f1e; }
   [data-theme="dark"] .card,
-  [data-theme="dark"] .hedef-yolu,
   [data-theme="dark"] .ozet-kart,
   [data-theme="dark"] .stats-kart,
   [data-theme="dark"] .acc-item,
@@ -267,17 +266,6 @@
   .hedef-val { font-size: 16px; font-weight: 800; }
   .plan-label { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; padding: 0 4px; }
 
-  /* ── HEDEF YOLU ── */
-  .hedef-yolu { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 18px 22px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-  .hedef-yolu-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
-  .hedef-yolu-track { position: relative; height: 36px; margin: 0 0 10px; }
-  .hedef-yolu-bg { position: absolute; top: 14px; left: 0; right: 0; height: 8px; background: var(--border); border-radius: 4px; }
-  .hedef-yolu-fill { position: absolute; top: 14px; left: 0; height: 8px; background: var(--primary-grad); border-radius: 4px; transition: width 1s cubic-bezier(.16,1,.3,1); }
-  .hedef-yolu-top { position: absolute; top: 0; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 2px; }
-  .hedef-yolu-top-dot { width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; font-size: 10px; }
-  .hedef-yolu-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 4px; }
-  .hedef-yolu-bilgi { margin-top: 10px; font-size: 13px; color: var(--text); font-weight: 600; text-align: center; }
-  .hedef-yolu-bilgi span { color: var(--mat); font-weight: 800; }
 
   /* ═══════════════════════════════════════════════════════════════════
      DENEME SONUÇLARI ACCORDION
@@ -514,6 +502,44 @@
   .stats-gun-on  { background: #dcfce7; color: #15803d; }
   .stats-gun-off { background: #f1f5f9; color: #94a3b8; }
 
+  /* ── PERFORMANS KARTI ── */
+  #perf-kart {
+    border-color: #0891b2;
+    box-shadow: 0 4px 18px rgba(8,145,178,0.18);
+  }
+  .perf-baslik {
+    font-size: 16px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary-1), var(--primary-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+  }
+  .perf-ilerleme { margin-bottom: 12px; }
+  .perf-bar-track {
+    height: 10px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 5px;
+  }
+  .perf-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--primary-1), var(--primary-2));
+    transition: width 0.6s cubic-bezier(.4,0,.2,1);
+  }
+  .perf-bar-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary-2);
+  }
+  [data-theme="dark"] #perf-kart {
+    border-color: #0e7490;
+    box-shadow: 0 4px 18px rgba(8,145,178,0.28);
+  }
+
   /* ── ÖZET TABLO ── */
   .ozet-kart { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 18px 22px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
   .ozet-baslik { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
@@ -558,13 +584,12 @@
     <div id="dur-kart" style="flex:1;min-width:0"></div>
     <div id="stats-kart" style="width:320px;flex-shrink:0"></div>
   </div>
-  <div class="ozet-kart" style="padding:14px 18px">
-    <div class="ozet-baslik">📊 Bu Haftaki Performansım</div>
+  <div class="ozet-kart" id="perf-kart" style="padding:14px 18px">
+    <div class="perf-baslik">📊 Bu Haftaki Performansım</div>
     <div id="gun-kartlari-wrap"></div>
   </div>
   <div id="koc-deg"></div>
   <div id="hdf-kart"></div>
-  <div id="hedef-yolu-wrap"></div>
 
   <!-- ═══ DENEME SONUÇLARI ACCORDION ═══ -->
   <div class="deneme-acc" id="deneme-acc">
@@ -1125,47 +1150,6 @@ $('koc-nt').innerHTML =
   `<div class="koc-notu-baslik">🏆 Koç Notu — Hafta ${esc(HAFTA_NO)}</div>` +
   `<div class="koc-notu-text">${esc(CONFIG.koc.haftalikNot)}</div>`;
 
-function renderHedefYolu(denemeler) {
-  const wrap = $('hedef-yolu-wrap');
-  if (!wrap) return;
-
-  const hedef   = parseFloat(CONFIG.durum.hedef);
-  const puanlar = (denemeler || []).filter(d => d.puan > 0);
-
-  if (!hedef || isNaN(hedef) || !puanlar.length) { wrap.innerHTML = ''; return; }
-
-  const ilkPuan  = puanlar[0].puan;
-  const sonPuan  = puanlar[puanlar.length - 1].puan;
-  const aralik   = hedef - ilkPuan;
-  const ilerleme = sonPuan - ilkPuan;
-  const pct      = aralik <= 0 ? 100 : Math.min(Math.max(ilerleme / aralik * 100, 0), 100);
-  const kalan    = hedef - sonPuan;
-  const topPct   = pct.toFixed(1);
-
-  const kalanMetin = kalan > 0
-    ? `Hedefe <span>${kalan.toFixed(1)} puan</span> kaldı — her derste +1 net büyük fark yaratır!`
-    : `<span>🎉 Hedef puanına ulaştın! Süpersin!</span>`;
-
-  wrap.innerHTML =
-    `<div class="hedef-yolu">` +
-      `<div class="hedef-yolu-baslik">🏁 Hedef Yolu</div>` +
-      `<div class="hedef-yolu-track">` +
-        `<div class="hedef-yolu-bg"></div>` +
-        `<div class="hedef-yolu-fill" id="hy-fill" style="width:0%"></div>` +
-        `<div class="hedef-yolu-top" style="left:0%"><div class="hedef-yolu-top-dot" style="background:#94a3b8">🚩</div></div>` +
-        `<div class="hedef-yolu-top" id="hy-top" style="left:${topPct}%"><div class="hedef-yolu-top-dot" style="background:var(--mat)">⚽</div></div>` +
-        `<div class="hedef-yolu-top" style="left:100%"><div class="hedef-yolu-top-dot" style="background:var(--success)">🎯</div></div>` +
-      `</div>` +
-      `<div class="hedef-yolu-labels">` +
-        `<span>${ilkPuan.toFixed(0)} (İlk Deneme)</span>` +
-        `<span style="color:var(--mat);font-weight:800">${sonPuan.toFixed(1)} — %${topPct}</span>` +
-        `<span>${hedef.toFixed(0)} (Hedef)</span>` +
-      `</div>` +
-      `<div class="hedef-yolu-bilgi">${kalanMetin}</div>` +
-    `</div>`;
-
-  setTimeout(() => { const f = $('hy-fill'); if (f) f.style.width = topPct + '%'; }, 200);
-}
 
 // ═══════════════════════════════════════════════════════════════════
 //  ZAMAN
@@ -1729,13 +1713,33 @@ function renderGunKartlariStudent(gunlerData) {
     </div>`;
   });
 
-  el.innerHTML = `<div style="font-size:10px;color:var(--muted);margin-bottom:7px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+  const tamamlanan = (GUNLER || []).filter(gun => gunDataMap[gun.ad]).length;
+  const totalGun   = (GUNLER || []).length;
+  const fillPct    = totalGun > 0 ? Math.round(tamamlanan / totalGun * 100) : 0;
+  const barLabel   = tamamlanan === totalGun && totalGun > 0
+    ? `🎉 Tüm ${totalGun} gün tamamlandı!`
+    : tamamlanan === 0
+    ? 'Henüz bu hafta rapor girilmedi'
+    : `${tamamlanan} / ${totalGun} gün rapor girildi`;
+
+  el.innerHTML = `<div class="perf-ilerleme">
+    <div class="perf-bar-track"><div class="perf-bar-fill" style="width:0%"></div></div>
+    <div class="perf-bar-label">${barLabel}</div>
+  </div>
+  <div style="font-size:10px;color:var(--muted);margin-bottom:7px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
     <span style="font-weight:600">Kart rengi:</span>
     <span><span style="color:var(--success)">●</span> Kitap + Paragraf tamam</span>
     <span><span style="color:#f59e0b">●</span> Biri eksik</span>
     <span><span style="color:var(--danger)">●</span> İkisi de yok</span>
   </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px">${cards.join('')}</div>`;
+  // İki frame bekle → CSS transition'ın 0→hedef animasyonu ateşlenmesi için
+  if (fillPct > 0) {
+    var _fillEl = el.querySelector('.perf-bar-fill');
+    if (_fillEl) requestAnimationFrame(function() {
+      requestAnimationFrame(function() { _fillEl.style.width = fillPct + '%'; });
+    });
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -2303,7 +2307,6 @@ function denemeRender(data) {
   html += denemeTabloHTML(denemeler);
 
   el.innerHTML = html;
-  renderHedefYolu(denemeler);
 }
 
 function denemeSVGGrafik(denemeler, hedef) {
