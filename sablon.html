@@ -2650,18 +2650,6 @@ GUNLER.forEach(g => {
       .catch(function(e) { console.error('Mesaj gönderilemedi:', e); btn.disabled = false; });
   };
 
-  window.sohbetResimAc = function(img) {
-    if (img.dataset.expanded) {
-      img.style.maxWidth = '200px';
-      img.style.maxHeight = '200px';
-      delete img.dataset.expanded;
-    } else {
-      img.style.maxWidth = 'none';
-      img.style.maxHeight = 'none';
-      img.dataset.expanded = '1';
-    }
-  };
-
   function resimYukle(file) {
     if (!file || !sohbetRef) return;
     var resimBtn = document.getElementById('sohbet-resim-btn');
@@ -2736,6 +2724,33 @@ GUNLER.forEach(g => {
   }
   bekleConfig();
 })();
+</script>
+
+<!-- Sohbet Resim Lightbox -->
+<div id="sohbet-lightbox" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:99999;align-items:center;justify-content:center;flex-direction:column;gap:12px" onclick="if(event.target===this)sohbetLightboxKapat()">
+  <img id="sohbet-lightbox-img" src="" style="max-width:90vw;max-height:80vh;border-radius:10px;box-shadow:0 8px 40px rgba(0,0,0,0.6);object-fit:contain">
+  <div style="display:flex;gap:10px">
+    <a id="sohbet-lightbox-indir" download="sohbet_resim.jpg" style="background:#0f766e;color:#fff;padding:8px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600">⬇ İndir</a>
+    <button onclick="sohbetLightboxKapat()" style="background:rgba(255,255,255,0.15);color:#fff;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">✕ Kapat</button>
+  </div>
+</div>
+<script>
+window.sohbetResimAc = function(img) {
+  var lb = document.getElementById('sohbet-lightbox');
+  var lbImg = document.getElementById('sohbet-lightbox-img');
+  var lbIndir = document.getElementById('sohbet-lightbox-indir');
+  lbImg.src = img.src;
+  lbIndir.href = img.src;
+  lb.style.display = 'flex';
+};
+window.sohbetLightboxKapat = function() {
+  var lb = document.getElementById('sohbet-lightbox');
+  lb.style.display = 'none';
+  document.getElementById('sohbet-lightbox-img').src = '';
+};
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') sohbetLightboxKapat();
+});
 </script>
 </body>
 </html>
