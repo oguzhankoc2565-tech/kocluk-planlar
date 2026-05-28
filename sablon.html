@@ -462,6 +462,40 @@
   .not-input:focus { outline: none; border-color: var(--primary-2); background: #fff; }
   .not-input:disabled { background: #f1f5f9; color: #aaa; cursor: not-allowed; }
 
+  /* ── GÖREV BAZLI D/Y/B ── */
+  .gorev-dyb-satir {
+    display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
+    margin-top: 5px; padding: 5px 6px;
+    background: var(--bg); border-radius: 8px; border: 1px solid var(--border);
+  }
+  .gorev-dyb-konu {
+    font-size: 10px; font-weight: 800; color: var(--primary-2);
+    background: var(--white); border: 1px solid #a5f3fc;
+    border-radius: 5px; padding: 2px 6px;
+    max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .gorev-dyb-lbl {
+    font-size: 10px; font-weight: 800; color: var(--muted); flex-shrink: 0;
+  }
+  .gorev-dyb-inp {
+    width: 36px; height: 26px; border: 1.5px solid var(--border);
+    border-radius: 6px; background: var(--white); font-size: 12px;
+    text-align: center; font-family: 'Nunito', sans-serif;
+    color: var(--text); font-weight: 700; flex-shrink: 0;
+  }
+  .gorev-dyb-inp:focus { outline: none; border-color: var(--primary-2); }
+  .gorev-dyb-inp:disabled { background: #f1f5f9; color: #94a3b8; cursor: not-allowed; }
+  /* Ders toplamı auto-calculated (gorev girişlerinden otomatik) */
+  .takip-input-auto {
+    background: #eff6ff !important; color: var(--mat) !important;
+    font-weight: 800 !important; cursor: default !important;
+    border-color: #bfdbfe !important;
+  }
+  [data-theme="dark"] .gorev-dyb-inp { background: #0f172a; color: var(--text); border-color: var(--border); }
+  [data-theme="dark"] .gorev-dyb-inp:disabled { background: #1a2535; color: #475569; }
+  [data-theme="dark"] .takip-input-auto { background: #172554 !important; border-color: #1e3a8a !important; }
+
   /* ── GERİ SAYIM & BUTON ── */
   .geri-sayim { font-size: 12px; color: var(--primary-2); font-weight: 700; margin-top: 8px; text-align: center; }
   .geri-sayim.son-dakika { color: var(--danger); }
@@ -870,6 +904,8 @@
         }
         const gorev = { metin: g.gorev_metin || '' };
         if (g.checkbox_mu) gorev.checkbox = true;
+        if (g.konu) gorev.konu = g.konu;
+        if (g.kazanim_kodlar && g.kazanim_kodlar.length) gorev.kazanimKodlar = g.kazanim_kodlar;
         cur.gorevler.push(gorev);
       });
       if (cur) { delete cur._kod; dersler.push(cur); }
@@ -1294,12 +1330,18 @@ function takipDersleriHTML(gun, durum) {
 
   takipDersler.forEach(d => {
     const renk = RENK_MAP[d.takipKey]||'var(--text)', ad = AD_MAP[d.takipKey]||d.ad, did = d.takipKey;
+    // Bu dersin soru görevi varsa toplam otomatik hesaplanır (gorevDYBDegisti ile)
+    const hasSoruGorev = d.gorevler.some(g => !g.checkbox);
+    const inputDis = (durum !== 'aktif' || hasSoruGorev) ? 'disabled' : '';
+    const inputCls = hasSoruGorev ? 'takip-input takip-input-auto' : 'takip-input';
+    const autoAttr = hasSoruGorev ? 'data-auto="true"' : '';
+    const autoTitle = hasSoruGorev ? `title="Yukarıdaki görev girişlerinden otomatik hesaplanır"` : '';
     html +=
       `<div class="takip-satir">` +
-        `<div class="takip-satir-adi" style="color:${renk}">${esc(ad)}</div>` +
-        `<input class="takip-input" type="number" min="0" id="${pid}_${did}_d" placeholder="0" ${dis} aria-label="${esc(ad)} doğru" data-p="${pid}" data-d="${did}" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">` +
-        `<input class="takip-input" type="number" min="0" id="${pid}_${did}_y" placeholder="0" ${dis} aria-label="${esc(ad)} yanlış" data-p="${pid}" data-d="${did}" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">` +
-        `<input class="takip-input" type="number" min="0" id="${pid}_${did}_b" placeholder="0" ${dis} aria-label="${esc(ad)} boş" data-p="${pid}" data-d="${did}" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">` +
+        `<div class="takip-satir-adi" style="color:${renk}">${esc(ad)}${hasSoruGorev ? ' <span style="font-size:9px;color:var(--muted);font-weight:600">∑</span>' : ''}</div>` +
+        `<input class="${inputCls}" type="number" min="0" id="${pid}_${did}_d" placeholder="0" ${inputDis} ${autoAttr} ${autoTitle} aria-label="${esc(ad)} doğru" data-p="${pid}" data-d="${did}" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">` +
+        `<input class="${inputCls}" type="number" min="0" id="${pid}_${did}_y" placeholder="0" ${inputDis} ${autoAttr} ${autoTitle} aria-label="${esc(ad)} yanlış" data-p="${pid}" data-d="${did}" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">` +
+        `<input class="${inputCls}" type="number" min="0" id="${pid}_${did}_b" placeholder="0" ${inputDis} ${autoAttr} ${autoTitle} aria-label="${esc(ad)} boş" data-p="${pid}" data-d="${did}" oninput="hesaplaNet(this.dataset.p,this.dataset.d)">` +
         `<div class="net-goster" id="${pid}_${did}_net" aria-live="polite">—</div>` +
       `</div>`;
   });
@@ -1391,7 +1433,24 @@ function accGunHTML(gun) {
           `<label class="gorev-metin" for="${g.id}">${esc(g.metin)}</label>` +
         `</div>`;
       } else {
-        html += `<div class="gorev-item soru-gorev"><span class="gorev-nokta">✦</span><span class="gorev-metin">${esc(g.metin)}</span></div>`;
+        const gDis = (durum !== 'aktif') ? 'disabled' : '';
+        let dybHtml = '';
+        if (d.takipKey) {
+          const konuEtiket = g.konu
+            ? `<span class="gorev-dyb-konu" title="${esc(g.konu)}">${esc(g.konu.length > 18 ? g.konu.substring(0,17)+'…' : g.konu)}</span>`
+            : '';
+          dybHtml =
+            `<div class="gorev-dyb-satir">` +
+              konuEtiket +
+              `<span class="gorev-dyb-lbl">D</span>` +
+              `<input class="gorev-dyb-inp gorev-dyb-inp-d" type="number" min="0" id="${g.id}_gd" placeholder="0" ${gDis} data-gp="${gun.prefix}" data-dk="${d.takipKey}" oninput="gorevDYBDegisti('${gun.prefix}','${d.takipKey}')">` +
+              `<span class="gorev-dyb-lbl">Y</span>` +
+              `<input class="gorev-dyb-inp gorev-dyb-inp-y" type="number" min="0" id="${g.id}_gy" placeholder="0" ${gDis} data-gp="${gun.prefix}" data-dk="${d.takipKey}" oninput="gorevDYBDegisti('${gun.prefix}','${d.takipKey}')">` +
+              `<span class="gorev-dyb-lbl">B</span>` +
+              `<input class="gorev-dyb-inp gorev-dyb-inp-b" type="number" min="0" id="${g.id}_gb" placeholder="0" ${gDis} data-gp="${gun.prefix}" data-dk="${d.takipKey}" oninput="gorevDYBDegisti('${gun.prefix}','${d.takipKey}')">` +
+            `</div>`;
+        }
+        html += `<div class="gorev-item soru-gorev"><span class="gorev-nokta">✦</span><div style="flex:1;min-width:0"><span class="gorev-metin">${esc(g.metin)}</span>${dybHtml}</div></div>`;
       }
     });
     html += `</div></div>`;
@@ -1506,6 +1565,27 @@ window.addEventListener('beforeunload', () => { Object.values(timerIds).forEach(
 //  VERİ GÖNDERME
 // ═══════════════════════════════════════════════════════════════════
 
+// Görev D/Y/B değişince ilgili dersin toplamını güncelle
+function gorevDYBDegisti(gunPrefix, dersKey) {
+  let totD = 0, totY = 0, totB = 0;
+  document.querySelectorAll('.gorev-dyb-inp-d[data-gp="' + gunPrefix + '"][data-dk="' + dersKey + '"]')
+    .forEach(function(el) { totD += parseInt(el.value) || 0; });
+  document.querySelectorAll('.gorev-dyb-inp-y[data-gp="' + gunPrefix + '"][data-dk="' + dersKey + '"]')
+    .forEach(function(el) { totY += parseInt(el.value) || 0; });
+  document.querySelectorAll('.gorev-dyb-inp-b[data-gp="' + gunPrefix + '"][data-dk="' + dersKey + '"]')
+    .forEach(function(el) { totB += parseInt(el.value) || 0; });
+
+  const dEl = $(gunPrefix + '_' + dersKey + '_d');
+  const yEl = $(gunPrefix + '_' + dersKey + '_y');
+  const bEl = $(gunPrefix + '_' + dersKey + '_b');
+  if (dEl) dEl.value = totD > 0 ? totD : '';
+  if (yEl) yEl.value = totY > 0 ? totY : '';
+  if (bEl) bEl.value = totB > 0 ? totB : '';
+
+  hesaplaNet(gunPrefix, dersKey);
+  accSoruGuncelle(gunPrefix);
+}
+
 function gonderiBilgisiTopla(gun) {
   const gorevBilgisi = {};
   gun.dersler.forEach(d => {
@@ -1539,10 +1619,33 @@ function gonder(gunAdi, prefix) {
     dersVerisi[k+'_b'] = varMi ? val(prefix+'_'+k+'_b') : '0';
   });
 
+  // Görev bazlı D/Y/B — Kazanim Log için
+  const gorevDybArr = [];
+  if (gun) {
+    gun.dersler.forEach(d => {
+      if (!d.takipKey) return;
+      d.gorevler.forEach(g => {
+        if (g.checkbox) return;
+        const dEl = $(g.id+'_gd'), yEl = $(g.id+'_gy'), bEl = $(g.id+'_gb');
+        if (!dEl) return;
+        const dv = parseInt(dEl.value)||0, yv = parseInt(yEl.value)||0, bv = parseInt(bEl.value)||0;
+        if (dv > 0 || yv > 0 || bv > 0) {
+          gorevDybArr.push({
+            gorev_metin: g.metin,
+            konu: g.konu || '',
+            kazanim_kodlar: g.kazanimKodlar || [],
+            ders_kod: d.takipKey,
+            d: dv, y: yv, b: bv
+          });
+        }
+      });
+    });
+  }
+
   const veri = Object.assign({
     ogrenciAdi: OGRENCI_ADI, haftaNo: HAFTA_NO, gun: gunAdi,
     kitap: val(prefix+'_kitap'), kitap_adi: strVal(prefix+'_kitap_adi'),
-    not: strVal(prefix+'_not'), konular
+    not: strVal(prefix+'_not'), konular, gorev_dyb: gorevDybArr
   }, dersVerisi, gorevBilgisi);
 
   fetch(SCRIPT_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(veri) })
@@ -1588,6 +1691,11 @@ function lsKaydet() {
     });
     gun.dersler.forEach(d => d.gorevler.forEach(g => {
       if (g.checkbox) { const cb = $(g.id); if (cb && !cb.disabled) LS.set(LS_PREFIX+'cb_'+g.id, cb.checked?'1':'0'); }
+      else if (d.takipKey) {
+        ['gd','gy','gb'].forEach(tip => {
+          const el = $(g.id+'_'+tip); if (el && !el.disabled) LS.set(LS_PREFIX+'dyb_'+g.id+'_'+tip, el.value);
+        });
+      }
     }));
   });
 }
@@ -1606,19 +1714,31 @@ function lsYukle() {
     ['kitap','kitap_adi','not'].forEach(f => {
       const el = $(gun.prefix+'_'+f); if (el && !el.disabled) { const v = LS.get(LS_PREFIX+gun.prefix+'_'+f); if (v !== null) el.value = v; }
     });
-    gun.dersler.forEach(d => d.gorevler.forEach(g => {
-      if (g.checkbox) {
-        const cb = $(g.id);
-        if (cb && !cb.disabled) {
-          const cv = LS.get(LS_PREFIX+'cb_'+g.id);
-          if (cv !== null) {
-            cb.checked = (cv === '1');
-            const label = document.querySelector('label[for="'+g.id+'"]');
-            if (label) { if (cb.checked) label.classList.add('tamamlandi'); else label.classList.remove('tamamlandi'); }
+    gun.dersler.forEach(d => {
+      d.gorevler.forEach(g => {
+        if (g.checkbox) {
+          const cb = $(g.id);
+          if (cb && !cb.disabled) {
+            const cv = LS.get(LS_PREFIX+'cb_'+g.id);
+            if (cv !== null) {
+              cb.checked = (cv === '1');
+              const label = document.querySelector('label[for="'+g.id+'"]');
+              if (label) { if (cb.checked) label.classList.add('tamamlandi'); else label.classList.remove('tamamlandi'); }
+            }
           }
+        } else if (d.takipKey) {
+          let needsSum = false;
+          ['gd','gy','gb'].forEach(tip => {
+            const el = $(g.id+'_'+tip);
+            if (el && !el.disabled) {
+              const v = LS.get(LS_PREFIX+'dyb_'+g.id+'_'+tip);
+              if (v !== null && v !== '') { el.value = v; needsSum = true; }
+            }
+          });
+          if (needsSum) gorevDYBDegisti(gun.prefix, d.takipKey);
         }
-      }
-    }));
+      });
+    });
     accBarGuncelle(gun.prefix);
     accSoruGuncelle(gun.prefix);
     guncelleToplam(gun.prefix);
@@ -1633,6 +1753,7 @@ function lsDinleyiciEkle() {
     });
   });
   document.querySelectorAll('.gorev-cb').forEach(el => { el.addEventListener('change', lsKaydetDebounced); });
+  document.querySelectorAll('.gorev-dyb-inp').forEach(el => { el.addEventListener('input', lsKaydetDebounced); });
 }
 
 // ═══════════════════════════════════════════════════════════════════
