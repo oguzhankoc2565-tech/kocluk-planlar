@@ -2695,6 +2695,9 @@ GUNLER.forEach(g => {
   function initSohbet(slug, isim) {
     SLUG  = slug;
     ISIM  = isim;
+    // localStorage'dan son okunma zamanını yükle
+    var ls = localStorage.getItem('sohbet_okunan_' + slug);
+    if (ls) okunanZaman = parseInt(ls) || 0;
     initFirebase();
     firebase.database().ref('sohbet/durum').on('value', function(snap) {
       var acik = snap.val() !== 'kapali';
@@ -2740,7 +2743,7 @@ GUNLER.forEach(g => {
       '</div>';
     }).join('');
     el.scrollTop = el.scrollHeight;
-    if (panelAcik) { okunanZaman = Date.now(); document.getElementById('sohbet-badge').style.display='none'; }
+    if (panelAcik) { okunanZaman = Date.now(); localStorage.setItem('sohbet_okunan_'+SLUG, okunanZaman); document.getElementById('sohbet-badge').style.display='none'; }
   }
 
   function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
@@ -2750,6 +2753,7 @@ GUNLER.forEach(g => {
     document.getElementById('sohbet-panel').classList.toggle('acik', panelAcik);
     if (panelAcik) {
       okunanZaman = Date.now();
+      localStorage.setItem('sohbet_okunan_' + SLUG, okunanZaman);
       document.getElementById('sohbet-badge').style.display = 'none';
       var liste = document.getElementById('sohbet-liste');
       setTimeout(function() { liste.scrollTop = liste.scrollHeight; }, 60);
