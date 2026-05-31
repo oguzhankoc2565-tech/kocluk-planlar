@@ -321,11 +321,12 @@
         motivasyon:  null
       },
       durum: {
-        sonPuan:  h.son_puan,
-        ortalama: h.ortalama,
-        hedef:    h.hedef,
-        gelisim:  h.gelisim_notu || '',
-        netler:   netler
+        sonPuan:    h.son_puan,
+        oncekiPuan: h.onceki_puan,
+        ortalama:   h.ortalama,
+        hedef:      h.hedef,
+        gelisim:    h.gelisim_notu || '',
+        netler:     netler
       },
       gecenHafta: { toplamSoru: null, toplamKitap: null },
       gunlukSoruHedefi: {
@@ -563,7 +564,14 @@ $('dpnt').textContent =
         `<span style="font-size:13px;font-weight:700;color:var(--danger)">${esc(d.gelisim)}</span></div>` +
       `<div class="card-label" style="margin-top:4px">📈 Ders ortalama netlerim &amp; hedeflerim</div>` +
       `<div class="net-kartlar">${netKartlar}</div>` +
-      `<div class="ortalama-notu">⚡ Altın kural: Ne olursa olsun ortalama netinin altına düşme. Her gün biraz, her hafta ileri!</div>` +
+      `${(()=>{
+        const oncP = d.oncekiPuan != null ? parseFloat(d.oncekiPuan) : null;
+        const sonP = d.sonPuan    != null ? parseFloat(d.sonPuan)    : null;
+        if (oncP == null || sonP == null || oncP === 0 || oncP === sonP) return '';
+        const fark = Math.round(sonP - oncP);
+        if (fark > 0) return '<div class="ortalama-notu" style="color:var(--success)">↗ Önceki denemeden ' + fark + ' puan artış — harika!</div>';
+        return '<div class="ortalama-notu" style="color:var(--muted)">Bazen dalgalanmalar olur — öğrenmenin normal parçası.</div>';
+      })()}` +
     `</div>`;
 }());
 
@@ -742,6 +750,14 @@ function takipDersleriHTML(gun, durum) {
   html += `<input class="not-input" type="text" id="${pid}_not" placeholder="Bugünkü notun..." ${dis} aria-label="Günlük not">`;
 
   if (durum === 'aktif') {
+    html += `<div class="hal-soru">` +
+      `<span class="hal-soru-label">Bugün nasıldı?</span>` +
+      `<div class="hal-opts">` +
+        `<label class="hal-opt"><input type="radio" name="${pid}_hal" value="🙂"><span title="İyi">🙂</span></label>` +
+        `<label class="hal-opt"><input type="radio" name="${pid}_hal" value="😐"><span title="İdare eder">😐</span></label>` +
+        `<label class="hal-opt"><input type="radio" name="${pid}_hal" value="😣"><span title="Zorlandım">😣</span></label>` +
+      `</div>` +
+    `</div>`;
     html += `<div class="geri-sayim" id="${pid}_sayim" aria-live="polite">Hesaplanıyor...</div>`;
     html += `<button class="gonder-btn" id="${pid}_btn" data-gun="${esc(gun.ad)}" data-p="${pid}" onclick="gonder(this.dataset.gun,this.dataset.p)">Kaydet</button>`;
   } else if (durum === 'suresi_doldu') {
@@ -1019,10 +1035,15 @@ function gonder(gunAdi, prefix) {
     });
   }
 
+  // P4a: günlük hâl emoji — opsiyonel, seçilmemişse boş gider
+  const halEmojiEl = document.querySelector(`input[name="${prefix}_hal"]:checked`);
+  const halEmoji   = halEmojiEl ? halEmojiEl.value : '';
+
   const veri = Object.assign({
     ogrenciAdi: OGRENCI_ADI, haftaNo: HAFTA_NO, gun: gunAdi,
     kitap: val(prefix+'_kitap'), kitap_adi: strVal(prefix+'_kitap_adi'),
-    not: strVal(prefix+'_not'), konular, gorev_dyb: gorevDybArr
+    not: strVal(prefix+'_not'), konular, gorev_dyb: gorevDybArr,
+    hal_emoji: halEmoji
   }, dersVerisi, gorevBilgisi);
 
   fetch(SCRIPT_URL, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(veri) })
@@ -1682,23 +1703,15 @@ function streakHesapla(gunlerData) {
   return streak;
 }
 
-function renderLgsKarti() {
-  const lgsDate = new Date('2028-06-01');
-  const simdi = trSaati();
-  const bugun = new Date(simdi.getFullYear(), simdi.getMonth(), simdi.getDate());
-  const gunKalan = Math.max(0, Math.ceil((lgsDate - bugun) / 86400000));
-  const haftaKalan = Math.floor(gunKalan / 7);
-  let mesaj, icon;
-  if (gunKalan > 700)      { icon = '🌟'; mesaj = haftaKalan + ' hafta var'; }
-  else if (gunKalan > 365) { icon = '🚀'; mesaj = haftaKalan + ' hafta · odaklan'; }
-  else if (gunKalan > 100) { icon = '⚡'; mesaj = haftaKalan + ' hafta · çalış!'; }
-  else                     { icon = '🏁'; mesaj = gunKalan + ' gün · son sprint!'; }
+function renderBuHaftaKarti() {
+  const haftaNo = CONFIG.ogrenci.haftaNo || '—';
+  const tarih   = CONFIG.ogrenci.tarihAralik || '';
   return `<div class="motiv-card">` +
-    `<div class="motiv-icon" style="background:#ede9fe">${icon}</div>` +
+    `<div class="motiv-icon" style="background:#f0fdf4">📅</div>` +
     `<div class="motiv-info">` +
-      `<div class="motiv-baslik">LGS'ye</div>` +
-      `<div class="motiv-deger">${gunKalan} gün</div>` +
-      `<div class="motiv-altmesaj">${esc(mesaj)}</div>` +
+      `<div class="motiv-baslik">Bu Hafta</div>` +
+      `<div class="motiv-deger">Hafta ${esc(String(haftaNo))}</div>` +
+      `<div class="motiv-altmesaj">${esc(tarih)}</div>` +
     `</div>` +
   `</div>`;
 }
@@ -1731,7 +1744,7 @@ function renderMotivRow(gunlerData) {
   const streak = streakHesapla(gunlerData);
   const buHaftaSoru = (gunlerData||[]).reduce((acc,g) => acc + TUM_DERSLER.reduce((a,k)=>a+(Number(g[k+'_d'])||0)+(Number(g[k+'_y'])||0)+(Number(g[k+'_b'])||0),0), 0);
   const el = $('motiv-row'); if (!el) return;
-  el.innerHTML = renderLgsKarti() + renderStreakKarti(streak) + renderKarsilastirmaKarti(buHaftaSoru);
+  el.innerHTML = renderBuHaftaKarti() + renderStreakKarti(streak) + renderKarsilastirmaKarti(buHaftaSoru);
 }
 
 // ═══════════════════════════════════════════════════════════════════
