@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Sınav Haftası Özel Sayfası</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: 'Nunito', system-ui, sans-serif;
+      background: #f7f5ff;
+      color: #111827;
+      --surface: #ffffff;
+      --surface-2: #f3f4f6;
+      --surface-3: #eef2ff;
+      --border: rgba(15, 23, 42, 0.08);
+      --accent: #5b8ef0;
+      --accent-dark: #3065c2;
+      --success: #16a34a;
+      --warning: #f59e0b;
+      --danger: #dc2626;
+      --text-muted: #6b7280;
+      --radius: 24px;
+      --radius-sm: 16px;
+      --shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body { background: linear-gradient(180deg, #eef2ff 0%, #fbfbff 100%); }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .page { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 24px 0 64px; }
+    .topbar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .topbar-title { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.03em; }
+    .topbar-subtitle { color: var(--text-muted); font-size: 0.95rem; }
+    .topbar-link { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: #ffffff; border: 1px solid var(--border); border-radius: 999px; color: #111827; transition: transform .16s ease, border-color .16s ease; }
+    .topbar-link:hover { transform: translateY(-1px); border-color: #a5b4fc; }
+    .hero { background: radial-gradient(circle at top left, rgba(91, 142, 240, 0.17), transparent 34%), linear-gradient(180deg, #ffffff 0%, #eef2ff 100%); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 30px; display: grid; gap: 20px; }
+    .hero-flag { display: inline-flex; align-items: center; gap: 10px; background: rgba(91, 142, 240, 0.14); color: #1e40af; border-radius: 999px; padding: 9px 14px; font-weight: 700; font-size: 0.92rem; width: fit-content; }
+    .hero-title { font-size: clamp(2rem, 4vw, 3.1rem); line-height: 1.02; letter-spacing: -0.05em; margin: 0; }
+    .hero-copy { font-size: 1rem; line-height: 1.75; color: var(--text-muted); max-width: 740px; }
+    .hero-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .hero-meta-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 18px 20px; }
+    .hero-meta-card strong { display: block; font-size: 0.96rem; margin-bottom: 8px; }
+    .hero-meta-card span { display: block; color: var(--text-muted); font-size: 0.94rem; line-height: 1.5; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 24px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 22px; box-shadow: 0 18px 40px rgba(15,23,42,.05); }
+    .card h2 { margin: 0 0 10px; font-size: 1.1rem; line-height: 1.3; }
+    .card p { margin: 0; color: var(--text-muted); line-height: 1.7; }
+    .mini-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+    .stat-badge { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 14px; background: rgba(91, 142, 240, 0.14); color: #2563eb; font-size: 1.15rem; font-weight: 800; }
+    .stat-block { display: flex; flex-direction: column; gap: 10px; }
+    .stat-title { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; }
+    .stat-value { font-size: 1.85rem; font-weight: 800; color: #111827; line-height: 1; }
+    .stat-caption { color: var(--text-muted); font-size: 0.95rem; }
+    .resource-list, .plan-list, .checklist-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+    .resource-item, .plan-item, .checklist-item { background: var(--surface-2); border-radius: 16px; padding: 16px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; border: 1px solid transparent; transition: border-color .16s ease, transform .16s ease; }
+    .resource-item:hover, .plan-item:hover, .checklist-item:hover { transform: translateY(-1px); border-color: rgba(91, 142, 240, 0.16); }
+    .resource-left { display: grid; gap: 4px; }
+    .resource-label { font-weight: 700; color: #111827; }
+    .resource-meta { color: var(--text-muted); font-size: 0.94rem; }
+    .resource-link { color: var(--accent); font-weight: 700; white-space: nowrap; }
+    .pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(16, 185, 129, .10); color: #047857; border-radius: 999px; padding: 6px 10px; font-size: 0.82rem; font-weight: 700; }
+    .badge { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; background: rgba(59, 130, 246, .12); color: #1d4ed8; font-size: 0.92rem; font-weight: 700; }
+    .tip-card { display: flex; flex-direction: column; gap: 14px; }
+    .tip-card strong { font-size: 1rem; }
+    .tip-list { list-style: none; padding-left: 0; margin-top: 10px; display: grid; gap: 10px; }
+    .tip-item { background: rgba(249, 115, 22, 0.08); border: 1px solid rgba(249, 115, 22, 0.12); border-radius: 16px; padding: 14px 16px; color: #92400e; }
+    .info-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 20px; }
+    .info-panel p { margin: 0; }
+    .footer { margin-top: 30px; color: var(--text-muted); font-size: 0.94rem; display: grid; gap: 10px; }
+    .hint { display: inline-flex; align-items: center; gap: 10px; background: rgba(59, 130, 246, .08); border: 1px solid rgba(59, 130, 246, .16); padding: 14px 16px; border-radius: 18px; color: #1d4ed8; }
+    .loading, .error-box { min-height: 260px; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); box-shadow: var(--shadow); padding: 24px; color: var(--text-muted); }
+    .error-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    @media (max-width: 920px) {
+      .hero-meta, .grid-3, .mini-grid, .info-panel { grid-template-columns: 1fr; }
+      .topbar-link { margin-left: 0; }
+    }
+    @media (max-width: 640px) {
+      .page { width: calc(100% - 24px); padding: 16px 0 48px; }
+      .hero { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Sınav Haftası Özel Sayfası</div>
+        <div class="topbar-subtitle">Her öğrenci kendi verisini bu sayfada görebilir.</div>
+      </div>
+      <a class="topbar-link" href="sablon.html?ogrenci=yakup">Haftalık şablona dön</a>
+    </div>
+    <div id="main-content">
+      <div class="loading" id="loading">Veriler yükleniyor…</div>
+    </div>
+  </div>
+  <script>
+    const API_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbyUvFShqvwvwOlJmVSY8TQFmYoXCqcfu4JFrK3KtzIVMHN9YctZmRpyrfK5AydUNcPd/exec';
+    const RESOURCES = [
+      { label: 'Zamirler Konu Testi 1', file: 'Zamirler-Konu-Testi-1.pdf' },
+      { label: 'Zamirler Konu Testi 2', file: 'Zamirler-Konu-Testi-2.pdf' },
+      { label: 'Zamirler Konu Testi 3', file: 'Zamirler-Konu-Testi-3.pdf' },
+      { label: 'ZAMİRLER -1', file: 'ZAMİRLER -1.pdf' },
+      { label: 'İsimler Konu Testi 2', file: 'Isimler-Konu-Testi-2.pdf' },
+      { label: 'İsimler Konu Testi 3', file: 'Isimler-Konu-Testi-3.pdf' },
+      { label: '6. Sınıf Ses Bilgisi Testi', file: '6. Sınıf Ses Bilgisi Testi-1 (Turkcen Serisi).pdf' },
+      { label: '6. Sınıf Sıfatlar Fasikülü', file: '6.Sınıf Sıfatlar Fasikülü.pdf' },
+      { label: 'Fen 2. Dönem Yazılı', file: '6_Fen_2.Donem_2. Yazili (1).pdf' },
+      { label: '6 İsimler Dokümanı', file: '6 İSİMLER.docx' }
+    ];
+    const EXAM_TIPS = [
+      'Önce en zor konuyu seç, sonra daha kolaylarına geç. Beyin sabah daha taze çalışır.',
+      'Soru çözerken işaretlemeyi unutma: yanlış olanları tekrar gör, doğruları pekiştir.',
+      'Her testin sonunda 3 ana hata türünü yaz: dikkat, konu, zaman yönetimi.',
+      'Her gün 10 dakika kendi sesini duyur. Okuduğunu anlamak hızını artırır.'
+    ];
+    const CHECKPOINTS = [
+      'Bugün 2 kısa test çöz ve süreni not et.',
+      'Soru bankasından 1 konu tekrar yap.',
+      'Önceki denemeden bir hatanı seç ve çözümünü yaz.',
+      'Gece çantanı hazırla: kalem, silgi, su, kimlik.',
+      'Sınavdan önce 5 dakika derin nefes al, rahatla.'
+    ];
+    const GUN_JS = { 'Pazar':0, 'Pazartesi':1, 'Salı':2, 'Çarşamba':3, 'Perşembe':4, 'Cuma':5, 'Cumartesi':6 };
+    const params = new URLSearchParams(location.search);
+    const slug = (params.get('ogrenci') || '').trim().toLowerCase();
+    const hafta = (params.get('hafta') || '').trim();
+    const apiOverride = (params.get('api') || '').trim();
+    const API_URL = apiOverride || API_URL_DEFAULT;
+
+    const main = document.getElementById('main-content');
+    const loading = document.getElementById('loading');
+
+    function showError(title, message) {
+      main.innerHTML = `<div class="error-box"><div class="error-title">${title}</div><div>${message}</div></div>`;
+    }
+
+    function setLoading(text) {
+      if (loading) loading.textContent = text;
+    }
+
+    if (!slug) {
+      showError('Öğrenci belirtilmedi', 'URL sonuna ?ogrenci=slug eklemeniz gerekiyor. Örneğin: sinav-haftasi.html?ogrenci=yakup');
+    } else {
+      loadStudent();
+    }
+
+    function loadStudent() {
+      setLoading('Öğrenci verisi alınıyor...');
+      const sep = API_URL.indexOf('?') >= 0 ? '&' : '?';
+      let url = API_URL + sep + 'istek=ogrenciSayfasi&ogrenci=' + encodeURIComponent(slug);
+      if (hafta) url += '&hafta=' + encodeURIComponent(hafta);
+      fetch(url)
+        .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.text(); })
+        .then(text => JSON.parse(text))
+        .then(data => {
+          if (data.durum && data.durum !== 'basarili') throw new Error(data.mesaj || 'Sunucu hatası');
+          if (!data.ogrenci || !data.hafta) throw new Error('Eksik veri: ogrenci veya hafta bilgisi.');
+          renderStudent(buildConfig(data));
+        })
+        .catch(err => {
+          showError('Veri yüklenemedi', err.message || 'Sunucuya bağlanırken sorun oluştu.');
+          console.error(err);
+        });
+    }
+
+    function parseDate(value) {
+      if (!value) return null;
+      const m = String(value).match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (!m) return null;
+      return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+    }
+
+    function utcToLocalYMD(date) {
+      if (!date) return '';
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      return `${day}.${month}.${year}`;
+    }
+
+    function buildConfig(data) {
+      const o = data.ogrenci || {};
+      const h = data.hafta || {};
+      const netler = data.netler || {};
+      const baslangic = parseDate(h.baslangic_tarih);
+      const baslangicGun = baslangic ? baslangic.getDay() : 1;
+      const gunler = [];
+      Object.keys(data.gunler || {}).forEach(gunAd => {
+        const raw = Array.isArray(data.gunler[gunAd]) ? data.gunler[gunAd] : [];
+        if (!raw.length || GUN_JS[gunAd] === undefined) return;
+        const sirali = raw.slice().sort((a,b) => (a.sira || 0) - (b.sira || 0));
+        const dersler = [];
+        let current = null;
+        sirali.forEach(row => {
+          const kod = row.ders_kod || 'kit';
+          if (!current || current._kod !== kod) {
+            if (current) { delete current._kod; dersler.push(current); }
+            current = {
+              _kod: kod,
+              cls: 'ders-' + kod,
+              ad: row.ders_baslik || kod,
+              takipKey: kod === 'kit' ? null : kod,
+              gorevler: []
+            };
+          }
+          const gorev = { metin: row.gorev_metin || '' };
+          if (row.checkbox_mu) gorev.checkbox = true;
+          if (row.konu) gorev.konu = row.konu;
+          if (row.kazanim_kodlar) gorev.kazanimKodlar = row.kazanim_kodlar;
+          current.gorevler.push(gorev);
+        });
+        if (current) { delete current._kod; dersler.push(current); }
+        let tarih = null;
+        if (baslangic) {
+          const offset = (GUN_JS[gunAd] - baslangicGun + 7) % 7;
+          tarih = new Date(baslangic);
+          tarih.setDate(baslangic.getDate() + offset);
+        }
+        gunler.push({ ad: gunAd, tarih, dersler });
+      });
+      gunler.sort((a,b) => (GUN_JS[a.ad] || 0) - (GUN_JS[b.ad] || 0));
+      return {
+        ogrenci: {
+          ad: o.ad || '',
+          sinif: o.sinif || '',
+          haftaNo: String(o.aktif_hafta != null ? o.aktif_hafta : (h.no || '')),
+          tarihAralik: h.tarih_aralik || '',
+          rozetler: Array.isArray(o.rozetler) ? o.rozetler : [],
+          ekstraBaslik: o.sayfa_baslik || ''
+        },
+        durum: {
+          sonPuan: h.son_puan,
+          ortalama: h.ortalama,
+          hedef: h.hedef,
+          gelisim: h.gelisim_notu || '',
+          netler: {
+            tur: netler.tur || null,
+            sos: netler.sos || null,
+            din: netler.din || null,
+            ing: netler.ing || null,
+            mat: netler.mat || null,
+            fen: netler.fen || null
+          }
+        },
+        hedefler: {
+          paragraf: h.paragraf_hedef || '',
+          kitap: h.kitap_hedef || '',
+          gunlukSoru: (h.gunluk_soru_min != null && h.gunluk_soru_max != null)
+            ? `${h.gunluk_soru_min}–${h.gunluk_soru_max} soru / gün` : '',
+          odak: h.odak || ''
+        },
+        koc: {
+          degerlendirme: h.koc_degerlendirme || '',
+          haftalikNot: h.koc_haftalik_not || ''
+        },
+        gunler,
+        _meta: { ham: data }
+      };
+    }
+
+    function safeHTML(value) {
+      const div = document.createElement('div');
+      div.textContent = value || '';
+      return div.innerHTML;
+    }
+
+    function buildResourceUrl(filename) {
+      return 'sinav-haftasi/' + encodeURIComponent(filename);
+    }
+
+    function getCurrentDayName() {
+      const today = new Date();
+      return Object.keys(GUN_JS).find(key => GUN_JS[key] === today.getDay()) || '';
+    }
+
+    function findTodayTasks(cfg) {
+      const todayName = getCurrentDayName();
+      const todayEntry = cfg.gunler.find(g => g.ad === todayName);
+      return todayEntry || cfg.gunler[0] || null;
+    }
+
+    function renderStudent(cfg) {
+      document.title = `Sınav Haftası · ${cfg.ogrenci.ad}`;
+      const today = findTodayTasks(cfg);
+      const selectedTip = EXAM_TIPS[Math.floor(Math.random() * EXAM_TIPS.length)];
+      const resourceHtml = RESOURCES.map(item => `
+        <li class="resource-item">
+          <div class="resource-left">
+            <div class="resource-label">${safeHTML(item.label)}</div>
+            <div class="resource-meta">Kaynak dosya</div>
+          </div>
+          <a class="resource-link" href="${buildResourceUrl(item.file)}" target="_blank" rel="noreferrer noopener">Aç / İndir</a>
+        </li>`).join('');
+      const todayTasksHtml = today && today.dersler.length > 0
+        ? today.dersler.map(ders => `
+            <li class="plan-item">
+              <div class="resource-left">
+                <div class="resource-label">${safeHTML(ders.ad)}</div>
+                <div class="resource-meta">${ders.gorevler.map(g => safeHTML(g.metin)).filter(Boolean).join(' · ')}</div>
+              </div>
+              <span class="pill">${ders.gorevler.length} görev</span>
+            </li>`).join('')
+        : '<li class="plan-item"><div class="resource-left"><div class="resource-label">Bugün için bir görev bulunamadı.</div><div class="resource-meta">Haftalık plandaki ilk günün görevlerini inceleyin.</div></div></li>';
+      const checklistHtml = CHECKPOINTS.map(item => `<li class="checklist-item">${safeHTML(item)}</li>`).join('');
+      const rozetlerHtml = (cfg.ogrenci.rozetler || []).map(pair => ` <span class="pill">${safeHTML(pair[0])}</span>`).join('');
+      main.innerHTML = `
+        <div class="hero">
+          <div class="hero-flag">Sınav Haftası</div>
+          <h1 class="hero-title">${safeHTML(cfg.ogrenci.ad)} için özel hazırlık sayfası</h1>
+          <p class="hero-copy">Bu hafta, hem çalışma hem de motivasyon dengesi üzerine kurulu. Senin için seçilmiş kısa hedefler, bugün çözmen gereken konular ve en önemli sınav kaynakları burada.</p>
+          <div class="hero-meta-card">
+            <strong>${safeHTML(cfg.ogrenci.sinif || 'Sınıf bilgisi yok')}</strong>
+            <span>Hafta ${safeHTML(cfg.ogrenci.haftaNo)} · ${safeHTML(cfg.ogrenci.tarihAralik)}</span>
+          </div>
+          <div class="hero-meta-card">
+            <strong>Bugünün odağı</strong>
+            <span>${safeHTML(cfg.hedefler.odak || 'Bugünün odak konusu henüz belirlenmedi.')}</span>
+          </div>
+          <div class="hero-meta-card">
+            <strong>Haftalık hedef</strong>
+            <span>${safeHTML(cfg.hedefler.gunlukSoru || 'Günlük soru hedefi bulunmuyor.')}</span>
+          </div>
+          <div class="hero-meta-card">
+            <strong>Günlük not</strong>
+            <span>${safeHTML(selectedTip)}</span>
+          </div>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <h2>Hemen açman gereken 3 adım</h2>
+            <p>Bugün sınav haftası için önceliğin soru çözmek, hataları not etmek ve ara molayı planlamak olsun.</p>
+            <div class="mini-grid">
+              <div class="stat-block"><span class="stat-title">Deneme puan</span><span class="stat-value">${cfg.durum.sonPuan != null ? safeHTML(String(cfg.durum.sonPuan)) : '—'}</span><span class="stat-caption">Son sonuç</span></div>
+              <div class="stat-block"><span class="stat-title">Ortalama</span><span class="stat-value">${cfg.durum.ortalama != null ? safeHTML(String(cfg.durum.ortalama)) : '—'}</span><span class="stat-caption">Geçen denemelere göre</span></div>
+              <div class="stat-block"><span class="stat-title">Hedef</span><span class="stat-value">${cfg.durum.hedef != null ? safeHTML(String(cfg.durum.hedef)) : '—'}</span><span class="stat-caption">Bir sonraki puan</span></div>
+            </div>
+          </div>
+          <div class="card tip-card">
+            <strong>Bugünün Hızlı Sınav Tüyosu</strong>
+            <p>${safeHTML(selectedTip)}</p>
+            <ul class="tip-list">
+              <li class="tip-item">Sınav görevi bitince önce yanlışını kontrol et, sonra yeni soru çöz.</li>
+              <li class="tip-item">5 dakikalık kısa mola ver, sonra tekrar aynı konuya bak.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h2>Kaynaklarla hızlı açılım</h2>
+            <p>Yanına alman gereken PDF’ler ve test dosyaları. Bu hafta sınavda kullanabileceğin ana kaynakları buradan aç.</p>
+            <ul class="resource-list">${resourceHtml}</ul>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Bugünün planı: ${safeHTML(today ? today.ad : 'Hafta planı')}</h2>
+          <p>Bugün hangi derse odaklanman gerektiğini görmek için aşağıya bak.</p>
+          <ul class="plan-list">${todayTasksHtml}</ul>
+        </div>
+        <div class="card">
+          <h2>Sınav Haftası Checklist</h2>
+          <ul class="checklist-list">${checklistHtml}</ul>
+        </div>
+        <div class="info-panel">
+          <div class="card">
+            <h2>Koçtan not</h2>
+            <p>${safeHTML(cfg.koc.degerlendirme || cfg.koc.haftalikNot || 'Bu hafta için koç notu girilmedi.')}</p>
+          </div>
+          <div class="card">
+            <h2>Hızlı ipucu</h2>
+            <p>Her gün en az bir kez cevabı kontrol et ve yanlış işaretlediğin soru tiplerini listele. Bu, sınavda panik yerine akıllı bir geri dönüş sağlar.</p>
+          </div>
+        </div>
+        <div class="footer">
+          <div class="hint">Bu sayfayı paylaşmak için: <code>sinav-haftasi.html?ogrenci=${encodeURIComponent(slug)}</code></div>
+          <div>Sayfayı GitHub'a eklediğinde, her öğrenci kendi slug’ı ile giriş yaparak özel sınav haftası içeriğini görüntüleyebilir.</div>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
