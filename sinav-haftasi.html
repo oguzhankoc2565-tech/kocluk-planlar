@@ -214,6 +214,27 @@
     .pomo-btn2:hover { background:#ede9fe; color:#7c3aed; border-color:#c4b5fd; }
     .pomo-start { background:linear-gradient(135deg,#7c3aed,#6d28d9); color:#fff; border-color:transparent; }
     .pomo-start:hover { opacity:.88; background:linear-gradient(135deg,#7c3aed,#6d28d9); }
+    /* header butonları */
+    .pomo-hd-btns { display:flex; align-items:center; gap:5px; }
+    .pomo-hd-btn { background:rgba(255,255,255,.18); border:none; color:#fff; width:26px; height:26px; border-radius:7px; cursor:pointer; font-size:.85rem; display:grid; place-items:center; transition:background .15s; line-height:1; flex-shrink:0; }
+    .pomo-hd-btn:hover { background:rgba(255,255,255,.34); }
+    /* mini mod */
+    #pomo-panel.mini { width: 170px; }
+    #pomo-panel.mini .pomo-cycle-lbl,
+    #pomo-panel.mini .pomo-btns { display:none; }
+    #pomo-panel.mini .pomo-body { padding:10px 14px 12px; }
+    #pomo-panel.mini .pomo-ring-wrap { cursor:pointer; margin-bottom:0; }
+    #pomo-panel.mini .pomo-ring-wrap:hover { opacity:.85; }
+    /* bitiş animasyonları */
+    .pomo-ring-wrap.flash { animation:pomoFlash .45s ease-in-out 4; }
+    @keyframes pomoFlash { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1);opacity:.75} }
+    .pomo-ring-fill.pulsing { animation:ringPulse .55s ease-in-out 4; }
+    @keyframes ringPulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+    .pomo-done-em { position:absolute; inset:0; display:grid; place-items:center; font-size:2rem; animation:popIn .35s cubic-bezier(.34,1.56,.64,1); pointer-events:none; z-index:2; }
+    @keyframes popIn { 0%{transform:scale(0);opacity:0} 70%{transform:scale(1.25)} 100%{transform:scale(1);opacity:1} }
+    /* glow halka çalışırken */
+    #pomo-ring { filter:drop-shadow(0 0 4px rgba(124,58,237,.5)); }
+    #pomo-ring.brk { filter:drop-shadow(0 0 4px rgba(16,185,129,.5)); }
     /* sınav günü not alanı */
     .exam-note-btn { width:24px; height:24px; border-radius:6px; border:1.5px solid #e2e8f0; background:#f8faff; cursor:pointer; display:grid; place-items:center; font-size:.78rem; flex-shrink:0; transition:all .15s; color:#94a3b8; }
     .exam-note-btn:hover { background:#ede9fe; border-color:#c4b5fd; color:#7c3aed; }
@@ -416,10 +437,14 @@
 <div id="pomo-panel">
   <div class="pomo-hd">
     <div class="pomo-hd-left"><h4>⏱️ Pomodoro</h4></div>
-    <span class="pomo-mode-chip" id="pomo-mode">Hazır</span>
+    <div class="pomo-hd-btns">
+      <span class="pomo-mode-chip" id="pomo-mode">Hazır</span>
+      <button class="pomo-hd-btn" id="pomo-mini-btn" onclick="pomoMiniToggle()" title="Küçült / Büyüt">−</button>
+      <button class="pomo-hd-btn" onclick="pomoKapat()" title="Kapat">×</button>
+    </div>
   </div>
   <div class="pomo-body">
-    <div class="pomo-ring-wrap">
+    <div class="pomo-ring-wrap" id="pomo-ring-wrap" onclick="if(document.getElementById('pomo-panel').classList.contains('mini'))pomoMiniToggle()">
       <svg class="pomo-svg" viewBox="0 0 100 100">
         <circle class="pomo-ring-bg"   cx="50" cy="50" r="42"/>
         <circle class="pomo-ring-fill" cx="50" cy="50" r="42" id="pomo-ring"/>
@@ -1081,6 +1106,17 @@ function pomoToggle(){
   document.getElementById('pomo-panel').classList.toggle('acik',POMO.open);
   pomoRenderFull();
 }
+window.pomoKapat=function(){
+  POMO.open=false;
+  document.getElementById('pomo-panel').classList.remove('acik');
+};
+var POMO_MINI=false;
+window.pomoMiniToggle=function(){
+  POMO_MINI=!POMO_MINI;
+  document.getElementById('pomo-panel').classList.toggle('mini',POMO_MINI);
+  var mb=document.getElementById('pomo-mini-btn');
+  if(mb) mb.textContent=POMO_MINI?'+':'−';
+};
 
 function pomoStartPause(){
   if(POMO.state==='idle') POMO.state='work';
@@ -1122,6 +1158,31 @@ function pomoBeep(){
       osc.start(t); osc.stop(t+0.55);
     });
   }catch(e){}
+  /* bitiş animasyonu — POMO.state henüz değişmedi, doğru prevState burada */
+  var _prevState = POMO.state;
+  setTimeout(function(){ pomoFinishAnim(_prevState); }, 50);
+}
+function pomoFinishAnim(prevState){
+  var wrap=document.getElementById('pomo-ring-wrap');
+  var ring=document.getElementById('pomo-ring');
+  if(!wrap) return;
+  /* renk flash */
+  wrap.classList.add('flash');
+  if(ring) ring.classList.add('pulsing');
+  /* emoji overlay */
+  var em=document.createElement('div');
+  em.className='pomo-done-em';
+  em.textContent=prevState==='work'?'☕':'📚';
+  wrap.appendChild(em);
+  /* mini modda ise büyüt ki animasyon görünsün */
+  if(POMO_MINI){ POMO_MINI=false; document.getElementById('pomo-panel').classList.remove('mini'); var mb=document.getElementById('pomo-mini-btn'); if(mb)mb.textContent='−'; }
+  /* paneli aç */
+  if(!POMO.open){ POMO.open=true; document.getElementById('pomo-panel').classList.add('acik'); pomoRenderFull(); }
+  setTimeout(function(){
+    wrap.classList.remove('flash');
+    if(ring) ring.classList.remove('pulsing');
+    if(em.parentNode) em.parentNode.removeChild(em);
+  },2000);
 }
 
 function pomoRenderFull(){
