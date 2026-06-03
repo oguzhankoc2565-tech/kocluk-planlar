@@ -156,9 +156,14 @@
     .sc-prog-fill  { height:100%; background:linear-gradient(90deg,#10b981,#34d399); border-radius:999px; transition:width .3s; }
 
     /* ── ÇALIŞMA MATERYALLERİ ── */
-    .study-grid { display:grid; grid-template-columns:230px 1fr; gap:14px; align-items:start; }
-    .study-list-card { background:#fff; border-radius:var(--r); box-shadow:var(--shadow); overflow:hidden; }
-    .study-list-hd { background:linear-gradient(90deg,#1e3a5f,#1d4ed8); padding:12px 14px; color:#fff; font-size:.82rem; font-weight:800; display:flex; align-items:center; gap:6px; }
+    .study-grid { display:grid; grid-template-columns:230px 1fr; gap:14px; align-items:stretch; }
+    .study-list-card { background:#fff; border-radius:var(--r); box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column; }
+    .study-list-hd { background:linear-gradient(90deg,#1e3a5f,#1d4ed8); padding:12px 14px; color:#fff; font-size:.82rem; font-weight:800; display:flex; align-items:center; gap:6px; flex-shrink:0; }
+    #study-list { flex:1; overflow-y:auto; }
+    #study-list::-webkit-scrollbar { width:5px; }
+    #study-list::-webkit-scrollbar-track { background:transparent; }
+    #study-list::-webkit-scrollbar-thumb { background:#e2e8f0; border-radius:999px; }
+    #study-list::-webkit-scrollbar-thumb:hover { background:#c7d2fe; }
     .study-item { display:flex; align-items:flex-start; gap:10px; padding:11px 13px; cursor:pointer; border-bottom:1px solid #f1f5f9; transition:background .12s; }
     .study-item:last-child { border-bottom:none; }
     .study-item:hover:not(.disabled) { background:#f5f3ff; }
@@ -168,7 +173,7 @@
     .study-item-title { font-weight:800; font-size:.82rem; color:#1e293b; line-height:1.2; }
     .study-item-sub { font-size:.7rem; color:#64748b; margin-top:2px; line-height:1.4; }
     .study-item-tag { display:inline-block; margin-top:4px; font-size:.65rem; font-weight:800; padding:2px 7px; border-radius:999px; }
-    .study-viewer-card { background:#fff; border-radius:var(--r); box-shadow:var(--shadow); overflow:hidden; }
+    .study-viewer-card { background:#fff; border-radius:var(--r); box-shadow:var(--shadow); overflow:hidden; min-height:340px; }
     .study-viewer-hd { padding:11px 16px; background:#f8faff; border-bottom:1px solid #f1f5f9; font-size:.84rem; font-weight:800; color:#1e293b; display:flex; align-items:center; gap:8px; }
     .study-viewer-hd-sub { font-size:.74rem; font-weight:600; color:#64748b; margin-left:auto; }
     #study-viewer-body { position:relative; }
@@ -947,6 +952,27 @@ const STUDY_RESOURCES = [
     baslik:"Anadolu'nun Türkleşmesi ve İslamlaşması",
     aciklama:'Senaryo konusu — Okuma ve çalışma dokümanı',
     sure:'PDF', url:"sinav-haftasi/Anadolu'nun Türkleşmesi ve İslamlaşması.pdf",
+    tag:'Sosyal', tagRenk:'#ede9fe', tagText:'#7c3aed'
+  },
+  {
+    id:'sm1c', tur:'video', ders:'sos', em:'🎬',
+    baslik:'Yönetimin Karar Alma Sürecini Etkileyen Unsurlar',
+    aciklama:'Yaşayan Demokrasimiz — Senaryo konusu',
+    sure:'Video', url:'https://www.youtube.com/watch?v=Vq6bzbpB8DE',
+    tag:'Sosyal', tagRenk:'#ede9fe', tagText:'#7c3aed'
+  },
+  {
+    id:'sm1d', tur:'video', ders:'sos', em:'🎬',
+    baslik:'5. Senaryo Örneği ve Çözümleri',
+    aciklama:'2. Dönem 2. Yazılı — Senaryo 5',
+    sure:'Video', url:'https://www.youtube.com/watch?v=qm4ONb3ly8g',
+    tag:'Sosyal', tagRenk:'#ede9fe', tagText:'#7c3aed'
+  },
+  {
+    id:'sm1e', tur:'video', ders:'sos', em:'🎬',
+    baslik:'Tonguç — 2. Dönem 2. Yazılı Hazırlık',
+    aciklama:'Sosyal Bilgiler genel tekrar',
+    sure:'Video', url:'https://www.youtube.com/watch?v=xfQNbw8kPN0',
     tag:'Sosyal', tagRenk:'#ede9fe', tagText:'#7c3aed'
   },
   {
