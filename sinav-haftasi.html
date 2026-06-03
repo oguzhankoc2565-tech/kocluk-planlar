@@ -4,392 +4,804 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <title>Sınav Haftası Özel Sayfası</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <title>Sınav Haftası 🎯</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800&display=swap" rel="stylesheet">
   <style>
     :root {
-      color-scheme: light;
-      font-family: 'Nunito', system-ui, sans-serif;
-      background: #fdf2f8;
-      color: #111827;
-      --surface: #ffffff;
-      --surface-soft: #f8fafc;
-      --surface-glow: rgba(59, 130, 246, .12);
-      --border: rgba(148, 163, 184, .18);
-      --accent: #7c3aed;
-      --accent-soft: #eef2ff;
-      --success: #14b8a6;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --text-muted: #475569;
-      --radius: 28px;
-      --radius-sm: 18px;
-      --shadow: 0 28px 70px rgba(15, 23, 42, .12);
+      --mat: #2563eb; --mat-bg: #dbeafe;
+      --fen: #059669; --fen-bg: #d1fae5;
+      --tur: #d97706; --tur-bg: #fef3c7;
+      --sos: #7c3aed; --sos-bg: #ede9fe;
+      --ing: #e11d48; --ing-bg: #ffe4e6;
+      --din: #0891b2; --din-bg: #cffafe;
+      --ara: #047857; --ara-bg: #ccfbf1;
+      --dkab:#be185d; --dkab-bg:#fce7f3;
+      --kur: #ea580c; --kur-bg: #ffedd5;
+      --hz:  #0f766e; --hz-bg:  #ccfbf1;
+      --tdb: #6d28d9; --tdb-bg: #ede9fe;
+      --shadow: 0 2px 20px rgba(15,23,42,.07);
+      --shadow-md: 0 8px 36px rgba(15,23,42,.13);
     }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; min-height: 100%; }
-    body { background: radial-gradient(circle at top left, rgba(236, 72, 153, .12), transparent 22%), linear-gradient(180deg, #fdf2f8 0%, #eff6ff 48%, #ffffff 100%); }
-    body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(135deg, rgba(59, 130, 246, .05) 0%, transparent 30%), radial-gradient(circle at 20% 20%, rgba(249, 115, 22, .08) 0%, transparent 12%), radial-gradient(circle at 85% 10%, rgba(236, 72, 153, .1) 0%, transparent 16%); pointer-events: none; }
-    a { color: inherit; text-decoration: none; }
-    button { font: inherit; }
-    .page { width: min(1180px, calc(100% - 36px)); margin: 0 auto; padding: 24px 0 64px; position: relative; z-index: 1; }
-    .topbar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 18px; }
-    .topbar-title { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.03em; color: #7c3aed; }
-    .topbar-subtitle { color: #9333ea; font-size: 0.95rem; }
-    .topbar-link { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; background: linear-gradient(135deg, #6d28d9, #22d3ee); color: #fff; border-radius: 999px; box-shadow: 0 20px 40px rgba(59, 130, 246, .18); transition: transform .18s ease; }
-    .topbar-link:hover { transform: translateY(-2px); }
-    .hero { position: relative; overflow: hidden; background: linear-gradient(135deg, #fff7ed 0%, #ede9fe 45%, #ecfeff 100%); border: 1px solid rgba(167, 139, 250, .18); border-radius: 34px; box-shadow: 0 35px 90px rgba(124, 58, 237, .12); padding: 34px 36px; display: grid; gap: 22px; }
-    .hero::before, .hero::after { content: ''; position: absolute; border-radius: 50%; opacity: .38; }
-    .hero::before { width: 160px; height: 160px; top: -40px; right: -40px; background: radial-gradient(circle, rgba(59,130,246,.35), transparent 65%); }
-    .hero::after { width: 220px; height: 220px; bottom: -80px; left: -90px; background: radial-gradient(circle, rgba(236,72,153,.25), transparent 62%); }
-    .hero-flag { display: inline-flex; align-items: center; gap: 10px; background: rgba(236, 72, 153, .15); color: #9d174d; border-radius: 999px; padding: 11px 16px; font-weight: 800; font-size: 0.95rem; width: fit-content; z-index: 1; }
-    .hero-title { position: relative; z-index: 1; margin: 0; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.02; letter-spacing: -0.05em; color: #312e81; }
-    .hero-copy { position: relative; z-index: 1; font-size: 1rem; line-height: 1.75; color: #475569; max-width: 720px; }
-    .hero-pills { display: flex; flex-wrap: wrap; gap: 10px; z-index: 1; }
-    .hero-pill { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 999px; background: rgba(79, 70, 229, .1); color: #4338ca; font-size: 0.92rem; font-weight: 700; }
-    .hero-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 8px; z-index: 1; }
-    .hero-card { border-radius: 26px; padding: 22px; background: rgba(255,255,255,.94); border: 1px solid rgba(255,255,255,.9); box-shadow: 0 22px 45px rgba(15, 23, 42, .08); display: grid; gap: 10px; }
-    .hero-card strong { display: block; font-size: 0.9rem; color: #7c3aed; text-transform: uppercase; letter-spacing: .08em; }
-    .hero-card span { display: block; font-size: 1.25rem; font-weight: 800; line-height: 1.1; color: #111827; }
-    .hero-card small { color: #6b7280; font-size: .95rem; line-height: 1.55; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 18px; }
-    .card { background: #fff; border: 1px solid rgba(148, 163, 184, .18); border-radius: 30px; padding: 24px; box-shadow: 0 20px 48px rgba(15, 23, 42, .08); }
-    .card h2 { margin: 0 0 12px; font-size: 1.3rem; line-height: 1.2; color: #111827; }
-    .card p { margin: 0; color: #475569; line-height: 1.75; }
-    .stat-block { display: grid; gap: 10px; padding: 18px; border-radius: 24px; background: linear-gradient(145deg, rgba(59, 130, 246, .09), rgba(124, 58, 237, .08)); }
-    .stat-title { font-size: .92rem; font-weight: 700; color: #4338ca; }
-    .stat-value { font-size: 2rem; font-weight: 800; color: #111827; }
-    .stat-caption { color: #475569; font-size: .95rem; }
-    .resource-list, .plan-list, .checklist-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
-    .resource-item, .plan-item, .checklist-item { position: relative; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); border-radius: 22px; padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px; border: 1px solid rgba(148, 163, 184, .18); transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
-    .resource-item:hover, .plan-item:hover, .checklist-item:hover { transform: translateY(-2px); border-color: rgba(59, 130, 246, .28); box-shadow: 0 18px 35px rgba(59, 130, 246, .1); }
-    .resource-left { display: grid; gap: 4px; min-width: 0; }
-    .resource-label { font-weight: 800; font-size: 1rem; color: #111827; }
-    .resource-meta { color: #64748b; font-size: .95rem; line-height: 1.5; }
-    .resource-link { color: #4338ca; font-weight: 700; white-space: nowrap; }
-    .plan-item .resource-label, .checklist-item .resource-label { font-size: 1rem; }
-    .pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(236, 72, 153, .12); color: #be185d; border-radius: 999px; padding: 8px 12px; font-size: .82rem; font-weight: 700; }
-    .pill.green { background: rgba(5, 150, 105, .12); color: #047857; }
-    .pill.blue { background: rgba(59, 130, 246, .12); color: #1d4ed8; }
-    .tip-card { display: flex; flex-direction: column; gap: 14px; }
-    .tip-card strong { font-size: 1.05rem; color: #7c3aed; }
-    .tip-list { list-style: none; padding-left: 0; margin: 0; display: grid; gap: 10px; }
-    .tip-item { display: flex; align-items: flex-start; gap: 10px; background: rgba(249, 115, 22, .08); border: 1px solid rgba(249, 115, 22, .15); border-radius: 18px; padding: 14px 16px; color: #92400e; font-size: .95rem; }
-    .tip-item::before { content: '⚡'; display: inline-flex; align-items: center; justify-content: center; margin-top: 2px; }
-    .info-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
-    .info-panel .card { min-height: 180px; }
-    .footer { margin-top: 32px; color: #475569; font-size: .95rem; display: grid; gap: 10px; }
-    .hint { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px; background: rgba(59, 130, 246, .08); border: 1px solid rgba(59, 130, 246, .16); padding: 16px 18px; border-radius: 20px; color: #1d4ed8; }
-    .loading, .error-box { min-height: 240px; display: grid; place-items: center; background: #fff; border: 1px solid rgba(148, 163, 184, .18); border-radius: 28px; box-shadow: 0 18px 40px rgba(15, 23, 42, .08); padding: 24px; color: #475569; }
-    .error-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
-    .sparkle { position: absolute; width: 14px; height: 14px; border-radius: 999px; background: rgba(249, 115, 22, .95); box-shadow: 0 0 12px rgba(249, 115, 22, .35); animation: float 5s ease-in-out infinite alternate; }
-    .sparkle:nth-child(1) { top: 18%; left: 12%; animation-delay: 0s; }
-    .sparkle:nth-child(2) { top: 10%; right: 20%; background: rgba(59, 130, 246, .95); animation-delay: 1.2s; }
-    .sparkle:nth-child(3) { bottom: 18%; left: 18%; background: rgba(236, 72, 153, .95); animation-delay: 0.6s; }
-    .sparkle:nth-child(4) { bottom: 14%; right: 16%; background: rgba(16, 185, 129, .95); animation-delay: 1.8s; }
-    @keyframes float { to { transform: translateY(-12px); opacity: .75; } }
-    @media (max-width: 980px) { .hero-grid, .grid-3, .info-panel { grid-template-columns: 1fr; } .topbar-link { margin-left: 0; } }
-    @media (max-width: 680px) { .page { width: calc(100% - 24px); padding: 16px 0 48px; } .hero { padding: 22px; } .hero-title { font-size: 2.2rem; } }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Nunito', system-ui, sans-serif;
+      background: #f0f4ff;
+      color: #1e293b;
+      min-height: 100vh;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(140deg, #1e1b4b 0%, #3730a3 45%, #1d4ed8 100%);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      padding-bottom: 32px;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 10% 20%,  rgba(99,102,241,.4)  0%, transparent 35%),
+        radial-gradient(circle at 90% 80%,  rgba(6,182,212,.3)   0%, transparent 30%),
+        radial-gradient(circle at 80% 10%,  rgba(236,72,153,.25) 0%, transparent 25%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: rgba(99,102,241,.15);
+      top: -100px; right: -80px;
+      pointer-events: none;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 18px 28px;
+      position: relative;
+      z-index: 2;
+    }
+    .topbar-brand { display: flex; align-items: center; gap: 12px; }
+    .topbar-logo {
+      width: 42px; height: 42px;
+      background: rgba(255,255,255,.18);
+      border: 1.5px solid rgba(255,255,255,.28);
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      font-size: 1.35rem;
+      backdrop-filter: blur(8px);
+    }
+    .topbar-eyebrow { font-size: .78rem; font-weight: 700; opacity: .65; text-transform: uppercase; letter-spacing: .1em; }
+    .topbar-name    { font-size: 1.1rem; font-weight: 900; line-height: 1; }
+    .topbar-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.15);
+      border: 1.5px solid rgba(255,255,255,.25);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: .88rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background .18s;
+    }
+    .topbar-back:hover { background: rgba(255,255,255,.28); }
+
+    /* countdown */
+    .cd-wrap {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 16px 28px 36px;
+    }
+    .cd-eyebrow {
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      opacity: .6;
+      margin-bottom: 10px;
+    }
+    .cd-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,.16);
+      border: 1.5px solid rgba(255,255,255,.28);
+      border-radius: 999px;
+      padding: 11px 22px;
+      font-size: clamp(.95rem, 3vw, 1.55rem);
+      font-weight: 900;
+      margin-bottom: 24px;
+      backdrop-filter: blur(8px);
+    }
+    .cd-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 0 4px rgba(74,222,128,.3);
+      animation: blink 1.6s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes blink { 0%,100%{ box-shadow:0 0 0 4px rgba(74,222,128,.3)} 50%{box-shadow:0 0 0 8px rgba(74,222,128,.1)} }
+    .cd-digits {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .cd-unit {
+      background: rgba(255,255,255,.13);
+      border: 1.5px solid rgba(255,255,255,.22);
+      border-radius: 18px;
+      padding: 14px 18px;
+      min-width: 80px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+    .cd-num {
+      display: block;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 900;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .cd-lbl {
+      display: block;
+      font-size: .66rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      opacity: .68;
+      margin-top: 4px;
+    }
+    .cd-sep {
+      font-size: 2.2rem;
+      font-weight: 900;
+      opacity: .35;
+      align-self: flex-start;
+      margin-top: 10px;
+    }
+    .cd-over {
+      font-size: clamp(1.3rem, 3.5vw, 2rem);
+      font-weight: 900;
+      padding: 16px 32px;
+      background: rgba(74,222,128,.2);
+      border: 1.5px solid rgba(74,222,128,.4);
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      width: min(1060px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 30px 0 72px;
+    }
+
+    /* section header */
+    .sec {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 34px 0 14px;
+    }
+    .sec:first-child { margin-top: 0; }
+    .sec-icon {
+      width: 42px; height: 42px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .sec-title { font-size: 1.22rem; font-weight: 900; color: #111827; letter-spacing: -.03em; }
+    .sec-sub   { font-size: .87rem; color: #64748b; margin-left: auto; font-weight: 700; }
+
+    /* ── EXAM SCHEDULE ── */
+    .exam-day {
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      border: 2px solid transparent;
+      margin-bottom: 10px;
+      overflow: hidden;
+      transition: box-shadow .2s;
+    }
+    .exam-day.is-today    { border-color: #6366f1; box-shadow: 0 6px 32px rgba(99,102,241,.22); }
+    .exam-day.is-next     { border-color: #10b981; box-shadow: 0 4px 24px rgba(16,185,129,.18); }
+    .exam-day.is-past     { opacity: .48; }
+
+    .exam-hd {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 15px 22px;
+    }
+    .exam-day.is-today .exam-hd    { background: linear-gradient(90deg, #4338ca 0%, #818cf8 100%); color: #fff; }
+    .exam-day.is-next  .exam-hd    { background: linear-gradient(90deg, #065f46 0%, #10b981 100%); color: #fff; }
+    .exam-day.is-past  .exam-hd    { background: #f1f5f9; }
+    .exam-day.is-upcoming .exam-hd { background: #f8faff; }
+
+    .exam-date    { font-weight: 900; font-size: 1rem; }
+    .exam-weekday { font-size: .82rem; opacity: .7; }
+    .exam-chip {
+      margin-left: auto;
+      padding: 5px 13px;
+      border-radius: 999px;
+      font-size: .76rem;
+      font-weight: 800;
+    }
+    .chip-today    { background: rgba(255,255,255,.25); color: #fff; }
+    .chip-next     { background: rgba(255,255,255,.25); color: #fff; }
+    .chip-past     { background: rgba(100,116,139,.12); color: #475569; }
+    .chip-upcoming { background: rgba(245,158,11,.1);  color: #92400e; }
+
+    .exam-subs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 14px 20px;
+    }
+    .exam-sub {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 16px;
+      border-radius: 14px;
+      flex: 1;
+      min-width: 180px;
+    }
+    .esub-icon { font-size: 1.45rem; flex-shrink: 0; }
+    .esub-info { flex: 1; min-width: 0; }
+    .esub-name { font-weight: 900; font-size: .93rem; line-height: 1.25; }
+    .esub-time { font-size: .76rem; opacity: .68; font-weight: 600; margin-top: 2px; }
+    .esub-done { font-size: 1.2rem; margin-left: auto; flex-shrink: 0; }
+
+    /* ── TODAY PLAN ── */
+    .today-card { background: #fff; border-radius: 22px; box-shadow: var(--shadow); overflow: hidden; }
+    .today-hd   { background: linear-gradient(90deg, #059669, #34d399); padding: 20px 24px; color: #fff; }
+    .today-hd h3 { font-size: 1.05rem; font-weight: 900; }
+    .today-hd p  { font-size: .84rem; opacity: .85; margin-top: 4px; }
+    .today-body  { padding: 14px; }
+    .task-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+      padding: 13px 15px;
+      border-radius: 14px;
+      margin-bottom: 8px;
+      border: 1.5px solid rgba(148,163,184,.12);
+      background: #f8faff;
+    }
+    .task-row:last-child { margin-bottom: 0; }
+    .task-dot  { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+    .task-ders { font-weight: 900; font-size: .87rem; margin-bottom: 4px; }
+    .task-metin { font-size: .9rem; color: #475569; line-height: 1.6; }
+    .task-empty { text-align: center; padding: 28px; color: #94a3b8; font-weight: 700; font-size: .92rem; }
+
+    /* ── RESOURCES ── */
+    .res-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 10px;
+    }
+    .res-card {
+      background: #fff;
+      border-radius: 16px;
+      border: 1.5px solid rgba(148,163,184,.14);
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      text-decoration: none;
+      color: inherit;
+      transition: transform .18s, box-shadow .18s;
+    }
+    .res-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .res-icon {
+      width: 46px; height: 46px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .res-name { font-weight: 800; font-size: .9rem; line-height: 1.3; }
+    .res-type { font-size: .74rem; color: #94a3b8; margin-top: 3px; font-weight: 600; }
+    .res-arrow { margin-left: auto; color: #cbd5e1; font-size: 1.1rem; flex-shrink: 0; }
+
+    /* ── CHECKLIST ── */
+    .cl-card { background: #fff; border-radius: 22px; box-shadow: var(--shadow); padding: 8px; }
+    .cl-progress {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 14px 8px;
+      font-size: .84rem;
+      font-weight: 800;
+      color: #64748b;
+    }
+    .cl-track { flex: 1; height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+    .cl-fill   { height: 100%; background: linear-gradient(90deg, #10b981, #34d399); border-radius: 999px; transition: width .4s ease; }
+    .cl-item {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 13px 14px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: background .15s;
+      user-select: none;
+    }
+    .cl-item:hover { background: #f8faff; }
+    .cl-item.done  { background: #f0fdf4; }
+    .cl-item.done .cl-text { text-decoration: line-through; color: #9ca3af; }
+    .cl-box {
+      width: 26px; height: 26px;
+      border-radius: 8px;
+      border: 2.5px solid #d1d5db;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      font-size: .95rem;
+      transition: all .15s;
+    }
+    .cl-item.done .cl-box { background: #10b981; border-color: #10b981; color: #fff; }
+    .cl-text { font-weight: 700; font-size: .92rem; color: #374151; transition: all .15s; }
+
+    /* ── COACH NOTE ── */
+    .coach-card {
+      background: linear-gradient(135deg, #fdf4ff 0%, #ede9fe 100%);
+      border: 1.5px solid rgba(167,139,250,.28);
+      border-radius: 22px;
+      padding: 24px;
+    }
+    .coach-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .coach-av  {
+      width: 50px; height: 50px;
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .coach-lbl  { font-size: .78rem; font-weight: 700; color: #7c3aed; text-transform: uppercase; letter-spacing: .08em; }
+    .coach-name { font-size: 1rem; font-weight: 900; color: #4c1d95; }
+    .coach-text { color: #374151; line-height: 1.8; font-size: .95rem; }
+
+    /* ── MOTIVATION ── */
+    .moti {
+      background: linear-gradient(135deg, #1e3a5f, #1d4ed8);
+      border-radius: 22px;
+      padding: 26px 30px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .moti-em    { font-size: 2.6rem; flex-shrink: 0; }
+    .moti-quote { font-size: 1.05rem; font-weight: 800; line-height: 1.55; font-style: italic; }
+    .moti-by    { font-size: .78rem; opacity: .6; margin-top: 8px; font-weight: 700; }
+
+    /* ── MISC ── */
+    @keyframes shimmer { from{background-position:200% 0} to{background-position:-200% 0} }
+    .skeleton { background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 10px; height: 18px; }
+
+    @media (max-width: 680px) {
+      .topbar   { padding: 14px 18px; }
+      .cd-wrap  { padding: 10px 18px 26px; }
+      .content  { width: calc(100% - 24px); padding: 18px 0 52px; }
+      .cd-unit  { min-width: 64px; padding: 10px 12px; }
+      .cd-num   { font-size: 1.7rem; }
+      .exam-subs{ flex-direction: column; }
+      .exam-sub { min-width: unset; }
+      .res-grid { grid-template-columns: 1fr; }
+      .moti     { flex-direction: column; text-align: center; }
+    }
   </style>
 </head>
 <body>
-  <div class="page">
-    <div class="topbar">
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-logo">🎯</div>
       <div>
-        <div class="topbar-title">🎉 Sınav Haftası Özel Sayfası</div>
-        <div class="topbar-subtitle">Renkli, canlı ve çok daha eğlenceli bir sınav haftası deneyimi.</div>
+        <div class="topbar-eyebrow">Sınav Haftası</div>
+        <div class="topbar-name" id="hero-name">Yükleniyor…</div>
       </div>
-      <a class="topbar-link" href="sablon.html?ogrenci=yakup">🔙 Haftalık şablona dön</a>
     </div>
-    <div id="main-content">
-      <div class="loading" id="loading">Veriler yükleniyor…</div>
+    <a class="topbar-back" id="back-link" href="sablon.html">← Haftalık plana dön</a>
+  </div>
+
+  <div class="cd-wrap">
+    <div class="cd-eyebrow">Bir sonraki sınava kalan süre</div>
+    <div class="cd-badge">
+      <span class="cd-dot"></span>
+      <span id="cd-name">Hesaplanıyor…</span>
+    </div>
+    <div class="cd-digits" id="cd-digits">
+      <div class="cd-unit"><span class="cd-num" id="cd-g">--</span><span class="cd-lbl">Gün</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><span class="cd-num" id="cd-s">--</span><span class="cd-lbl">Saat</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><span class="cd-num" id="cd-d">--</span><span class="cd-lbl">Dak</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><span class="cd-num" id="cd-sn">--</span><span class="cd-lbl">Sn</span></div>
     </div>
   </div>
-  <script>
-    const API_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbyUvFShqvwvwOlJmVSY8TQFmYoXCqcfu4JFrK3KtzIVMHN9YctZmRpyrfK5AydUNcPd/exec';
-    const RESOURCES = [
-      { label: 'Zamirler Konu Testi 1', file: 'Zamirler-Konu-Testi-1.pdf' },
-      { label: 'Zamirler Konu Testi 2', file: 'Zamirler-Konu-Testi-2.pdf' },
-      { label: 'Zamirler Konu Testi 3', file: 'Zamirler-Konu-Testi-3.pdf' },
-      { label: 'ZAMİRLER -1', file: 'ZAMİRLER -1.pdf' },
-      { label: 'İsimler Konu Testi 2', file: 'Isimler-Konu-Testi-2.pdf' },
-      { label: 'İsimler Konu Testi 3', file: 'Isimler-Konu-Testi-3.pdf' },
-      { label: '6. Sınıf Ses Bilgisi Testi', file: '6. Sınıf Ses Bilgisi Testi-1 (Turkcen Serisi).pdf' },
-      { label: '6. Sınıf Sıfatlar Fasikülü', file: '6.Sınıf Sıfatlar Fasikülü.pdf' },
-      { label: 'Fen 2. Dönem Yazılı', file: '6_Fen_2.Donem_2. Yazili (1).pdf' },
-      { label: '6 İsimler Dokümanı', file: '6 İSİMLER.docx' }
-    ];
-    const EXAM_TIPS = [
-      'Önce en zor konuyu seç, sonra daha kolaylarına geç. Beyin sabah daha taze çalışır.',
-      'Soru çözerken işaretlemeyi unutma: yanlış olanları tekrar gör, doğruları pekiştir.',
-      'Her testin sonunda 3 ana hata türünü yaz: dikkat, konu, zaman yönetimi.',
-      'Her gün 10 dakika kendi sesini duyur. Okuduğunu anlamak hızını artırır.'
-    ];
-    const CHECKPOINTS = [
-      'Bugün 2 kısa test çöz ve süreni not et.',
-      'Soru bankasından 1 konu tekrar yap.',
-      'Önceki denemeden bir hatanı seç ve çözümünü yaz.',
-      'Gece çantanı hazırla: kalem, silgi, su, kimlik.',
-      'Sınavdan önce 5 dakika derin nefes al, rahatla.'
-    ];
-    const GUN_JS = { 'Pazar':0, 'Pazartesi':1, 'Salı':2, 'Çarşamba':3, 'Perşembe':4, 'Cuma':5, 'Cumartesi':6 };
-    const params = new URLSearchParams(location.search);
-    const slug = (params.get('ogrenci') || '').trim().toLowerCase();
-    const hafta = (params.get('hafta') || '').trim();
-    const apiOverride = (params.get('api') || '').trim();
-    const API_URL = apiOverride || API_URL_DEFAULT;
+</div>
 
-    const main = document.getElementById('main-content');
-    const loading = document.getElementById('loading');
+<!-- ── CONTENT ── -->
+<div class="content">
 
-    function showError(title, message) {
-      main.innerHTML = `<div class="error-box"><div class="error-title">${title}</div><div>${message}</div></div>`;
+  <!-- Sınav Takvimi -->
+  <div class="sec">
+    <div class="sec-icon" style="background:#dbeafe">📅</div>
+    <div class="sec-title">Sınav Takvimi</div>
+    <div class="sec-sub">2. Dönem 2. Yazılı Sınavları</div>
+  </div>
+  <div id="exam-list"></div>
+
+  <!-- Bugünün Planı -->
+  <div class="sec">
+    <div class="sec-icon" style="background:#d1fae5">📋</div>
+    <div class="sec-title">Bugünün Planı</div>
+    <div class="sec-sub" id="today-lbl"></div>
+  </div>
+  <div class="today-card">
+    <div class="today-hd">
+      <h3>Koçunun hazırladığı görevler</h3>
+      <p>Bugün bunları tamamlarsan büyük bir adım atmış olacaksın 💪</p>
+    </div>
+    <div class="today-body" id="today-body">
+      <div class="task-empty">Veriler yükleniyor…</div>
+    </div>
+  </div>
+
+  <!-- Kaynaklar -->
+  <div class="sec">
+    <div class="sec-icon" style="background:#fef3c7">📁</div>
+    <div class="sec-title">Sınav Kaynakları</div>
+    <div class="sec-sub">PDF & Dökümanlar</div>
+  </div>
+  <div class="res-grid" id="res-grid"></div>
+
+  <!-- Kontrol Listesi -->
+  <div class="sec">
+    <div class="sec-icon" style="background:#ede9fe">✅</div>
+    <div class="sec-title">Günlük Kontrol Listesi</div>
+  </div>
+  <div class="cl-card" id="cl-card"></div>
+
+  <!-- Koçtan Not -->
+  <div class="sec">
+    <div class="sec-icon" style="background:#fce7f3">💜</div>
+    <div class="sec-title">Koçtan Özel Not</div>
+  </div>
+  <div class="coach-card">
+    <div class="coach-top">
+      <div class="coach-av">👨‍🏫</div>
+      <div>
+        <div class="coach-lbl">Koçundan</div>
+        <div class="coach-name">Oğuzhan Koç</div>
+      </div>
+    </div>
+    <div class="coach-text" id="coach-text">Yükleniyor…</div>
+  </div>
+
+  <!-- Motivasyon -->
+  <div class="sec">
+    <div class="sec-icon" style="background:#dbeafe">🔥</div>
+    <div class="sec-title">Bugünün Motivasyonu</div>
+  </div>
+  <div class="moti">
+    <div class="moti-em">💪</div>
+    <div>
+      <div class="moti-quote" id="moti-q"></div>
+      <div class="moti-by">— Oğuzhan Koç</div>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<script>
+const API_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbyUvFShqvwvwOlJmVSY8TQFmYoXCqcfu4JFrK3KtzIVMHN9YctZmRpyrfK5AydUNcPd/exec';
+
+const SUB_CLR = {
+  mat:  { c:'#2563eb', bg:'#dbeafe' },
+  fen:  { c:'#059669', bg:'#d1fae5' },
+  tur:  { c:'#d97706', bg:'#fef3c7' },
+  sos:  { c:'#7c3aed', bg:'#ede9fe' },
+  ing:  { c:'#e11d48', bg:'#ffe4e6' },
+  din:  { c:'#0891b2', bg:'#cffafe' },
+  ara:  { c:'#047857', bg:'#ccfbf1' },
+  dkab: { c:'#be185d', bg:'#fce7f3' },
+  kur:  { c:'#ea580c', bg:'#ffedd5' },
+  hz:   { c:'#0f766e', bg:'#ccfbf1' },
+  tdb:  { c:'#6d28d9', bg:'#ede9fe' },
+  kit:  { c:'#64748b', bg:'#f1f5f9' },
+};
+const sc = k => SUB_CLR[k] || SUB_CLR.kit;
+
+const EXAMS = [
+  { tarih:'2026-06-01', gun:'Pazartesi', dersler:[
+    { ad:"Kur'an-ı Kerim",          saat:'09:10', kod:'kur',  em:'📖' },
+    { ad:"Hz. Muhammed'in Hayatı",  saat:'10:50', kod:'hz',   em:'🌙' }
+  ]},
+  { tarih:'2026-06-02', gun:'Salı', dersler:[
+    { ad:'Matematik',               saat:'09:10', kod:'mat',  em:'🔢' },
+    { ad:'Temel Dini Bilgiler',     saat:'10:50', kod:'tdb',  em:'📿' }
+  ]},
+  { tarih:'2026-06-03', gun:'Çarşamba', dersler:[
+    { ad:'İngilizce',               saat:'09:10', kod:'ing',  em:'🇬🇧' },
+    { ad:'Seçmeli İngilizce',       saat:'10:50', kod:'ing',  em:'💬' }
+  ]},
+  { tarih:'2026-06-04', gun:'Perşembe', dersler:[
+    { ad:'Sosyal Bilgiler',         saat:'09:10', kod:'sos',  em:'🗺️' }
+  ]},
+  { tarih:'2026-06-05', gun:'Cuma', dersler:[
+    { ad:'Fen Bilimleri',           saat:'09:10', kod:'fen',  em:'🔬' }
+  ]},
+  { tarih:'2026-06-08', gun:'Pazartesi', dersler:[
+    { ad:'Arapça',                  saat:'10:00', kod:'ara',  em:'🌿' },
+    { ad:'Türkçe',                  saat:'11:40', kod:'tur',  em:'📝' }
+  ]},
+  { tarih:'2026-06-09', gun:'Salı', dersler:[
+    { ad:'Din Kültürü ve Ahlak B.', saat:'10:00', kod:'dkab', em:'✨' }
+  ]}
+];
+
+const RESOURCES = [
+  { label:'Zamirler Konu Testi 1', file:'Zamirler-Konu-Testi-1.pdf',                                  kod:'tur', em:'📄' },
+  { label:'Zamirler Konu Testi 2', file:'Zamirler-Konu-Testi-2.pdf',                                  kod:'tur', em:'📄' },
+  { label:'Zamirler Konu Testi 3', file:'Zamirler-Konu-Testi-3.pdf',                                  kod:'tur', em:'📄' },
+  { label:'ZAMİRLER -1',           file:'ZAMİRLER -1.pdf',                                            kod:'tur', em:'📘' },
+  { label:'İsimler Konu Testi 2',  file:'Isimler-Konu-Testi-2.pdf · 1 sürümü.pdf',                   kod:'tur', em:'📄' },
+  { label:'İsimler Konu Testi 3',  file:'Isimler-Konu-Testi-3.pdf · 1 sürümü.pdf',                   kod:'tur', em:'📄' },
+  { label:'Ses Bilgisi Testi',     file:'6. Sınıf Ses Bilgisi Testi-1 (Turkcen Serisi).pdf',          kod:'tur', em:'🎵' },
+  { label:'Sıfatlar Fasikülü',     file:'6.Sınıf Sıfatlar Fasikülü.pdf',                              kod:'tur', em:'📗' },
+  { label:'6. Sınıf İsimler',      file:'6 İSİMLER.docx',                                             kod:'tur', em:'📑' },
+  { label:'Fen 2. Dönem Yazılı',   file:'6_Fen_2.Donem_2. Yazili (1).pdf',                            kod:'fen', em:'🔬' },
+];
+
+const CHECKLIST = [
+  { id:'c1', text:'Bugünün sınav konularını gözden geçirdim' },
+  { id:'c2', text:'En az 2 konu testi çözdüm ve süremi not ettim' },
+  { id:'c3', text:'Yanlış yaptığım soruların nedenini anladım' },
+  { id:'c4', text:'Koçumun hazırladığı planı tamamladım' },
+  { id:'c5', text:'Yarınki sınav için konuları tekrar ettim' },
+  { id:'c6', text:'Çantamı hazırladım: kalem, silgi, su, kimlik' },
+  { id:'c7', text:'Erken uyumak için hazırlık yaptım' },
+];
+
+const MOTIS = [
+  'Her yanlış soru seni bir adım daha güçlü kılıyor. Hata yaptıkça büyürsün.',
+  'Sınav kağıdı değil, o kağıdı nasıl doldurduğun seni tanımlar. Hazırsın!',
+  'Bugün çözdüğün her soru sınav salonunda sana geri dönecek. Devam et!',
+  'Zorlu sorular seni korkutmasın — onlar senin en büyük öğretmenin.',
+  'Başarı bir anda gelmiyor; senin gibi her gün çalışanların hakkı.',
+  'Zihni taze tut, beyin yorulunca kısa mola ver. Kalite her zaman sürenin önünde.',
+];
+
+const GUN_NAMES = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+const params  = new URLSearchParams(location.search);
+const slug    = (params.get('ogrenci')||'').trim().toLowerCase() || 'yakup';
+const hafta   = (params.get('hafta')||'').trim();
+const apiOver = (params.get('api')||'').trim();
+const API_URL = apiOver || API_URL_DEFAULT;
+
+function pad2(n){ return String(n).padStart(2,'0'); }
+function safe(v){ const d=document.createElement('div'); d.textContent=v||''; return d.innerHTML; }
+function todayStr(){ const d=new Date(); return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`; }
+function parseD(s){ const m=String(s).match(/^(\d{4})-(\d{2})-(\d{2})/); return m?new Date(+m[1],+m[2]-1,+m[3]):null; }
+
+/* COUNTDOWN */
+function nextExam(){
+  const now = new Date();
+  for(const day of EXAMS){
+    for(const sub of day.dersler){
+      const [h,m]=sub.saat.split(':').map(Number);
+      const dt=parseD(day.tarih);
+      if(!dt) continue;
+      dt.setHours(h,m,0,0);
+      if(dt>now) return {dt, ad:sub.ad, em:sub.em};
     }
+  }
+  return null;
+}
+function tickCountdown(){
+  const nx=nextExam();
+  if(!nx){
+    document.getElementById('cd-name').textContent='🎉 Tüm sınavlar bitti!';
+    document.getElementById('cd-digits').innerHTML='<div class="cd-over">🏆 Harika iş çıkardın!</div>';
+    return;
+  }
+  document.getElementById('cd-name').textContent = nx.em+' '+nx.ad;
+  const diff = nx.dt - new Date();
+  if(diff<=0){ tickCountdown(); return; }
+  const ts = Math.floor(diff/1000);
+  document.getElementById('cd-sn').textContent=pad2(ts%60);
+  document.getElementById('cd-d').textContent =pad2(Math.floor(ts/60)%60);
+  document.getElementById('cd-s').textContent =pad2(Math.floor(ts/3600)%24);
+  document.getElementById('cd-g').textContent =pad2(Math.floor(ts/86400));
+}
 
-    function setLoading(text) {
-      if (loading) loading.textContent = text;
-    }
-
-    if (!slug) {
-      showError('Öğrenci belirtilmedi', 'URL sonuna ?ogrenci=slug eklemeniz gerekiyor. Örneğin: sinav-haftasi.html?ogrenci=yakup');
-    } else {
-      loadStudent();
-    }
-
-    function loadStudent() {
-      setLoading('Öğrenci verisi alınıyor...');
-      const sep = API_URL.indexOf('?') >= 0 ? '&' : '?';
-      let url = API_URL + sep + 'istek=ogrenciSayfasi&ogrenci=' + encodeURIComponent(slug);
-      if (hafta) url += '&hafta=' + encodeURIComponent(hafta);
-      fetch(url)
-        .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.text(); })
-        .then(text => JSON.parse(text))
-        .then(data => {
-          if (data.durum && data.durum !== 'basarili') throw new Error(data.mesaj || 'Sunucu hatası');
-          if (!data.ogrenci || !data.hafta) throw new Error('Eksik veri: ogrenci veya hafta bilgisi.');
-          renderStudent(buildConfig(data));
-        })
-        .catch(err => {
-          showError('Veri yüklenemedi', err.message || 'Sunucuya bağlanırken sorun oluştu.');
-          console.error(err);
-        });
-    }
-
-    function parseDate(value) {
-      if (!value) return null;
-      const m = String(value).match(/^(\d{4})-(\d{2})-(\d{2})/);
-      if (!m) return null;
-      return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
-    }
-
-    function buildConfig(data) {
-      const o = data.ogrenci || {};
-      const h = data.hafta || {};
-      const netler = data.netler || {};
-      const baslangic = parseDate(h.baslangic_tarih);
-      const baslangicGun = baslangic ? baslangic.getDay() : 1;
-      const gunler = [];
-      Object.keys(data.gunler || {}).forEach(gunAd => {
-        const raw = Array.isArray(data.gunler[gunAd]) ? data.gunler[gunAd] : [];
-        if (!raw.length || GUN_JS[gunAd] === undefined) return;
-        const sirali = raw.slice().sort((a,b) => (a.sira || 0) - (b.sira || 0));
-        const dersler = [];
-        let current = null;
-        sirali.forEach(row => {
-          const kod = row.ders_kod || 'kit';
-          if (!current || current._kod !== kod) {
-            if (current) { delete current._kod; dersler.push(current); }
-            current = {
-              _kod: kod,
-              cls: 'ders-' + kod,
-              ad: row.ders_baslik || kod,
-              takipKey: kod === 'kit' ? null : kod,
-              gorevler: []
-            };
-          }
-          const gorev = { metin: row.gorev_metin || '' };
-          if (row.checkbox_mu) gorev.checkbox = true;
-          if (row.konu) gorev.konu = row.konu;
-          if (row.kazanim_kodlar) gorev.kazanimKodlar = row.kazanim_kodlar;
-          current.gorevler.push(gorev);
-        });
-        if (current) { delete current._kod; dersler.push(current); }
-        let tarih = null;
-        if (baslangic) {
-          const offset = (GUN_JS[gunAd] - baslangicGun + 7) % 7;
-          tarih = new Date(baslangic);
-          tarih.setDate(baslangic.getDate() + offset);
-        }
-        gunler.push({ ad: gunAd, tarih, dersler });
-      });
-      gunler.sort((a,b) => (GUN_JS[a.ad] || 0) - (GUN_JS[b.ad] || 0));
-      return {
-        ogrenci: {
-          ad: o.ad || '',
-          sinif: o.sinif || '',
-          haftaNo: String(o.aktif_hafta != null ? o.aktif_hafta : (h.no || '')),
-          tarihAralik: h.tarih_aralik || '',
-          rozetler: Array.isArray(o.rozetler) ? o.rozetler : [],
-          ekstraBaslik: o.sayfa_baslik || ''
-        },
-        durum: {
-          sonPuan: h.son_puan,
-          ortalama: h.ortalama,
-          hedef: h.hedef,
-          gelisim: h.koc_haftalik_not ? h.koc_haftalik_not : '',
-          netler: {
-            tur: netler.tur || null,
-            sos: netler.sos || null,
-            din: netler.din || null,
-            ing: netler.ing || null,
-            mat: netler.mat || null,
-            fen: netler.fen || null
-          }
-        },
-        hedefler: {
-          paragraf: h.paragraf_hedef || '',
-          kitap: h.kitap_hedef || '',
-          gunlukSoru: (h.gunluk_soru_min != null && h.gunluk_soru_max != null)
-            ? `${h.gunluk_soru_min}–${h.gunluk_soru_max} soru / gün` : '',
-          odak: h.odak || ''
-        },
-        koc: {
-          degerlendirme: h.koc_degerlendirme || '',
-          haftalikNot: h.koc_haftalik_not || ''
-        },
-        gunler,
-        _meta: { ham: data }
-      };
-    }
-
-    function safeHTML(value) {
-      const div = document.createElement('div');
-      div.textContent = value || '';
-      return div.innerHTML;
-    }
-
-    function buildResourceUrl(filename) {
-      return 'sinav-haftasi/' + encodeURIComponent(filename);
-    }
-
-    function getCurrentDayName() {
-      const today = new Date();
-      return Object.keys(GUN_JS).find(key => GUN_JS[key] === today.getDay()) || '';
-    }
-
-    function findTodayTasks(cfg) {
-      const todayName = getCurrentDayName();
-      const todayEntry = cfg.gunler.find(g => g.ad === todayName);
-      return todayEntry || cfg.gunler[0] || null;
-    }
-
-    function renderStudent(cfg) {
-      document.title = `Sınav Haftası · ${cfg.ogrenci.ad}`;
-      const today = findTodayTasks(cfg);
-      const selectedTip = EXAM_TIPS[Math.floor(Math.random() * EXAM_TIPS.length)];
-      const resourceHtml = RESOURCES.map(item => `
-        <li class="resource-item">
-          <div class="resource-left">
-            <div class="resource-label">${safeHTML(item.label)}</div>
-            <div class="resource-meta">📄 Kaynak dosya</div>
-          </div>
-          <a class="resource-link" href="${buildResourceUrl(item.file)}" target="_blank" rel="noreferrer noopener">Aç / İndir</a>
-        </li>`).join('');
-      const todayTasksHtml = today && today.dersler.length > 0
-        ? today.dersler.map(ders => `
-            <li class="plan-item">
-              <div class="resource-left">
-                <div class="resource-label">${safeHTML(ders.ad)}</div>
-                <div class="resource-meta">${ders.gorevler.map(g => safeHTML(g.metin)).filter(Boolean).join(' · ')}</div>
-              </div>
-              <span class="pill green">${ders.gorevler.length} görev</span>
-            </li>`).join('')
-        : '<li class="plan-item"><div class="resource-left"><div class="resource-label">Bugün için bir görev bulunamadı.</div><div class="resource-meta">Haftalık plandaki ilk günün görevlerini inceleyin.</div></div></li>';
-      const checklistHtml = CHECKPOINTS.map(item => `<li class="checklist-item"><span class="pill blue">✅</span>${safeHTML(item)}</li>`).join('');
-      const rozetlerHtml = (cfg.ogrenci.rozetler || []).map(pair => `<span class="hero-pill">${safeHTML(pair[0])}</span>`).join('');
-      main.innerHTML = `
-        <div class="hero">
-          <div class="sparkle"></div>
-          <div class="sparkle"></div>
-          <div class="sparkle"></div>
-          <div class="sparkle"></div>
-          <div class="hero-flag">🚀 Sınav Haftası</div>
-          <h1 class="hero-title">Merhaba ${safeHTML(cfg.ogrenci.ad)}!</h1>
-          <p class="hero-copy">Bu hafta senin için özel: soru çözerken hızlan, hatalarda güçlen ve sınavda kapıyı sallayacak enerjiyle gir. Her gün bir küçük başarı senin büyük başarına dönüşsün!</p>
-          <div class="hero-pills">${rozetlerHtml || '<span class="hero-pill">Bu hafta senin haftan</span>'}</div>
-          <div class="hero-grid">
-            <div class="hero-card">
-              <strong>👑 Sınıf / Hafta</strong>
-              <span>${safeHTML(cfg.ogrenci.sinif || '6. sınıf')}</span>
-              <small>Hafta ${safeHTML(cfg.ogrenci.haftaNo)} · ${safeHTML(cfg.ogrenci.tarihAralik)}</small>
-            </div>
-            <div class="hero-card">
-              <strong>🎯 Bugünün odağı</strong>
-              <span>${safeHTML(cfg.hedefler.odak || 'Hızlı tekrar')}</span>
-              <small>Bugün planını buna göre ayarla.</small>
-            </div>
-            <div class="hero-card">
-              <strong>📚 Günlük hedef</strong>
-              <span>${safeHTML(cfg.hedefler.gunlukSoru || 'Soru hedefi')}</span>
-              <small>Her soru seni daha güçlü yapar.</small>
-            </div>
-            <div class="hero-card">
-              <strong>💡 Bugünün sürprizi</strong>
-              <span>${safeHTML(selectedTip)}</span>
-            </div>
-          </div>
+/* EXAM LIST */
+function renderExams(){
+  const td  = todayStr();
+  const nx  = nextExam();
+  const nxD = nx ? nx.dt.toISOString().slice(0,10) : null;
+  const html = EXAMS.map(day=>{
+    const past     = day.tarih < td;
+    const isToday  = day.tarih === td;
+    const isNext   = !isToday && !past && day.tarih === nxD;
+    const upcoming = !past && !isToday && !isNext;
+    let cls  = 'exam-day';
+    if(past)    cls+=' is-past';
+    if(isToday) cls+=' is-today';
+    if(isNext)  cls+=' is-next';
+    if(upcoming)cls+=' is-upcoming';
+    let chip='';
+    if(isToday) chip='<span class="exam-chip chip-today">📍 BUGÜN</span>';
+    else if(isNext) chip='<span class="exam-chip chip-next">⚡ Sıradaki</span>';
+    else if(past)   chip='<span class="exam-chip chip-past">✓ Tamamlandı</span>';
+    else            chip='<span class="exam-chip chip-upcoming">⏳ Yaklaşıyor</span>';
+    const subs = day.dersler.map(sub=>{
+      const cl=sc(sub.kod);
+      return `<div class="exam-sub" style="background:${cl.bg}">
+        <div class="esub-icon">${sub.em}</div>
+        <div class="esub-info">
+          <div class="esub-name" style="color:${cl.c}">${safe(sub.ad)}</div>
+          <div class="esub-time">${sub.saat} · ${safe(day.gun)}</div>
         </div>
-        <div class="grid-3">
-          <div class="card">
-            <h2>✨ Haftanın güç kartı</h2>
-            <p>Bugün çöz, hata yap, öğren. Sınav haftası başarıları rastlantı değil; doğru adımla gelir.</p>
-            <div class="stat-block"><div class="stat-title">Deneme puan</div><div class="stat-value">${cfg.durum.sonPuan != null ? safeHTML(String(cfg.durum.sonPuan)) : '—'}</div><div class="stat-caption">Son denemeden gelen puan</div></div>
-            <div class="stat-block"><div class="stat-title">Ortalama puan</div><div class="stat-value">${cfg.durum.ortalama != null ? safeHTML(String(cfg.durum.ortalama)) : '—'}</div><div class="stat-caption">Geçen denemelere göre</div></div>
-            <div class="stat-block"><div class="stat-title">Hedef puan</div><div class="stat-value">${cfg.durum.hedef != null ? safeHTML(String(cfg.durum.hedef)) : '—'}</div><div class="stat-caption">Hedefe doğru rota</div></div>
-          </div>
-          <div class="card tip-card">
-            <strong>🔥 Sınav haftası kuralı</strong>
-            <p>Her testten sonra 3 dakika durup yanlışlarını kontrol et. Bu, sınavda seni herkesten hızlı yapar.</p>
-            <ul class="tip-list">
-              <li class="tip-item">Yanlışları işaretle, sonra aynı hatayı tekrar etme.</li>
-              <li class="tip-item">Zaman tut, son 5 dakika hız kontrolü yap.</li>
-              <li class="tip-item">Kısa mola ver; zihin tazelenince daha dikkatli olur.</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h2>📁 Sınav kaynakları</h2>
-            <p>Bu dosyalar senin hafta arkadaşı. Kolayca açıp çalışmaya başla.</p>
-            <ul class="resource-list">${resourceHtml}</ul>
-          </div>
+        ${past?'<div class="esub-done">✅</div>':''}
+      </div>`;
+    }).join('');
+    return `<div class="${cls}">
+      <div class="exam-hd">
+        <div>
+          <div class="exam-date">${day.tarih.split('-').reverse().join('.')}</div>
+          <div class="exam-weekday">${day.gun}</div>
         </div>
-        <div class="card">
-          <h2>🎒 Bugünün planı</h2>
-          <p>Hedefe yürürken her gün bir adım yeter. Bugünün hangi konularda ilerleyeceğini buradan gör.</p>
-          <ul class="plan-list">${todayTasksHtml}</ul>
-        </div>
-        <div class="card">
-          <h2>✅ Sınav haftası checklist</h2>
-          <p>Bu adımları tamamladığında kendini sınav ritmine hazır hâle getiriyorsun.</p>
-          <ul class="checklist-list">${checklistHtml}</ul>
-        </div>
-        <div class="info-panel">
-          <div class="card">
-            <h2>📝 Koçtan özel not</h2>
-            <p>${safeHTML(cfg.koc.degerlendirme || cfg.koc.haftalikNot || 'Bu hafta için özel not gönderilmedi. Ancak bugün güçlü çıkabilirsin!')}</p>
-          </div>
-          <div class="card">
-            <h2>⭐ Hızlı motivasyon</h2>
-            <p>Senin için bu hafta küçük kazanımlar büyük fark yaratacak. Her sabah 1 hedef seç, sonra ona odaklan ve bitir.</p>
-          </div>
-        </div>
-        <div class="footer">
-          <div class="hint">Bu sayfayı paylaşmak için: <code>sinav-haftasi.html?ogrenci=${encodeURIComponent(slug)}</code></div>
-          <div>GitHub’a yüklediğinde her öğrenci kendi slug’ı ile girdiğinde özel hazırlık sayfasını görür.</div>
-        </div>
-      `;
-    }
-  </script>
+        ${chip}
+      </div>
+      <div class="exam-subs">${subs}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('exam-list').innerHTML=html;
+}
+
+/* RESOURCES */
+function renderResources(){
+  const html=RESOURCES.map(r=>{
+    const cl=sc(r.kod);
+    const url='sinav-haftasi/'+encodeURIComponent(r.file);
+    const type=r.file.endsWith('.docx')?'Word Dökümanı':'PDF Dosyası';
+    return `<a class="res-card" href="${url}" target="_blank" rel="noreferrer">
+      <div class="res-icon" style="background:${cl.bg}">${r.em}</div>
+      <div>
+        <div class="res-name" style="color:${cl.c}">${safe(r.label)}</div>
+        <div class="res-type">${type}</div>
+      </div>
+      <div class="res-arrow">↗</div>
+    </a>`;
+  }).join('');
+  document.getElementById('res-grid').innerHTML=html;
+}
+
+/* CHECKLIST */
+function getMap(){ try{return JSON.parse(localStorage.getItem('sinav_cl_'+slug)||'{}')}catch{return{}} }
+function setMap(m){ localStorage.setItem('sinav_cl_'+slug,JSON.stringify(m)); }
+function renderCL(){
+  const map=getMap();
+  const done=Object.values(map).filter(Boolean).length;
+  const total=CHECKLIST.length;
+  const pct=total?Math.round(done/total*100):0;
+  const card=document.getElementById('cl-card');
+  card.innerHTML=`<div class="cl-progress">
+    <span>${done}/${total}</span>
+    <div class="cl-track"><div class="cl-fill" style="width:${pct}%"></div></div>
+    <span>${pct}%</span>
+  </div>`+CHECKLIST.map(it=>`
+    <div class="cl-item${map[it.id]?' done':''}" data-id="${it.id}">
+      <div class="cl-box">${map[it.id]?'✓':''}</div>
+      <div class="cl-text">${safe(it.text)}</div>
+    </div>`).join('');
+  card.querySelectorAll('.cl-item').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const m=getMap(); m[el.dataset.id]=!m[el.dataset.id]; setMap(m); renderCL();
+    });
+  });
+}
+
+/* MOTIVATION */
+function renderMoti(){
+  document.getElementById('moti-q').textContent=MOTIS[new Date().getDate()%MOTIS.length];
+}
+
+/* TODAY LABEL */
+function renderTodayLbl(){
+  document.getElementById('today-lbl').textContent=GUN_NAMES[new Date().getDay()];
+}
+
+/* TODAY PLAN */
+function renderTodayPlan(gunler){
+  const todayName=GUN_NAMES[new Date().getDay()];
+  const rows=Array.isArray(gunler[todayName])?gunler[todayName]:[];
+  if(!rows.length){
+    document.getElementById('today-body').innerHTML=`<div class="task-empty">Bugün (${safe(todayName)}) için plan bulunamadı — ama sen zaten ne çalışman gerektiğini biliyorsun! 🚀</div>`;
+    return;
+  }
+  const grp={};
+  rows.slice().sort((a,b)=>(a.sira||0)-(b.sira||0)).forEach(r=>{
+    const k=r.ders_baslik||r.ders_kod||'Görev';
+    if(!grp[k]) grp[k]={kod:r.ders_kod||'kit',gorevler:[]};
+    if(r.gorev_metin) grp[k].gorevler.push(r.gorev_metin);
+  });
+  const html=Object.entries(grp).map(([ders,g])=>{
+    const cl=sc(g.kod);
+    return `<div class="task-row">
+      <div class="task-dot" style="background:${cl.c}"></div>
+      <div>
+        <div class="task-ders" style="color:${cl.c}">${safe(ders)}</div>
+        <div class="task-metin">${g.gorevler.map(safe).join('<br>')}</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('today-body').innerHTML=html;
+}
+
+/* API LOAD */
+function loadStudent(){
+  const sep=API_URL.indexOf('?')>=0?'&':'?';
+  let url=API_URL+sep+'istek=ogrenciSayfasi&ogrenci='+encodeURIComponent(slug);
+  if(hafta) url+='&hafta='+encodeURIComponent(hafta);
+  fetch(url)
+    .then(r=>r.text())
+    .then(t=>JSON.parse(t))
+    .then(data=>{
+      if(data.durum&&data.durum!=='basarili') throw new Error(data.mesaj||'Sunucu hatası');
+      const o=data.ogrenci||{};
+      const h=data.hafta||{};
+      document.getElementById('hero-name').textContent=o.ad||slug;
+      document.getElementById('back-link').href='sablon.html?ogrenci='+encodeURIComponent(slug);
+      const note=h.koc_degerlendirme||h.koc_haftalik_not||'';
+      document.getElementById('coach-text').textContent=note||'Bu hafta için özel bir not eklenmedi — ama koçun seninle gurur duyuyor! Her sınavda en iyisini çıkarıyorsun 💜';
+      renderTodayPlan(data.gunler||{});
+    })
+    .catch(()=>{
+      document.getElementById('hero-name').textContent=slug.charAt(0).toUpperCase()+slug.slice(1);
+      document.getElementById('today-body').innerHTML='<div class="task-empty">Plan yüklenemedi. Lütfen internet bağlantını kontrol et.</div>';
+      document.getElementById('coach-text').textContent='Koç notu yüklenemedi.';
+    });
+}
+
+/* INIT */
+renderTodayLbl();
+renderExams();
+renderResources();
+renderCL();
+renderMoti();
+loadStudent();
+tickCountdown();
+setInterval(tickCountdown, 1000);
+</script>
 </body>
 </html>
