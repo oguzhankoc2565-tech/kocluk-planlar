@@ -12,88 +12,96 @@
     :root {
       color-scheme: light;
       font-family: 'Nunito', system-ui, sans-serif;
-      background: #f7f5ff;
+      background: #fdf2f8;
       color: #111827;
       --surface: #ffffff;
-      --surface-2: #f3f4f6;
-      --surface-3: #eef2ff;
-      --border: rgba(15, 23, 42, 0.08);
-      --accent: #5b8ef0;
-      --accent-dark: #3065c2;
-      --success: #16a34a;
+      --surface-soft: #f8fafc;
+      --surface-glow: rgba(59, 130, 246, .12);
+      --border: rgba(148, 163, 184, .18);
+      --accent: #7c3aed;
+      --accent-soft: #eef2ff;
+      --success: #14b8a6;
       --warning: #f59e0b;
-      --danger: #dc2626;
-      --text-muted: #6b7280;
-      --radius: 24px;
-      --radius-sm: 16px;
-      --shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+      --danger: #ef4444;
+      --text-muted: #475569;
+      --radius: 28px;
+      --radius-sm: 18px;
+      --shadow: 0 28px 70px rgba(15, 23, 42, .12);
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; min-height: 100%; }
-    body { background: linear-gradient(180deg, #eef2ff 0%, #fbfbff 100%); }
+    body { background: radial-gradient(circle at top left, rgba(236, 72, 153, .12), transparent 22%), linear-gradient(180deg, #fdf2f8 0%, #eff6ff 48%, #ffffff 100%); }
+    body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(135deg, rgba(59, 130, 246, .05) 0%, transparent 30%), radial-gradient(circle at 20% 20%, rgba(249, 115, 22, .08) 0%, transparent 12%), radial-gradient(circle at 85% 10%, rgba(236, 72, 153, .1) 0%, transparent 16%); pointer-events: none; }
     a { color: inherit; text-decoration: none; }
     button { font: inherit; }
-    .page { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 24px 0 64px; }
+    .page { width: min(1180px, calc(100% - 36px)); margin: 0 auto; padding: 24px 0 64px; position: relative; z-index: 1; }
     .topbar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 18px; }
-    .topbar-title { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.03em; }
-    .topbar-subtitle { color: var(--text-muted); font-size: 0.95rem; }
-    .topbar-link { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: #ffffff; border: 1px solid var(--border); border-radius: 999px; color: #111827; transition: transform .16s ease, border-color .16s ease; }
-    .topbar-link:hover { transform: translateY(-1px); border-color: #a5b4fc; }
-    .hero { background: radial-gradient(circle at top left, rgba(91, 142, 240, 0.17), transparent 34%), linear-gradient(180deg, #ffffff 0%, #eef2ff 100%); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 30px; display: grid; gap: 20px; }
-    .hero-flag { display: inline-flex; align-items: center; gap: 10px; background: rgba(91, 142, 240, 0.14); color: #1e40af; border-radius: 999px; padding: 9px 14px; font-weight: 700; font-size: 0.92rem; width: fit-content; }
-    .hero-title { font-size: clamp(2rem, 4vw, 3.1rem); line-height: 1.02; letter-spacing: -0.05em; margin: 0; }
-    .hero-copy { font-size: 1rem; line-height: 1.75; color: var(--text-muted); max-width: 740px; }
-    .hero-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-    .hero-meta-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 18px 20px; }
-    .hero-meta-card strong { display: block; font-size: 0.96rem; margin-bottom: 8px; }
-    .hero-meta-card span { display: block; color: var(--text-muted); font-size: 0.94rem; line-height: 1.5; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 24px; }
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 22px; box-shadow: 0 18px 40px rgba(15,23,42,.05); }
-    .card h2 { margin: 0 0 10px; font-size: 1.1rem; line-height: 1.3; }
-    .card p { margin: 0; color: var(--text-muted); line-height: 1.7; }
-    .mini-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
-    .stat-badge { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 14px; background: rgba(91, 142, 240, 0.14); color: #2563eb; font-size: 1.15rem; font-weight: 800; }
-    .stat-block { display: flex; flex-direction: column; gap: 10px; }
-    .stat-title { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; }
-    .stat-value { font-size: 1.85rem; font-weight: 800; color: #111827; line-height: 1; }
-    .stat-caption { color: var(--text-muted); font-size: 0.95rem; }
-    .resource-list, .plan-list, .checklist-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
-    .resource-item, .plan-item, .checklist-item { background: var(--surface-2); border-radius: 16px; padding: 16px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; border: 1px solid transparent; transition: border-color .16s ease, transform .16s ease; }
-    .resource-item:hover, .plan-item:hover, .checklist-item:hover { transform: translateY(-1px); border-color: rgba(91, 142, 240, 0.16); }
-    .resource-left { display: grid; gap: 4px; }
-    .resource-label { font-weight: 700; color: #111827; }
-    .resource-meta { color: var(--text-muted); font-size: 0.94rem; }
-    .resource-link { color: var(--accent); font-weight: 700; white-space: nowrap; }
-    .pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(16, 185, 129, .10); color: #047857; border-radius: 999px; padding: 6px 10px; font-size: 0.82rem; font-weight: 700; }
-    .badge { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; background: rgba(59, 130, 246, .12); color: #1d4ed8; font-size: 0.92rem; font-weight: 700; }
+    .topbar-title { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.03em; color: #7c3aed; }
+    .topbar-subtitle { color: #9333ea; font-size: 0.95rem; }
+    .topbar-link { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; background: linear-gradient(135deg, #6d28d9, #22d3ee); color: #fff; border-radius: 999px; box-shadow: 0 20px 40px rgba(59, 130, 246, .18); transition: transform .18s ease; }
+    .topbar-link:hover { transform: translateY(-2px); }
+    .hero { position: relative; overflow: hidden; background: linear-gradient(135deg, #fff7ed 0%, #ede9fe 45%, #ecfeff 100%); border: 1px solid rgba(167, 139, 250, .18); border-radius: 34px; box-shadow: 0 35px 90px rgba(124, 58, 237, .12); padding: 34px 36px; display: grid; gap: 22px; }
+    .hero::before, .hero::after { content: ''; position: absolute; border-radius: 50%; opacity: .38; }
+    .hero::before { width: 160px; height: 160px; top: -40px; right: -40px; background: radial-gradient(circle, rgba(59,130,246,.35), transparent 65%); }
+    .hero::after { width: 220px; height: 220px; bottom: -80px; left: -90px; background: radial-gradient(circle, rgba(236,72,153,.25), transparent 62%); }
+    .hero-flag { display: inline-flex; align-items: center; gap: 10px; background: rgba(236, 72, 153, .15); color: #9d174d; border-radius: 999px; padding: 11px 16px; font-weight: 800; font-size: 0.95rem; width: fit-content; z-index: 1; }
+    .hero-title { position: relative; z-index: 1; margin: 0; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.02; letter-spacing: -0.05em; color: #312e81; }
+    .hero-copy { position: relative; z-index: 1; font-size: 1rem; line-height: 1.75; color: #475569; max-width: 720px; }
+    .hero-pills { display: flex; flex-wrap: wrap; gap: 10px; z-index: 1; }
+    .hero-pill { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 999px; background: rgba(79, 70, 229, .1); color: #4338ca; font-size: 0.92rem; font-weight: 700; }
+    .hero-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 8px; z-index: 1; }
+    .hero-card { border-radius: 26px; padding: 22px; background: rgba(255,255,255,.94); border: 1px solid rgba(255,255,255,.9); box-shadow: 0 22px 45px rgba(15, 23, 42, .08); display: grid; gap: 10px; }
+    .hero-card strong { display: block; font-size: 0.9rem; color: #7c3aed; text-transform: uppercase; letter-spacing: .08em; }
+    .hero-card span { display: block; font-size: 1.25rem; font-weight: 800; line-height: 1.1; color: #111827; }
+    .hero-card small { color: #6b7280; font-size: .95rem; line-height: 1.55; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 18px; }
+    .card { background: #fff; border: 1px solid rgba(148, 163, 184, .18); border-radius: 30px; padding: 24px; box-shadow: 0 20px 48px rgba(15, 23, 42, .08); }
+    .card h2 { margin: 0 0 12px; font-size: 1.3rem; line-height: 1.2; color: #111827; }
+    .card p { margin: 0; color: #475569; line-height: 1.75; }
+    .stat-block { display: grid; gap: 10px; padding: 18px; border-radius: 24px; background: linear-gradient(145deg, rgba(59, 130, 246, .09), rgba(124, 58, 237, .08)); }
+    .stat-title { font-size: .92rem; font-weight: 700; color: #4338ca; }
+    .stat-value { font-size: 2rem; font-weight: 800; color: #111827; }
+    .stat-caption { color: #475569; font-size: .95rem; }
+    .resource-list, .plan-list, .checklist-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+    .resource-item, .plan-item, .checklist-item { position: relative; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); border-radius: 22px; padding: 18px 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px; border: 1px solid rgba(148, 163, 184, .18); transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+    .resource-item:hover, .plan-item:hover, .checklist-item:hover { transform: translateY(-2px); border-color: rgba(59, 130, 246, .28); box-shadow: 0 18px 35px rgba(59, 130, 246, .1); }
+    .resource-left { display: grid; gap: 4px; min-width: 0; }
+    .resource-label { font-weight: 800; font-size: 1rem; color: #111827; }
+    .resource-meta { color: #64748b; font-size: .95rem; line-height: 1.5; }
+    .resource-link { color: #4338ca; font-weight: 700; white-space: nowrap; }
+    .plan-item .resource-label, .checklist-item .resource-label { font-size: 1rem; }
+    .pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(236, 72, 153, .12); color: #be185d; border-radius: 999px; padding: 8px 12px; font-size: .82rem; font-weight: 700; }
+    .pill.green { background: rgba(5, 150, 105, .12); color: #047857; }
+    .pill.blue { background: rgba(59, 130, 246, .12); color: #1d4ed8; }
     .tip-card { display: flex; flex-direction: column; gap: 14px; }
-    .tip-card strong { font-size: 1rem; }
-    .tip-list { list-style: none; padding-left: 0; margin-top: 10px; display: grid; gap: 10px; }
-    .tip-item { background: rgba(249, 115, 22, 0.08); border: 1px solid rgba(249, 115, 22, 0.12); border-radius: 16px; padding: 14px 16px; color: #92400e; }
-    .info-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 20px; }
-    .info-panel p { margin: 0; }
-    .footer { margin-top: 30px; color: var(--text-muted); font-size: 0.94rem; display: grid; gap: 10px; }
-    .hint { display: inline-flex; align-items: center; gap: 10px; background: rgba(59, 130, 246, .08); border: 1px solid rgba(59, 130, 246, .16); padding: 14px 16px; border-radius: 18px; color: #1d4ed8; }
-    .loading, .error-box { min-height: 260px; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); box-shadow: var(--shadow); padding: 24px; color: var(--text-muted); }
-    .error-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
-    @media (max-width: 920px) {
-      .hero-meta, .grid-3, .mini-grid, .info-panel { grid-template-columns: 1fr; }
-      .topbar-link { margin-left: 0; }
-    }
-    @media (max-width: 640px) {
-      .page { width: calc(100% - 24px); padding: 16px 0 48px; }
-      .hero { padding: 24px; }
-    }
+    .tip-card strong { font-size: 1.05rem; color: #7c3aed; }
+    .tip-list { list-style: none; padding-left: 0; margin: 0; display: grid; gap: 10px; }
+    .tip-item { display: flex; align-items: flex-start; gap: 10px; background: rgba(249, 115, 22, .08); border: 1px solid rgba(249, 115, 22, .15); border-radius: 18px; padding: 14px 16px; color: #92400e; font-size: .95rem; }
+    .tip-item::before { content: '⚡'; display: inline-flex; align-items: center; justify-content: center; margin-top: 2px; }
+    .info-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
+    .info-panel .card { min-height: 180px; }
+    .footer { margin-top: 32px; color: #475569; font-size: .95rem; display: grid; gap: 10px; }
+    .hint { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px; background: rgba(59, 130, 246, .08); border: 1px solid rgba(59, 130, 246, .16); padding: 16px 18px; border-radius: 20px; color: #1d4ed8; }
+    .loading, .error-box { min-height: 240px; display: grid; place-items: center; background: #fff; border: 1px solid rgba(148, 163, 184, .18); border-radius: 28px; box-shadow: 0 18px 40px rgba(15, 23, 42, .08); padding: 24px; color: #475569; }
+    .error-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
+    .sparkle { position: absolute; width: 14px; height: 14px; border-radius: 999px; background: rgba(249, 115, 22, .95); box-shadow: 0 0 12px rgba(249, 115, 22, .35); animation: float 5s ease-in-out infinite alternate; }
+    .sparkle:nth-child(1) { top: 18%; left: 12%; animation-delay: 0s; }
+    .sparkle:nth-child(2) { top: 10%; right: 20%; background: rgba(59, 130, 246, .95); animation-delay: 1.2s; }
+    .sparkle:nth-child(3) { bottom: 18%; left: 18%; background: rgba(236, 72, 153, .95); animation-delay: 0.6s; }
+    .sparkle:nth-child(4) { bottom: 14%; right: 16%; background: rgba(16, 185, 129, .95); animation-delay: 1.8s; }
+    @keyframes float { to { transform: translateY(-12px); opacity: .75; } }
+    @media (max-width: 980px) { .hero-grid, .grid-3, .info-panel { grid-template-columns: 1fr; } .topbar-link { margin-left: 0; } }
+    @media (max-width: 680px) { .page { width: calc(100% - 24px); padding: 16px 0 48px; } .hero { padding: 22px; } .hero-title { font-size: 2.2rem; } }
   </style>
 </head>
 <body>
   <div class="page">
     <div class="topbar">
       <div>
-        <div class="topbar-title">Sınav Haftası Özel Sayfası</div>
-        <div class="topbar-subtitle">Her öğrenci kendi verisini bu sayfada görebilir.</div>
+        <div class="topbar-title">🎉 Sınav Haftası Özel Sayfası</div>
+        <div class="topbar-subtitle">Renkli, canlı ve çok daha eğlenceli bir sınav haftası deneyimi.</div>
       </div>
-      <a class="topbar-link" href="sablon.html?ogrenci=yakup">Haftalık şablona dön</a>
+      <a class="topbar-link" href="sablon.html?ogrenci=yakup">🔙 Haftalık şablona dön</a>
     </div>
     <div id="main-content">
       <div class="loading" id="loading">Veriler yükleniyor…</div>
@@ -176,14 +184,6 @@
       return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
     }
 
-    function utcToLocalYMD(date) {
-      if (!date) return '';
-      const day = String(date.getDate()).padStart(2, '0');
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const year = date.getFullYear();
-      return `${day}.${month}.${year}`;
-    }
-
     function buildConfig(data) {
       const o = data.ogrenci || {};
       const h = data.hafta || {};
@@ -238,7 +238,7 @@
           sonPuan: h.son_puan,
           ortalama: h.ortalama,
           hedef: h.hedef,
-          gelisim: h.gelisim_notu || '',
+          gelisim: h.koc_haftalik_not ? h.koc_haftalik_not : '',
           netler: {
             tur: netler.tur || null,
             sos: netler.sos || null,
@@ -293,7 +293,7 @@
         <li class="resource-item">
           <div class="resource-left">
             <div class="resource-label">${safeHTML(item.label)}</div>
-            <div class="resource-meta">Kaynak dosya</div>
+            <div class="resource-meta">📄 Kaynak dosya</div>
           </div>
           <a class="resource-link" href="${buildResourceUrl(item.file)}" target="_blank" rel="noreferrer noopener">Aç / İndir</a>
         </li>`).join('');
@@ -304,79 +304,89 @@
                 <div class="resource-label">${safeHTML(ders.ad)}</div>
                 <div class="resource-meta">${ders.gorevler.map(g => safeHTML(g.metin)).filter(Boolean).join(' · ')}</div>
               </div>
-              <span class="pill">${ders.gorevler.length} görev</span>
+              <span class="pill green">${ders.gorevler.length} görev</span>
             </li>`).join('')
         : '<li class="plan-item"><div class="resource-left"><div class="resource-label">Bugün için bir görev bulunamadı.</div><div class="resource-meta">Haftalık plandaki ilk günün görevlerini inceleyin.</div></div></li>';
-      const checklistHtml = CHECKPOINTS.map(item => `<li class="checklist-item">${safeHTML(item)}</li>`).join('');
-      const rozetlerHtml = (cfg.ogrenci.rozetler || []).map(pair => ` <span class="pill">${safeHTML(pair[0])}</span>`).join('');
+      const checklistHtml = CHECKPOINTS.map(item => `<li class="checklist-item"><span class="pill blue">✅</span>${safeHTML(item)}</li>`).join('');
+      const rozetlerHtml = (cfg.ogrenci.rozetler || []).map(pair => `<span class="hero-pill">${safeHTML(pair[0])}</span>`).join('');
       main.innerHTML = `
         <div class="hero">
-          <div class="hero-flag">Sınav Haftası</div>
-          <h1 class="hero-title">${safeHTML(cfg.ogrenci.ad)} için özel hazırlık sayfası</h1>
-          <p class="hero-copy">Bu hafta, hem çalışma hem de motivasyon dengesi üzerine kurulu. Senin için seçilmiş kısa hedefler, bugün çözmen gereken konular ve en önemli sınav kaynakları burada.</p>
-          <div class="hero-meta-card">
-            <strong>${safeHTML(cfg.ogrenci.sinif || 'Sınıf bilgisi yok')}</strong>
-            <span>Hafta ${safeHTML(cfg.ogrenci.haftaNo)} · ${safeHTML(cfg.ogrenci.tarihAralik)}</span>
-          </div>
-          <div class="hero-meta-card">
-            <strong>Bugünün odağı</strong>
-            <span>${safeHTML(cfg.hedefler.odak || 'Bugünün odak konusu henüz belirlenmedi.')}</span>
-          </div>
-          <div class="hero-meta-card">
-            <strong>Haftalık hedef</strong>
-            <span>${safeHTML(cfg.hedefler.gunlukSoru || 'Günlük soru hedefi bulunmuyor.')}</span>
-          </div>
-          <div class="hero-meta-card">
-            <strong>Günlük not</strong>
-            <span>${safeHTML(selectedTip)}</span>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="sparkle"></div>
+          <div class="hero-flag">🚀 Sınav Haftası</div>
+          <h1 class="hero-title">Merhaba ${safeHTML(cfg.ogrenci.ad)}!</h1>
+          <p class="hero-copy">Bu hafta senin için özel: soru çözerken hızlan, hatalarda güçlen ve sınavda kapıyı sallayacak enerjiyle gir. Her gün bir küçük başarı senin büyük başarına dönüşsün!</p>
+          <div class="hero-pills">${rozetlerHtml || '<span class="hero-pill">Bu hafta senin haftan</span>'}</div>
+          <div class="hero-grid">
+            <div class="hero-card">
+              <strong>👑 Sınıf / Hafta</strong>
+              <span>${safeHTML(cfg.ogrenci.sinif || '6. sınıf')}</span>
+              <small>Hafta ${safeHTML(cfg.ogrenci.haftaNo)} · ${safeHTML(cfg.ogrenci.tarihAralik)}</small>
+            </div>
+            <div class="hero-card">
+              <strong>🎯 Bugünün odağı</strong>
+              <span>${safeHTML(cfg.hedefler.odak || 'Hızlı tekrar')}</span>
+              <small>Bugün planını buna göre ayarla.</small>
+            </div>
+            <div class="hero-card">
+              <strong>📚 Günlük hedef</strong>
+              <span>${safeHTML(cfg.hedefler.gunlukSoru || 'Soru hedefi')}</span>
+              <small>Her soru seni daha güçlü yapar.</small>
+            </div>
+            <div class="hero-card">
+              <strong>💡 Bugünün sürprizi</strong>
+              <span>${safeHTML(selectedTip)}</span>
+            </div>
           </div>
         </div>
         <div class="grid-3">
           <div class="card">
-            <h2>Hemen açman gereken 3 adım</h2>
-            <p>Bugün sınav haftası için önceliğin soru çözmek, hataları not etmek ve ara molayı planlamak olsun.</p>
-            <div class="mini-grid">
-              <div class="stat-block"><span class="stat-title">Deneme puan</span><span class="stat-value">${cfg.durum.sonPuan != null ? safeHTML(String(cfg.durum.sonPuan)) : '—'}</span><span class="stat-caption">Son sonuç</span></div>
-              <div class="stat-block"><span class="stat-title">Ortalama</span><span class="stat-value">${cfg.durum.ortalama != null ? safeHTML(String(cfg.durum.ortalama)) : '—'}</span><span class="stat-caption">Geçen denemelere göre</span></div>
-              <div class="stat-block"><span class="stat-title">Hedef</span><span class="stat-value">${cfg.durum.hedef != null ? safeHTML(String(cfg.durum.hedef)) : '—'}</span><span class="stat-caption">Bir sonraki puan</span></div>
-            </div>
+            <h2>✨ Haftanın güç kartı</h2>
+            <p>Bugün çöz, hata yap, öğren. Sınav haftası başarıları rastlantı değil; doğru adımla gelir.</p>
+            <div class="stat-block"><div class="stat-title">Deneme puan</div><div class="stat-value">${cfg.durum.sonPuan != null ? safeHTML(String(cfg.durum.sonPuan)) : '—'}</div><div class="stat-caption">Son denemeden gelen puan</div></div>
+            <div class="stat-block"><div class="stat-title">Ortalama puan</div><div class="stat-value">${cfg.durum.ortalama != null ? safeHTML(String(cfg.durum.ortalama)) : '—'}</div><div class="stat-caption">Geçen denemelere göre</div></div>
+            <div class="stat-block"><div class="stat-title">Hedef puan</div><div class="stat-value">${cfg.durum.hedef != null ? safeHTML(String(cfg.durum.hedef)) : '—'}</div><div class="stat-caption">Hedefe doğru rota</div></div>
           </div>
           <div class="card tip-card">
-            <strong>Bugünün Hızlı Sınav Tüyosu</strong>
-            <p>${safeHTML(selectedTip)}</p>
+            <strong>🔥 Sınav haftası kuralı</strong>
+            <p>Her testten sonra 3 dakika durup yanlışlarını kontrol et. Bu, sınavda seni herkesten hızlı yapar.</p>
             <ul class="tip-list">
-              <li class="tip-item">Sınav görevi bitince önce yanlışını kontrol et, sonra yeni soru çöz.</li>
-              <li class="tip-item">5 dakikalık kısa mola ver, sonra tekrar aynı konuya bak.</li>
+              <li class="tip-item">Yanlışları işaretle, sonra aynı hatayı tekrar etme.</li>
+              <li class="tip-item">Zaman tut, son 5 dakika hız kontrolü yap.</li>
+              <li class="tip-item">Kısa mola ver; zihin tazelenince daha dikkatli olur.</li>
             </ul>
           </div>
           <div class="card">
-            <h2>Kaynaklarla hızlı açılım</h2>
-            <p>Yanına alman gereken PDF’ler ve test dosyaları. Bu hafta sınavda kullanabileceğin ana kaynakları buradan aç.</p>
+            <h2>📁 Sınav kaynakları</h2>
+            <p>Bu dosyalar senin hafta arkadaşı. Kolayca açıp çalışmaya başla.</p>
             <ul class="resource-list">${resourceHtml}</ul>
           </div>
         </div>
         <div class="card">
-          <h2>Bugünün planı: ${safeHTML(today ? today.ad : 'Hafta planı')}</h2>
-          <p>Bugün hangi derse odaklanman gerektiğini görmek için aşağıya bak.</p>
+          <h2>🎒 Bugünün planı</h2>
+          <p>Hedefe yürürken her gün bir adım yeter. Bugünün hangi konularda ilerleyeceğini buradan gör.</p>
           <ul class="plan-list">${todayTasksHtml}</ul>
         </div>
         <div class="card">
-          <h2>Sınav Haftası Checklist</h2>
+          <h2>✅ Sınav haftası checklist</h2>
+          <p>Bu adımları tamamladığında kendini sınav ritmine hazır hâle getiriyorsun.</p>
           <ul class="checklist-list">${checklistHtml}</ul>
         </div>
         <div class="info-panel">
           <div class="card">
-            <h2>Koçtan not</h2>
-            <p>${safeHTML(cfg.koc.degerlendirme || cfg.koc.haftalikNot || 'Bu hafta için koç notu girilmedi.')}</p>
+            <h2>📝 Koçtan özel not</h2>
+            <p>${safeHTML(cfg.koc.degerlendirme || cfg.koc.haftalikNot || 'Bu hafta için özel not gönderilmedi. Ancak bugün güçlü çıkabilirsin!')}</p>
           </div>
           <div class="card">
-            <h2>Hızlı ipucu</h2>
-            <p>Her gün en az bir kez cevabı kontrol et ve yanlış işaretlediğin soru tiplerini listele. Bu, sınavda panik yerine akıllı bir geri dönüş sağlar.</p>
+            <h2>⭐ Hızlı motivasyon</h2>
+            <p>Senin için bu hafta küçük kazanımlar büyük fark yaratacak. Her sabah 1 hedef seç, sonra ona odaklan ve bitir.</p>
           </div>
         </div>
         <div class="footer">
           <div class="hint">Bu sayfayı paylaşmak için: <code>sinav-haftasi.html?ogrenci=${encodeURIComponent(slug)}</code></div>
-          <div>Sayfayı GitHub'a eklediğinde, her öğrenci kendi slug’ı ile giriş yaparak özel sınav haftası içeriğini görüntüleyebilir.</div>
+          <div>GitHub’a yüklediğinde her öğrenci kendi slug’ı ile girdiğinde özel hazırlık sayfasını görür.</div>
         </div>
       `;
     }
