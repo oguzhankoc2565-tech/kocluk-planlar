@@ -155,6 +155,29 @@
     .sc-prog-track { flex:1; height:5px; background:#e2e8f0; border-radius:999px; overflow:hidden; }
     .sc-prog-fill  { height:100%; background:linear-gradient(90deg,#10b981,#34d399); border-radius:999px; transition:width .3s; }
 
+    /* ── ÇALIŞMA MATERYALLERİ ── */
+    .study-grid { display:grid; grid-template-columns:230px 1fr; gap:14px; align-items:start; }
+    .study-list-card { background:#fff; border-radius:var(--r); box-shadow:var(--shadow); overflow:hidden; }
+    .study-list-hd { background:linear-gradient(90deg,#1e3a5f,#1d4ed8); padding:12px 14px; color:#fff; font-size:.82rem; font-weight:800; display:flex; align-items:center; gap:6px; }
+    .study-item { display:flex; align-items:flex-start; gap:10px; padding:11px 13px; cursor:pointer; border-bottom:1px solid #f1f5f9; transition:background .12s; }
+    .study-item:last-child { border-bottom:none; }
+    .study-item:hover:not(.disabled) { background:#f5f3ff; }
+    .study-item.active { background:#eef2ff; border-left:3px solid #6366f1; padding-left:10px; }
+    .study-item.disabled { opacity:.5; cursor:default; }
+    .study-item-ic { width:30px; height:30px; border-radius:8px; display:grid; place-items:center; font-size:.95rem; flex-shrink:0; margin-top:1px; }
+    .study-item-title { font-weight:800; font-size:.82rem; color:#1e293b; line-height:1.2; }
+    .study-item-sub { font-size:.7rem; color:#64748b; margin-top:2px; line-height:1.4; }
+    .study-item-tag { display:inline-block; margin-top:4px; font-size:.65rem; font-weight:800; padding:2px 7px; border-radius:999px; }
+    .study-viewer-card { background:#fff; border-radius:var(--r); box-shadow:var(--shadow); overflow:hidden; }
+    .study-viewer-hd { padding:11px 16px; background:#f8faff; border-bottom:1px solid #f1f5f9; font-size:.84rem; font-weight:800; color:#1e293b; display:flex; align-items:center; gap:8px; }
+    .study-viewer-hd-sub { font-size:.74rem; font-weight:600; color:#64748b; margin-left:auto; }
+    #study-viewer-body { position:relative; }
+    #study-viewer-body iframe { width:100%; aspect-ratio:16/9; border:none; display:block; min-height:180px; }
+    .study-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:40px 24px; color:#94a3b8; text-align:center; min-height:180px; }
+    .study-placeholder-icon { font-size:2.5rem; }
+    .study-placeholder-text { font-weight:700; font-size:.9rem; }
+    @media (max-width:720px) { .study-grid { grid-template-columns:1fr; } }
+
     /* ── KAYNAKLAR ── */
     .res-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
     .res-card { background: #fff; border-radius: 14px; border: 1.5px solid rgba(148,163,184,.13); padding: 12px 14px; display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; transition: transform .16s, box-shadow .16s; }
@@ -368,6 +391,29 @@
     </div>
   </div>
 
+  <!-- 2b. Çalışma Materyalleri -->
+  <div class="sec"><div class="sec-ic" style="background:#dbeafe">📺</div><div class="sec-t">Çalışma Materyalleri</div><div class="sec-s">Tıkla, izle, öğren</div></div>
+  <div class="study-grid">
+    <!-- sol: kaynak listesi -->
+    <div class="study-list-card">
+      <div class="study-list-hd">📋 Kaynaklar <span style="margin-left:auto;opacity:.7;font-size:.7rem;font-weight:600">Tıkla → Aç</span></div>
+      <div id="study-list"></div>
+    </div>
+    <!-- sağ: viewer -->
+    <div class="study-viewer-card">
+      <div class="study-viewer-hd" id="study-viewer-title">
+        <span id="study-viewer-name">Bir kaynak seç</span>
+        <span class="study-viewer-hd-sub" id="study-viewer-meta"></span>
+      </div>
+      <div id="study-viewer-body">
+        <div class="study-placeholder">
+          <div class="study-placeholder-icon">🎬</div>
+          <div class="study-placeholder-text">Soldan bir kaynak seç<br>burda açılacak</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- 3. Not Hesaplayıcı -->
   <div class="sec"><div class="sec-ic" style="background:#e0e7ff">🧮</div><div class="sec-t">Not Hesaplayıcı</div><div class="sec-s">MEB formülü · otomatik kaydedilir</div></div>
   <div class="nk-formula">
@@ -553,6 +599,7 @@ const SENARYOLAR = {
 };
 
 const RESOURCES = [
+  {label:"Anadolu'nun Türkleşmesi",file:"Anadolu'nun Türkleşmesi ve İslamlaşması.pdf",kod:'sos',em:'📑'},
   {label:'Zamirler Testi 1',file:'Zamirler-Konu-Testi-1.pdf',kod:'tur',em:'📄'},
   {label:'Zamirler Testi 2',file:'Zamirler-Konu-Testi-2.pdf',kod:'tur',em:'📄'},
   {label:'Zamirler Testi 3',file:'Zamirler-Konu-Testi-3.pdf',kod:'tur',em:'📄'},
@@ -870,6 +917,109 @@ function renderTodaySection(){
     });
   }
 }
+
+/* ── ÇALIŞMA MATERYALLERİ ── */
+const STUDY_RESOURCES = [
+  {
+    id:'sm1', tur:'video', ders:'sos', em:'🎬',
+    baslik:'Türkleşme ve İslamlaşma Süreci',
+    aciklama:'XI-XIII. yy. — Senaryo konusu',
+    sure:'Video', url:'https://youtu.be/jhD58-7Itys',
+    tag:'Sosyal', tagRenk:'#ede9fe', tagText:'#7c3aed'
+  },
+  {
+    id:'sm1b', tur:'pdf', ders:'sos', em:'📑',
+    baslik:"Anadolu'nun Türkleşmesi ve İslamlaşması",
+    aciklama:'Senaryo konusu — Okuma ve çalışma dokümanı',
+    sure:'PDF', url:"sinav-haftasi/Anadolu'nun Türkleşmesi ve İslamlaşması.pdf",
+    tag:'Sosyal', tagRenk:'#ede9fe', tagText:'#7c3aed'
+  },
+  {
+    id:'sm2', tur:'video', ders:'sos', em:'🎬',
+    baslik:'Ekonomik Faaliyetler ve Meslekler',
+    aciklama:'Hayatımızdaki Ekonomi ünitesi',
+    sure:'Video', url:'',
+    tag:'Sosyal', tagRenk:'#ede9fe', tagText:'#7c3aed'
+  },
+  {
+    id:'sm3', tur:'video', ders:'tur', em:'🎬',
+    baslik:'Söz Sanatları — Konu Anlatımı',
+    aciklama:'T.O.6.20 · T.O.6.25 — Senaryo konusu',
+    sure:'Video', url:'',
+    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
+  },
+  {
+    id:'sm4', tur:'video', ders:'tur', em:'🎬',
+    baslik:'Yazım Kuralları ve Noktalama',
+    aciklama:'T.Y.6.21 — Senaryo konusu',
+    sure:'Video', url:'',
+    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
+  },
+  {
+    id:'sm5', tur:'pdf', ders:'tur', em:'📄',
+    baslik:'Zamirler Konu Testi 1',
+    aciklama:'PDF çalışma soruları',
+    sure:'PDF', url:'sinav-haftasi/Zamirler-Konu-Testi-1.pdf',
+    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
+  },
+  {
+    id:'sm6', tur:'pdf', ders:'fen', em:'📄',
+    baslik:'Fen 2. Dönem 2. Yazılı',
+    aciklama:'Geçmiş sınav soruları',
+    sure:'PDF', url:'sinav-haftasi/6_Fen_2.Donem_2. Yazili (1).pdf',
+    tag:'Fen', tagRenk:'#d1fae5', tagText:'#059669'
+  }
+];
+
+function ytEmbed(url){
+  var m=url.match(/(?:youtu\.be\/|[?&]v=)([A-Za-z0-9_-]{11})/);
+  return m?'https://www.youtube.com/embed/'+m[1]+'?rel=0&autoplay=1':'';
+}
+
+var activeStudyId=null;
+function renderStudyList(){
+  var el=document.getElementById('study-list'); if(!el)return;
+  el.innerHTML=STUDY_RESOURCES.map(function(r){
+    var hasUrl=!!r.url;
+    var cls='study-item'+(activeStudyId===r.id?' active':'')+(hasUrl?'':' disabled');
+    var c=SC[r.ders]||SC.kit;
+    return '<div class="'+cls+'" data-id="'+r.id+'" onclick="studyOpen(\''+r.id+'\')">'+
+      '<div class="study-item-ic" style="background:'+c.bg+'">'+r.em+'</div>'+
+      '<div>'+
+        '<div class="study-item-title">'+safe(r.baslik)+'</div>'+
+        '<div class="study-item-sub">'+safe(r.aciklama)+'</div>'+
+        '<span class="study-item-tag" style="background:'+r.tagRenk+';color:'+r.tagText+'">'+r.tag+'</span>'+
+        (!hasUrl?'<span class="study-item-tag" style="background:#f1f5f9;color:#94a3b8;margin-left:3px">yakında</span>':'')+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+window.studyOpen=function(id){
+  var item=STUDY_RESOURCES.find(function(r){return r.id===id;});
+  if(!item||!item.url) return;
+  activeStudyId=id;
+  renderStudyList();
+  /* viewer güncelle */
+  var nameEl=document.getElementById('study-viewer-name');
+  var metaEl=document.getElementById('study-viewer-meta');
+  var body=document.getElementById('study-viewer-body');
+  if(nameEl) nameEl.textContent=item.baslik;
+  if(metaEl) metaEl.textContent=item.tag+' · '+item.sure;
+  if(!body) return;
+  var embed=ytEmbed(item.url);
+  if(embed){
+    body.innerHTML='<iframe src="'+embed+'" allowfullscreen allow="autoplay;encrypted-media;picture-in-picture"></iframe>';
+  } else if(item.url.match(/\.pdf$/i)||item.tur==='pdf'){
+    body.innerHTML='<iframe src="'+item.url+'" style="width:100%;height:420px;border:none;display:block"></iframe>';
+  } else {
+    body.innerHTML='<div class="study-placeholder">'+
+      '<div class="study-placeholder-icon">🔗</div>'+
+      '<div class="study-placeholder-text">'+safe(item.baslik)+'</div>'+
+      '<a href="'+item.url+'" target="_blank" rel="noreferrer" style="background:linear-gradient(90deg,#6366f1,#4338ca);color:#fff;padding:10px 20px;border-radius:12px;text-decoration:none;font-size:.88rem;font-weight:800">Yeni Sekmede Aç ↗</a>'+
+    '</div>';
+  }
+};
 
 /* KAYNAKLAR */
 function renderResources(){
@@ -1238,6 +1388,7 @@ function deviceNoticeKapat(){
 renderTodayLbl();
 renderExams();
 renderTodaySection();
+renderStudyList();
 renderResources();
 renderNK();
 renderCL();
