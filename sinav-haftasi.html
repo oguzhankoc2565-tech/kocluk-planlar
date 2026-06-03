@@ -106,40 +106,45 @@
     .scenario-konu { flex: 1; font-size: .84rem; font-weight: 700; color: #374151; line-height: 1.4; }
     .scenario-soru { background: #e0e7ff; color: #3730a3; font-size: .74rem; font-weight: 900; border-radius: 6px; padding: 3px 8px; white-space: nowrap; flex-shrink: 0; }
 
-    /* ── NOT HESAPLAYICI ── */
-    .nk-list { display: grid; gap: 8px; }
-    .nk-item { background: #fff; border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; border: 2px solid transparent; transition: border-color .15s; }
-    .nk-item.open { border-color: #e0e7ff; }
-    .nk-hd { display: flex; align-items: center; gap: 10px; padding: 12px 14px; cursor: pointer; user-select: none; transition: background .12s; }
-    .nk-hd:hover { background: #fafbff; }
-    .nk-hd-ic { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; font-size: 1.1rem; flex-shrink: 0; }
-    .nk-hd-name { font-weight: 800; font-size: .9rem; flex: 1; }
-    .nk-hd-result { font-size: 1rem; font-weight: 900; padding: 4px 12px; border-radius: 8px; color: #fff; flex-shrink: 0; min-width: 52px; text-align: center; }
-    .nk-hd-arrow { font-size: .8rem; color: #94a3b8; flex-shrink: 0; transition: transform .2s; }
-    .nk-item.open .nk-hd-arrow { transform: rotate(180deg); }
-    .nk-body { display: none; padding: 0 14px 14px; }
-    .nk-item.open .nk-body { display: block; }
-    .nk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; margin-bottom: 10px; }
-    .nk-field label { display: block; font-size: .68rem; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 4px; }
-    .nk-input { width: 100%; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 7px 8px; font-size: .9rem; font-family: inherit; font-weight: 700; text-align: center; color: #111827; outline: none; transition: border-color .15s; }
-    .nk-input:focus { border-color: #6366f1; }
-    .nk-calc { display: flex; gap: 8px; flex-wrap: wrap; padding-top: 8px; border-top: 1px solid #f1f5f9; }
-    .nk-calc-item { flex: 1; min-width: 80px; background: #f8faff; border-radius: 10px; padding: 8px 10px; text-align: center; }
-    .nk-calc-label { font-size: .65rem; font-weight: 800; text-transform: uppercase; color: #64748b; display: block; margin-bottom: 3px; }
-    .nk-calc-val { font-size: .95rem; font-weight: 900; color: #3730a3; }
-    .nk-calc-val.big { font-size: 1.1rem; }
+    /* ── NOT HESAPLAYICI (tablo) ── */
+    .nk-wrap { overflow-x: auto; border-radius: var(--r); box-shadow: var(--shadow); }
+    .nk-table { width: 100%; border-collapse: collapse; background: #fff; font-size: .84rem; min-width: 700px; }
+    .nk-table thead tr:first-child th { background: linear-gradient(90deg,#312e81,#1d4ed8); color:#fff; font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; padding:10px 8px; text-align:center; border-right:1px solid rgba(255,255,255,.15); }
+    .nk-table thead tr:first-child th:first-child { text-align:left; border-right:2px solid rgba(255,255,255,.25); }
+    .nk-table thead tr:last-child th { background:#f1f5f9; color:#475569; font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em; padding:7px 6px; text-align:center; border-bottom:2px solid #e2e8f0; border-right:1px solid #e8ecf4; }
+    .nk-table thead tr:last-child th.sep { border-right:2px solid #d1d5db; }
+    .nk-table tbody tr { border-bottom:1px solid #f1f5f9; transition:background .1s; }
+    .nk-table tbody tr:last-child { border-bottom:none; }
+    .nk-table tbody tr:hover { background:#fafbff; }
+    .nk-table td { padding:8px 6px; vertical-align:middle; text-align:center; border-right:1px solid #f1f5f9; }
+    .nk-table td:first-child { text-align:left; border-right:2px solid #e8ecf4; padding-left:12px; }
+    .nk-table td.sep { border-right:2px solid #e8ecf4; }
+    .nk-ders-cell { display:flex; align-items:center; gap:8px; font-weight:800; font-size:.88rem; white-space:nowrap; }
+    .nk-ders-ic { width:28px; height:28px; border-radius:8px; display:grid; place-items:center; font-size:.95rem; flex-shrink:0; }
+    .nk-inp { width:58px; border:1.5px solid #e2e8f0; border-radius:7px; padding:5px 3px; font-size:.85rem; font-family:inherit; font-weight:700; text-align:center; color:#111827; outline:none; transition:border-color .15s; display:block; margin:0 auto; }
+    .nk-inp:focus { border-color:#6366f1; }
+    .nk-val { font-weight:900; font-size:.82rem; color:#6366f1; }
+    .nk-badge { display:inline-block; padding:4px 10px; border-radius:8px; font-weight:900; font-size:.88rem; color:#fff; min-width:50px; text-align:center; }
     /* result colors */
-    .nk-r-empty { background: #e2e8f0; color: #94a3b8; }
-    .nk-r-red   { background: #ef4444; }
-    .nk-r-yel   { background: #f59e0b; }
-    .nk-r-grn   { background: #10b981; }
-    .nk-r-blu   { background: #3b82f6; }
-    .nk-footer  { display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
-    .nk-avg     { padding: 10px 18px; background: linear-gradient(90deg, #312e81, #1d4ed8); color: #fff; border-radius: 14px; font-size: .95rem; font-weight: 900; }
-    .nk-reset   { padding: 10px 14px; background: #f1f5f9; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: .82rem; font-weight: 800; color: #64748b; cursor: pointer; font-family: inherit; transition: background .15s; }
-    .nk-reset:hover { background: #e2e8f0; }
-    .nk-note    { font-size: .76rem; color: #94a3b8; font-weight: 600; }
-    .nk-formula { background: #eef2ff; border-radius: 12px; padding: 10px 14px; font-size: .78rem; font-weight: 700; color: #3730a3; line-height: 1.7; margin-bottom: 12px; }
+    .nk-r-empty { background:#e2e8f0; color:#94a3b8; }
+    .nk-r-red   { background:#ef4444; }
+    .nk-r-yel   { background:#f59e0b; }
+    .nk-r-grn   { background:#10b981; }
+    .nk-r-blu   { background:#3b82f6; }
+    .nk-footer  { display:flex; align-items:center; gap:10px; margin-top:14px; flex-wrap:wrap; }
+    .nk-avg     { padding:10px 18px; background:linear-gradient(90deg,#312e81,#1d4ed8); color:#fff; border-radius:14px; font-size:.95rem; font-weight:900; }
+    .nk-reset   { padding:10px 14px; background:#f1f5f9; border:1.5px solid #e2e8f0; border-radius:12px; font-size:.82rem; font-weight:800; color:#64748b; cursor:pointer; font-family:inherit; transition:background .15s; }
+    .nk-reset:hover { background:#e2e8f0; }
+    .nk-note    { font-size:.76rem; color:#94a3b8; font-weight:600; }
+    .nk-formula { background:#eef2ff; border-radius:12px; padding:10px 14px; font-size:.78rem; font-weight:700; color:#3730a3; line-height:1.7; margin-bottom:12px; }
+    /* senaryo tabs */
+    .sc-tabs { display:flex; gap:6px; padding:12px 12px 0; flex-wrap:wrap; }
+    .sc-tab { background:#f1f5f9; border:1.5px solid #e2e8f0; color:#475569; border-radius:10px; padding:7px 12px; font-size:.8rem; font-weight:800; cursor:pointer; font-family:inherit; transition:all .15s; }
+    .sc-tab.active { background:#6366f1; border-color:#6366f1; color:#fff; }
+    .sc-tab:hover:not(.active) { background:#e8e3f8; border-color:#a5b4fc; color:#4338ca; }
+    .sc-tab-single { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:12px 14px 6px; }
+    .sc-tab-single span { font-size:.78rem; font-weight:800; text-transform:uppercase; color:#64748b; letter-spacing:.06em; }
+    .sc-badge2 { background:#e0e7ff; color:#3730a3; font-size:.72rem; font-weight:800; padding:3px 9px; border-radius:999px; }
 
     /* ── KAYNAKLAR ── */
     .res-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
@@ -286,15 +291,37 @@
   </div>
 
   <!-- 3. Not Hesaplayıcı -->
-  <div class="sec"><div class="sec-ic" style="background:#e0e7ff">🧮</div><div class="sec-t">Not Hesaplayıcı</div><div class="sec-s">MEB formülü</div></div>
+  <div class="sec"><div class="sec-ic" style="background:#e0e7ff">🧮</div><div class="sec-t">Not Hesaplayıcı</div><div class="sec-s">MEB formülü · otomatik kaydedilir</div></div>
   <div class="nk-formula">
-    📐 <strong>Formül:</strong> Proje Ort. ve Etkinlik Ort. ayrı ayrı alınır → ikiye bölünür (PE Ort.) → Dönem Puanı = (1.Sınav + 2.Sınav + PE Ort.) ÷ 3
+    📐 <strong>Formül:</strong> Proje Ort. ve Etkinlik Ort. ayrı ayrı alınır → ikiye bölünür (PE Ort.) → Dönem Puanı = (1.Sınav + 2.Sınav + PE Ort.) ÷ 3 &nbsp;|&nbsp; <span style="color:#059669">Yeşil ≥70 · Mavi ≥85</span>
   </div>
-  <div class="nk-list" id="nk-list"></div>
+  <div class="nk-wrap">
+    <table class="nk-table">
+      <thead>
+        <tr>
+          <th rowspan="2" style="min-width:150px;text-align:left;padding-left:12px">Ders</th>
+          <th colspan="2">Sınav Puanları</th>
+          <th colspan="2" class="sep">Projeler</th>
+          <th colspan="3" class="sep">Ders Etkinlikleri</th>
+          <th class="sep">Proje Ort.</th>
+          <th>Etk. Ort.</th>
+          <th>PE Ort.</th>
+          <th>Dönem Puanı</th>
+        </tr>
+        <tr>
+          <th>1. Yazılı</th><th class="sep">2. Yazılı</th>
+          <th>P1</th><th class="sep">P2</th>
+          <th>E1</th><th>E2</th><th class="sep">E3</th>
+          <th></th><th></th><th></th><th></th>
+        </tr>
+      </thead>
+      <tbody id="nk-tbody"></tbody>
+    </table>
+  </div>
   <div class="nk-footer">
     <div class="nk-avg" id="nk-avg">Genel Ort: —</div>
     <button class="nk-reset" onclick="nkReset()">🗑 Sıfırla</button>
-    <span class="nk-note">Notlar bu tarayıcıda saklanır.</span>
+    <span class="nk-note">💾 Girdiğin notlar bu tarayıcıda otomatik kaydedilir.</span>
   </div>
 
   <!-- 4. Kaynaklar + Checklist yan yana -->
@@ -537,55 +564,73 @@ function renderExams(){
   });
 }
 
-/* GÜNÜN GÖREVİ - alert + senaryo */
+/* GÜNÜN GÖREVİ - alert + senaryo (tab'lı) */
 function renderTodaySection(){
   var td=todayStr(), tom=tomorrowStr();
-  var todayExam=EXAMS.find(function(e){return e.tarih===td;});
-  var tomExam  =EXAMS.find(function(e){return e.tarih===tom;});
-  var targetExam = todayExam || tomExam || (nextExamObj() ? EXAMS.find(function(e){return e.tarih>=td;}) : null);
+  /* Gerçek zamana göre bir sonraki sınav günü */
+  var nx=nextExamObj();
+  var nxDate=nx?nx.dt.toISOString().slice(0,10):null;
+  var studyExam=nxDate?EXAMS.find(function(e){return e.tarih===nxDate;}):null;
 
-  /* alert kutusu */
   var alertEl=document.getElementById('exam-alert');
-  if(todayExam){
-    var names=todayExam.dersler.map(function(d){return d.em+' '+d.ad;}).join(' · ');
-    alertEl.innerHTML='<div class="task-alert" style="background:#fff7ed;border:2px solid #fed7aa"><div class="task-alert-icon">🔔</div><div><div class="task-alert-title" style="color:#c2410c">BUGÜN SINAV VAR!</div><div class="task-alert-sub" style="color:#9a3412">'+safe(names)+'</div></div></div>';
-  } else if(tomExam){
-    var names2=tomExam.dersler.map(function(d){return d.em+' '+d.ad;}).join(' · ');
-    alertEl.innerHTML='<div class="task-alert" style="background:#fffbeb;border:2px solid #fde68a"><div class="task-alert-icon">⚠️</div><div><div class="task-alert-title" style="color:#92400e">Yarın Sınav: '+safe(tomExam.gun)+'</div><div class="task-alert-sub" style="color:#78350f">'+safe(names2)+'</div></div></div>';
-  } else if(targetExam){
-    var names3=targetExam.dersler.map(function(d){return d.em+' '+d.ad;}).join(' · ');
-    alertEl.innerHTML='<div class="task-alert" style="background:#f0fdf4;border:2px solid #bbf7d0"><div class="task-alert-icon">📅</div><div><div class="task-alert-title" style="color:#15803d">Sıradaki Sınav</div><div class="task-alert-sub" style="color:#166534">'+safe(targetExam.gun)+' — '+safe(names3)+'</div></div></div>';
+  if(studyExam){
+    var names=studyExam.dersler.map(function(d){return d.em+' '+d.ad;}).join(' · ');
+    var isToday=studyExam.tarih===td, isTom=studyExam.tarih===tom;
+    var em2=isToday?'🔔':isTom?'⚠️':'📅';
+    var title=isToday?'BUGÜN SINAV VAR!':isTom?'Yarın Sınav: '+studyExam.gun:'Sıradaki: '+studyExam.gun+' ('+studyExam.tarih.split('-').reverse().join('.')+')';
+    var bg=isToday?'#fff7ed':isTom?'#fffbeb':'#f0fdf4';
+    var bc=isToday?'#fed7aa':isTom?'#fde68a':'#bbf7d0';
+    var tc=isToday?'#c2410c':isTom?'#92400e':'#15803d';
+    var sc2=isToday?'#9a3412':isTom?'#78350f':'#166534';
+    alertEl.innerHTML='<div class="task-alert" style="background:'+bg+';border:2px solid '+bc+'"><div class="task-alert-icon">'+em2+'</div><div><div class="task-alert-title" style="color:'+tc+'">'+title+'</div><div class="task-alert-sub" style="color:'+sc2+'">'+safe(names)+'</div></div></div>';
   } else {
-    alertEl.innerHTML='<div class="task-alert" style="background:#f0fdf4;border:2px solid #bbf7d0"><div class="task-alert-icon">🎉</div><div><div class="task-alert-title" style="color:#15803d">Tüm sınavlar tamamlandı!</div></div></div>';
+    alertEl.innerHTML='<div class="task-alert" style="background:#f0fdf4;border:2px solid #bbf7d0"><div class="task-alert-icon">🎉</div><div><div class="task-alert-title" style="color:#15803d">Tüm sınavlar tamamlandı! Harika iş çıkardın.</div></div></div>';
   }
 
-  /* senaryo paneli */
+  /* senaryo panel — tab'lı */
   var panel=document.getElementById('scenario-panel');
-  var studyExam = todayExam || tomExam;
-  if(!studyExam){ panel.innerHTML='<div style="padding:20px;text-align:center;color:#94a3b8;font-size:.88rem;font-weight:700">Yaklaşan sınav senaryosu yok.</div>'; return; }
+  if(!studyExam){panel.innerHTML='<div style="padding:24px;text-align:center;color:#94a3b8;font-size:.88rem;font-weight:700">Yaklaşan sınav senaryosu yok.</div>';return;}
 
-  /* hangi derslerin senaryosu var? */
-  var senaryos = [];
+  var tabs=[];
   studyExam.dersler.forEach(function(d){
-    if(SENARYOLAR[d.kod]) senaryos.push({kod:d.kod, data:SENARYOLAR[d.kod]});
+    if(SENARYOLAR[d.kod]) tabs.push({em:d.em,ad:d.ad,kod:d.kod,data:SENARYOLAR[d.kod]});
   });
 
-  if(!senaryos.length){
-    panel.innerHTML='<div style="padding:20px;text-align:center;color:#94a3b8;font-size:.88rem;font-weight:700">Bu sınav için senaryo eklenmedi.<br>Genel tekrar yap! 💪</div>';
+  if(!tabs.length){
+    panel.innerHTML='<div style="padding:24px;text-align:center;color:#94a3b8;font-size:.88rem;font-weight:700">Bu sınav için senaryo eklenmedi.<br>Genel tekrar yap! 💪</div>';
     return;
   }
 
-  var html=senaryos.map(function(s, si){
-    var bodyId='sc-body-'+si;
-    var klar=s.data.unite.map(function(u){
+  function buildBody(idx){
+    var s=tabs[idx];
+    return s.data.unite.map(function(u){
       var rows=u.konular.map(function(k){
         return '<div class="scenario-row"><div class="scenario-konu">'+safe(k.konu)+'</div><div class="scenario-soru">'+k.soru+' soru</div></div>';
       }).join('');
       return '<div class="scenario-unite">'+safe(u.ad)+'</div>'+rows;
     }).join('');
-    return '<div class="scenario-card" style="border:1px solid #e2e8f0"><div class="scenario-hd" style="background:'+s.data.renk+'" onclick="document.getElementById(\''+bodyId+'\').classList.toggle(\'open\');this.querySelector(\'.scenario-toggle\').textContent=document.getElementById(\''+bodyId+'\').classList.contains(\'open\')?\'▲\':\'▼\'"><div><h5>'+s.data.baslik+'</h5><small>Bu sınav için çalış!</small></div><span class="scenario-hd-badge">'+s.data.toplam+'</span><button class="scenario-toggle">▼</button></div><div class="scenario-body open" id="'+bodyId+'">'+klar+'</div></div>';
-  }).join('');
-  panel.innerHTML=html;
+  }
+
+  var headerHtml='';
+  if(tabs.length>1){
+    headerHtml='<div class="sc-tabs">'+tabs.map(function(t,i){
+      return '<button class="sc-tab'+(i===0?' active':'')+'" data-idx="'+i+'">'+t.em+' '+safe(t.ad)+'</button>';
+    }).join('')+'</div>';
+  } else {
+    headerHtml='<div class="sc-tab-single"><span>'+tabs[0].data.baslik+'</span><span class="sc-badge2">'+tabs[0].data.toplam+'</span></div>';
+  }
+
+  panel.innerHTML=headerHtml+'<div class="scenario-body open" id="sc-body">'+buildBody(0)+'</div>';
+
+  if(tabs.length>1){
+    panel.querySelectorAll('.sc-tab').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        panel.querySelectorAll('.sc-tab').forEach(function(b){b.classList.remove('active');});
+        btn.classList.add('active');
+        document.getElementById('sc-body').innerHTML=buildBody(+btn.dataset.idx);
+      });
+    });
+  }
 }
 
 /* KAYNAKLAR */
@@ -616,16 +661,15 @@ function renderCL(){
 function renderMoti(){ document.getElementById('moti-q').textContent=MOTIS[new Date().getDate()%MOTIS.length]; }
 function renderTodayLbl(){ document.getElementById('today-lbl').textContent=GUN_ADI[new Date().getDay()]; }
 
-/* ── NOT HESAPLAYICI ── */
-var NK_KEY='sinav_nk2_'+slug;
+/* ── NOT HESAPLAYICI (tablo, tam açık) ── */
+var NK_KEY='sinav_nk3_'+slug; /* v3 key — temiz başlangıç */
 function nkLoad(){ try{return JSON.parse(localStorage.getItem(NK_KEY)||'{}')}catch{return{}} }
 function nkSave(d){ localStorage.setItem(NK_KEY,JSON.stringify(d)); }
 
-function avg(arr){ var v=arr.filter(function(x){return isFinite(parseFloat(x));}); return v.length?v.reduce(function(a,b){return a+parseFloat(b);},0)/v.length:null; }
+function avg(arr){ var v=arr.filter(function(x){return x!==''&&x!==null&&isFinite(parseFloat(x));}); return v.length?v.reduce(function(a,b){return a+parseFloat(b);},0)/v.length:null; }
 
 function calcPE(p1,p2,e1,e2,e3){
-  var proje=[p1,p2], etk=[e1,e2,e3];
-  var pa=avg(proje), ea=avg(etk);
+  var pa=avg([p1,p2]), ea=avg([e1,e2,e3]);
   if(pa===null&&ea===null) return null;
   if(pa===null) return ea;
   if(ea===null) return pa;
@@ -640,71 +684,58 @@ function calcDonem(s1,s2,pe){
   return (v1+v2+pe)/3;
 }
 function resClass(p){ if(p===null||!isFinite(p)) return 'nk-r-empty'; if(p<50) return 'nk-r-red'; if(p<70) return 'nk-r-yel'; if(p<85) return 'nk-r-grn'; return 'nk-r-blu'; }
+function fmtN(v){ return v!==null?v.toFixed(2):'—'; }
 
 function renderNK(){
   var data=nkLoad();
-  var openIds=[];
-  document.querySelectorAll('.nk-item.open').forEach(function(el){ openIds.push(el.dataset.id); });
+  /* save active input focus position */
+  var focused=document.activeElement, focId=focused?focused.dataset&&focused.dataset.id+':'+focused.dataset.field:'';
 
-  var html=NK_DERSLER.map(function(ders){
+  var rows=NK_DERSLER.map(function(ders){
     var d=data[ders.id]||{};
-    var s1=d.s1||'', s2=d.s2||'', p1=d.p1||'', p2=d.p2||'', e1=d.e1||'', e2=d.e2||'', e3=d.e3||'';
-    var pe=calcPE(p1,p2,e1,e2,e3);
+    var s1=d.s1||'',s2=d.s2||'',p1=d.p1||'',p2=d.p2||'',e1=d.e1||'',e2=d.e2||'',e3=d.e3||'';
+    var pa=avg([p1,p2]), ea=avg([e1,e2,e3]), pe=calcPE(p1,p2,e1,e2,e3);
     var donem=calcDonem(s1,s2,pe);
     var resVal=donem!==null?Math.round(donem*100)/100:null;
     var cls=resClass(resVal);
-    var resText=resVal!==null?resVal.toFixed(2):'—';
-    var isOpen=openIds.indexOf(ders.id)>=0;
     var c=sc(ders.kod);
-    return '<div class="nk-item'+(isOpen?' open':'')+'" data-id="'+ders.id+'">'+
-      '<div class="nk-hd" onclick="nkToggle(\''+ders.id+'\')">'+
-      '<div class="nk-hd-ic" style="background:'+c.bg+'">'+ders.em+'</div>'+
-      '<div class="nk-hd-name">'+safe(ders.label)+'</div>'+
-      '<div class="nk-hd-result '+cls+'">'+resText+'</div>'+
-      '<div class="nk-hd-arrow">▼</div>'+
-      '</div>'+
-      '<div class="nk-body">'+
-        '<div class="nk-grid">'+
-          mkField(ders.id,'s1','1. Sınav',s1)+
-          mkField(ders.id,'s2','2. Sınav',s2)+
-          mkField(ders.id,'p1','Proje 1',p1)+
-          mkField(ders.id,'p2','Proje 2',p2)+
-          mkField(ders.id,'e1','Etkinlik 1',e1)+
-          mkField(ders.id,'e2','Etkinlik 2',e2)+
-          mkField(ders.id,'e3','Etkinlik 3',e3)+
-        '</div>'+
-        '<div class="nk-calc">'+
-          '<div class="nk-calc-item"><span class="nk-calc-label">Proje Ort.</span><span class="nk-calc-val">'+fmtN(avg([p1,p2]))+'</span></div>'+
-          '<div class="nk-calc-item"><span class="nk-calc-label">Etkinlik Ort.</span><span class="nk-calc-val">'+fmtN(avg([e1,e2,e3]))+'</span></div>'+
-          '<div class="nk-calc-item"><span class="nk-calc-label">PE Ortalaması</span><span class="nk-calc-val">'+fmtN(pe)+'</span></div>'+
-          '<div class="nk-calc-item"><span class="nk-calc-label">Dönem Puanı</span><span class="nk-calc-val big" style="color:'+(resVal!==null&&resVal>=70?'#059669':'#d97706')+'">'+resText+'</span></div>'+
-        '</div>'+
-      '</div>'+
-    '</div>';
+    return '<tr>'+
+      '<td><div class="nk-ders-cell"><div class="nk-ders-ic" style="background:'+c.bg+'">'+ders.em+'</div><span>'+safe(ders.label)+'</span></div></td>'+
+      '<td>'+mkNkI(ders.id,'s1',s1)+'</td>'+
+      '<td class="sep">'+mkNkI(ders.id,'s2',s2)+'</td>'+
+      '<td>'+mkNkI(ders.id,'p1',p1)+'</td>'+
+      '<td class="sep">'+mkNkI(ders.id,'p2',p2)+'</td>'+
+      '<td>'+mkNkI(ders.id,'e1',e1)+'</td>'+
+      '<td>'+mkNkI(ders.id,'e2',e2)+'</td>'+
+      '<td class="sep">'+mkNkI(ders.id,'e3',e3)+'</td>'+
+      '<td class="nk-val">'+fmtN(pa)+'</td>'+
+      '<td class="nk-val">'+fmtN(ea)+'</td>'+
+      '<td class="nk-val" style="font-weight:900;color:#4338ca">'+fmtN(pe)+'</td>'+
+      '<td><span class="nk-badge '+cls+'">'+(resVal!==null?resVal.toFixed(2):'—')+'</span></td>'+
+    '</tr>';
   }).join('');
-  document.getElementById('nk-list').innerHTML=html;
-  attachNKEvents();
-  updateNKAvg();
-}
-function mkField(id,field,lbl,val){
-  return '<div class="nk-field"><label>'+lbl+'</label><input class="nk-input" data-id="'+id+'" data-field="'+field+'" type="number" min="0" max="100" step="0.25" value="'+safe(val)+'" placeholder="—"></div>';
-}
-function fmtN(v){ return v!==null?v.toFixed(2):'—'; }
-function attachNKEvents(){
-  document.querySelectorAll('.nk-input').forEach(function(inp){
+  document.getElementById('nk-tbody').innerHTML=rows;
+
+  /* re-focus */
+  if(focId&&focId!==':'){
+    var parts=focId.split(':');
+    var target=document.querySelector('.nk-inp[data-id="'+parts[0]+'"][data-field="'+parts[1]+'"]');
+    if(target) target.focus();
+  }
+
+  /* events */
+  document.querySelectorAll('.nk-inp').forEach(function(inp){
     inp.addEventListener('input',function(){
       var d=nkLoad(); if(!d[inp.dataset.id])d[inp.dataset.id]={};
       d[inp.dataset.id][inp.dataset.field]=inp.value;
       nkSave(d); renderNK();
     });
   });
-}
-function updateNKAvg(){
-  var data=nkLoad();
+
+  /* avg */
   var results=NK_DERSLER.map(function(ders){
     var d=data[ders.id]||{};
-    var pe=calcPE(d.p1,d.p2,d.e1,d.e2,d.e3);
-    return calcDonem(d.s1,d.s2,pe);
+    return calcDonem(d.s1,d.s2,calcPE(d.p1,d.p2,d.e1,d.e2,d.e3));
   }).filter(function(v){return v!==null;});
   if(results.length){
     var avg2=results.reduce(function(a,b){return a+b;},0)/results.length;
@@ -713,10 +744,9 @@ function updateNKAvg(){
     document.getElementById('nk-avg').textContent='Genel Ort: —';
   }
 }
-window.nkToggle=function(id){
-  var el=document.querySelector('.nk-item[data-id="'+id+'"]');
-  if(el) el.classList.toggle('open');
-};
+function mkNkI(id,field,val){
+  return '<input class="nk-inp" data-id="'+id+'" data-field="'+field+'" type="number" min="0" max="100" step="0.25" value="'+safe(val)+'" placeholder="—">';
+}
 window.nkReset=function(){
   if(!confirm('Tüm not verileri silinsin mi?')) return;
   localStorage.removeItem(NK_KEY); renderNK();
