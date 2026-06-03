@@ -172,7 +172,7 @@
     .study-viewer-hd { padding:11px 16px; background:#f8faff; border-bottom:1px solid #f1f5f9; font-size:.84rem; font-weight:800; color:#1e293b; display:flex; align-items:center; gap:8px; }
     .study-viewer-hd-sub { font-size:.74rem; font-weight:600; color:#64748b; margin-left:auto; }
     #study-viewer-body { position:relative; }
-    #study-viewer-body iframe { width:100%; aspect-ratio:16/9; border:none; display:block; min-height:180px; }
+    #study-viewer-body iframe { width:100%; aspect-ratio:16/9; border:none; display:block; min-height:260px; }
     .study-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:40px 24px; color:#94a3b8; text-align:center; min-height:180px; }
     .study-placeholder-icon { font-size:2.5rem; }
     .study-placeholder-text { font-weight:700; font-size:.9rem; }
@@ -476,6 +476,15 @@
 
 </div><!-- /wrap -->
 
+<!-- ── GÜNCELLEME BANNER ── -->
+<div id="update-banner" style="display:none;position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:9998;background:linear-gradient(90deg,#059669,#10b981);color:#fff;padding:12px 22px;border-radius:999px;font-size:.88rem;font-weight:800;box-shadow:0 6px 24px rgba(16,185,129,.4);align-items:center;gap:10px;cursor:pointer;white-space:nowrap;animation:slideDown .4s ease" onclick="location.reload()">
+  🔄 Sayfa güncellendi — yenilemek için tıkla
+  <span style="background:rgba(255,255,255,.25);border-radius:999px;padding:3px 10px;font-size:.78rem">↺ Yenile</span>
+</div>
+<style>
+@keyframes slideDown { from{transform:translateX(-50%) translateY(-60px);opacity:0} to{transform:translateX(-50%) translateY(0);opacity:1} }
+</style>
+
 <!-- ── POMODORO ── -->
 <button id="pomo-btn" title="Pomodoro Zamanlayıcı" onclick="pomoToggle()">
   ⏱️<span id="pomo-btn-lbl">25:00</span>
@@ -539,6 +548,12 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
+/* ─── SAYFA VERSİYONU ───────────────────────────────────────────
+   Yeni özellik ekleyince bu numarayı değiştir (ör: tarih + sıra).
+   Öğrencilerin tarayıcısı 5 dk içinde güncelleme bildirimi görür.
+──────────────────────────────────────────────────────────────── */
+const PAGE_VERSION = '2026-06-03-v5';
+
 /* ─── DATA ─── */
 const API_URL = 'https://script.google.com/macros/s/AKfycbyUvFShqvwvwOlJmVSY8TQFmYoXCqcfu4JFrK3KtzIVMHN9YctZmRpyrfK5AydUNcPd/exec';
 
@@ -963,7 +978,63 @@ const STUDY_RESOURCES = [
     tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
   },
   {
-    id:'sm6', tur:'pdf', ders:'fen', em:'📄',
+    id:'sm5b', tur:'pdf', ders:'tur', em:'📄',
+    baslik:'Zamirler Konu Testi 2',
+    aciklama:'PDF çalışma soruları',
+    sure:'PDF', url:'sinav-haftasi/Zamirler-Konu-Testi-2.pdf',
+    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
+  },
+  {
+    id:'sm5c', tur:'pdf', ders:'tur', em:'📄',
+    baslik:'Zamirler Konu Testi 3',
+    aciklama:'PDF çalışma soruları',
+    sure:'PDF', url:'sinav-haftasi/Zamirler-Konu-Testi-3.pdf',
+    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
+  },
+  {
+    id:'sm5d', tur:'pdf', ders:'tur', em:'📘',
+    baslik:'ZAMİRLER -1',
+    aciklama:'Zamirler çalışma dökümanı',
+    sure:'PDF', url:'sinav-haftasi/ZAMİRLER -1.pdf',
+    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
+  },
+  {
+    id:'sm5e', tur:'pdf', ders:'tur', em:'📄',
+    baslik:'İsimler Konu Testi 2',
+    aciklama:'PDF çalışma soruları',
+    sure:'PDF', url:'sinav-haftasi/Isimler-Konu-Testi-2.pdf · 1 sürümü.pdf',
+    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
+  },
+  {
+    id:'sm5f', tur:'pdf', ders:'tur', em:'📄',
+    baslik:'İsimler Konu Testi 3',
+    aciklama:'PDF çalışma soruları',
+    sure:'PDF', url:'sinav-haftasi/Isimler-Konu-Testi-3.pdf · 1 sürümü.pdf',
+    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
+  },
+  {
+    id:'sm5g', tur:'pdf', ders:'tur', em:'🎵',
+    baslik:'Ses Bilgisi Testi',
+    aciklama:'6. Sınıf Ses Bilgisi',
+    sure:'PDF', url:'sinav-haftasi/6. Sınıf Ses Bilgisi Testi-1 (Turkcen Serisi).pdf',
+    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
+  },
+  {
+    id:'sm5h', tur:'pdf', ders:'tur', em:'📗',
+    baslik:'Sıfatlar Fasikülü',
+    aciklama:'6. Sınıf Sıfatlar',
+    sure:'PDF', url:'sinav-haftasi/6.Sınıf Sıfatlar Fasikülü.pdf',
+    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
+  },
+  {
+    id:'sm5i', tur:'docx', ders:'tur', em:'📑',
+    baslik:'6. Sınıf İsimler',
+    aciklama:'Word dökümanı',
+    sure:'Word', url:'sinav-haftasi/6 İSİMLER.docx',
+    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
+  },
+  {
+    id:'sm6', tur:'pdf', ders:'fen', em:'🔬',
     baslik:'Fen 2. Dönem 2. Yazılı',
     aciklama:'Geçmiş sınav soruları',
     sure:'PDF', url:'sinav-haftasi/6_Fen_2.Donem_2. Yazili (1).pdf',
@@ -979,9 +1050,14 @@ function ytEmbed(url){
 var activeStudyId=null;
 function renderStudyList(){
   var el=document.getElementById('study-list'); if(!el)return;
-  el.innerHTML=STUDY_RESOURCES.map(function(r){
-    var hasUrl=!!r.url;
-    var cls='study-item'+(activeStudyId===r.id?' active':'')+(hasUrl?'':' disabled');
+  /* URL'si olmayan kaynakları gösterme */
+  var aktif = STUDY_RESOURCES.filter(function(r){ return !!r.url; });
+  if(!aktif.length){
+    el.innerHTML='<div style="padding:20px;text-align:center;color:#94a3b8;font-size:.82rem;font-weight:700">Henüz kaynak eklenmedi.</div>';
+    return;
+  }
+  el.innerHTML=aktif.map(function(r){
+    var cls='study-item'+(activeStudyId===r.id?' active':'');
     var c=SC[r.ders]||SC.kit;
     return '<div class="'+cls+'" data-id="'+r.id+'" onclick="studyOpen(\''+r.id+'\')">'+
       '<div class="study-item-ic" style="background:'+c.bg+'">'+r.em+'</div>'+
@@ -989,7 +1065,6 @@ function renderStudyList(){
         '<div class="study-item-title">'+safe(r.baslik)+'</div>'+
         '<div class="study-item-sub">'+safe(r.aciklama)+'</div>'+
         '<span class="study-item-tag" style="background:'+r.tagRenk+';color:'+r.tagText+'">'+r.tag+'</span>'+
-        (!hasUrl?'<span class="study-item-tag" style="background:#f1f5f9;color:#94a3b8;margin-left:3px">yakında</span>':'')+
       '</div>'+
     '</div>';
   }).join('');
@@ -1010,8 +1085,12 @@ window.studyOpen=function(id){
   var embed=ytEmbed(item.url);
   if(embed){
     body.innerHTML='<iframe src="'+embed+'" allowfullscreen allow="autoplay;encrypted-media;picture-in-picture"></iframe>';
-  } else if(item.url.match(/\.pdf$/i)||item.tur==='pdf'){
-    body.innerHTML='<iframe src="'+item.url+'" style="width:100%;height:420px;border:none;display:block"></iframe>';
+  } else if(item.url.match(/\.pdf$/i)||item.tur==='pdf'||item.url.match(/\.docx?$/i)){
+    if(item.url.match(/\.docx?$/i)){
+      body.innerHTML='<div class="study-placeholder"><div class="study-placeholder-icon">📑</div><div class="study-placeholder-text">'+safe(item.baslik)+'<br><span style="font-size:.8rem;color:#94a3b8">Word dosyası tarayıcıda önizlenemiyor</span></div><a href="'+item.url+'" target="_blank" rel="noreferrer" style="background:linear-gradient(90deg,#2563eb,#1d4ed8);color:#fff;padding:10px 20px;border-radius:12px;text-decoration:none;font-size:.88rem;font-weight:800">⬇ İndir / Aç ↗</a></div>';
+    } else {
+      body.innerHTML='<iframe src="'+item.url+'" style="width:100%;height:580px;border:none;display:block"></iframe>';
+    }
   } else {
     body.innerHTML='<div class="study-placeholder">'+
       '<div class="study-placeholder-icon">🔗</div>'+
@@ -1382,6 +1461,43 @@ function deviceNoticeKapat(){
     var el=document.getElementById('device-notice');
     if(el) el.style.display='flex';
   }
+})();
+
+/* ── GÜNCELLEME KONTROLÜ ── */
+(function(){
+  /* Sayfa yüklenince versiyonu localStorage'a kaydet */
+  var VKEY = 'sinav_page_ver';
+  var stored = localStorage.getItem(VKEY);
+  /* İlk ziyarette sadece kaydet, bildirim gösterme */
+  if(!stored){ localStorage.setItem(VKEY, PAGE_VERSION); }
+
+  function checkUpdate(){
+    /* Sayfayı cache'siz çek, içindeki PAGE_VERSION'u karşılaştır */
+    fetch(location.pathname + location.search + (location.search?'&':'?') + '_v=' + Date.now(), {
+      cache:'no-store',
+      headers:{'Cache-Control':'no-cache'}
+    })
+    .then(function(r){ return r.text(); })
+    .then(function(html){
+      var m = html.match(/PAGE_VERSION\s*=\s*['"]([^'"]+)['"]/);
+      if(!m) return;
+      var remote = m[1];
+      var local  = localStorage.getItem(VKEY) || PAGE_VERSION;
+      if(remote !== local){
+        /* Güncelleme var! — banner'ı göster */
+        localStorage.setItem(VKEY, remote);
+        var b = document.getElementById('update-banner');
+        if(b) b.style.display='flex';
+        /* 30 sn sonra otomatik yenile */
+        setTimeout(function(){ location.reload(); }, 30000);
+      }
+    })
+    .catch(function(){}); /* ağ yoksa sessizce geç */
+  }
+
+  /* İlk kontrol 1 dk sonra, sonra her 5 dk */
+  setTimeout(checkUpdate, 60000);
+  setInterval(checkUpdate, 5 * 60 * 1000);
 })();
 
 /* INIT */
