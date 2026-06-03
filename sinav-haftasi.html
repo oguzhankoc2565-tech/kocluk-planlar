@@ -250,6 +250,12 @@
     #sohbet-resim-btn { background:#f0f4ff; border:1.5px solid #e2e8f0; border-radius:9px; color:#64748b; padding:8px 9px; cursor:pointer; font-size:15px; flex-shrink:0; transition:background .15s; }
     .sohbet-bos { text-align:center; color:#64748b; font-size:13px; padding:24px 10px; }
     @media (max-width:400px) { #sohbet-panel { width:calc(100vw - 18px); right:9px; } }
+    /* sohbet sekmeler */
+    .sh-tabs { display:flex; gap:4px; }
+    .sh-tab { background:rgba(255,255,255,.14); border:1.5px solid rgba(255,255,255,.22); color:#fff; border-radius:8px; padding:5px 10px; font-size:.72rem; font-weight:800; cursor:pointer; font-family:inherit; transition:all .15s; line-height:1; }
+    .sh-tab.active { background:rgba(255,255,255,.28); border-color:rgba(255,255,255,.4); }
+    .sh-tab-n { display:inline-block; background:#dc2626; border-radius:5px; padding:0 4px; font-size:.6rem; margin-left:3px; vertical-align:1px; }
+    #sh-ozel-notice { display:none; background:#f0fdf4; border-bottom:1px solid #a7f3d0; padding:6px 12px; font-size:.74rem; font-weight:700; color:#065f46; text-align:center; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 720px) {
@@ -372,14 +378,14 @@
   <div class="nk-footer">
     <div class="nk-avg" id="nk-avg">Genel Ort: —</div>
     <button class="nk-reset" onclick="nkReset()">🗑 Sıfırla</button>
-    <span class="nk-note">💾 Bu tarayıcıda otomatik kaydedilir — başka cihazda görünmez.</span>
+    <button class="nk-reset" id="nk-sheets-btn" onclick="nkSheetsKaydet()" style="background:#ecfdf5;border-color:#a7f3d0;color:#065f46">📤 Sheets'e Kaydet</button>
+    <span class="nk-note" id="nk-sheets-msg">💾 Tarayıcıda otomatik · başka cihazda görünmez</span>
   </div>
 
   <!-- 4. Kaynaklar + Checklist yan yana -->
   <div class="two" style="margin-top:28px;align-items:start">
     <div>
       <div class="sec" style="margin-top:0"><div class="sec-ic" style="background:#fef3c7">📁</div><div class="sec-t">Sınav Kaynakları</div></div>
-      <div class="res-note">💡 Tüm PDF ve DOCX dosyaları <code>sinav-haftasi/</code> klasörüne ekle. PDF tarayıcıda açılır, DOCX indirilir.</div>
       <div class="res-grid" id="res-grid"></div>
     </div>
     <div>
@@ -432,9 +438,13 @@
 <button id="sohbet-btn" title="Koçluk Sohbeti">💬<span id="sohbet-badge"></span></button>
 <div id="sohbet-panel">
   <div class="sohbet-header">
-    <span>💬 Sınav Haftası Sohbeti</span>
+    <div class="sh-tabs">
+      <button class="sh-tab active" id="sh-tab-genel" onclick="sohbetSetTab('genel')">💬 Genel</button>
+      <button class="sh-tab" id="sh-tab-ozel" onclick="sohbetSetTab('ozel')">🔒 Özel</button>
+    </div>
     <button class="sohbet-header-kapat" onclick="sohbetToggle()">×</button>
   </div>
+  <div id="sh-ozel-notice">🔒 Sadece koçun ve senin görebildiğin özel sohbet</div>
   <div id="sohbet-liste"><div class="sohbet-bos">Mesajlar yükleniyor...</div></div>
   <div class="sohbet-input-wrap" style="flex-direction:column;align-items:stretch">
     <div id="sohbet-kapali-notice" style="display:none;padding:7px;text-align:center;font-size:11px;font-weight:700;color:#dc2626;background:#fee2e2;border-radius:8px;margin-bottom:5px">Koç sohbeti geçici olarak kapattı.</div>
@@ -728,11 +738,53 @@ function renderTodaySection(){
       }).join('');
       return '<div class="scenario-unite">'+safe(u.ad)+'</div>'+rows;
     }).join('');
-    var resetBtn = '<div style="padding:8px 12px 12px;text-align:right"><button class="sc-reset-btn" data-tab-idx="'+idx+'" style="background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:9px;padding:6px 12px;font-size:.74rem;font-weight:800;color:#64748b;cursor:pointer;font-family:inherit">↺ Tümünü Sıfırla</button></div>';
+    var resetBtn = '<div style="padding:8px 12px 12px;display:flex;gap:8px;justify-content:space-between">'+
+      '<button class="sc-bildir-btn" data-tab-idx="'+idx+'" style="background:linear-gradient(90deg,#059669,#10b981);border:none;border-radius:9px;padding:7px 14px;font-size:.76rem;font-weight:800;color:#fff;cursor:pointer;font-family:inherit;flex:1">💬 Koça Bildir</button>'+
+      '<button class="sc-reset-btn" data-tab-idx="'+idx+'" style="background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:9px;padding:7px 12px;font-size:.74rem;font-weight:800;color:#64748b;cursor:pointer;font-family:inherit">↺ Sıfırla</button>'+
+    '</div>';
     return prog + body + resetBtn;
   }
 
   function attachScEvents(container, tabIdx){
+    /* koça bildir */
+    container.querySelectorAll('.sc-bildir-btn[data-tab-idx="'+tabIdx+'"]').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        if(!window._sc_ref){
+          alert('Sohbet bağlantısı hazır değil. Sayfayı yenileyip tekrar dene.');
+          return;
+        }
+        var s=tabs[tabIdx];
+        var chk=scLoad(), ki=0, total=0, done=0;
+        s.data.unite.forEach(function(u){total+=u.konular.length;});
+        var lines=['📚 Senaryo Çalışma Özeti:', s.data.baslik, ''];
+        s.data.unite.forEach(function(u){
+          if(s.data.unite.length>1) lines.push('── '+u.ad+' ──');
+          u.konular.forEach(function(k){
+            var key=s.kod+'_'+ki, isDone=!!chk[key]; ki++;
+            if(isDone) done++;
+            lines.push((isDone?'✅':'⬜')+' '+k.konu+' ('+k.soru+' soru)');
+          });
+        });
+        lines.push('');
+        lines.push(done+'/'+total+' konu tamamlandı'+(done===total?' 🎉':''));
+        var metin=lines.join('\n');
+        btn.disabled=true; btn.textContent='⏳ Gönderiliyor…';
+        window._sc_ref.push({
+          kimden: window._sc_slug||'ogrenci',
+          isim: window._sc_isim||'Öğrenci',
+          metin: metin,
+          zaman: firebase.database.ServerValue.TIMESTAMP
+        }).then(function(){
+          btn.disabled=false;
+          btn.textContent='✅ Koça Gönderildi!';
+          btn.style.background='linear-gradient(90deg,#065f46,#059669)';
+          setTimeout(function(){btn.textContent='💬 Koça Bildir';btn.style.background='';},3000);
+        }).catch(function(){
+          btn.disabled=false; btn.textContent='❌ Gönderilemedi';
+          setTimeout(function(){btn.textContent='💬 Koça Bildir';},3000);
+        });
+      });
+    });
     /* senaryo sıfırla */
     container.querySelectorAll('.sc-reset-btn[data-tab-idx="'+tabIdx+'"]').forEach(function(btn){
       btn.addEventListener('click',function(){
@@ -869,10 +921,10 @@ function renderNK(){
       '<td>'+mkNkI(ders.id,'e1',e1)+'</td>'+
       '<td>'+mkNkI(ders.id,'e2',e2)+'</td>'+
       '<td class="sep">'+mkNkI(ders.id,'e3',e3)+'</td>'+
-      '<td class="nk-val">'+fmtN(pa)+'</td>'+
-      '<td class="nk-val">'+fmtN(ea)+'</td>'+
-      '<td class="nk-val" style="font-weight:900;color:#4338ca">'+fmtN(pe)+'</td>'+
-      '<td><span class="nk-badge '+cls+'">'+(resVal!==null?resVal.toFixed(2):'—')+'</span></td>'+
+      '<td class="nk-val" data-calc="pa" data-for="'+ders.id+'">'+fmtN(pa)+'</td>'+
+      '<td class="nk-val" data-calc="ea" data-for="'+ders.id+'">'+fmtN(ea)+'</td>'+
+      '<td class="nk-val" style="font-weight:900;color:#4338ca" data-calc="pe" data-for="'+ders.id+'">'+fmtN(pe)+'</td>'+
+      '<td data-calc="donem" data-for="'+ders.id+'"><span class="nk-badge '+cls+'">'+(resVal!==null?resVal.toFixed(2):'—')+'</span></td>'+
     '</tr>';
   }).join('');
   document.getElementById('nk-tbody').innerHTML=rows;
@@ -884,12 +936,13 @@ function renderNK(){
     if(target) target.focus();
   }
 
-  /* events */
+  /* events — sadece hesaplanan sütunları güncelle, inputları yeniden render etme */
   document.querySelectorAll('.nk-inp').forEach(function(inp){
     inp.addEventListener('input',function(){
       var d=nkLoad(); if(!d[inp.dataset.id])d[inp.dataset.id]={};
       d[inp.dataset.id][inp.dataset.field]=inp.value;
-      nkSave(d); renderNK();
+      nkSave(d);
+      updateNKRow(inp.dataset.id); /* renderNK() değil — cursor kaymasını önler */
     });
   });
 
@@ -908,9 +961,91 @@ function renderNK(){
 function mkNkI(id,field,val){
   return '<input class="nk-inp" data-id="'+id+'" data-field="'+field+'" type="number" min="0" max="100" step="0.25" value="'+safe(val)+'" placeholder="—">';
 }
+
+/* Sadece hesaplanan sütunları güncelle — input elementleri dokunmadan */
+function updateNKRow(id){
+  var d = (nkLoad()[id]||{});
+  var pa = avg([d.p1,d.p2]), ea = avg([d.e1,d.e2,d.e3]);
+  var pe = calcPE(d.p1,d.p2,d.e1,d.e2,d.e3);
+  var donem = calcDonem(d.s1,d.s2,pe);
+  var resVal = donem!==null?Math.round(donem*100)/100:null;
+  var paEl=document.querySelector('[data-calc="pa"][data-for="'+id+'"]');
+  var eaEl=document.querySelector('[data-calc="ea"][data-for="'+id+'"]');
+  var peEl=document.querySelector('[data-calc="pe"][data-for="'+id+'"]');
+  var dnEl=document.querySelector('[data-calc="donem"][data-for="'+id+'"]');
+  if(paEl) paEl.textContent=fmtN(pa);
+  if(eaEl) eaEl.textContent=fmtN(ea);
+  if(peEl) peEl.textContent=fmtN(pe);
+  if(dnEl) dnEl.innerHTML='<span class="nk-badge '+resClass(resVal)+'">'+(resVal!==null?resVal.toFixed(2):'—')+'</span>';
+  /* genel ortalama */
+  var nkD=nkLoad();
+  var res=NK_DERSLER.map(function(ders){
+    var dd=nkD[ders.id]||{};
+    return calcDonem(dd.s1,dd.s2,calcPE(dd.p1,dd.p2,dd.e1,dd.e2,dd.e3));
+  }).filter(function(v){return v!==null;});
+  if(res.length){
+    var a=res.reduce(function(a,b){return a+b;},0)/res.length;
+    document.getElementById('nk-avg').textContent='Genel Ort: '+a.toFixed(2)+' ('+res.length+' ders)';
+  } else {
+    document.getElementById('nk-avg').textContent='Genel Ort: —';
+  }
+}
 window.nkReset=function(){
   if(!confirm('Tüm not verileri silinsin mi?')) return;
   localStorage.removeItem(NK_KEY); renderNK();
+};
+
+window.nkSheetsKaydet=function(){
+  var data=nkLoad();
+  var notlar=NK_DERSLER.map(function(ders){
+    var d=data[ders.id]||{};
+    var pe=calcPE(d.p1,d.p2,d.e1,d.e2,d.e3);
+    var donem=calcDonem(d.s1,d.s2,pe);
+    return {
+      ders: ders.label,
+      s1: d.s1||'', s2: d.s2||'',
+      p1: d.p1||'', p2: d.p2||'',
+      e1: d.e1||'', e2: d.e2||'', e3: d.e3||'',
+      pe_ort: pe!==null?Math.round(pe*100)/100:'',
+      donem_puani: donem!==null?Math.round(donem*100)/100:''
+    };
+  }).filter(function(r){ return r.s1||r.s2||r.p1||r.p2||r.e1||r.e2||r.e3; });
+
+  if(!notlar.length){
+    var msg=document.getElementById('nk-sheets-msg');
+    msg.textContent='⚠️ Kaydedilecek veri yok.'; msg.style.color='#d97706';
+    setTimeout(function(){msg.textContent='💾 Tarayıcıda otomatik · başka cihazda görünmez';msg.style.color='';},3000);
+    return;
+  }
+
+  var btn=document.getElementById('nk-sheets-btn'), msgEl=document.getElementById('nk-sheets-msg');
+  btn.disabled=true; btn.textContent='⏳ Kaydediliyor…'; msgEl.textContent='';
+
+  fetch(API_URL, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      istek:'sinav_not_kaydet',
+      ogrenci: slug,
+      tarih: todayStr(),
+      notlar: notlar
+    })
+  })
+  .then(function(r){return r.json();})
+  .then(function(d){
+    btn.disabled=false; btn.textContent='📤 Sheets\'e Kaydet';
+    if(d.durum==='ok'||d.durum==='basarili'){
+      msgEl.textContent='✅ Sheets\'e kaydedildi!'; msgEl.style.color='#059669';
+    } else {
+      msgEl.textContent='⚠️ Hata: '+(d.mesaj||'Bilinmeyen'); msgEl.style.color='#d97706';
+    }
+    setTimeout(function(){msgEl.textContent='💾 Tarayıcıda otomatik · başka cihazda görünmez';msgEl.style.color='';},4000);
+  })
+  .catch(function(err){
+    btn.disabled=false; btn.textContent='📤 Sheets\'e Kaydet';
+    msgEl.textContent='❌ Bağlantı hatası: '+err.message; msgEl.style.color='#dc2626';
+    setTimeout(function(){msgEl.textContent='💾 Tarayıcıda otomatik · başka cihazda görünmez';msgEl.style.color='';},4000);
+  });
 };
 
 /* API */
@@ -1051,36 +1186,95 @@ tick();
 setInterval(tick,1000);
 </script>
 
-<!-- ── FIREBASE SOHBET ── -->
+<!-- ── FIREBASE SOHBET (Genel + Özel) ── -->
 <script>
 (function(){
   var FB={apiKey:"AIzaSyAi60DYIr-tAnGGd9PEP3WK-MATAPkQyrg",authDomain:"lgs-kocluk-b8ee4.firebaseapp.com",databaseURL:"https://lgs-kocluk-b8ee4-default-rtdb.europe-west1.firebasedatabase.app",projectId:"lgs-kocluk-b8ee4",storageBucket:"lgs-kocluk-b8ee4.firebasestorage.app",messagingSenderId:"229385167119",appId:"1:229385167119:web:030732c458bc01f238de7a"};
-  var open=false,okunan=0,SLUG='',ISIM='',ref=null;
+  var panelAcik=false, SLUG='', ISIM='';
+  var refG=null, refO=null;
+  var okunanG=0, okunanO=0;
+  var unreadG=0, unreadO=0;
+  var listG=[], listO=[];
+  var currentTab='genel';
+
   function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
-  function initFB(){if(!firebase.apps.length)firebase.initializeApp(FB);ref=firebase.database().ref('sohbet/mesajlar');}
+
+  function initFB(){
+    if(!firebase.apps.length)firebase.initializeApp(FB);
+    refG=firebase.database().ref('sohbet/mesajlar');
+    window._sc_ref=refG;
+  }
+
   function initS(slug,isim){
-    SLUG=slug;ISIM=isim;
-    var ls=localStorage.getItem('sohbet_ok_'+slug);if(ls)okunan=parseInt(ls)||0;
+    SLUG=slug; ISIM=isim;
+    window._sc_slug=slug; window._sc_isim=isim;
+    okunanG=parseInt(localStorage.getItem('sohbet_ok_'+slug))||0;
+    okunanO=parseInt(localStorage.getItem('sohbet_ok_ozel_'+slug))||0;
     initFB();
+
+    /* durum */
     firebase.database().ref('sohbet/durum').on('value',function(s){
       var ac=s.val()!=='kapali';
       var i=document.getElementById('sohbet-input'),b=document.getElementById('sohbet-gonder'),n=document.getElementById('sohbet-kapali-notice');
       if(i){i.disabled=!ac;i.placeholder=ac?'Mesajını yaz...':'Sohbet kapalı';}
       if(b)b.disabled=!ac;if(n)n.style.display=ac?'none':'block';
     });
-    ref.limitToLast(50).on('value',function(s){
-      var l=[];s.forEach(function(c){l.push(Object.assign({_id:c.key},c.val()));});
-      renderM(l);
-      if(!open){
-        var y=l.filter(function(m){return(m.zaman||0)>okunan&&m.kimden!==SLUG;}).length;
-        var b=document.getElementById('sohbet-badge');
-        if(y>0){b.textContent=y>9?'9+':y;b.style.display='block';}else{b.style.display='none';}
-      }
+
+    /* genel kanal */
+    refG.limitToLast(50).on('value',function(snap){
+      var l=[];snap.forEach(function(c){l.push(Object.assign({_id:c.key},c.val()));});
+      listG=l;
+      if(currentTab==='genel'){renderM(l);}
+      unreadG=l.filter(function(m){return(m.zaman||0)>okunanG&&m.kimden!==SLUG;}).length;
+      updateBadges();
+    });
+
+    /* özel kanal */
+    refO=firebase.database().ref('ozel_sohbet/'+SLUG+'/mesajlar');
+    window._sc_ref=refG; /* senaryo bildir için genel varsayılan */
+    refO.limitToLast(50).on('value',function(snap){
+      var l=[];snap.forEach(function(c){l.push(Object.assign({_id:c.key},c.val()));});
+      listO=l;
+      if(currentTab==='ozel'){renderM(l);}
+      unreadO=l.filter(function(m){return(m.zaman||0)>okunanO&&m.kimden!==SLUG;}).length;
+      updateBadges();
     });
   }
+
+  function updateBadges(){
+    var total=unreadG+unreadO;
+    var b=document.getElementById('sohbet-badge');
+    if(b){if(total>0){b.textContent=total>9?'9+':total;b.style.display='block';}else{b.style.display='none';}}
+    /* sekme rozetleri */
+    var btnG=document.getElementById('sh-tab-genel');
+    var btnO=document.getElementById('sh-tab-ozel');
+    if(btnG) btnG.innerHTML='💬 Genel'+(unreadG>0&&currentTab!=='genel'?' <span class="sh-tab-n">'+unreadG+'</span>':'');
+    if(btnO) btnO.innerHTML='🔒 Özel'+(unreadO>0&&currentTab!=='ozel'?' <span class="sh-tab-n">'+unreadO+'</span>':'');
+  }
+
+  window.sohbetSetTab=function(tab){
+    currentTab=tab;
+    var btnG=document.getElementById('sh-tab-genel'), btnO=document.getElementById('sh-tab-ozel');
+    if(btnG) btnG.classList.toggle('active',tab==='genel');
+    if(btnO) btnO.classList.toggle('active',tab==='ozel');
+    /* özel bildirim şeridi */
+    var notice=document.getElementById('sh-ozel-notice');
+    if(notice) notice.style.display=tab==='ozel'?'block':'none';
+    /* mesajları göster */
+    renderM(tab==='genel'?listG:listO);
+    /* okundu işaretle */
+    if(tab==='genel'){okunanG=Date.now();localStorage.setItem('sohbet_ok_'+SLUG,okunanG);unreadG=0;}
+    else{okunanO=Date.now();localStorage.setItem('sohbet_ok_ozel_'+SLUG,okunanO);unreadO=0;}
+    updateBadges();
+    setTimeout(function(){var i=document.getElementById('sohbet-input');if(i)i.focus();},80);
+  };
+
   function renderM(l){
     var el=document.getElementById('sohbet-liste');if(!el)return;
-    if(!l.length){el.innerHTML='<div class="sohbet-bos">Henüz mesaj yok. İlk mesajı sen at! 👋</div>';return;}
+    if(!l.length){
+      var emptyMsg=currentTab==='genel'?'Henüz mesaj yok. İlk mesajı sen at! 👋':'Koçunla henüz özel mesajlaşmadın.';
+      el.innerHTML='<div class="sohbet-bos">'+emptyMsg+'</div>';return;
+    }
     var prev=null;
     el.innerHTML=l.map(function(m){
       var ben=m.kimden===SLUG;
@@ -1092,28 +1286,42 @@ setInterval(tick,1000);
       return '<div class="sohbet-mesaj '+(ben?'ben':'diger')+'">'+isimH+'<div class="sohbet-balon">'+balon+'</div><div class="sohbet-zaman">'+saat+'</div></div>';
     }).join('');
     el.scrollTop=el.scrollHeight;
-    if(open){okunan=Date.now();localStorage.setItem('sohbet_ok_'+SLUG,okunan);document.getElementById('sohbet-badge').style.display='none';}
+    if(panelAcik){
+      if(currentTab==='genel'){okunanG=Date.now();localStorage.setItem('sohbet_ok_'+SLUG,okunanG);unreadG=0;}
+      else{okunanO=Date.now();localStorage.setItem('sohbet_ok_ozel_'+SLUG,okunanO);unreadO=0;}
+      updateBadges();
+    }
   }
+
   window.sohbetToggle=function(){
-    open=!open;document.getElementById('sohbet-panel').classList.toggle('acik',open);
-    if(open){
-      okunan=Date.now();localStorage.setItem('sohbet_ok_'+SLUG,okunan);
-      document.getElementById('sohbet-badge').style.display='none';
-      var l=document.getElementById('sohbet-liste');
-      setTimeout(function(){l.scrollTop=l.scrollHeight;},60);
+    panelAcik=!panelAcik;
+    document.getElementById('sohbet-panel').classList.toggle('acik',panelAcik);
+    if(panelAcik){
+      /* aktif sekmeyi okundu işaretle */
+      if(currentTab==='genel'){okunanG=Date.now();localStorage.setItem('sohbet_ok_'+SLUG,okunanG);unreadG=0;}
+      else{okunanO=Date.now();localStorage.setItem('sohbet_ok_ozel_'+SLUG,okunanO);unreadO=0;}
+      updateBadges();
+      var ls=document.getElementById('sohbet-liste');
+      setTimeout(function(){if(ls)ls.scrollTop=ls.scrollHeight;},60);
       setTimeout(function(){var i=document.getElementById('sohbet-input');if(i)i.focus();},80);
     }
   };
   document.getElementById('sohbet-btn').onclick=window.sohbetToggle;
+
   window.sohbetGonder=function(){
-    if(!ref)return;var i=document.getElementById('sohbet-input');
+    var activeRef=currentTab==='ozel'?refO:refG;
+    if(!activeRef)return;
+    var i=document.getElementById('sohbet-input');
     var t=(i.value||'').trim();if(!t)return;
     i.value='';i.style.height='';
     var b=document.getElementById('sohbet-gonder');b.disabled=true;
-    ref.push({kimden:SLUG,isim:ISIM,metin:t,zaman:firebase.database.ServerValue.TIMESTAMP}).then(function(){b.disabled=false;}).catch(function(e){console.error(e);b.disabled=false;});
+    activeRef.push({kimden:SLUG,isim:ISIM,metin:t,zaman:firebase.database.ServerValue.TIMESTAMP})
+      .then(function(){b.disabled=false;}).catch(function(e){console.error(e);b.disabled=false;});
   };
+
   function resimYukle(file){
-    if(!file||!ref)return;
+    var activeRef=currentTab==='ozel'?refO:refG;
+    if(!file||!activeRef)return;
     var rb=document.getElementById('sohbet-resim-btn'),gb=document.getElementById('sohbet-gonder'),fi=document.getElementById('sohbet-resim-input');
     if(rb){rb.disabled=true;rb.textContent='⏳';}if(gb)gb.disabled=true;
     var r=new FileReader();r.onload=function(ev){
@@ -1123,7 +1331,7 @@ setInterval(tick,1000);
         var c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
         c.toBlob(function(blob){
           var r2=new FileReader();r2.onload=function(ev2){
-            ref.push({kimden:SLUG,isim:ISIM,metin:'',resimBase64:ev2.target.result,zaman:firebase.database.ServerValue.TIMESTAMP})
+            activeRef.push({kimden:SLUG,isim:ISIM,metin:'',resimBase64:ev2.target.result,zaman:firebase.database.ServerValue.TIMESTAMP})
               .then(function(){if(rb){rb.disabled=false;rb.textContent='📎';}if(gb)gb.disabled=false;if(fi)fi.value='';})
               .catch(function(err){console.error(err);if(rb){rb.disabled=false;rb.textContent='📎';}if(gb)gb.disabled=false;if(fi)fi.value='';});
           };r2.readAsDataURL(blob);
