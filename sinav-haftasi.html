@@ -21,397 +21,222 @@
       --tdb: #6d28d9; --tdb-bg: #ede9fe;
       --shadow: 0 2px 20px rgba(15,23,42,.07);
       --shadow-md: 0 8px 36px rgba(15,23,42,.13);
+      --primary-grad: linear-gradient(135deg, #0f766e 0%, #0891b2 100%);
+      --bg: #f0f4ff;
+      --white: #fff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Nunito', system-ui, sans-serif;
-      background: #f0f4ff;
-      color: #1e293b;
-      min-height: 100vh;
-    }
+    body { font-family: 'Nunito', system-ui, sans-serif; background: #f0f4ff; color: #1e293b; min-height: 100vh; }
 
     /* ── HERO ── */
-    .hero {
-      background: linear-gradient(140deg, #1e1b4b 0%, #3730a3 45%, #1d4ed8 100%);
-      color: #fff;
-      position: relative;
-      overflow: hidden;
-      padding-bottom: 32px;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 10% 20%,  rgba(99,102,241,.4)  0%, transparent 35%),
-        radial-gradient(circle at 90% 80%,  rgba(6,182,212,.3)   0%, transparent 30%),
-        radial-gradient(circle at 80% 10%,  rgba(236,72,153,.25) 0%, transparent 25%);
-      pointer-events: none;
-    }
-    .hero::after {
-      content: '';
-      position: absolute;
-      width: 300px; height: 300px;
-      border-radius: 50%;
-      background: rgba(99,102,241,.15);
-      top: -100px; right: -80px;
-      pointer-events: none;
-    }
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      padding: 18px 28px;
-      position: relative;
-      z-index: 2;
-    }
-    .topbar-brand { display: flex; align-items: center; gap: 12px; }
-    .topbar-logo {
-      width: 42px; height: 42px;
-      background: rgba(255,255,255,.18);
-      border: 1.5px solid rgba(255,255,255,.28);
-      border-radius: 13px;
-      display: grid;
-      place-items: center;
-      font-size: 1.35rem;
-      backdrop-filter: blur(8px);
-    }
-    .topbar-eyebrow { font-size: .78rem; font-weight: 700; opacity: .65; text-transform: uppercase; letter-spacing: .1em; }
-    .topbar-name    { font-size: 1.1rem; font-weight: 900; line-height: 1; }
-    .topbar-back {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255,255,255,.15);
-      border: 1.5px solid rgba(255,255,255,.25);
-      backdrop-filter: blur(8px);
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 999px;
-      font-size: .88rem;
-      font-weight: 700;
-      text-decoration: none;
-      transition: background .18s;
-    }
-    .topbar-back:hover { background: rgba(255,255,255,.28); }
-
-    /* countdown */
-    .cd-wrap {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      padding: 16px 28px 36px;
-    }
-    .cd-eyebrow {
-      font-size: .78rem;
-      font-weight: 800;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      opacity: .6;
-      margin-bottom: 10px;
-    }
-    .cd-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(255,255,255,.16);
-      border: 1.5px solid rgba(255,255,255,.28);
-      border-radius: 999px;
-      padding: 11px 22px;
-      font-size: clamp(.95rem, 3vw, 1.55rem);
-      font-weight: 900;
-      margin-bottom: 24px;
-      backdrop-filter: blur(8px);
-    }
-    .cd-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-      background: #4ade80;
-      box-shadow: 0 0 0 4px rgba(74,222,128,.3);
-      animation: blink 1.6s ease-in-out infinite;
-      flex-shrink: 0;
-    }
-    @keyframes blink { 0%,100%{ box-shadow:0 0 0 4px rgba(74,222,128,.3)} 50%{box-shadow:0 0 0 8px rgba(74,222,128,.1)} }
-    .cd-digits {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .cd-unit {
-      background: rgba(255,255,255,.13);
-      border: 1.5px solid rgba(255,255,255,.22);
-      border-radius: 18px;
-      padding: 14px 18px;
-      min-width: 80px;
-      text-align: center;
-      backdrop-filter: blur(10px);
-    }
-    .cd-num {
-      display: block;
-      font-size: clamp(1.8rem, 5vw, 2.8rem);
-      font-weight: 900;
-      line-height: 1;
-      font-variant-numeric: tabular-nums;
-    }
-    .cd-lbl {
-      display: block;
-      font-size: .66rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      opacity: .68;
-      margin-top: 4px;
-    }
-    .cd-sep {
-      font-size: 2.2rem;
-      font-weight: 900;
-      opacity: .35;
-      align-self: flex-start;
-      margin-top: 10px;
-    }
-    .cd-over {
-      font-size: clamp(1.3rem, 3.5vw, 2rem);
-      font-weight: 900;
-      padding: 16px 32px;
-      background: rgba(74,222,128,.2);
-      border: 1.5px solid rgba(74,222,128,.4);
-      border-radius: 999px;
-      backdrop-filter: blur(8px);
-    }
+    .hero { background: linear-gradient(140deg, #1e1b4b 0%, #3730a3 45%, #1d4ed8 100%); color: #fff; position: relative; overflow: hidden; padding-bottom: 32px; }
+    .hero::before { content:''; position:absolute; inset:0; background: radial-gradient(circle at 10% 20%, rgba(99,102,241,.4) 0%, transparent 35%), radial-gradient(circle at 90% 80%, rgba(6,182,212,.3) 0%, transparent 30%), radial-gradient(circle at 80% 10%, rgba(236,72,153,.25) 0%, transparent 25%); pointer-events:none; }
+    .hero::after { content:''; position:absolute; width:300px; height:300px; border-radius:50%; background:rgba(99,102,241,.15); top:-100px; right:-80px; pointer-events:none; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; padding:18px 28px; position:relative; z-index:2; }
+    .topbar-brand { display:flex; align-items:center; gap:12px; }
+    .topbar-logo { width:42px; height:42px; background:rgba(255,255,255,.18); border:1.5px solid rgba(255,255,255,.28); border-radius:13px; display:grid; place-items:center; font-size:1.35rem; backdrop-filter:blur(8px); }
+    .topbar-eyebrow { font-size:.78rem; font-weight:700; opacity:.65; text-transform:uppercase; letter-spacing:.1em; }
+    .topbar-name { font-size:1.1rem; font-weight:900; line-height:1; }
+    .topbar-back { display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,.15); border:1.5px solid rgba(255,255,255,.25); backdrop-filter:blur(8px); color:#fff; padding:10px 20px; border-radius:999px; font-size:.88rem; font-weight:700; text-decoration:none; transition:background .18s; }
+    .topbar-back:hover { background:rgba(255,255,255,.28); }
+    .cd-wrap { position:relative; z-index:2; text-align:center; padding:16px 28px 36px; }
+    .cd-eyebrow { font-size:.78rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; opacity:.6; margin-bottom:10px; }
+    .cd-badge { display:inline-flex; align-items:center; gap:10px; background:rgba(255,255,255,.16); border:1.5px solid rgba(255,255,255,.28); border-radius:999px; padding:11px 22px; font-size:clamp(.95rem,3vw,1.55rem); font-weight:900; margin-bottom:24px; backdrop-filter:blur(8px); }
+    .cd-dot { width:10px; height:10px; border-radius:50%; background:#4ade80; box-shadow:0 0 0 4px rgba(74,222,128,.3); animation:blink 1.6s ease-in-out infinite; flex-shrink:0; }
+    @keyframes blink { 0%,100%{box-shadow:0 0 0 4px rgba(74,222,128,.3)} 50%{box-shadow:0 0 0 8px rgba(74,222,128,.1)} }
+    .cd-digits { display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; }
+    .cd-unit { background:rgba(255,255,255,.13); border:1.5px solid rgba(255,255,255,.22); border-radius:18px; padding:14px 18px; min-width:80px; text-align:center; backdrop-filter:blur(10px); }
+    .cd-num { display:block; font-size:clamp(1.8rem,5vw,2.8rem); font-weight:900; line-height:1; font-variant-numeric:tabular-nums; }
+    .cd-lbl { display:block; font-size:.66rem; font-weight:800; text-transform:uppercase; letter-spacing:.1em; opacity:.68; margin-top:4px; }
+    .cd-sep { font-size:2.2rem; font-weight:900; opacity:.35; align-self:flex-start; margin-top:10px; }
+    .cd-over { font-size:clamp(1.3rem,3.5vw,2rem); font-weight:900; padding:16px 32px; background:rgba(74,222,128,.2); border:1.5px solid rgba(74,222,128,.4); border-radius:999px; backdrop-filter:blur(8px); }
 
     /* ── CONTENT ── */
-    .content {
-      width: min(1060px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 30px 0 72px;
-    }
-
-    /* section header */
-    .sec {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 34px 0 14px;
-    }
-    .sec:first-child { margin-top: 0; }
-    .sec-icon {
-      width: 42px; height: 42px;
-      border-radius: 13px;
-      display: grid;
-      place-items: center;
-      font-size: 1.3rem;
-      flex-shrink: 0;
-    }
-    .sec-title { font-size: 1.22rem; font-weight: 900; color: #111827; letter-spacing: -.03em; }
-    .sec-sub   { font-size: .87rem; color: #64748b; margin-left: auto; font-weight: 700; }
+    .content { width:min(1060px,calc(100% - 32px)); margin:0 auto; padding:30px 0 100px; }
+    .sec { display:flex; align-items:center; gap:12px; margin:34px 0 14px; }
+    .sec:first-child { margin-top:0; }
+    .sec-icon { width:42px; height:42px; border-radius:13px; display:grid; place-items:center; font-size:1.3rem; flex-shrink:0; }
+    .sec-title { font-size:1.22rem; font-weight:900; color:#111827; letter-spacing:-.03em; }
+    .sec-sub { font-size:.87rem; color:#64748b; margin-left:auto; font-weight:700; }
 
     /* ── EXAM SCHEDULE ── */
-    .exam-day {
-      background: #fff;
-      border-radius: 22px;
-      box-shadow: var(--shadow);
-      border: 2px solid transparent;
-      margin-bottom: 10px;
-      overflow: hidden;
-      transition: box-shadow .2s;
-    }
-    .exam-day.is-today    { border-color: #6366f1; box-shadow: 0 6px 32px rgba(99,102,241,.22); }
-    .exam-day.is-next     { border-color: #10b981; box-shadow: 0 4px 24px rgba(16,185,129,.18); }
-    .exam-day.is-past     { opacity: .48; }
+    .exam-day { background:#fff; border-radius:22px; box-shadow:var(--shadow); border:2px solid transparent; margin-bottom:10px; overflow:hidden; }
+    .exam-day.is-today { border-color:#6366f1; box-shadow:0 6px 32px rgba(99,102,241,.22); }
+    .exam-day.is-next  { border-color:#10b981; box-shadow:0 4px 24px rgba(16,185,129,.18); }
+    .exam-day.is-past  { opacity:.48; }
+    .exam-hd { display:flex; align-items:center; flex-wrap:wrap; gap:10px; padding:15px 22px; }
+    .exam-day.is-today .exam-hd    { background:linear-gradient(90deg,#4338ca,#818cf8); color:#fff; }
+    .exam-day.is-next  .exam-hd    { background:linear-gradient(90deg,#065f46,#10b981); color:#fff; }
+    .exam-day.is-past  .exam-hd    { background:#f1f5f9; }
+    .exam-day.is-upcoming .exam-hd { background:#f8faff; }
+    .exam-date { font-weight:900; font-size:1rem; }
+    .exam-weekday { font-size:.82rem; opacity:.7; }
+    .exam-chip { margin-left:auto; padding:5px 13px; border-radius:999px; font-size:.76rem; font-weight:800; }
+    .chip-today    { background:rgba(255,255,255,.25); color:#fff; }
+    .chip-next     { background:rgba(255,255,255,.25); color:#fff; }
+    .chip-past     { background:rgba(100,116,139,.12); color:#475569; }
+    .chip-upcoming { background:rgba(245,158,11,.1); color:#92400e; }
+    .exam-subs { display:flex; flex-wrap:wrap; gap:10px; padding:14px 20px; }
+    .exam-sub { display:flex; align-items:center; gap:10px; padding:13px 16px; border-radius:14px; flex:1; min-width:180px; }
+    .esub-icon { font-size:1.45rem; flex-shrink:0; }
+    .esub-info { flex:1; min-width:0; }
+    .esub-name { font-weight:900; font-size:.93rem; line-height:1.25; }
+    .esub-time { font-size:.76rem; opacity:.68; font-weight:600; margin-top:2px; }
+    .esub-done { font-size:1.2rem; margin-left:auto; flex-shrink:0; }
 
-    .exam-hd {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding: 15px 22px;
+    /* ── BUGÜNÜN GÖREVİ (STATIC) ── */
+    .daily-tasks { background:#fff; border-radius:22px; box-shadow:var(--shadow); overflow:hidden; }
+    .daily-hd { background:linear-gradient(90deg,#059669,#34d399); padding:20px 24px; color:#fff; }
+    .daily-hd h3 { font-size:1.05rem; font-weight:900; }
+    .daily-hd p  { font-size:.84rem; opacity:.85; margin-top:4px; }
+    .daily-body  { padding:16px; display:grid; gap:10px; }
+    .daily-item {
+      display:flex; align-items:center; gap:16px;
+      padding:16px 18px; border-radius:16px;
+      border:2px solid transparent;
+      transition:border-color .15s, box-shadow .15s;
     }
-    .exam-day.is-today .exam-hd    { background: linear-gradient(90deg, #4338ca 0%, #818cf8 100%); color: #fff; }
-    .exam-day.is-next  .exam-hd    { background: linear-gradient(90deg, #065f46 0%, #10b981 100%); color: #fff; }
-    .exam-day.is-past  .exam-hd    { background: #f1f5f9; }
-    .exam-day.is-upcoming .exam-hd { background: #f8faff; }
+    .daily-item:hover { border-color:rgba(59,130,246,.2); box-shadow:0 4px 16px rgba(59,130,246,.08); }
+    .daily-item-icon { font-size:2rem; flex-shrink:0; }
+    .daily-item-title { font-weight:900; font-size:1rem; }
+    .daily-item-sub   { font-size:.85rem; color:#64748b; margin-top:3px; }
+    .daily-item-badge { margin-left:auto; padding:7px 14px; border-radius:999px; font-size:.82rem; font-weight:800; flex-shrink:0; }
 
-    .exam-date    { font-weight: 900; font-size: 1rem; }
-    .exam-weekday { font-size: .82rem; opacity: .7; }
-    .exam-chip {
-      margin-left: auto;
-      padding: 5px 13px;
-      border-radius: 999px;
-      font-size: .76rem;
-      font-weight: 800;
-    }
-    .chip-today    { background: rgba(255,255,255,.25); color: #fff; }
-    .chip-next     { background: rgba(255,255,255,.25); color: #fff; }
-    .chip-past     { background: rgba(100,116,139,.12); color: #475569; }
-    .chip-upcoming { background: rgba(245,158,11,.1);  color: #92400e; }
+    /* ── SENARYO SECTION ── */
+    .senaryo-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(440px,1fr)); gap:14px; }
+    .senaryo-card { background:#fff; border-radius:20px; box-shadow:var(--shadow); overflow:hidden; border:2px solid transparent; }
+    .senaryo-hd { padding:16px 20px; color:#fff; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; cursor:pointer; user-select:none; }
+    .senaryo-hd-left h4 { font-size:1rem; font-weight:900; }
+    .senaryo-hd-left p  { font-size:.8rem; opacity:.85; margin-top:3px; }
+    .senaryo-hd-badge { background:rgba(255,255,255,.25); padding:5px 12px; border-radius:999px; font-size:.78rem; font-weight:800; white-space:nowrap; }
+    .senaryo-toggle-btn { background:rgba(255,255,255,.2); border:none; color:#fff; width:30px; height:30px; border-radius:8px; cursor:pointer; font-size:1.1rem; display:grid; place-items:center; transition:background .15s; flex-shrink:0; }
+    .senaryo-toggle-btn:hover { background:rgba(255,255,255,.35); }
+    .senaryo-body { display:none; padding:0 16px 16px; }
+    .senaryo-body.open { display:block; }
+    .senaryo-unite { font-size:.75rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; padding:12px 4px 6px; }
+    .senaryo-row { display:flex; align-items:flex-start; gap:12px; padding:10px 12px; border-radius:12px; background:#f8faff; margin-bottom:6px; }
+    .senaryo-row:last-child { margin-bottom:0; }
+    .senaryo-konu { flex:1; font-size:.9rem; font-weight:700; color:#374151; line-height:1.45; }
+    .senaryo-soru { background:#e0e7ff; color:#3730a3; font-size:.8rem; font-weight:900; border-radius:8px; padding:4px 10px; white-space:nowrap; flex-shrink:0; }
 
-    .exam-subs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding: 14px 20px;
+    /* ── NOT HESAPLAYICI ── */
+    .notkal-card { background:#fff; border-radius:22px; box-shadow:var(--shadow); overflow:hidden; }
+    .notkal-hd { background:linear-gradient(90deg,#1e3a5f,#1d4ed8); padding:18px 24px; color:#fff; }
+    .notkal-hd h3 { font-size:1.05rem; font-weight:900; }
+    .notkal-hd p  { font-size:.83rem; opacity:.85; margin-top:4px; }
+    .notkal-body  { padding:16px; }
+    .notkal-formula {
+      background:#f0f4ff; border:1.5px solid #c7d2fe; border-radius:14px;
+      padding:12px 16px; margin-bottom:14px; font-size:.85rem; color:#3730a3;
+      font-weight:700; line-height:1.65;
     }
-    .exam-sub {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 13px 16px;
-      border-radius: 14px;
-      flex: 1;
-      min-width: 180px;
+    .notkal-formula strong { display:block; color:#1e3a8a; margin-bottom:4px; font-size:.88rem; }
+    .notkal-table { width:100%; border-collapse:collapse; font-size:.88rem; }
+    .notkal-table thead tr { background:#f1f5f9; }
+    .notkal-table th { padding:9px 10px; text-align:left; font-weight:800; color:#475569; font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; white-space:nowrap; }
+    .notkal-table td { padding:7px 8px; border-bottom:1px solid #f1f5f9; vertical-align:middle; }
+    .notkal-table tr:last-child td { border-bottom:none; }
+    .notkal-input {
+      width:100%; border:1.5px solid #e2e8f0; border-radius:8px;
+      padding:6px 8px; font-size:.9rem; font-family:inherit;
+      color:#111827; font-weight:700; text-align:center;
+      outline:none; transition:border-color .15s;
     }
-    .esub-icon { font-size: 1.45rem; flex-shrink: 0; }
-    .esub-info { flex: 1; min-width: 0; }
-    .esub-name { font-weight: 900; font-size: .93rem; line-height: 1.25; }
-    .esub-time { font-size: .76rem; opacity: .68; font-weight: 600; margin-top: 2px; }
-    .esub-done { font-size: 1.2rem; margin-left: auto; flex-shrink: 0; }
-
-    /* ── TODAY PLAN ── */
-    .today-card { background: #fff; border-radius: 22px; box-shadow: var(--shadow); overflow: hidden; }
-    .today-hd   { background: linear-gradient(90deg, #059669, #34d399); padding: 20px 24px; color: #fff; }
-    .today-hd h3 { font-size: 1.05rem; font-weight: 900; }
-    .today-hd p  { font-size: .84rem; opacity: .85; margin-top: 4px; }
-    .today-body  { padding: 14px; }
-    .task-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 13px;
-      padding: 13px 15px;
-      border-radius: 14px;
-      margin-bottom: 8px;
-      border: 1.5px solid rgba(148,163,184,.12);
-      background: #f8faff;
+    .notkal-input:focus { border-color:#6366f1; }
+    .notkal-result {
+      display:inline-flex; align-items:center; justify-content:center;
+      min-width:54px; padding:5px 10px; border-radius:10px;
+      font-weight:900; font-size:.95rem; color:#fff;
     }
-    .task-row:last-child { margin-bottom: 0; }
-    .task-dot  { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
-    .task-ders { font-weight: 900; font-size: .87rem; margin-bottom: 4px; }
-    .task-metin { font-size: .9rem; color: #475569; line-height: 1.6; }
-    .task-empty { text-align: center; padding: 28px; color: #94a3b8; font-weight: 700; font-size: .92rem; }
+    .notkal-result.empty { background:#e2e8f0; color:#94a3b8; }
+    .notkal-result.red   { background:#ef4444; }
+    .notkal-result.yel   { background:#f59e0b; }
+    .notkal-result.grn   { background:#10b981; }
+    .notkal-result.blu   { background:#3b82f6; }
+    .notkal-ders-label { font-weight:800; font-size:.9rem; color:#1e293b; }
+    .notkal-footer { margin-top:12px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .notkal-avg { padding:10px 18px; background:linear-gradient(90deg,#1e3a5f,#3b82f6); color:#fff; border-radius:14px; font-size:1rem; font-weight:900; }
+    .notkal-reset { padding:10px 16px; background:#f1f5f9; border:1.5px solid #e2e8f0; border-radius:14px; font-size:.85rem; font-weight:800; color:#64748b; cursor:pointer; font-family:inherit; transition:background .15s; }
+    .notkal-reset:hover { background:#e2e8f0; }
 
     /* ── RESOURCES ── */
-    .res-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 10px;
-    }
-    .res-card {
-      background: #fff;
-      border-radius: 16px;
-      border: 1.5px solid rgba(148,163,184,.14);
-      padding: 16px 18px;
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      text-decoration: none;
-      color: inherit;
-      transition: transform .18s, box-shadow .18s;
-    }
-    .res-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-    .res-icon {
-      width: 46px; height: 46px;
-      border-radius: 13px;
-      display: grid;
-      place-items: center;
-      font-size: 1.4rem;
-      flex-shrink: 0;
-    }
-    .res-name { font-weight: 800; font-size: .9rem; line-height: 1.3; }
-    .res-type { font-size: .74rem; color: #94a3b8; margin-top: 3px; font-weight: 600; }
-    .res-arrow { margin-left: auto; color: #cbd5e1; font-size: 1.1rem; flex-shrink: 0; }
+    .res-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:10px; }
+    .res-card { background:#fff; border-radius:16px; border:1.5px solid rgba(148,163,184,.14); padding:16px 18px; display:flex; align-items:center; gap:13px; text-decoration:none; color:inherit; transition:transform .18s,box-shadow .18s; }
+    .res-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); }
+    .res-icon { width:46px; height:46px; border-radius:13px; display:grid; place-items:center; font-size:1.4rem; flex-shrink:0; }
+    .res-name { font-weight:800; font-size:.9rem; line-height:1.3; }
+    .res-type { font-size:.74rem; color:#94a3b8; margin-top:3px; font-weight:600; }
+    .res-arrow { margin-left:auto; color:#cbd5e1; font-size:1.1rem; flex-shrink:0; }
+    .res-note { background:#fffbeb; border:1.5px solid #fde68a; border-radius:16px; padding:14px 18px; font-size:.88rem; color:#92400e; font-weight:700; margin-bottom:10px; }
 
     /* ── CHECKLIST ── */
-    .cl-card { background: #fff; border-radius: 22px; box-shadow: var(--shadow); padding: 8px; }
-    .cl-progress {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 13px 14px 8px;
-      font-size: .84rem;
-      font-weight: 800;
-      color: #64748b;
-    }
-    .cl-track { flex: 1; height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
-    .cl-fill   { height: 100%; background: linear-gradient(90deg, #10b981, #34d399); border-radius: 999px; transition: width .4s ease; }
-    .cl-item {
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      padding: 13px 14px;
-      border-radius: 14px;
-      cursor: pointer;
-      transition: background .15s;
-      user-select: none;
-    }
-    .cl-item:hover { background: #f8faff; }
-    .cl-item.done  { background: #f0fdf4; }
-    .cl-item.done .cl-text { text-decoration: line-through; color: #9ca3af; }
-    .cl-box {
-      width: 26px; height: 26px;
-      border-radius: 8px;
-      border: 2.5px solid #d1d5db;
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-      font-size: .95rem;
-      transition: all .15s;
-    }
-    .cl-item.done .cl-box { background: #10b981; border-color: #10b981; color: #fff; }
-    .cl-text { font-weight: 700; font-size: .92rem; color: #374151; transition: all .15s; }
+    .cl-card { background:#fff; border-radius:22px; box-shadow:var(--shadow); padding:8px; }
+    .cl-progress { display:flex; align-items:center; gap:12px; padding:13px 14px 8px; font-size:.84rem; font-weight:800; color:#64748b; }
+    .cl-track { flex:1; height:8px; background:#e2e8f0; border-radius:999px; overflow:hidden; }
+    .cl-fill  { height:100%; background:linear-gradient(90deg,#10b981,#34d399); border-radius:999px; transition:width .4s ease; }
+    .cl-item  { display:flex; align-items:center; gap:13px; padding:13px 14px; border-radius:14px; cursor:pointer; transition:background .15s; user-select:none; }
+    .cl-item:hover { background:#f8faff; }
+    .cl-item.done { background:#f0fdf4; }
+    .cl-item.done .cl-text { text-decoration:line-through; color:#9ca3af; }
+    .cl-box { width:26px; height:26px; border-radius:8px; border:2.5px solid #d1d5db; display:grid; place-items:center; flex-shrink:0; font-size:.95rem; transition:all .15s; }
+    .cl-item.done .cl-box { background:#10b981; border-color:#10b981; color:#fff; }
+    .cl-text { font-weight:700; font-size:.92rem; color:#374151; transition:all .15s; }
 
     /* ── COACH NOTE ── */
-    .coach-card {
-      background: linear-gradient(135deg, #fdf4ff 0%, #ede9fe 100%);
-      border: 1.5px solid rgba(167,139,250,.28);
-      border-radius: 22px;
-      padding: 24px;
-    }
-    .coach-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
-    .coach-av  {
-      width: 50px; height: 50px;
-      background: linear-gradient(135deg, #7c3aed, #6d28d9);
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      font-size: 1.5rem;
-      flex-shrink: 0;
-    }
-    .coach-lbl  { font-size: .78rem; font-weight: 700; color: #7c3aed; text-transform: uppercase; letter-spacing: .08em; }
-    .coach-name { font-size: 1rem; font-weight: 900; color: #4c1d95; }
-    .coach-text { color: #374151; line-height: 1.8; font-size: .95rem; }
+    .coach-card { background:linear-gradient(135deg,#fdf4ff 0%,#ede9fe 100%); border:1.5px solid rgba(167,139,250,.28); border-radius:22px; padding:24px; }
+    .coach-top  { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+    .coach-av   { width:50px; height:50px; background:linear-gradient(135deg,#7c3aed,#6d28d9); border-radius:50%; display:grid; place-items:center; font-size:1.5rem; flex-shrink:0; }
+    .coach-lbl  { font-size:.78rem; font-weight:700; color:#7c3aed; text-transform:uppercase; letter-spacing:.08em; }
+    .coach-name { font-size:1rem; font-weight:900; color:#4c1d95; }
+    .coach-text { color:#374151; line-height:1.8; font-size:.95rem; }
 
     /* ── MOTIVATION ── */
-    .moti {
-      background: linear-gradient(135deg, #1e3a5f, #1d4ed8);
-      border-radius: 22px;
-      padding: 26px 30px;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .moti-em    { font-size: 2.6rem; flex-shrink: 0; }
-    .moti-quote { font-size: 1.05rem; font-weight: 800; line-height: 1.55; font-style: italic; }
-    .moti-by    { font-size: .78rem; opacity: .6; margin-top: 8px; font-weight: 700; }
+    .moti { background:linear-gradient(135deg,#1e3a5f,#1d4ed8); border-radius:22px; padding:26px 30px; color:#fff; display:flex; align-items:center; gap:20px; }
+    .moti-em    { font-size:2.6rem; flex-shrink:0; }
+    .moti-quote { font-size:1.05rem; font-weight:800; line-height:1.55; font-style:italic; }
+    .moti-by    { font-size:.78rem; opacity:.6; margin-top:8px; font-weight:700; }
 
-    /* ── MISC ── */
-    @keyframes shimmer { from{background-position:200% 0} to{background-position:-200% 0} }
-    .skeleton { background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 10px; height: 18px; }
+    /* ── SOHBET (Firebase) ── */
+    #sohbet-btn { position:fixed; bottom:22px; right:22px; z-index:1000; width:54px; height:54px; border-radius:50%; background:var(--primary-grad); border:none; cursor:pointer; box-shadow:0 4px 16px rgba(8,145,178,.4); display:flex; align-items:center; justify-content:center; font-size:22px; transition:transform .2s; }
+    #sohbet-btn:hover { transform:scale(1.08); }
+    #sohbet-badge { position:absolute; top:-3px; right:-3px; background:#dc2626; color:#fff; font-size:10px; font-weight:800; border-radius:10px; padding:1px 5px; min-width:16px; text-align:center; display:none; line-height:14px; }
+    #sohbet-panel { position:fixed; bottom:86px; right:18px; z-index:1001; width:340px; max-height:520px; background:#fff; border-radius:20px; box-shadow:0 8px 40px rgba(0,0,0,.18); border:2px solid #e2e8f0; display:none; flex-direction:column; overflow:hidden; }
+    #sohbet-panel.acik { display:flex; }
+    .sohbet-header { padding:12px 16px; background:var(--primary-grad); color:#fff; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:space-between; }
+    .sohbet-header-kapat { background:none; border:none; color:#fff; font-size:20px; cursor:pointer; padding:0 4px; line-height:1; }
+    #sohbet-liste { flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:8px; scroll-behavior:smooth; }
+    .sohbet-mesaj { max-width:82%; }
+    .sohbet-mesaj.ben   { align-self:flex-end; }
+    .sohbet-mesaj.diger { align-self:flex-start; }
+    .sohbet-balon { padding:9px 13px; border-radius:16px; font-size:13px; line-height:1.5; word-wrap:break-word; }
+    .sohbet-mesaj.ben   .sohbet-balon { background:var(--primary-grad); color:#fff; border-bottom-right-radius:4px; }
+    .sohbet-mesaj.diger .sohbet-balon { background:#f0f4ff; color:#1e293b; border-bottom-left-radius:4px; border:1px solid #e2e8f0; }
+    .sohbet-isim  { font-size:10px; font-weight:700; color:#64748b; margin-bottom:3px; padding:0 2px; }
+    .sohbet-zaman { font-size:10px; color:#94a3b8; margin-top:3px; padding:0 2px; }
+    .sohbet-mesaj.ben .sohbet-zaman { text-align:right; }
+    .sohbet-input-wrap { padding:10px 12px; border-top:1px solid #e2e8f0; display:flex; gap:8px; align-items:flex-end; }
+    #sohbet-input { flex:1; border:2px solid #e2e8f0; border-radius:12px; padding:8px 12px; font-size:13px; font-family:inherit; resize:none; max-height:80px; outline:none; background:#fff; color:#1e293b; line-height:1.5; }
+    #sohbet-input:focus { border-color:#0891b2; }
+    #sohbet-gonder { background:var(--primary-grad); border:none; border-radius:10px; color:#fff; padding:9px 13px; cursor:pointer; font-size:16px; flex-shrink:0; }
+    #sohbet-gonder:disabled { opacity:.5; cursor:default; }
+    #sohbet-resim-btn { background:#f0f4ff; border:1.5px solid #e2e8f0; border-radius:10px; color:#64748b; padding:9px 10px; cursor:pointer; font-size:16px; flex-shrink:0; transition:background .15s; }
+    #sohbet-resim-btn:hover:not(:disabled) { background:#e2e8f0; }
+    .sohbet-bos { text-align:center; color:#64748b; font-size:13px; padding:28px 12px; }
+    @media (max-width:400px) { #sohbet-panel { width:calc(100vw - 20px); right:10px; } }
 
-    @media (max-width: 680px) {
-      .topbar   { padding: 14px 18px; }
-      .cd-wrap  { padding: 10px 18px 26px; }
-      .content  { width: calc(100% - 24px); padding: 18px 0 52px; }
-      .cd-unit  { min-width: 64px; padding: 10px 12px; }
-      .cd-num   { font-size: 1.7rem; }
-      .exam-subs{ flex-direction: column; }
-      .exam-sub { min-width: unset; }
-      .res-grid { grid-template-columns: 1fr; }
-      .moti     { flex-direction: column; text-align: center; }
+    /* ── RESPONSIVE ── */
+    @media (max-width:680px) {
+      .topbar { padding:14px 18px; } .cd-wrap { padding:10px 18px 26px; }
+      .content { width:calc(100% - 24px); padding:18px 0 80px; }
+      .cd-unit { min-width:64px; padding:10px 12px; } .cd-num { font-size:1.7rem; }
+      .exam-subs { flex-direction:column; } .exam-sub { min-width:unset; }
+      .res-grid { grid-template-columns:1fr; } .moti { flex-direction:column; text-align:center; }
+      .senaryo-grid { grid-template-columns:1fr; }
+      .notkal-table th:nth-child(4),.notkal-table td:nth-child(4) { display:none; }
     }
   </style>
 </head>
@@ -429,13 +254,9 @@
     </div>
     <a class="topbar-back" id="back-link" href="sablon.html">← Haftalık plana dön</a>
   </div>
-
   <div class="cd-wrap">
     <div class="cd-eyebrow">Bir sonraki sınava kalan süre</div>
-    <div class="cd-badge">
-      <span class="cd-dot"></span>
-      <span id="cd-name">Hesaplanıyor…</span>
-    </div>
+    <div class="cd-badge"><span class="cd-dot"></span><span id="cd-name">Hesaplanıyor…</span></div>
     <div class="cd-digits" id="cd-digits">
       <div class="cd-unit"><span class="cd-num" id="cd-g">--</span><span class="cd-lbl">Gün</span></div>
       <div class="cd-sep">:</div>
@@ -451,144 +272,230 @@
 <!-- ── CONTENT ── -->
 <div class="content">
 
-  <!-- Sınav Takvimi -->
-  <div class="sec">
-    <div class="sec-icon" style="background:#dbeafe">📅</div>
-    <div class="sec-title">Sınav Takvimi</div>
-    <div class="sec-sub">2. Dönem 2. Yazılı Sınavları</div>
-  </div>
+  <!-- 1. Sınav Takvimi -->
+  <div class="sec"><div class="sec-icon" style="background:#dbeafe">📅</div><div class="sec-title">Sınav Takvimi</div><div class="sec-sub">2. Dönem 2. Yazılı</div></div>
   <div id="exam-list"></div>
 
-  <!-- Bugünün Planı -->
-  <div class="sec">
-    <div class="sec-icon" style="background:#d1fae5">📋</div>
-    <div class="sec-title">Bugünün Planı</div>
-    <div class="sec-sub" id="today-lbl"></div>
-  </div>
-  <div class="today-card">
-    <div class="today-hd">
-      <h3>Koçunun hazırladığı görevler</h3>
-      <p>Bugün bunları tamamlarsan büyük bir adım atmış olacaksın 💪</p>
-    </div>
-    <div class="today-body" id="today-body">
-      <div class="task-empty">Veriler yükleniyor…</div>
-    </div>
-  </div>
-
-  <!-- Kaynaklar -->
-  <div class="sec">
-    <div class="sec-icon" style="background:#fef3c7">📁</div>
-    <div class="sec-title">Sınav Kaynakları</div>
-    <div class="sec-sub">PDF & Dökümanlar</div>
-  </div>
-  <div class="res-grid" id="res-grid"></div>
-
-  <!-- Kontrol Listesi -->
-  <div class="sec">
-    <div class="sec-icon" style="background:#ede9fe">✅</div>
-    <div class="sec-title">Günlük Kontrol Listesi</div>
-  </div>
-  <div class="cl-card" id="cl-card"></div>
-
-  <!-- Koçtan Not -->
-  <div class="sec">
-    <div class="sec-icon" style="background:#fce7f3">💜</div>
-    <div class="sec-title">Koçtan Özel Not</div>
-  </div>
-  <div class="coach-card">
-    <div class="coach-top">
-      <div class="coach-av">👨‍🏫</div>
-      <div>
-        <div class="coach-lbl">Koçundan</div>
-        <div class="coach-name">Oğuzhan Koç</div>
+  <!-- 2. Bugünün Görevi (statik) -->
+  <div class="sec"><div class="sec-icon" style="background:#d1fae5">📋</div><div class="sec-title">Bugünün Görevi</div><div class="sec-sub" id="today-lbl"></div></div>
+  <div class="daily-tasks">
+    <div class="daily-hd"><h3>Her gün iki altın görev 💪</h3><p>Bunları yapan, sınavda fark yaratır.</p></div>
+    <div class="daily-body">
+      <div class="daily-item" style="background:#eff6ff; border-color:#bfdbfe">
+        <div class="daily-item-icon">📝</div>
+        <div>
+          <div class="daily-item-title" style="color:#1d4ed8">10 Paragraf Sorusu</div>
+          <div class="daily-item-sub">Her gün 10 soru çöz — okuma hızın ve anlama gücün gelişsin</div>
+        </div>
+        <div class="daily-item-badge" style="background:#dbeafe;color:#1d4ed8">10 soru</div>
+      </div>
+      <div class="daily-item" style="background:#f0fdf4; border-color:#bbf7d0">
+        <div class="daily-item-icon">📖</div>
+        <div>
+          <div class="daily-item-title" style="color:#15803d">En Az 10 Sayfa Kitap</div>
+          <div class="daily-item-sub">Kitap okumak Türkçe sınavını çok daha kolay hale getirir</div>
+        </div>
+        <div class="daily-item-badge" style="background:#d1fae5;color:#15803d">10 sayfa</div>
       </div>
     </div>
+  </div>
+
+  <!-- 3. Sınav Senaryoları -->
+  <div class="sec"><div class="sec-icon" style="background:#fef3c7">📋</div><div class="sec-title">Sınav Senaryoları</div><div class="sec-sub">Çıkacak konular</div></div>
+  <div class="senaryo-grid">
+
+    <!-- Türkçe -->
+    <div class="senaryo-card" style="border-color:#fde68a">
+      <div class="senaryo-hd" style="background:linear-gradient(90deg,#d97706,#f59e0b)" onclick="this.parentElement.querySelector('.senaryo-body').classList.toggle('open'); this.querySelector('.senaryo-toggle-btn').textContent = this.parentElement.querySelector('.senaryo-body').classList.contains('open') ? '▲' : '▼'">
+        <div class="senaryo-hd-left">
+          <h4>📝 Türkçe — SENARYO 4</h4>
+          <p>08.06.2026 Pazartesi · MEB Yayınları</p>
+        </div>
+        <span class="senaryo-hd-badge">6 Soru</span>
+        <button class="senaryo-toggle-btn" onclick="event.stopPropagation()">▼</button>
+      </div>
+      <div class="senaryo-body open">
+        <div class="senaryo-unite" style="color:#d97706">Okuma / Yazma Becerileri</div>
+        <div class="senaryo-row"><div class="senaryo-konu"><strong>T.O.6.20</strong> — Metindeki söz sanatlarını belirlemeye yönelik çözümleme yapabilme</div><div class="senaryo-soru">1 soru</div></div>
+        <div class="senaryo-row"><div class="senaryo-konu"><strong>T.O.6.24</strong> — Okuduğunu değerlendirebilme</div><div class="senaryo-soru">2 soru</div></div>
+        <div class="senaryo-row"><div class="senaryo-konu"><strong>T.O.6.25</strong> — Metni eleştirebilme</div><div class="senaryo-soru">1 soru</div></div>
+        <div class="senaryo-row"><div class="senaryo-konu"><strong>T.Y.6.13</strong> — Değerlendirmesini yazılı olarak ifade edebilme</div><div class="senaryo-soru">1 soru</div></div>
+        <div class="senaryo-row"><div class="senaryo-konu"><strong>T.Y.6.21</strong> — Yazım kuralları ve noktalama işaretlerini uygulayabilme</div><div class="senaryo-soru">1 soru</div></div>
+      </div>
+    </div>
+
+    <!-- Sosyal -->
+    <div class="senaryo-card" style="border-color:#ddd6fe">
+      <div class="senaryo-hd" style="background:linear-gradient(90deg,#6d28d9,#8b5cf6)" onclick="this.parentElement.querySelector('.senaryo-body').classList.toggle('open'); this.querySelector('.senaryo-toggle-btn').textContent = this.parentElement.querySelector('.senaryo-body').classList.contains('open') ? '▲' : '▼'">
+        <div class="senaryo-hd-left">
+          <h4>🗺️ Sosyal Bilgiler — SENARYO 5</h4>
+          <p>04.06.2026 Perşembe</p>
+        </div>
+        <span class="senaryo-hd-badge">9 Soru</span>
+        <button class="senaryo-toggle-btn" onclick="event.stopPropagation()">▼</button>
+      </div>
+      <div class="senaryo-body open">
+        <div class="senaryo-unite" style="color:#6d28d9">Ortak Mirasımız</div>
+        <div class="senaryo-row"><div class="senaryo-konu">XI–XIII. yy. arası askeri mücadelerin Anadolu'nun Türkleşmesi ve İslamlaşmasına katkıları</div><div class="senaryo-soru">1 soru</div></div>
+        <div class="senaryo-unite" style="color:#6d28d9">Yaşayan Demokrasimiz</div>
+        <div class="senaryo-row"><div class="senaryo-konu">Yönetimin karar alma sürecini etkileyen unsurlar</div><div class="senaryo-soru">1 soru</div></div>
+        <div class="senaryo-row"><div class="senaryo-konu">Temel hak ve sorumlulukların toplumsal düzeni sürdürmedeki önemi</div><div class="senaryo-soru">1 soru</div></div>
+        <div class="senaryo-row"><div class="senaryo-konu">Dijitalleşme ve teknolojik gelişmelerin vatandaşlık hak ve sorumluluklarına etkileri</div><div class="senaryo-soru">1 soru</div></div>
+        <div class="senaryo-unite" style="color:#6d28d9">Hayatımızdaki Ekonomi</div>
+        <div class="senaryo-row"><div class="senaryo-konu">Ülkemizin kaynakları ve ekonomik faaliyetler</div><div class="senaryo-soru">2 soru</div></div>
+        <div class="senaryo-row"><div class="senaryo-konu">Ekonomik faaliyetler ve meslekler</div><div class="senaryo-soru">2 soru</div></div>
+        <div class="senaryo-row"><div class="senaryo-konu">Tasarlanan bir ürünün yatırım ve pazarlama süreci</div><div class="senaryo-soru">1 soru</div></div>
+      </div>
+    </div>
+
+  </div><!-- /senaryo-grid -->
+
+  <!-- 4. Not Hesaplayıcı -->
+  <div class="sec"><div class="sec-icon" style="background:#dbeafe">🧮</div><div class="sec-title">Not Hesaplayıcı</div><div class="sec-sub">2. Dönem 2. Yazılı</div></div>
+  <div class="notkal-card">
+    <div class="notkal-hd">
+      <h3>Sınav Notlarını Gir — Ortalamanı Hesapla</h3>
+      <p>Sınav puanlarını ve ders etkinlik ortalamanı gir, dönem puanın otomatik hesaplanır.</p>
+    </div>
+    <div class="notkal-body">
+      <div class="notkal-formula">
+        <strong>📐 Hesaplama Formülü (MEB Resmi):</strong>
+        Dönem Puanı = (1. Sınav + 2. Sınav + Proje/Etk. Ort.) ÷ 3<br>
+        <span style="font-size:.8rem;color:#6366f1">Proje/Etk. Ort. = (Proje Ort. + Etkinlik Ort.) ÷ 2 &nbsp;|&nbsp; Sadece 1. sınav girilirse o puan gösterilir.</span>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="notkal-table" id="notkal-table">
+          <thead><tr>
+            <th>Ders</th>
+            <th>1. Sınav</th>
+            <th>2. Sınav</th>
+            <th>Proje/Etk. Ort.</th>
+            <th>Dönem Puanı</th>
+          </tr></thead>
+          <tbody id="notkal-tbody"></tbody>
+        </table>
+      </div>
+      <div class="notkal-footer">
+        <div class="notkal-avg" id="notkal-avg">Genel Ort: —</div>
+        <button class="notkal-reset" onclick="notkalReset()">🗑 Sıfırla</button>
+        <span style="font-size:.8rem;color:#94a3b8;font-weight:600">Notlar tarayıcında saklanır.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Kaynaklar -->
+  <div class="sec"><div class="sec-icon" style="background:#fef3c7">📁</div><div class="sec-title">Sınav Kaynakları</div><div class="sec-sub">PDF & Dökümanlar</div></div>
+  <div class="res-note">💡 <strong>Dosyaları nereye yüklemeliyim?</strong> Tüm PDF ve DOCX dosyaları <code>sinav-haftasi/</code> klasörüne eklersen otomatik bağlanır. PDF'ler doğrudan tarayıcıda açılır; DOCX dosyalar indirilir.</div>
+  <div class="res-grid" id="res-grid"></div>
+
+  <!-- 6. Kontrol Listesi -->
+  <div class="sec"><div class="sec-icon" style="background:#ede9fe">✅</div><div class="sec-title">Günlük Kontrol Listesi</div></div>
+  <div class="cl-card" id="cl-card"></div>
+
+  <!-- 7. Koç Notu -->
+  <div class="sec"><div class="sec-icon" style="background:#fce7f3">💜</div><div class="sec-title">Koçtan Özel Not</div></div>
+  <div class="coach-card">
+    <div class="coach-top"><div class="coach-av">👨‍🏫</div><div><div class="coach-lbl">Koçundan</div><div class="coach-name">Oğuzhan Koç</div></div></div>
     <div class="coach-text" id="coach-text">Yükleniyor…</div>
   </div>
 
-  <!-- Motivasyon -->
-  <div class="sec">
-    <div class="sec-icon" style="background:#dbeafe">🔥</div>
-    <div class="sec-title">Bugünün Motivasyonu</div>
-  </div>
-  <div class="moti">
-    <div class="moti-em">💪</div>
-    <div>
-      <div class="moti-quote" id="moti-q"></div>
-      <div class="moti-by">— Oğuzhan Koç</div>
-    </div>
-  </div>
+  <!-- 8. Motivasyon -->
+  <div class="sec"><div class="sec-icon" style="background:#dbeafe">🔥</div><div class="sec-title">Bugünün Motivasyonu</div></div>
+  <div class="moti"><div class="moti-em">💪</div><div><div class="moti-quote" id="moti-q"></div><div class="moti-by">— Oğuzhan Koç</div></div></div>
 
 </div><!-- /content -->
 
+<!-- ── SOHBET WIDGET ── -->
+<button id="sohbet-btn" title="Koçluk Sohbeti">💬<span id="sohbet-badge"></span></button>
+<div id="sohbet-panel">
+  <div class="sohbet-header">
+    <span>💬 Sınav Haftası Sohbeti</span>
+    <button class="sohbet-header-kapat" onclick="sohbetToggle()" aria-label="Kapat">×</button>
+  </div>
+  <div id="sohbet-liste"><div class="sohbet-bos">Mesajlar yükleniyor...</div></div>
+  <div class="sohbet-input-wrap" style="flex-direction:column;align-items:stretch;">
+    <div id="sohbet-kapali-notice" style="display:none;padding:8px;text-align:center;font-size:12px;font-weight:700;color:#dc2626;background:#fee2e2;border-radius:8px;margin-bottom:6px;">Koç sohbeti geçici olarak kapattı.</div>
+    <div style="display:flex;gap:8px;align-items:flex-end;">
+      <input type="file" id="sohbet-resim-input" accept="image/*" style="display:none">
+      <textarea id="sohbet-input" placeholder="Mesajını yaz..." rows="1"></textarea>
+      <button id="sohbet-resim-btn" title="Resim gönder" onclick="document.getElementById('sohbet-resim-input').click()">📎</button>
+      <button id="sohbet-gonder" onclick="sohbetGonder()">➤</button>
+    </div>
+  </div>
+</div>
+
+<!-- Sohbet Lightbox -->
+<div id="sohbet-lightbox" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99999;align-items:center;justify-content:center;flex-direction:column;gap:12px" onclick="if(event.target===this)sohbetLightboxKapat()">
+  <img id="sohbet-lightbox-img" src="" style="max-width:90vw;max-height:80vh;border-radius:10px;box-shadow:0 8px 40px rgba(0,0,0,.6);object-fit:contain">
+  <div style="display:flex;gap:10px">
+    <a id="sohbet-lightbox-indir" download="sohbet_resim.jpg" style="background:#0f766e;color:#fff;padding:8px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600">⬇ İndir</a>
+    <button onclick="sohbetLightboxKapat()" style="background:rgba(255,255,255,.15);color:#fff;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">✕ Kapat</button>
+  </div>
+</div>
+
+<!-- ── SCRIPTS ── -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
+/* ─── CORE DATA ─── */
 const API_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbyUvFShqvwvwOlJmVSY8TQFmYoXCqcfu4JFrK3KtzIVMHN9YctZmRpyrfK5AydUNcPd/exec';
 
 const SUB_CLR = {
-  mat:  { c:'#2563eb', bg:'#dbeafe' },
-  fen:  { c:'#059669', bg:'#d1fae5' },
-  tur:  { c:'#d97706', bg:'#fef3c7' },
-  sos:  { c:'#7c3aed', bg:'#ede9fe' },
-  ing:  { c:'#e11d48', bg:'#ffe4e6' },
-  din:  { c:'#0891b2', bg:'#cffafe' },
-  ara:  { c:'#047857', bg:'#ccfbf1' },
-  dkab: { c:'#be185d', bg:'#fce7f3' },
-  kur:  { c:'#ea580c', bg:'#ffedd5' },
-  hz:   { c:'#0f766e', bg:'#ccfbf1' },
-  tdb:  { c:'#6d28d9', bg:'#ede9fe' },
-  kit:  { c:'#64748b', bg:'#f1f5f9' },
+  mat:{c:'#2563eb',bg:'#dbeafe'}, fen:{c:'#059669',bg:'#d1fae5'},
+  tur:{c:'#d97706',bg:'#fef3c7'}, sos:{c:'#7c3aed',bg:'#ede9fe'},
+  ing:{c:'#e11d48',bg:'#ffe4e6'}, din:{c:'#0891b2',bg:'#cffafe'},
+  ara:{c:'#047857',bg:'#ccfbf1'}, dkab:{c:'#be185d',bg:'#fce7f3'},
+  kur:{c:'#ea580c',bg:'#ffedd5'}, hz:{c:'#0f766e',bg:'#ccfbf1'},
+  tdb:{c:'#6d28d9',bg:'#ede9fe'}, kit:{c:'#64748b',bg:'#f1f5f9'},
 };
 const sc = k => SUB_CLR[k] || SUB_CLR.kit;
 
 const EXAMS = [
-  { tarih:'2026-06-01', gun:'Pazartesi', dersler:[
-    { ad:"Kur'an-ı Kerim",          saat:'09:10', kod:'kur',  em:'📖' },
-    { ad:"Hz. Muhammed'in Hayatı",  saat:'10:50', kod:'hz',   em:'🌙' }
-  ]},
-  { tarih:'2026-06-02', gun:'Salı', dersler:[
-    { ad:'Matematik',               saat:'09:10', kod:'mat',  em:'🔢' },
-    { ad:'Temel Dini Bilgiler',     saat:'10:50', kod:'tdb',  em:'📿' }
-  ]},
-  { tarih:'2026-06-03', gun:'Çarşamba', dersler:[
-    { ad:'İngilizce',               saat:'09:10', kod:'ing',  em:'🇬🇧' },
-    { ad:'Seçmeli İngilizce',       saat:'10:50', kod:'ing',  em:'💬' }
-  ]},
-  { tarih:'2026-06-04', gun:'Perşembe', dersler:[
-    { ad:'Sosyal Bilgiler',         saat:'09:10', kod:'sos',  em:'🗺️' }
-  ]},
-  { tarih:'2026-06-05', gun:'Cuma', dersler:[
-    { ad:'Fen Bilimleri',           saat:'09:10', kod:'fen',  em:'🔬' }
-  ]},
-  { tarih:'2026-06-08', gun:'Pazartesi', dersler:[
-    { ad:'Arapça',                  saat:'10:00', kod:'ara',  em:'🌿' },
-    { ad:'Türkçe',                  saat:'11:40', kod:'tur',  em:'📝' }
-  ]},
-  { tarih:'2026-06-09', gun:'Salı', dersler:[
-    { ad:'Din Kültürü ve Ahlak B.', saat:'10:00', kod:'dkab', em:'✨' }
-  ]}
+  {tarih:'2026-06-01',gun:'Pazartesi',dersler:[{ad:"Kur'an-ı Kerim",saat:'09:10',kod:'kur',em:'📖'},{ad:"Hz. Muhammed'in Hayatı",saat:'10:50',kod:'hz',em:'🌙'}]},
+  {tarih:'2026-06-02',gun:'Salı',dersler:[{ad:'Matematik',saat:'09:10',kod:'mat',em:'🔢'},{ad:'Temel Dini Bilgiler',saat:'10:50',kod:'tdb',em:'📿'}]},
+  {tarih:'2026-06-03',gun:'Çarşamba',dersler:[{ad:'İngilizce',saat:'09:10',kod:'ing',em:'🇬🇧'},{ad:'Seçmeli İngilizce',saat:'10:50',kod:'ing',em:'💬'}]},
+  {tarih:'2026-06-04',gun:'Perşembe',dersler:[{ad:'Sosyal Bilgiler',saat:'09:10',kod:'sos',em:'🗺️'}]},
+  {tarih:'2026-06-05',gun:'Cuma',dersler:[{ad:'Fen Bilimleri',saat:'09:10',kod:'fen',em:'🔬'}]},
+  {tarih:'2026-06-08',gun:'Pazartesi',dersler:[{ad:'Arapça',saat:'10:00',kod:'ara',em:'🌿'},{ad:'Türkçe',saat:'11:40',kod:'tur',em:'📝'}]},
+  {tarih:'2026-06-09',gun:'Salı',dersler:[{ad:'Din Kültürü ve Ahlak B.',saat:'10:00',kod:'dkab',em:'✨'}]}
 ];
 
 const RESOURCES = [
-  { label:'Zamirler Konu Testi 1', file:'Zamirler-Konu-Testi-1.pdf',                                  kod:'tur', em:'📄' },
-  { label:'Zamirler Konu Testi 2', file:'Zamirler-Konu-Testi-2.pdf',                                  kod:'tur', em:'📄' },
-  { label:'Zamirler Konu Testi 3', file:'Zamirler-Konu-Testi-3.pdf',                                  kod:'tur', em:'📄' },
-  { label:'ZAMİRLER -1',           file:'ZAMİRLER -1.pdf',                                            kod:'tur', em:'📘' },
-  { label:'İsimler Konu Testi 2',  file:'Isimler-Konu-Testi-2.pdf · 1 sürümü.pdf',                   kod:'tur', em:'📄' },
-  { label:'İsimler Konu Testi 3',  file:'Isimler-Konu-Testi-3.pdf · 1 sürümü.pdf',                   kod:'tur', em:'📄' },
-  { label:'Ses Bilgisi Testi',     file:'6. Sınıf Ses Bilgisi Testi-1 (Turkcen Serisi).pdf',          kod:'tur', em:'🎵' },
-  { label:'Sıfatlar Fasikülü',     file:'6.Sınıf Sıfatlar Fasikülü.pdf',                              kod:'tur', em:'📗' },
-  { label:'6. Sınıf İsimler',      file:'6 İSİMLER.docx',                                             kod:'tur', em:'📑' },
-  { label:'Fen 2. Dönem Yazılı',   file:'6_Fen_2.Donem_2. Yazili (1).pdf',                            kod:'fen', em:'🔬' },
+  {label:'Zamirler Konu Testi 1',file:'Zamirler-Konu-Testi-1.pdf',kod:'tur',em:'📄'},
+  {label:'Zamirler Konu Testi 2',file:'Zamirler-Konu-Testi-2.pdf',kod:'tur',em:'📄'},
+  {label:'Zamirler Konu Testi 3',file:'Zamirler-Konu-Testi-3.pdf',kod:'tur',em:'📄'},
+  {label:'ZAMİRLER -1',file:'ZAMİRLER -1.pdf',kod:'tur',em:'📘'},
+  {label:'İsimler Konu Testi 2',file:'Isimler-Konu-Testi-2.pdf · 1 sürümü.pdf',kod:'tur',em:'📄'},
+  {label:'İsimler Konu Testi 3',file:'Isimler-Konu-Testi-3.pdf · 1 sürümü.pdf',kod:'tur',em:'📄'},
+  {label:'Ses Bilgisi Testi',file:'6. Sınıf Ses Bilgisi Testi-1 (Turkcen Serisi).pdf',kod:'tur',em:'🎵'},
+  {label:'Sıfatlar Fasikülü',file:'6.Sınıf Sıfatlar Fasikülü.pdf',kod:'tur',em:'📗'},
+  {label:'6. Sınıf İsimler',file:'6 İSİMLER.docx',kod:'tur',em:'📑'},
+  {label:'Fen 2. Dönem Yazılı',file:'6_Fen_2.Donem_2. Yazili (1).pdf',kod:'fen',em:'🔬'},
+];
+
+/* Not hesaplayıcı dersler */
+const NOTKAL_DERSLER = [
+  {id:'ara', label:'Arapça'},
+  {id:'dkab',label:'Din Kültürü ve Ahlak Bilgisi'},
+  {id:'fen', label:'Fen Bilimleri'},
+  {id:'kur', label:"Kur'an-ı Kerim"},
+  {id:'mat', label:'Matematik'},
+  {id:'hz',  label:"Peygamberimizin Hayatı"},
+  {id:'ing', label:'Seçmeli Yabancı Dil'},
+  {id:'sos', label:'Sosyal Bilgiler'},
+  {id:'tdb', label:'Temel Dini Bilgiler'},
+  {id:'tur', label:'Türkçe'},
+  {id:'ing2',label:'Yabancı Dil'},
 ];
 
 const CHECKLIST = [
-  { id:'c1', text:'Bugünün sınav konularını gözden geçirdim' },
-  { id:'c2', text:'En az 2 konu testi çözdüm ve süremi not ettim' },
-  { id:'c3', text:'Yanlış yaptığım soruların nedenini anladım' },
-  { id:'c4', text:'Koçumun hazırladığı planı tamamladım' },
-  { id:'c5', text:'Yarınki sınav için konuları tekrar ettim' },
-  { id:'c6', text:'Çantamı hazırladım: kalem, silgi, su, kimlik' },
-  { id:'c7', text:'Erken uyumak için hazırlık yaptım' },
+  {id:'c1',text:'Bugünün sınav konularını gözden geçirdim'},
+  {id:'c2',text:'10 paragraf sorusu çözdüm'},
+  {id:'c3',text:'En az 10 sayfa kitap okudum'},
+  {id:'c4',text:'Yanlış yaptığım soruların nedenini anladım'},
+  {id:'c5',text:'Yarınki sınav için konuları tekrar ettim'},
+  {id:'c6',text:'Çantamı hazırladım: kalem, silgi, su'},
+  {id:'c7',text:'Erken uyumak için hazırlık yaptım'},
 ];
 
 const MOTIS = [
@@ -608,188 +515,177 @@ const apiOver = (params.get('api')||'').trim();
 const API_URL = apiOver || API_URL_DEFAULT;
 
 function pad2(n){ return String(n).padStart(2,'0'); }
-function safe(v){ const d=document.createElement('div'); d.textContent=v||''; return d.innerHTML; }
-function todayStr(){ const d=new Date(); return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`; }
-function parseD(s){ const m=String(s).match(/^(\d{4})-(\d{2})-(\d{2})/); return m?new Date(+m[1],+m[2]-1,+m[3]):null; }
+function safe(v){ var d=document.createElement('div'); d.textContent=v||''; return d.innerHTML; }
+function todayStr(){ var d=new Date(); return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate()); }
+function parseD(s){ var m=String(s).match(/^(\d{4})-(\d{2})-(\d{2})/); return m?new Date(+m[1],+m[2]-1,+m[3]):null; }
 
 /* COUNTDOWN */
 function nextExam(){
-  const now = new Date();
-  for(const day of EXAMS){
-    for(const sub of day.dersler){
-      const [h,m]=sub.saat.split(':').map(Number);
-      const dt=parseD(day.tarih);
-      if(!dt) continue;
-      dt.setHours(h,m,0,0);
-      if(dt>now) return {dt, ad:sub.ad, em:sub.em};
+  var now=new Date();
+  for(var i=0;i<EXAMS.length;i++){
+    var day=EXAMS[i];
+    for(var j=0;j<day.dersler.length;j++){
+      var sub=day.dersler[j];
+      var parts=sub.saat.split(':').map(Number);
+      var dt=parseD(day.tarih); if(!dt) continue;
+      dt.setHours(parts[0],parts[1],0,0);
+      if(dt>now) return {dt:dt,ad:sub.ad,em:sub.em};
     }
   }
   return null;
 }
 function tickCountdown(){
-  const nx=nextExam();
+  var nx=nextExam();
   if(!nx){
     document.getElementById('cd-name').textContent='🎉 Tüm sınavlar bitti!';
     document.getElementById('cd-digits').innerHTML='<div class="cd-over">🏆 Harika iş çıkardın!</div>';
     return;
   }
-  document.getElementById('cd-name').textContent = nx.em+' '+nx.ad;
-  const diff = nx.dt - new Date();
-  if(diff<=0){ tickCountdown(); return; }
-  const ts = Math.floor(diff/1000);
+  document.getElementById('cd-name').textContent=nx.em+' '+nx.ad;
+  var diff=nx.dt-new Date(); if(diff<=0){tickCountdown();return;}
+  var ts=Math.floor(diff/1000);
   document.getElementById('cd-sn').textContent=pad2(ts%60);
-  document.getElementById('cd-d').textContent =pad2(Math.floor(ts/60)%60);
-  document.getElementById('cd-s').textContent =pad2(Math.floor(ts/3600)%24);
-  document.getElementById('cd-g').textContent =pad2(Math.floor(ts/86400));
+  document.getElementById('cd-d').textContent=pad2(Math.floor(ts/60)%60);
+  document.getElementById('cd-s').textContent=pad2(Math.floor(ts/3600)%24);
+  document.getElementById('cd-g').textContent=pad2(Math.floor(ts/86400));
 }
 
 /* EXAM LIST */
 function renderExams(){
-  const td  = todayStr();
-  const nx  = nextExam();
-  const nxD = nx ? nx.dt.toISOString().slice(0,10) : null;
-  const html = EXAMS.map(day=>{
-    const past     = day.tarih < td;
-    const isToday  = day.tarih === td;
-    const isNext   = !isToday && !past && day.tarih === nxD;
-    const upcoming = !past && !isToday && !isNext;
-    let cls  = 'exam-day';
-    if(past)    cls+=' is-past';
-    if(isToday) cls+=' is-today';
-    if(isNext)  cls+=' is-next';
-    if(upcoming)cls+=' is-upcoming';
-    let chip='';
-    if(isToday) chip='<span class="exam-chip chip-today">📍 BUGÜN</span>';
-    else if(isNext) chip='<span class="exam-chip chip-next">⚡ Sıradaki</span>';
-    else if(past)   chip='<span class="exam-chip chip-past">✓ Tamamlandı</span>';
-    else            chip='<span class="exam-chip chip-upcoming">⏳ Yaklaşıyor</span>';
-    const subs = day.dersler.map(sub=>{
-      const cl=sc(sub.kod);
-      return `<div class="exam-sub" style="background:${cl.bg}">
-        <div class="esub-icon">${sub.em}</div>
-        <div class="esub-info">
-          <div class="esub-name" style="color:${cl.c}">${safe(sub.ad)}</div>
-          <div class="esub-time">${sub.saat} · ${safe(day.gun)}</div>
-        </div>
-        ${past?'<div class="esub-done">✅</div>':''}
-      </div>`;
+  var td=todayStr(), nx=nextExam(), nxD=nx?nx.dt.toISOString().slice(0,10):null;
+  var html=EXAMS.map(function(day){
+    var past=day.tarih<td, isToday=day.tarih===td;
+    var isNext=!isToday&&!past&&day.tarih===nxD;
+    var upcoming=!past&&!isToday&&!isNext;
+    var cls='exam-day'+(past?' is-past':'')+(isToday?' is-today':'')+(isNext?' is-next':'')+(upcoming?' is-upcoming':'');
+    var chip=isToday?'<span class="exam-chip chip-today">📍 BUGÜN</span>':
+             isNext?'<span class="exam-chip chip-next">⚡ Sıradaki</span>':
+             past?'<span class="exam-chip chip-past">✓ Tamamlandı</span>':
+             '<span class="exam-chip chip-upcoming">⏳ Yaklaşıyor</span>';
+    var subs=day.dersler.map(function(sub){
+      var cl=sc(sub.kod);
+      return '<div class="exam-sub" style="background:'+cl.bg+'"><div class="esub-icon">'+sub.em+'</div><div class="esub-info"><div class="esub-name" style="color:'+cl.c+'">'+safe(sub.ad)+'</div><div class="esub-time">'+sub.saat+' · '+safe(day.gun)+'</div></div>'+(past?'<div class="esub-done">✅</div>':'')+'</div>';
     }).join('');
-    return `<div class="${cls}">
-      <div class="exam-hd">
-        <div>
-          <div class="exam-date">${day.tarih.split('-').reverse().join('.')}</div>
-          <div class="exam-weekday">${day.gun}</div>
-        </div>
-        ${chip}
-      </div>
-      <div class="exam-subs">${subs}</div>
-    </div>`;
+    return '<div class="'+cls+'"><div class="exam-hd"><div><div class="exam-date">'+day.tarih.split('-').reverse().join('.')+'</div><div class="exam-weekday">'+day.gun+'</div></div>'+chip+'</div><div class="exam-subs">'+subs+'</div></div>';
   }).join('');
   document.getElementById('exam-list').innerHTML=html;
 }
 
 /* RESOURCES */
 function renderResources(){
-  const html=RESOURCES.map(r=>{
-    const cl=sc(r.kod);
-    const url='sinav-haftasi/'+encodeURIComponent(r.file);
-    const type=r.file.endsWith('.docx')?'Word Dökümanı':'PDF Dosyası';
-    return `<a class="res-card" href="${url}" target="_blank" rel="noreferrer">
-      <div class="res-icon" style="background:${cl.bg}">${r.em}</div>
-      <div>
-        <div class="res-name" style="color:${cl.c}">${safe(r.label)}</div>
-        <div class="res-type">${type}</div>
-      </div>
-      <div class="res-arrow">↗</div>
-    </a>`;
+  var html=RESOURCES.map(function(r){
+    var cl=sc(r.kod);
+    var url='sinav-haftasi/'+encodeURIComponent(r.file);
+    var type=r.file.endsWith('.docx')?'Word Dökümanı':'PDF Dosyası';
+    return '<a class="res-card" href="'+url+'" target="_blank" rel="noreferrer"><div class="res-icon" style="background:'+cl.bg+'">'+r.em+'</div><div><div class="res-name" style="color:'+cl.c+'">'+safe(r.label)+'</div><div class="res-type">'+type+'</div></div><div class="res-arrow">↗</div></a>';
   }).join('');
   document.getElementById('res-grid').innerHTML=html;
 }
+
+/* ── NOT HESAPLAYICI ── */
+var NOTKAL_KEY = 'sinav_notkal_' + slug;
+function notkalLoad(){ try{return JSON.parse(localStorage.getItem(NOTKAL_KEY)||'{}')}catch{return{}} }
+function notkalSave(data){ localStorage.setItem(NOTKAL_KEY, JSON.stringify(data)); }
+function resultClass(p){ if(!isFinite(p)) return 'empty'; if(p<50) return 'red'; if(p<70) return 'yel'; if(p<85) return 'grn'; return 'blu'; }
+function calcDonem(s1,s2,pe){
+  var v1=parseFloat(s1), v2=parseFloat(s2), vpe=parseFloat(pe);
+  if(!isFinite(v1)) return null;
+  if(!isFinite(v2) && !isFinite(vpe)) return v1;
+  if(!isFinite(v2)) return (v1 + vpe) / 2;
+  if(!isFinite(vpe)) return (v1 + v2) / 2;
+  return (v1 + v2 + vpe) / 3;
+}
+function renderNotkal(){
+  var data = notkalLoad();
+  var rows = NOTKAL_DERSLER.map(function(ders){
+    var key = ders.id;
+    var d = data[key] || {};
+    var s1v = d.s1||'', s2v = d.s2||'', pev = d.pe||'';
+    var calc = calcDonem(s1v, s2v, pev);
+    var resVal = calc !== null ? Math.round(calc * 100) / 100 : null;
+    var resClass = resVal !== null ? resultClass(resVal) : 'empty';
+    var resText = resVal !== null ? resVal.toFixed(2) : '—';
+    return '<tr>'
+      + '<td><div class="notkal-ders-label">'+safe(ders.label)+'</div></td>'
+      + '<td><input class="notkal-input" data-id="'+key+'" data-field="s1" type="number" min="0" max="100" step="0.25" value="'+safe(s1v)+'" placeholder="—"></td>'
+      + '<td><input class="notkal-input" data-id="'+key+'" data-field="s2" type="number" min="0" max="100" step="0.25" value="'+safe(s2v)+'" placeholder="—"></td>'
+      + '<td><input class="notkal-input" data-id="'+key+'" data-field="pe" type="number" min="0" max="100" step="0.25" value="'+safe(pev)+'" placeholder="—"></td>'
+      + '<td><span class="notkal-result '+resClass+'">'+resText+'</span></td>'
+      + '</tr>';
+  }).join('');
+  document.getElementById('notkal-tbody').innerHTML = rows;
+
+  /* attach events */
+  document.querySelectorAll('.notkal-input').forEach(function(inp){
+    inp.addEventListener('input', function(){
+      var id = inp.dataset.id, field = inp.dataset.field;
+      var d = notkalLoad();
+      if(!d[id]) d[id]={};
+      d[id][field] = inp.value;
+      notkalSave(d);
+      renderNotkal();
+    });
+  });
+
+  /* avg */
+  var results = NOTKAL_DERSLER.map(function(ders){
+    var d = (notkalLoad()[ders.id]||{});
+    return calcDonem(d.s1, d.s2, d.pe);
+  }).filter(function(v){ return v !== null; });
+  if(results.length){
+    var avg = results.reduce(function(a,b){return a+b;},0)/results.length;
+    document.getElementById('notkal-avg').textContent = 'Genel Ort: ' + avg.toFixed(2) + ' (' + results.length + ' ders)';
+  } else {
+    document.getElementById('notkal-avg').textContent = 'Genel Ort: —';
+  }
+}
+window.notkalReset = function(){
+  if(!confirm('Tüm not verileri silinsin mi?')) return;
+  localStorage.removeItem(NOTKAL_KEY);
+  renderNotkal();
+};
 
 /* CHECKLIST */
 function getMap(){ try{return JSON.parse(localStorage.getItem('sinav_cl_'+slug)||'{}')}catch{return{}} }
 function setMap(m){ localStorage.setItem('sinav_cl_'+slug,JSON.stringify(m)); }
 function renderCL(){
-  const map=getMap();
-  const done=Object.values(map).filter(Boolean).length;
-  const total=CHECKLIST.length;
-  const pct=total?Math.round(done/total*100):0;
-  const card=document.getElementById('cl-card');
-  card.innerHTML=`<div class="cl-progress">
-    <span>${done}/${total}</span>
-    <div class="cl-track"><div class="cl-fill" style="width:${pct}%"></div></div>
-    <span>${pct}%</span>
-  </div>`+CHECKLIST.map(it=>`
-    <div class="cl-item${map[it.id]?' done':''}" data-id="${it.id}">
-      <div class="cl-box">${map[it.id]?'✓':''}</div>
-      <div class="cl-text">${safe(it.text)}</div>
-    </div>`).join('');
-  card.querySelectorAll('.cl-item').forEach(el=>{
-    el.addEventListener('click',()=>{
-      const m=getMap(); m[el.dataset.id]=!m[el.dataset.id]; setMap(m); renderCL();
+  var map=getMap(), done=Object.values(map).filter(Boolean).length, total=CHECKLIST.length;
+  var pct=total?Math.round(done/total*100):0;
+  var card=document.getElementById('cl-card');
+  card.innerHTML='<div class="cl-progress"><span>'+done+'/'+total+'</span><div class="cl-track"><div class="cl-fill" style="width:'+pct+'%"></div></div><span>'+pct+'%</span></div>'+
+    CHECKLIST.map(function(it){ return '<div class="cl-item'+(map[it.id]?' done':'')+'" data-id="'+it.id+'"><div class="cl-box">'+(map[it.id]?'✓':'')+'</div><div class="cl-text">'+safe(it.text)+'</div></div>'; }).join('');
+  card.querySelectorAll('.cl-item').forEach(function(el){
+    el.addEventListener('click',function(){
+      var m=getMap(); m[el.dataset.id]=!m[el.dataset.id]; setMap(m); renderCL();
     });
   });
 }
 
 /* MOTIVATION */
-function renderMoti(){
-  document.getElementById('moti-q').textContent=MOTIS[new Date().getDate()%MOTIS.length];
-}
-
-/* TODAY LABEL */
-function renderTodayLbl(){
-  document.getElementById('today-lbl').textContent=GUN_NAMES[new Date().getDay()];
-}
-
-/* TODAY PLAN */
-function renderTodayPlan(gunler){
-  const todayName=GUN_NAMES[new Date().getDay()];
-  const rows=Array.isArray(gunler[todayName])?gunler[todayName]:[];
-  if(!rows.length){
-    document.getElementById('today-body').innerHTML=`<div class="task-empty">Bugün (${safe(todayName)}) için plan bulunamadı — ama sen zaten ne çalışman gerektiğini biliyorsun! 🚀</div>`;
-    return;
-  }
-  const grp={};
-  rows.slice().sort((a,b)=>(a.sira||0)-(b.sira||0)).forEach(r=>{
-    const k=r.ders_baslik||r.ders_kod||'Görev';
-    if(!grp[k]) grp[k]={kod:r.ders_kod||'kit',gorevler:[]};
-    if(r.gorev_metin) grp[k].gorevler.push(r.gorev_metin);
-  });
-  const html=Object.entries(grp).map(([ders,g])=>{
-    const cl=sc(g.kod);
-    return `<div class="task-row">
-      <div class="task-dot" style="background:${cl.c}"></div>
-      <div>
-        <div class="task-ders" style="color:${cl.c}">${safe(ders)}</div>
-        <div class="task-metin">${g.gorevler.map(safe).join('<br>')}</div>
-      </div>
-    </div>`;
-  }).join('');
-  document.getElementById('today-body').innerHTML=html;
-}
+function renderMoti(){ document.getElementById('moti-q').textContent=MOTIS[new Date().getDate()%MOTIS.length]; }
+function renderTodayLbl(){ document.getElementById('today-lbl').textContent=GUN_NAMES[new Date().getDay()]; }
 
 /* API LOAD */
 function loadStudent(){
-  const sep=API_URL.indexOf('?')>=0?'&':'?';
-  let url=API_URL+sep+'istek=ogrenciSayfasi&ogrenci='+encodeURIComponent(slug);
+  var sep=API_URL.indexOf('?')>=0?'&':'?';
+  var url=API_URL+sep+'istek=ogrenciSayfasi&ogrenci='+encodeURIComponent(slug);
   if(hafta) url+='&hafta='+encodeURIComponent(hafta);
-  fetch(url)
-    .then(r=>r.text())
-    .then(t=>JSON.parse(t))
-    .then(data=>{
+  fetch(url).then(function(r){return r.text();}).then(function(t){return JSON.parse(t);})
+    .then(function(data){
       if(data.durum&&data.durum!=='basarili') throw new Error(data.mesaj||'Sunucu hatası');
-      const o=data.ogrenci||{};
-      const h=data.hafta||{};
-      document.getElementById('hero-name').textContent=o.ad||slug;
+      var o=data.ogrenci||{}, h=data.hafta||{};
+      var ogrenciAd = o.ad || (slug.charAt(0).toUpperCase()+slug.slice(1));
+      document.getElementById('hero-name').textContent = ogrenciAd;
       document.getElementById('back-link').href='sablon.html?ogrenci='+encodeURIComponent(slug);
-      const note=h.koc_degerlendirme||h.koc_haftalik_not||'';
+      var note=h.koc_degerlendirme||h.koc_haftalik_not||'';
       document.getElementById('coach-text').textContent=note||'Bu hafta için özel bir not eklenmedi — ama koçun seninle gurur duyuyor! Her sınavda en iyisini çıkarıyorsun 💜';
-      renderTodayPlan(data.gunler||{});
+      if(window._initSohbet) window._initSohbet(slug, ogrenciAd);
     })
-    .catch(()=>{
-      document.getElementById('hero-name').textContent=slug.charAt(0).toUpperCase()+slug.slice(1);
-      document.getElementById('today-body').innerHTML='<div class="task-empty">Plan yüklenemedi. Lütfen internet bağlantını kontrol et.</div>';
+    .catch(function(){
+      var ad = slug.charAt(0).toUpperCase()+slug.slice(1);
+      document.getElementById('hero-name').textContent=ad;
       document.getElementById('coach-text').textContent='Koç notu yüklenemedi.';
+      if(window._initSohbet) window._initSohbet(slug, ad);
     });
 }
 
@@ -797,11 +693,148 @@ function loadStudent(){
 renderTodayLbl();
 renderExams();
 renderResources();
+renderNotkal();
 renderCL();
 renderMoti();
 loadStudent();
 tickCountdown();
-setInterval(tickCountdown, 1000);
+setInterval(tickCountdown,1000);
+</script>
+
+<!-- ── FIREBASE SOHBET ── -->
+<script>
+(function(){
+  var FB_CFG = {
+    apiKey:"AIzaSyAi60DYIr-tAnGGd9PEP3WK-MATAPkQyrg",
+    authDomain:"lgs-kocluk-b8ee4.firebaseapp.com",
+    databaseURL:"https://lgs-kocluk-b8ee4-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId:"lgs-kocluk-b8ee4",
+    storageBucket:"lgs-kocluk-b8ee4.firebasestorage.app",
+    messagingSenderId:"229385167119",
+    appId:"1:229385167119:web:030732c458bc01f238de7a"
+  };
+  var panelAcik=false, okunanZaman=0, SLUG='', ISIM='', sohbetRef=null;
+  function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
+
+  function initFirebase(){
+    if(!firebase.apps.length) firebase.initializeApp(FB_CFG);
+    sohbetRef=firebase.database().ref('sohbet/mesajlar');
+  }
+
+  function initSohbet(slug, isim){
+    SLUG=slug; ISIM=isim;
+    var ls=localStorage.getItem('sohbet_okunan_'+slug);
+    if(ls) okunanZaman=parseInt(ls)||0;
+    initFirebase();
+    firebase.database().ref('sohbet/durum').on('value',function(snap){
+      var acik=snap.val()!=='kapali';
+      var inp=document.getElementById('sohbet-input');
+      var btn=document.getElementById('sohbet-gonder');
+      var notice=document.getElementById('sohbet-kapali-notice');
+      if(inp){inp.disabled=!acik; inp.placeholder=acik?'Mesajını yaz...':'Sohbet kapalı';}
+      if(btn) btn.disabled=!acik;
+      if(notice) notice.style.display=acik?'none':'block';
+    });
+    sohbetRef.limitToLast(50).on('value',function(snap){
+      var liste=[];
+      snap.forEach(function(c){liste.push(Object.assign({_id:c.key},c.val()));});
+      renderMesajlar(liste);
+      if(!panelAcik){
+        var yeni=liste.filter(function(m){return (m.zaman||0)>okunanZaman&&m.kimden!==SLUG;}).length;
+        var badge=document.getElementById('sohbet-badge');
+        if(yeni>0){badge.textContent=yeni>9?'9+':yeni; badge.style.display='block';}
+        else{badge.style.display='none';}
+      }
+    });
+  }
+
+  function renderMesajlar(liste){
+    var el=document.getElementById('sohbet-liste'); if(!el) return;
+    if(!liste.length){el.innerHTML='<div class="sohbet-bos">Henüz mesaj yok. İlk mesajı sen at! 👋</div>';return;}
+    var oncekiKimden=null;
+    el.innerHTML=liste.map(function(m){
+      var ben=m.kimden===SLUG;
+      var saat=m.zaman?new Date(m.zaman).toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'}):'';
+      var isimHtml=(!ben&&m.kimden!==oncekiKimden)?'<div class="sohbet-isim">'+esc(m.isim||m.kimden)+'</div>':'';
+      oncekiKimden=m.kimden;
+      var resimSrc=m.resimBase64||m.resimUrl||'';
+      var balon=resimSrc?'<img src="'+resimSrc+'" style="max-width:200px;max-height:200px;border-radius:10px;display:block;cursor:pointer" onclick="sohbetResimAc(this)" loading="lazy">'+(m.metin?'<span style="display:block;margin-top:4px">'+esc(m.metin)+'</span>':''):esc(m.metin);
+      return '<div class="sohbet-mesaj '+(ben?'ben':'diger')+'">'+isimHtml+'<div class="sohbet-balon">'+balon+'</div><div class="sohbet-zaman">'+saat+'</div></div>';
+    }).join('');
+    el.scrollTop=el.scrollHeight;
+    if(panelAcik){okunanZaman=Date.now();localStorage.setItem('sohbet_okunan_'+SLUG,okunanZaman);document.getElementById('sohbet-badge').style.display='none';}
+  }
+
+  window.sohbetToggle=function(){
+    panelAcik=!panelAcik;
+    document.getElementById('sohbet-panel').classList.toggle('acik',panelAcik);
+    if(panelAcik){
+      okunanZaman=Date.now(); localStorage.setItem('sohbet_okunan_'+SLUG,okunanZaman);
+      document.getElementById('sohbet-badge').style.display='none';
+      var l=document.getElementById('sohbet-liste');
+      setTimeout(function(){l.scrollTop=l.scrollHeight;},60);
+      setTimeout(function(){var i=document.getElementById('sohbet-input');if(i)i.focus();},80);
+    }
+  };
+  document.getElementById('sohbet-btn').onclick=window.sohbetToggle;
+
+  window.sohbetGonder=function(){
+    if(!sohbetRef) return;
+    var inp=document.getElementById('sohbet-input');
+    var metin=(inp.value||'').trim(); if(!metin) return;
+    inp.value=''; inp.style.height='';
+    var btn=document.getElementById('sohbet-gonder'); btn.disabled=true;
+    sohbetRef.push({kimden:SLUG,isim:ISIM,metin:metin,zaman:firebase.database.ServerValue.TIMESTAMP})
+      .then(function(){btn.disabled=false;})
+      .catch(function(e){console.error('Mesaj gönderilemedi:',e);btn.disabled=false;});
+  };
+
+  function resimYukle(file){
+    if(!file||!sohbetRef) return;
+    var rb=document.getElementById('sohbet-resim-btn'), gb=document.getElementById('sohbet-gonder'), fi=document.getElementById('sohbet-resim-input');
+    if(rb){rb.disabled=true;rb.textContent='⏳';} if(gb) gb.disabled=true;
+    var reader=new FileReader();
+    reader.onload=function(ev){
+      var img=new Image();
+      img.onload=function(){
+        var MAX=800,Q=0.65,w=img.width,h=img.height;
+        if(w>MAX){h=Math.round(h*MAX/w);w=MAX;} if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}
+        var canvas=document.createElement('canvas'); canvas.width=w; canvas.height=h;
+        canvas.getContext('2d').drawImage(img,0,0,w,h);
+        canvas.toBlob(function(blob){
+          var r2=new FileReader();
+          r2.onload=function(ev2){
+            sohbetRef.push({kimden:SLUG,isim:ISIM,metin:'',resimBase64:ev2.target.result,zaman:firebase.database.ServerValue.TIMESTAMP})
+              .then(function(){if(rb){rb.disabled=false;rb.textContent='📎';}if(gb)gb.disabled=false;if(fi)fi.value='';})
+              .catch(function(err){console.error('Resim gönderilemedi:',err);if(rb){rb.disabled=false;rb.textContent='📎';}if(gb)gb.disabled=false;if(fi)fi.value='';});
+          };
+          r2.readAsDataURL(blob);
+        },'image/jpeg',Q);
+      };
+      img.src=ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  document.getElementById('sohbet-resim-input').addEventListener('change',function(e){var f=e.target.files&&e.target.files[0];if(f)resimYukle(f);});
+  document.addEventListener('keydown',function(e){if(e.target&&e.target.id==='sohbet-input'&&e.key==='Enter'&&!e.shiftKey){e.preventDefault();window.sohbetGonder();}});
+  document.addEventListener('input',function(e){if(e.target&&e.target.id==='sohbet-input'){e.target.style.height='';e.target.style.height=Math.min(e.target.scrollHeight,80)+'px';}});
+
+  /* expose so loadStudent() can call it after getting name */
+  window._initSohbet = initSohbet;
+})();
+</script>
+
+<script>
+window.sohbetResimAc=function(img){
+  var lb=document.getElementById('sohbet-lightbox'),lbImg=document.getElementById('sohbet-lightbox-img'),lbIndir=document.getElementById('sohbet-lightbox-indir');
+  lbImg.src=img.src; lbIndir.href=img.src; lb.style.display='flex';
+};
+window.sohbetLightboxKapat=function(){
+  var lb=document.getElementById('sohbet-lightbox'); lb.style.display='none';
+  document.getElementById('sohbet-lightbox-img').src='';
+};
+document.addEventListener('keydown',function(e){if(e.key==='Escape')sohbetLightboxKapat();});
 </script>
 </body>
 </html>
