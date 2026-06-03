@@ -1596,6 +1596,15 @@ setInterval(tick,1000);
     /* özel kanal */
     refO=firebase.database().ref('ozel_sohbet/'+SLUG+'/mesajlar');
     window._sc_ref=refO; /* senaryo bildir → özel kanala gider */
+
+    /* ── PRESENCE (online/offline) ── */
+    var presRef = firebase.database().ref('online/'+SLUG);
+    firebase.database().ref('.info/connected').on('value',function(snap){
+      if(snap.val()){
+        presRef.onDisconnect().update({online:false, lastSeen:firebase.database.ServerValue.TIMESTAMP});
+        presRef.update({online:true, isim:ISIM, lastSeen:firebase.database.ServerValue.TIMESTAMP});
+      }
+    });
     refO.limitToLast(50).on('value',function(snap){
       var l=[];snap.forEach(function(c){l.push(Object.assign({_id:c.key},c.val()));});
       listO=l;
