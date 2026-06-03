@@ -1070,7 +1070,11 @@ const STUDY_RESOURCES = [
 
 function ytEmbed(url){
   var m=url.match(/(?:youtu\.be\/|[?&]v=)([A-Za-z0-9_-]{11})/);
-  return m?'https://www.youtube.com/embed/'+m[1]+'?rel=0&autoplay=1':'';
+  return m?'https://www.youtube.com/embed/'+m[1]+'?rel=0':'';
+}
+function ytUrl(url){
+  var m=url.match(/(?:youtu\.be\/|[?&]v=)([A-Za-z0-9_-]{11})/);
+  return m?'https://www.youtube.com/watch?v='+m[1]:url;
 }
 
 var activeStudyId=null;
@@ -1110,7 +1114,13 @@ window.studyOpen=function(id){
   if(!body) return;
   var embed=ytEmbed(item.url);
   if(embed){
-    body.innerHTML='<iframe src="'+embed+'" allowfullscreen allow="autoplay;encrypted-media;picture-in-picture"></iframe>';
+    var watchUrl=ytUrl(item.url);
+    body.innerHTML=
+      '<iframe src="'+embed+'" allowfullscreen allow="encrypted-media;picture-in-picture"></iframe>'+
+      '<div style="padding:10px 14px;background:#f8faff;border-top:1px solid #f1f5f9;display:flex;align-items:center;gap:8px;justify-content:space-between">'+
+        '<span style="font-size:.74rem;color:#64748b;font-weight:600">Video embed devre dışıysa →</span>'+
+        '<a href="'+watchUrl+'" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;background:#dc2626;color:#fff;padding:7px 14px;border-radius:10px;text-decoration:none;font-size:.8rem;font-weight:800">▶ YouTube\'da İzle</a>'+
+      '</div>';
   } else if(item.url.match(/\.pdf$/i)||item.tur==='pdf'||item.url.match(/\.docx?$/i)){
     if(item.url.match(/\.docx?$/i)){
       body.innerHTML='<div class="study-placeholder"><div class="study-placeholder-icon">📑</div><div class="study-placeholder-text">'+safe(item.baslik)+'<br><span style="font-size:.8rem;color:#94a3b8">Word dosyası tarayıcıda önizlenemiyor</span></div><a href="'+item.url+'" target="_blank" rel="noreferrer" style="background:linear-gradient(90deg,#2563eb,#1d4ed8);color:#fff;padding:10px 20px;border-radius:12px;text-decoration:none;font-size:.88rem;font-weight:800">⬇ İndir / Aç ↗</a></div>';
