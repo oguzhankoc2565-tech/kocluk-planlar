@@ -1231,7 +1231,7 @@ setInterval(tick,1000);
 
     /* özel kanal */
     refO=firebase.database().ref('ozel_sohbet/'+SLUG+'/mesajlar');
-    window._sc_ref=refG; /* senaryo bildir için genel varsayılan */
+    window._sc_ref=refO; /* senaryo bildir → özel kanala gider */
     refO.limitToLast(50).on('value',function(snap){
       var l=[];snap.forEach(function(c){l.push(Object.assign({_id:c.key},c.val()));});
       listO=l;
