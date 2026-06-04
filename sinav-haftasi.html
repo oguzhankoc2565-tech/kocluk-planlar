@@ -628,7 +628,7 @@
    Yeni özellik ekleyince bu numarayı değiştir (ör: tarih + sıra).
    Öğrencilerin tarayıcısı 5 dk içinde güncelleme bildirimi görür.
 ──────────────────────────────────────────────────────────────── */
-const PAGE_VERSION = '2026-06-04-v7';
+const PAGE_VERSION = '2026-06-04-v9';
 
 /* ─── DATA ─── */
 const API_URL = 'https://script.google.com/macros/s/AKfycbyUvFShqvwvwOlJmVSY8TQFmYoXCqcfu4JFrK3KtzIVMHN9YctZmRpyrfK5AydUNcPd/exec';
@@ -1042,7 +1042,16 @@ const SIMULATIONS = [
   {id:'sim3',em:'⚡',baslik:'Elektrik Devresi — PhET',aciklama:'Devre kur · Direnç değiştir · Ampul parlaklığını izle',url:'https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#ede9fe',tagText:'#7c3aed'},
   {id:'sim4',em:'⚡',baslik:'Ohm Yasası — PhET',aciklama:'V = I × R · Gerilim, akım, direnç ilişkisi',url:'https://phet.colorado.edu/sims/html/ohms-law/latest/ohms-law_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#fef3c7',tagText:'#d97706'},
   {id:'sim5',em:'🌿',baslik:'Doğal Seçilim — PhET',aciklama:'Biyoçeşitlilik · Evrim · Nesil korunması',url:'https://phet.colorado.edu/sims/html/natural-selection/latest/natural-selection_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#d1fae5',tagText:'#059669'},
-  {id:'sim6',em:'💧',baslik:'Basınç Altında — PhET',aciklama:'Sıvı basıncı · Maddenin ayırt edici özellikleri',url:'https://phet.colorado.edu/sims/html/under-pressure/latest/under-pressure_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#cffafe',tagText:'#0891b2'}
+  {id:'sim6',em:'💧',baslik:'Basınç Altında — PhET',aciklama:'Sıvı basıncı · Maddenin ayırt edici özellikleri',url:'https://phet.colorado.edu/sims/html/under-pressure/latest/under-pressure_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#cffafe',tagText:'#0891b2'},
+  {id:'sim7',em:'🪞',baslik:'Aynalar Simülasyonu',aciklama:'Görüntü özellikleri · Düzlem & çukur ayna deneyleri',url:'https://dnzhoca.com/6-sinif-aynalar-deneyler-simulasyonlar/6-sinif-fen-bilimleri-aynalar-ve-goruntu-ozellikleri-simulasyonu/',tip:'lab',tag:'Fen · Türkçe',tagRenk:'#d1fae5',tagText:'#059669'},
+  {id:'sim8',em:'💡',baslik:'Işığın Yansıması Lab.',aciklama:'Yansıma açısı · İnteraktif ışın deneyi',url:'https://dnzhoca.com/6-sinif-isigin-yansimasi-deneyler-simulasyonlar/6-sinif-isigin-yansimasi-interaktif-etkinlik/',tip:'lab',tag:'Fen · Türkçe',tagRenk:'#d1fae5',tagText:'#059669'},
+  {id:'sim9',em:'🌈',baslik:'Işığın Soğurulması Lab.',aciklama:'Renkler ve ışık soğurulması · Filtreleme deneyi',url:'https://dnzhoca.com/6-sinif-isigin-sogurulmasi-deneyler-simulasyonlar/isigin-sogurulmasi-ve-renkler-laboratuvari/',tip:'lab',tag:'Fen · Türkçe',tagRenk:'#d1fae5',tagText:'#059669'},
+  {id:'sim10',em:'⚖️',baslik:'Bileşke Kuvvet Lab.',aciklama:'Kuvvetleri topla · Denge & bileşke hesaplama',url:'https://dnzhoca.com/6-sinif-bileske-kuvvet-deneyler-simulasyonlar/6-sinif-bileske-kuvvet-hesaplama-laboratuvari/',tip:'lab',tag:'Fen · Türkçe',tagRenk:'#d1fae5',tagText:'#059669'},
+  {id:'sim11',em:'🏃',baslik:'Hız & Sürat Lab.',aciklama:'Sabit hızlı hareket · Hız-sürat hesaplama',url:'https://dnzhoca.com/6-sinif-sabit-suratli-hareket-deneyler-simulasyonlar/6-sinif-surat-ve-hiz-hesaplama-laboratuvari/',tip:'lab',tag:'Fen · Türkçe',tagRenk:'#d1fae5',tagText:'#059669'},
+  {id:'sim12',em:'🌍',baslik:'Güneş Sistemi Lab.',aciklama:'Gezegenleri keşfet · Güneş sistemi özellikleri',url:'https://dnzhoca.com/6-sinif-gunes-sistemi-deneyler-simulasyonlar/gunes-sistemi-laboratuvari-gezegenleri-kesfediyoruz/',tip:'lab',tag:'Fen · Türkçe',tagRenk:'#d1fae5',tagText:'#059669'},
+  {id:'sim13',em:'🌑',baslik:'Güneş & Ay Tutulmaları',aciklama:'Gökyüzündeki gölge oyunları · Tutulma mekanizması',url:'https://dnzhoca.com/6-sinif-gunes-ve-ay-tutulmalari-deneyler-simulasyonlar/gunes-ve-ay-tutulmalari-gokyuzundeki-golge-oyunlari/',tip:'lab',tag:'Fen · Türkçe',tagRenk:'#d1fae5',tagText:'#059669'},
+  {id:'sim14',em:'🔦',baslik:'İletken Avcısı & Ampul',aciklama:'İletken/yalıtkan test · Ampul parlaklığı deneyi',url:'https://dnzhoca.com/6-sinif-elektrigin-iletimi-deneyler-simulasyonlar/6-sinif-iletken-avcisi-ve-ampul-parlakligi-simulasyonu/',tip:'lab',tag:'Fen · Türkçe',tagRenk:'#d1fae5',tagText:'#059669'},
+  {id:'sim15',em:'🔌',baslik:'Elektriksel Direnç Lab.',aciklama:'Sanal elektrik lab · Direnç ve akım deneyleri',url:'https://dnzhoca.com/6-sinif-elektriksel-direnc-deneyler-simulasyonlar/6-sinif-sanal-elektrik-laboratuvari-interaktif-simulasyon/',tip:'lab',tag:'Fen · Türkçe',tagRenk:'#d1fae5',tagText:'#059669'}
 ];
 
 function ytEmbed(url){
