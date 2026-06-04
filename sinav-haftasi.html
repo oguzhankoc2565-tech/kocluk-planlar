@@ -339,6 +339,18 @@
     .quiz-restart-btn { background:linear-gradient(90deg,#059669,#10b981); color:#fff; border:none; border-radius:12px; padding:11px 24px; font-size:.9rem; font-weight:800; cursor:pointer; font-family:inherit; }
     .quiz-restart-btn:hover { opacity:.88; }
 
+    /* ── SİMÜLASYONLAR ── */
+    .sim-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px; }
+    .sim-card { background:#fff; border-radius:var(--r); box-shadow:var(--shadow); overflow:hidden; cursor:pointer; transition:transform .15s,box-shadow .15s; border:2px solid #d1fae5; }
+    .sim-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); border-color:#10b981; }
+    .sim-card-hd { padding:16px 18px; color:#fff; display:flex; align-items:center; gap:12px; }
+    .sim-card-em { font-size:2rem; flex-shrink:0; }
+    .sim-card-title { font-size:.95rem; font-weight:900; line-height:1.3; }
+    .sim-card-sub { font-size:.73rem; opacity:.88; margin-top:3px; line-height:1.4; }
+    .sim-card-bd { padding:12px 18px; display:flex; align-items:center; justify-content:space-between; }
+    .sim-card-tag { font-size:.7rem; font-weight:800; background:#f0fdf4; color:#059669; border:1.5px solid #a7f3d0; padding:3px 10px; border-radius:999px; }
+    .sim-card-open { font-size:.78rem; font-weight:800; color:#059669; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 720px) {
       .two, .three { grid-template-columns: 1fr; }
@@ -452,8 +464,12 @@
     </div>
   </div>
 
-  <!-- 2c. Mini Quiz -->
-  <div class="sec"><div class="sec-ic" style="background:#d1fae5">🎯</div><div class="sec-t">Mini Soru Bankası</div><div class="sec-s">6 soru · anında feedback</div></div>
+  <!-- 2c. İnteraktif Simülasyonlar -->
+  <div class="sec"><div class="sec-ic" style="background:#d1fae5">🔬</div><div class="sec-t">İnteraktif Simülasyonlar</div><div class="sec-s">Oyna · Keşfet · Öğren</div></div>
+  <div class="sim-grid" id="sim-grid"></div>
+
+  <!-- 2d. Mini Quiz -->
+  <div class="sec"><div class="sec-ic" style="background:#d1fae5">🎯</div><div class="sec-t">Mini Soru Bankası</div><div class="sec-s">20 soru · anında feedback</div></div>
   <div class="quiz-card" id="quiz-card"></div>
 
   <!-- 3. Not Hesaplayıcı -->
@@ -491,17 +507,9 @@
     <span class="nk-note" id="nk-sheets-msg">💾 Tarayıcıda otomatik · başka cihazda görünmez</span>
   </div>
 
-  <!-- 4. Kaynaklar + Checklist yan yana -->
-  <div class="two" style="margin-top:28px;align-items:start">
-    <div>
-      <div class="sec" style="margin-top:0"><div class="sec-ic" style="background:#fef3c7">📁</div><div class="sec-t">Sınav Kaynakları</div></div>
-      <div class="res-grid" id="res-grid"></div>
-    </div>
-    <div>
-      <div class="sec" style="margin-top:0"><div class="sec-ic" style="background:#ede9fe">✅</div><div class="sec-t">Günlük Kontrol</div></div>
-      <div class="cl-card" id="cl-card"></div>
-    </div>
-  </div>
+  <!-- 4. Günlük Kontrol -->
+  <div class="sec"><div class="sec-ic" style="background:#ede9fe">✅</div><div class="sec-t">Günlük Kontrol</div><div class="sec-s">Bugün ne yaptın?</div></div>
+  <div class="cl-card" id="cl-card"></div>
 
   <!-- 5. Koç notu + Motivasyon -->
   <div class="two" style="margin-top:28px;align-items:stretch">
@@ -594,7 +602,7 @@
    Yeni özellik ekleyince bu numarayı değiştir (ör: tarih + sıra).
    Öğrencilerin tarayıcısı 5 dk içinde güncelleme bildirimi görür.
 ──────────────────────────────────────────────────────────────── */
-const PAGE_VERSION = '2026-06-04-v3';
+const PAGE_VERSION = '2026-06-04-v4';
 
 /* ─── DATA ─── */
 const API_URL = 'https://script.google.com/macros/s/AKfycbyUvFShqvwvwOlJmVSY8TQFmYoXCqcfu4JFrK3KtzIVMHN9YctZmRpyrfK5AydUNcPd/exec';
@@ -673,21 +681,6 @@ const SENARYOLAR = {
   }
 };
 
-const RESOURCES = [
-  {label:'Zamirler Testi 1',file:'Zamirler-Konu-Testi-1.pdf',kod:'tur',em:'📄'},
-  {label:'Zamirler Testi 2',file:'Zamirler-Konu-Testi-2.pdf',kod:'tur',em:'📄'},
-  {label:'Zamirler Testi 3',file:'Zamirler-Konu-Testi-3.pdf',kod:'tur',em:'📄'},
-  {label:'ZAMİRLER -1',file:'ZAMİRLER -1.pdf',kod:'tur',em:'📘'},
-  {label:'İsimler Testi 2',file:'Isimler-Konu-Testi-2.pdf · 1 sürümü.pdf',kod:'tur',em:'📄'},
-  {label:'İsimler Testi 3',file:'Isimler-Konu-Testi-3.pdf · 1 sürümü.pdf',kod:'tur',em:'📄'},
-  {label:'Ses Bilgisi Testi',file:'6. Sınıf Ses Bilgisi Testi-1 (Turkcen Serisi).pdf',kod:'tur',em:'🎵'},
-  {label:'Sıfatlar Fasikülü',file:'6.Sınıf Sıfatlar Fasikülü.pdf',kod:'tur',em:'📗'},
-  {label:'6. Sınıf İsimler',file:'6 İSİMLER.docx',kod:'tur',em:'📑'},
-  {label:'Fen 2. Dönem Yazılı',file:'6_Fen_2.Donem_2. Yazili (1).pdf',kod:'fen',em:'🔬'},
-  {label:'Maddenin Ayırt Edici Özellikleri',file:'6. SINIF 5. ÜNİTE MADDENİN AYIRT EDİCİ ÖZELLİKLERİ.pdf',kod:'fen',em:'📑'},
-  {label:'Elektriğin İletimi ve Direnç',file:'6. SINIF 6. ÜNİTE ELEKTRİĞİN İLETİMİ VE DİRENÇ KONU ANLATIMI.pdf',kod:'fen',em:'📑'},
-  {label:'Sürdürülebilir Yaşam ve Etkileşim',file:'6. SINIF 7. ÜNİTE SÜRDÜRÜLEBİLİR YAŞAM VE ETKİLEŞİM KONU ANLATIMI.pdf',kod:'fen',em:'📑'},
-];
 
 /* Not hesaplayıcı */
 const NK_DERSLER = [
@@ -995,162 +988,32 @@ function renderTodaySection(){
   }
 }
 
-/* ── ÇALIŞMA MATERYALLERİ ── */
+/* ── ÇALIŞMA MATERYALLERİ (Fen önce, sonra Türkçe) ── */
 const STUDY_RESOURCES = [
-  {
-    id:'sm3', tur:'video', ders:'tur', em:'🎬',
-    baslik:'Söz Sanatları — Konu Anlatımı',
-    aciklama:'T.O.6.20 · T.O.6.25 — Senaryo konusu',
-    sure:'Video', url:'',
-    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
-  },
-  {
-    id:'sm4', tur:'video', ders:'tur', em:'🎬',
-    baslik:'Yazım Kuralları ve Noktalama',
-    aciklama:'T.Y.6.21 — Senaryo konusu',
-    sure:'Video', url:'',
-    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
-  },
-  {
-    id:'sm5', tur:'pdf', ders:'tur', em:'📄',
-    baslik:'Zamirler Konu Testi 1',
-    aciklama:'PDF çalışma soruları',
-    sure:'PDF', url:'sinav-haftasi/Zamirler-Konu-Testi-1.pdf',
-    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
-  },
-  {
-    id:'sm5b', tur:'pdf', ders:'tur', em:'📄',
-    baslik:'Zamirler Konu Testi 2',
-    aciklama:'PDF çalışma soruları',
-    sure:'PDF', url:'sinav-haftasi/Zamirler-Konu-Testi-2.pdf',
-    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
-  },
-  {
-    id:'sm5c', tur:'pdf', ders:'tur', em:'📄',
-    baslik:'Zamirler Konu Testi 3',
-    aciklama:'PDF çalışma soruları',
-    sure:'PDF', url:'sinav-haftasi/Zamirler-Konu-Testi-3.pdf',
-    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
-  },
-  {
-    id:'sm5d', tur:'pdf', ders:'tur', em:'📘',
-    baslik:'ZAMİRLER -1',
-    aciklama:'Zamirler çalışma dökümanı',
-    sure:'PDF', url:'sinav-haftasi/ZAMİRLER -1.pdf',
-    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
-  },
-  {
-    id:'sm5e', tur:'pdf', ders:'tur', em:'📄',
-    baslik:'İsimler Konu Testi 2',
-    aciklama:'PDF çalışma soruları',
-    sure:'PDF', url:'sinav-haftasi/Isimler-Konu-Testi-2.pdf · 1 sürümü.pdf',
-    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
-  },
-  {
-    id:'sm5f', tur:'pdf', ders:'tur', em:'📄',
-    baslik:'İsimler Konu Testi 3',
-    aciklama:'PDF çalışma soruları',
-    sure:'PDF', url:'sinav-haftasi/Isimler-Konu-Testi-3.pdf · 1 sürümü.pdf',
-    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
-  },
-  {
-    id:'sm5g', tur:'pdf', ders:'tur', em:'🎵',
-    baslik:'Ses Bilgisi Testi',
-    aciklama:'6. Sınıf Ses Bilgisi',
-    sure:'PDF', url:'sinav-haftasi/6. Sınıf Ses Bilgisi Testi-1 (Turkcen Serisi).pdf',
-    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
-  },
-  {
-    id:'sm5h', tur:'pdf', ders:'tur', em:'📗',
-    baslik:'Sıfatlar Fasikülü',
-    aciklama:'6. Sınıf Sıfatlar',
-    sure:'PDF', url:'sinav-haftasi/6.Sınıf Sıfatlar Fasikülü.pdf',
-    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
-  },
-  {
-    id:'sm5i', tur:'docx', ders:'tur', em:'📑',
-    baslik:'6. Sınıf İsimler',
-    aciklama:'Word dökümanı',
-    sure:'Word', url:'sinav-haftasi/6 İSİMLER.docx',
-    tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
-  },
-  {
-    id:'fen_v1', tur:'video', ders:'fen', em:'🎬',
-    baslik:'Tonguç — Fen Yazılısında Çıkar!',
-    aciklama:'Sınava özel genel tekrar videosu',
-    sure:'Video', url:'https://www.youtube.com/watch?v=5xSHrpgofRA',
-    tag:'Fen', tagRenk:'#d1fae5', tagText:'#059669'
-  },
-  {
-    id:'fen_v2', tur:'video', ders:'fen', em:'🎬',
-    baslik:'Yoğunluk, Kütle ve Hacim',
-    aciklama:'Senaryo konusu — Maddenin Ayırt Edici Özellikleri',
-    sure:'Video', url:'https://www.youtube.com/watch?v=e5zgjfX-EG0&t=313s',
-    tag:'Fen', tagRenk:'#d1fae5', tagText:'#059669'
-  },
-  {
-    id:'fen_v3', tur:'video', ders:'fen', em:'🎬',
-    baslik:'Elektriğin İletimi — İletken ve Yalıtkan',
-    aciklama:'Senaryo konusu — Elektriğin İletimi ve Direnç',
-    sure:'Video', url:'https://www.youtube.com/watch?v=FVZkCBPYDHw&t=7s',
-    tag:'Fen', tagRenk:'#d1fae5', tagText:'#059669'
-  },
-  {
-    id:'fen_v4', tur:'video', ders:'fen', em:'🎬',
-    baslik:'2. Dönem 2. Yazılı — Konu Tekrar',
-    aciklama:'6. Sınıf Fen Bilimleri genel tekrar',
-    sure:'Video', url:'https://www.youtube.com/watch?v=bAxVGzpgqb8',
-    tag:'Fen', tagRenk:'#d1fae5', tagText:'#059669'
-  },
-  {
-    id:'fen_p1', tur:'pdf', ders:'fen', em:'📑',
-    baslik:'Maddenin Ayırt Edici Özellikleri',
-    aciklama:'6. Sınıf 5. Ünite — Konu anlatımı',
-    sure:'PDF', url:'sinav-haftasi/6. SINIF 5. ÜNİTE MADDENİN AYIRT EDİCİ ÖZELLİKLERİ.pdf',
-    tag:'Fen', tagRenk:'#d1fae5', tagText:'#059669'
-  },
-  {
-    id:'fen_p2', tur:'pdf', ders:'fen', em:'📑',
-    baslik:'Elektriğin İletimi ve Direnç',
-    aciklama:'6. Sınıf 6. Ünite — Konu anlatımı',
-    sure:'PDF', url:'sinav-haftasi/6. SINIF 6. ÜNİTE ELEKTRİĞİN İLETİMİ VE DİRENÇ KONU ANLATIMI.pdf',
-    tag:'Fen', tagRenk:'#d1fae5', tagText:'#059669'
-  },
-  {
-    id:'fen_p3', tur:'pdf', ders:'fen', em:'📑',
-    baslik:'Sürdürülebilir Yaşam ve Etkileşim',
-    aciklama:'6. Sınıf 7. Ünite — Konu anlatımı',
-    sure:'PDF', url:'sinav-haftasi/6. SINIF 7. ÜNİTE SÜRDÜRÜLEBİLİR YAŞAM VE ETKİLEŞİM KONU ANLATIMI.pdf',
-    tag:'Fen', tagRenk:'#d1fae5', tagText:'#059669'
-  },
-  {
-    id:'sm6', tur:'pdf', ders:'fen', em:'🔬',
-    baslik:'Fen 2. Dönem 2. Yazılı',
-    aciklama:'Geçmiş sınav soruları',
-    sure:'PDF', url:'sinav-haftasi/6_Fen_2.Donem_2. Yazili (1).pdf',
-    tag:'Fen', tagRenk:'#d1fae5', tagText:'#059669'
-  },
-  {
-    id:'dnz1', tur:'link', ders:'fen', em:'🧪',
-    baslik:'Yoğunluk Simülasyonu — Türkçe (dnzhoca)',
-    aciklama:'Cisimleri sıvıya at, yüzer/batar dene · d=m/V formül hesabı',
-    sure:'Simülasyon', url:'https://dnzhoca.com/6-sinif-yogunluk-deneyler-simulasyonlar/6-sinif-yogunluk-simulasyonu-etkilesimli-sanal-deney/',
-    tag:'Fen · Simülasyon', tagRenk:'#d1fae5', tagText:'#059669'
-  },
-  {
-    id:'phet1', tur:'phet', ders:'fen', em:'🧪',
-    baslik:'Yoğunluk — İnteraktif Simülasyon',
-    aciklama:'Maddeleri sıvıya at, yüzer mi batar mı izle · PhET Colorado',
-    sure:'Simülasyon', url:'https://phet.colorado.edu/sims/html/density/latest/density_tr.html',
-    tag:'Fen · Simülasyon', tagRenk:'#d1fae5', tagText:'#059669'
-  },
-  {
-    id:'phet2', tur:'phet', ders:'fen', em:'⚡',
-    baslik:'Elektrik Devresi — İnteraktif Simülasyon',
-    aciklama:'Devre kur, direnç değiştir, ampul parlaklığını izle · PhET Colorado',
-    sure:'Simülasyon', url:'https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_tr.html',
-    tag:'Fen · Simülasyon', tagRenk:'#d1fae5', tagText:'#059669'
-  }
+  {id:'fen_v1',tur:'video',ders:'fen',em:'🎬',baslik:'Tonguç — Fen Yazılısında Çıkar!',aciklama:'Sınava özel genel tekrar videosu',sure:'Video',url:'https://www.youtube.com/watch?v=5xSHrpgofRA',tag:'Fen',tagRenk:'#d1fae5',tagText:'#059669'},
+  {id:'fen_v2',tur:'video',ders:'fen',em:'🎬',baslik:'Yoğunluk, Kütle ve Hacim',aciklama:'Senaryo konusu — Maddenin Ayırt Edici Özellikleri',sure:'Video',url:'https://www.youtube.com/watch?v=e5zgjfX-EG0&t=313s',tag:'Fen',tagRenk:'#d1fae5',tagText:'#059669'},
+  {id:'fen_v3',tur:'video',ders:'fen',em:'🎬',baslik:'Elektriğin İletimi — İletken ve Yalıtkan',aciklama:'Senaryo konusu — Elektriğin İletimi ve Direnç',sure:'Video',url:'https://www.youtube.com/watch?v=FVZkCBPYDHw&t=7s',tag:'Fen',tagRenk:'#d1fae5',tagText:'#059669'},
+  {id:'fen_v4',tur:'video',ders:'fen',em:'🎬',baslik:'2. Dönem 2. Yazılı — Konu Tekrar',aciklama:'6. Sınıf Fen Bilimleri genel tekrar',sure:'Video',url:'https://www.youtube.com/watch?v=bAxVGzpgqb8',tag:'Fen',tagRenk:'#d1fae5',tagText:'#059669'},
+  {id:'fen_p1',tur:'pdf',ders:'fen',em:'📑',baslik:'Maddenin Ayırt Edici Özellikleri',aciklama:'6. Sınıf 5. Ünite — Konu anlatımı',sure:'PDF',url:'sinav-haftasi/6. SINIF 5. ÜNİTE MADDENİN AYIRT EDİCİ ÖZELLİKLERİ.pdf',tag:'Fen',tagRenk:'#d1fae5',tagText:'#059669'},
+  {id:'fen_p2',tur:'pdf',ders:'fen',em:'📑',baslik:'Elektriğin İletimi ve Direnç',aciklama:'6. Sınıf 6. Ünite — Konu anlatımı',sure:'PDF',url:'sinav-haftasi/6. SINIF 6. ÜNİTE ELEKTRİĞİN İLETİMİ VE DİRENÇ KONU ANLATIMI.pdf',tag:'Fen',tagRenk:'#d1fae5',tagText:'#059669'},
+  {id:'fen_p3',tur:'pdf',ders:'fen',em:'📑',baslik:'Sürdürülebilir Yaşam ve Etkileşim',aciklama:'6. Sınıf 7. Ünite — Konu anlatımı',sure:'PDF',url:'sinav-haftasi/6. SINIF 7. ÜNİTE SÜRDÜRÜLEBİLİR YAŞAM VE ETKİLEŞİM KONU ANLATIMI.pdf',tag:'Fen',tagRenk:'#d1fae5',tagText:'#059669'},
+  {id:'sm6',tur:'pdf',ders:'fen',em:'🔬',baslik:'Fen 2. Dönem 2. Yazılı',aciklama:'Geçmiş sınav soruları',sure:'PDF',url:'sinav-haftasi/6_Fen_2.Donem_2. Yazili (1).pdf',tag:'Fen',tagRenk:'#d1fae5',tagText:'#059669'},
+  {id:'sm5',tur:'pdf',ders:'tur',em:'📄',baslik:'Zamirler Konu Testi 1',aciklama:'PDF çalışma soruları',sure:'PDF',url:'sinav-haftasi/Zamirler-Konu-Testi-1.pdf',tag:'Türkçe',tagRenk:'#fef3c7',tagText:'#d97706'},
+  {id:'sm5b',tur:'pdf',ders:'tur',em:'📄',baslik:'Zamirler Konu Testi 2',aciklama:'PDF çalışma soruları',sure:'PDF',url:'sinav-haftasi/Zamirler-Konu-Testi-2.pdf',tag:'Türkçe',tagRenk:'#fef3c7',tagText:'#d97706'},
+  {id:'sm5c',tur:'pdf',ders:'tur',em:'📄',baslik:'Zamirler Konu Testi 3',aciklama:'PDF çalışma soruları',sure:'PDF',url:'sinav-haftasi/Zamirler-Konu-Testi-3.pdf',tag:'Türkçe',tagRenk:'#fef3c7',tagText:'#d97706'},
+  {id:'sm5d',tur:'pdf',ders:'tur',em:'📘',baslik:'ZAMİRLER -1',aciklama:'Zamirler çalışma dökümanı',sure:'PDF',url:'sinav-haftasi/ZAMİRLER -1.pdf',tag:'Türkçe',tagRenk:'#fef3c7',tagText:'#d97706'},
+  {id:'sm5e',tur:'pdf',ders:'tur',em:'📄',baslik:'İsimler Konu Testi 2',aciklama:'PDF çalışma soruları',sure:'PDF',url:'sinav-haftasi/Isimler-Konu-Testi-2.pdf · 1 sürümü.pdf',tag:'Türkçe',tagRenk:'#fef3c7',tagText:'#d97706'},
+  {id:'sm5f',tur:'pdf',ders:'tur',em:'📄',baslik:'İsimler Konu Testi 3',aciklama:'PDF çalışma soruları',sure:'PDF',url:'sinav-haftasi/Isimler-Konu-Testi-3.pdf · 1 sürümü.pdf',tag:'Türkçe',tagRenk:'#fef3c7',tagText:'#d97706'},
+  {id:'sm5g',tur:'pdf',ders:'tur',em:'🎵',baslik:'Ses Bilgisi Testi',aciklama:'6. Sınıf Ses Bilgisi',sure:'PDF',url:'sinav-haftasi/6. Sınıf Ses Bilgisi Testi-1 (Turkcen Serisi).pdf',tag:'Türkçe',tagRenk:'#fef3c7',tagText:'#d97706'},
+  {id:'sm5h',tur:'pdf',ders:'tur',em:'📗',baslik:'Sıfatlar Fasikülü',aciklama:'6. Sınıf Sıfatlar',sure:'PDF',url:'sinav-haftasi/6.Sınıf Sıfatlar Fasikülü.pdf',tag:'Türkçe',tagRenk:'#fef3c7',tagText:'#d97706'},
+  {id:'sm5i',tur:'docx',ders:'tur',em:'📑',baslik:'6. Sınıf İsimler',aciklama:'Word dökümanı',sure:'Word',url:'sinav-haftasi/6 İSİMLER.docx',tag:'Türkçe',tagRenk:'#fef3c7',tagText:'#d97706'}
+];
+
+/* ── SİMÜLASYONLAR ── */
+const SIMULATIONS = [
+  {id:'sim1',em:'🧪',baslik:'Yoğunluk Simülasyonu — Türkçe',aciklama:'Cisimleri sıvıya at · d=m/V hesapla · Yüzer mi batar mı keşfet',url:'https://dnzhoca.com/6-sinif-yogunluk-deneyler-simulasyonlar/6-sinif-yogunluk-simulasyonu-etkilesimli-sanal-deney/',tip:'link',renk:'linear-gradient(135deg,#059669,#10b981)'},
+  {id:'sim2',em:'🔬',baslik:'Yoğunluk — PhET İnteraktif',aciklama:'Sıvı kulesi oluştur · Madde yoğunluklarını karşılaştır · Colorado Üniv.',url:'https://phet.colorado.edu/sims/html/density/latest/density_tr.html',tip:'phet',renk:'linear-gradient(135deg,#0891b2,#0f766e)'},
+  {id:'sim3',em:'⚡',baslik:'Elektrik Devresi — PhET İnteraktif',aciklama:'Devre kur · Direnç değiştir · Ampul parlaklığını izle · Colorado Üniv.',url:'https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_tr.html',tip:'phet',renk:'linear-gradient(135deg,#7c3aed,#6d28d9)'}
 ];
 
 function ytEmbed(url){
@@ -1228,12 +1091,23 @@ window.studyOpen=function(id){
   }
 };
 
-/* KAYNAKLAR */
-function renderResources(){
-  document.getElementById('res-grid').innerHTML=RESOURCES.map(function(r){
-    var c=sc(r.kod);
-    var url='sinav-haftasi/'+encodeURIComponent(r.file);
-    return '<a class="res-card" href="'+url+'" target="_blank" rel="noreferrer"><div class="res-icon" style="background:'+c.bg+'">'+r.em+'</div><div><div class="res-name" style="color:'+c.c+'">'+safe(r.label)+'</div><div class="res-type">'+(r.file.endsWith('.docx')?'Word':'PDF')+'</div></div><div class="res-arrow">↗</div></a>';
+/* SİMÜLASYONLAR */
+function renderSimulations(){
+  var el=document.getElementById('sim-grid'); if(!el) return;
+  el.innerHTML=SIMULATIONS.map(function(s){
+    return '<div class="sim-card" onclick="window.open(\''+s.url+'\',\'_blank\')">'+
+      '<div class="sim-card-hd" style="background:'+s.renk+'">'+
+        '<div class="sim-card-em">'+s.em+'</div>'+
+        '<div>'+
+          '<div class="sim-card-title">'+safe(s.baslik)+'</div>'+
+          '<div class="sim-card-sub">'+safe(s.aciklama)+'</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="sim-card-bd">'+
+        '<span class="sim-card-tag">'+(s.tip==='phet'?'🎓 PhET Colorado':'🇹🇷 Türkçe Simülasyon')+'</span>'+
+        '<span class="sim-card-open">Simülasyonu Aç ↗</span>'+
+      '</div>'+
+    '</div>';
   }).join('');
 }
 
@@ -1630,47 +1504,26 @@ function deviceNoticeKapat(){
 
 /* ── MİNİ QUIZ ── */
 var QUIZ_DATA = [
-  {
-    soru: 'Suyun katı hâli (buz) sıvı suya atıldığında ne olur?',
-    secenekler: ['Batar — yoğunluğu fazladır', 'Yüzer — yoğunluğu daha düşüktür', 'Çözünür ve kaybolur', 'Hiçbir şey olmaz'],
-    dogru: 1,
-    aciklama: '💡 Buzun yoğunluğu ≈ 0.92 g/cm³, sıvı suyun ≈ 1 g/cm³. Buz daha hafif olduğu için yüzer. Bu sayede göllerin yüzeyi donar ama altı sıvı kalır — canlılar hayatta kalır!'
-  },
-  {
-    soru: 'Yoğunluk formülü hangisidir?',
-    secenekler: ['d = m × V', 'd = V ÷ m', 'd = m ÷ V', 'd = m + V'],
-    dogru: 2,
-    aciklama: '💡 Yoğunluk = Kütle / Hacim (d = m/V). Birimi g/cm³ ya da kg/m³ olabilir.'
-  },
-  {
-    soru: 'Aşağıdakilerden hangisi elektriği iletir (iletken maddedir)?',
-    secenekler: ['Plastik kap', 'Tahta çubuk', 'Cam bardak', 'Bakır tel'],
-    dogru: 3,
-    aciklama: '💡 Metaller (bakır, demir, alüminyum, gümüş) serbest elektronları sayesinde elektriği iyi iletir. Plastik, tahta, cam yalıtkandır.'
-  },
-  {
-    soru: 'Elektrik devresinde direnç artarsa ampulün parlaklığı nasıl değişir?',
-    secenekler: ['Artar', 'Azalır', 'Değişmez', 'Önce artar, sonra söner'],
-    dogru: 1,
-    aciklama: '💡 Ohm Yasası: I = V / R. Direnç (R) artarsa akım (I) azalır → ampule gelen enerji düşer → ampul daha az parlar.'
-  },
-  {
-    soru: 'Reostat (ayarlanabilir direnç) devreye eklendiğinde ne işe yarar?',
-    secenekler: [
-      'Devreyi açıp kapatır',
-      'Akımı depolayarak pil gibi çalışır',
-      'Direnci değiştirerek akım şiddetini ve ampul parlaklığını ayarlar',
-      'Sadece kısa devreyi önler'
-    ],
-    dogru: 2,
-    aciklama: '💡 Reostat, tel uzunluğunu değiştirerek direnci artırır/azaltır. Direnç değiştikçe akım ve ampul parlaklığı da değişir.'
-  },
-  {
-    soru: 'Aşağıdakilerden hangisi biyoçeşitliliği tehdit eden bir faktördür?',
-    secenekler: ['Bitkilerin fotosentez yapması', 'Orman yangınları ve habitat kaybı', 'Yağmur yağması', 'Doğal üreme ve çoğalma'],
-    dogru: 1,
-    aciklama: '💡 Habitat kaybı (ormansızlaşma, tarım alanı açma, kentleşme) biyoçeşitliliği en çok tehdit eden faktördür. Orman yangınları da binlerce türün yaşam alanını yok eder.'
-  }
+  {soru:'Suyun katı hâli (buz) sıvı suya atıldığında ne olur?',secenekler:['Batar — yoğunluğu fazladır','Yüzer — yoğunluğu daha düşüktür','Çözünür ve kaybolur','Hiçbir şey olmaz'],dogru:1,aciklama:'💡 Buzun yoğunluğu ≈ 0.92 g/cm³, sıvı suyun ≈ 1 g/cm³. Buz daha hafif olduğu için yüzer. Bu sayede göllerin yüzeyi donar ama altı sıvı kalır — canlılar hayatta kalır!'},
+  {soru:'Yoğunluk formülü hangisidir?',secenekler:['d = m × V','d = V ÷ m','d = m ÷ V','d = m + V'],dogru:2,aciklama:'💡 Yoğunluk = Kütle / Hacim (d = m/V). Birimi g/cm³ ya da kg/m³ olabilir.'},
+  {soru:'Kütlesi 60 g, hacmi 20 cm³ olan bir cismin yoğunluğu kaçtır?',secenekler:['3 g/cm³','1200 g/cm³','0.33 g/cm³','80 g/cm³'],dogru:0,aciklama:'💡 d = m / V = 60 g ÷ 20 cm³ = 3 g/cm³. Formülü kullanmayı unutma!'},
+  {soru:'Yoğunluğu 0.8 g/cm³ olan bir cisim suya (1 g/cm³) atıldığında ne olur?',secenekler:['Batar','Yüzer','Yerinde sabit durur','Eriyerek çözünür'],dogru:1,aciklama:'💡 Cismin yoğunluğu (0.8) < sıvının yoğunluğu (1) olduğu için cisim YÜZER. Madde sıvıdan hafifse yüzer!'},
+  {soru:'Demir mi yoksa tahta mı daha yüksek yoğunluğa sahiptir?',secenekler:['Tahta','İkisi eşittir','Demir','Maddeye bağlıdır'],dogru:2,aciklama:'💡 Demir ≈ 7.87 g/cm³, tahta ≈ 0.5 g/cm³. Bu yüzden demir batar, tahta yüzer.'},
+  {soru:'Aşağıdakilerden hangisi elektriği iletir (iletken maddedir)?',secenekler:['Plastik kap','Tahta çubuk','Cam bardak','Bakır tel'],dogru:3,aciklama:'💡 Metaller (bakır, demir, alüminyum, gümüş) serbest elektronları sayesinde elektriği iyi iletir. Plastik, tahta, cam yalıtkandır.'},
+  {soru:'Hangisi yalıtkan bir malzemedir?',secenekler:['Bakır tel','Demir çivi','Plastik çubuk','Alüminyum folyo'],dogru:2,aciklama:'💡 Plastik, cam, tahta ve kauçuk yalıtkandır — elektrik akımını geçirmez. Metaller ise iletkendir.'},
+  {soru:'Elektrik devresinde direnç artarsa ampulün parlaklığı nasıl değişir?',secenekler:['Artar','Azalır','Değişmez','Önce artar, sonra söner'],dogru:1,aciklama:'💡 Ohm Yasası: I = V / R. Direnç (R) artarsa akım (I) azalır → ampule gelen enerji düşer → ampul daha az parlar.'},
+  {soru:'Elektrik devresinde anahtar (şalter) ne işe yarar?',secenekler:['Gerilimi artırır','Direnci ölçer','Devreyi açar veya kapatır','Akımı depolar'],dogru:2,aciklama:'💡 Anahtar kapalı → akım akar (devre çalışır). Anahtar açık → akım akmaz (devre çalışmaz).'},
+  {soru:'Reostat (ayarlanabilir direnç) devreye eklendiğinde ne işe yarar?',secenekler:['Devreyi açıp kapatır','Akımı depolayarak pil gibi çalışır','Direnci değiştirerek akım şiddetini ve ampul parlaklığını ayarlar','Sadece kısa devreyi önler'],dogru:2,aciklama:'💡 Reostat, tel uzunluğunu değiştirerek direnci artırır/azaltır. Direnç değiştikçe akım ve ampul parlaklığı da değişir.'},
+  {soru:'Aşağıdakilerden hangisi biyoçeşitliliği tehdit eden bir faktördür?',secenekler:['Bitkilerin fotosentez yapması','Orman yangınları ve habitat kaybı','Yağmur yağması','Doğal üreme ve çoğalma'],dogru:1,aciklama:'💡 Habitat kaybı (ormansızlaşma, tarım alanı açma, kentleşme) biyoçeşitliliği en çok tehdit eden faktördür.'},
+  {soru:'Nesli tükenme tehlikesindeki bir türü korumak için en etkili yol nedir?',secenekler:['Avcılığı teşvik etmek','Farklı bir ülkeye göndermek','Doğal yaşam alanını (habitatını) koruma altına almak','Çiftliklerde suni üretim yapmak'],dogru:2,aciklama:'💡 Habitatı korumak en temel çözümdür. Türün doğal ortamı korunursa kendiliğinden çoğalabilir.'},
+  {soru:'Hangisi sürdürülebilir bir davranıştır?',secenekler:['Ormanlık alanları tarım arazisine dönüştürmek','Plastik atıkları denize dökmek','Geri dönüşüm kutularını kullanmak','Fabrika atıklarını nehre bırakmak'],dogru:2,aciklama:'💡 Geri dönüşüm kaynakların tekrar kullanılmasını sağlar ve doğaya zarar vermez — sürdürülebilirliğin temelidir.'},
+  {soru:'"Kitaplar benim en iyi dostlarımdır" cümlesinde hangi söz sanatı vardır?',secenekler:['Abartma (mübalağa)','Kişileştirme (teşhis)','Benzetme (teşbih)','Karşıtlık (tezat)'],dogru:1,aciklama:'💡 İnsan dışındaki varlıklara (kitaplara) insan özelliği (dost olma) verildiğinde KİŞİLEŞTİRME sanatı kullanılmıştır.'},
+  {soru:'"Aslan gibi cesur bir çocuktu" cümlesinde hangi söz sanatı vardır?',secenekler:['Kişileştirme','İstiare (eğretileme)','Benzetme (teşbih)','Abartma'],dogru:2,aciklama:'💡 BENZETME: çocuk (benzetilen) + aslan (kendisine benzetilen) + gibi (benzetme edatı) + cesur (benzetme yönü). 4 unsur tam!'},
+  {soru:'"Gözleri deniz mavi" cümlesinde hangi söz sanatı vardır?',secenekler:['Kişileştirme','Benzetme (teşbih)','Abartma','Tezat'],dogru:1,aciklama:'💡 BENZETME: gözler (benzetilen) + deniz (kendisine benzetilen). Benzetme edatı yok ama benzetme yönü var (mavi).'},
+  {soru:'Hangisi doğru yazılmıştır?',secenekler:["Türk'çe",'türkçe','Türkçe','TÜRKçe'],dogru:2,aciklama:'💡 Dil ve kavim adları büyük harfle başlar: Türkçe, İngilizce, Arapça. Türkçe kelimesi büyük T ile yazılır!'},
+  {soru:'"Yağmur yağdı___ sokaklar ıslandı" cümlesine hangi noktalama işareti gelir?',secenekler:['Nokta (.)','Virgül (,)','Soru işareti (?)','Ünlem (!)'],dogru:1,aciklama:'💡 Birbiriyle yakın anlamlı art arda gelen cümleler arasına VİRGÜL konur: "Yağmur yağdı, sokaklar ıslandı."'},
+  {soru:'"Hızlı koştu" cümlesinde "hızlı" hangi sözcük türüdür?',secenekler:['Sıfat','Zarf','İsim','Fiil'],dogru:1,aciklama:'💡 "Hızlı" fiili (koştu) nitelediği için ZARF görevindedir. Bir ismi nitelese sıfat olurdu: "hızlı araba".'},
+  {soru:'"O kitabı okuyunca çok etkilendim" cümlesinde "O" hangi sözcük türüdür?',secenekler:['Sıfat','Zarf','Fiil','Bağlaç'],dogru:0,aciklama:'💡 "O" sözcüğü "kitabı" ismine sıfat yapmaktadır. Tek başına kullanılsaydı (O okudu) zamir olurdu.'}
 ];
 
 var quizState = { idx: 0, score: 0, answered: false };
@@ -1729,17 +1582,36 @@ function renderQuizResult(){
     '<div class="quiz-result-em">'+em+'</div>'+
     '<div class="quiz-result-score">'+s+' / '+t+' doğru &nbsp;('+pct+'%)</div>'+
     '<div class="quiz-result-msg">'+msg+'</div>'+
-    '<button class="quiz-restart-btn" onclick="quizRestart()">↺ Tekrar Çöz</button>'+
+    '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'+
+      '<button class="quiz-restart-btn" onclick="quizRestart()">↺ Tekrar Çöz</button>'+
+      '<button id="quiz-bildir-btn" onclick="quizBildir()" style="background:linear-gradient(90deg,#7c3aed,#6d28d9);color:#fff;border:none;border-radius:12px;padding:11px 24px;font-size:.9rem;font-weight:800;cursor:pointer;font-family:inherit">💬 Koça Bildir</button>'+
+    '</div>'+
   '</div>';
 }
 window.quizRestart=function(){ quizState={idx:0,score:0,answered:false}; renderQuiz(); };
+window.quizBildir=function(){
+  if(!window._sc_ref){ alert('Sohbet bağlantısı hazır değil. Sayfayı yenileyip tekrar dene.'); return; }
+  var s=quizState.score, t=QUIZ_DATA.length, pct=Math.round(s/t*100);
+  var em=pct>=80?'🏆':pct>=60?'👍':'📚';
+  var metin='🎯 Mini Soru Bankası Sonucu\n\n'+em+' '+s+' / '+t+' doğru ('+pct+'%)\n'+(pct>=80?'Mükemmel! Konuya çok iyi hâkim.':pct>=60?'İyi gidiyorsun! Biraz daha tekrar yap.':'Daha fazla çalışmak lazım 💪');
+  var btn=document.getElementById('quiz-bildir-btn');
+  if(btn){btn.disabled=true;btn.textContent='⏳ Gönderiliyor…';}
+  window._sc_ref.push({kimden:window._sc_slug||'ogrenci',isim:window._sc_isim||'Öğrenci',metin:metin,zaman:firebase.database.ServerValue.TIMESTAMP})
+    .then(function(){
+      if(btn){btn.disabled=false;btn.textContent='✅ Koça Gönderildi!';btn.style.background='linear-gradient(90deg,#065f46,#059669)';}
+      setTimeout(function(){if(btn){btn.textContent='💬 Koça Bildir';btn.style.background='';}},3000);
+    }).catch(function(){
+      if(btn){btn.disabled=false;btn.textContent='❌ Gönderilemedi';}
+      setTimeout(function(){if(btn)btn.textContent='💬 Koça Bildir';},3000);
+    });
+};
 
 /* INIT */
 renderTodayLbl();
 renderExams();
 renderTodaySection();
 renderStudyList();
-renderResources();
+renderSimulations();
 renderQuiz();
 renderNK();
 renderCL();
