@@ -338,6 +338,9 @@
     .quiz-result-msg { font-size:.9rem; font-weight:700; color:#374151; margin-bottom:20px; line-height:1.6; }
     .quiz-restart-btn { background:linear-gradient(90deg,#059669,#10b981); color:#fff; border:none; border-radius:12px; padding:11px 24px; font-size:.9rem; font-weight:800; cursor:pointer; font-family:inherit; }
     .quiz-restart-btn:hover { opacity:.88; }
+    .quiz-tabs { display:flex; gap:6px; padding:12px 14px 0; flex-wrap:wrap; border-bottom:1px solid #f1f5f9; margin-bottom:0; }
+    .quiz-tab { background:#f1f5f9; border:1.5px solid #e2e8f0; color:#475569; border-radius:10px; padding:7px 14px; font-size:.82rem; font-weight:800; cursor:pointer; font-family:inherit; transition:all .15s; }
+    .quiz-tab:hover:not(.active) { background:#f0fdf4; border-color:#a7f3d0; color:#059669; }
 
     /* ── SİMÜLASYONLAR ── */
     .sim-grid { display:grid; grid-template-columns:230px 1fr; gap:14px; align-items:start; }
@@ -492,7 +495,7 @@
   </div>
 
   <!-- 2d. Mini Quiz -->
-  <div class="sec"><div class="sec-ic" style="background:#d1fae5">🎯</div><div class="sec-t">Mini Soru Bankası</div><div class="sec-s">20 soru · anında feedback</div></div>
+  <div class="sec"><div class="sec-ic" style="background:#d1fae5">🎯</div><div class="sec-t">Mini Soru Bankası</div><div class="sec-s">Fen & Türkçe · derse göre seç</div></div>
   <div class="quiz-card" id="quiz-card"></div>
 
   <!-- 3. Not Hesaplayıcı -->
@@ -625,7 +628,7 @@
    Yeni özellik ekleyince bu numarayı değiştir (ör: tarih + sıra).
    Öğrencilerin tarayıcısı 5 dk içinde güncelleme bildirimi görür.
 ──────────────────────────────────────────────────────────────── */
-const PAGE_VERSION = '2026-06-04-v5';
+const PAGE_VERSION = '2026-06-04-v6';
 
 /* ─── DATA ─── */
 const API_URL = 'https://script.google.com/macros/s/AKfycbyUvFShqvwvwOlJmVSY8TQFmYoXCqcfu4JFrK3KtzIVMHN9YctZmRpyrfK5AydUNcPd/exec';
@@ -1552,44 +1555,77 @@ function deviceNoticeKapat(){
 })();
 
 /* ── MİNİ QUIZ ── */
-var QUIZ_DATA = [
-  {soru:'Suyun katı hâli (buz) sıvı suya atıldığında ne olur?',secenekler:['Batar — yoğunluğu fazladır','Yüzer — yoğunluğu daha düşüktür','Çözünür ve kaybolur','Hiçbir şey olmaz'],dogru:1,aciklama:'💡 Buzun yoğunluğu ≈ 0.92 g/cm³, sıvı suyun ≈ 1 g/cm³. Buz daha hafif olduğu için yüzer. Bu sayede göllerin yüzeyi donar ama altı sıvı kalır — canlılar hayatta kalır!'},
-  {soru:'Yoğunluk formülü hangisidir?',secenekler:['d = m × V','d = V ÷ m','d = m ÷ V','d = m + V'],dogru:2,aciklama:'💡 Yoğunluk = Kütle / Hacim (d = m/V). Birimi g/cm³ ya da kg/m³ olabilir.'},
-  {soru:'Kütlesi 60 g, hacmi 20 cm³ olan bir cismin yoğunluğu kaçtır?',secenekler:['3 g/cm³','1200 g/cm³','0.33 g/cm³','80 g/cm³'],dogru:0,aciklama:'💡 d = m / V = 60 g ÷ 20 cm³ = 3 g/cm³. Formülü kullanmayı unutma!'},
-  {soru:'Yoğunluğu 0.8 g/cm³ olan bir cisim suya (1 g/cm³) atıldığında ne olur?',secenekler:['Batar','Yüzer','Yerinde sabit durur','Eriyerek çözünür'],dogru:1,aciklama:'💡 Cismin yoğunluğu (0.8) < sıvının yoğunluğu (1) olduğu için cisim YÜZER. Madde sıvıdan hafifse yüzer!'},
-  {soru:'Demir mi yoksa tahta mı daha yüksek yoğunluğa sahiptir?',secenekler:['Tahta','İkisi eşittir','Demir','Maddeye bağlıdır'],dogru:2,aciklama:'💡 Demir ≈ 7.87 g/cm³, tahta ≈ 0.5 g/cm³. Bu yüzden demir batar, tahta yüzer.'},
-  {soru:'Aşağıdakilerden hangisi elektriği iletir (iletken maddedir)?',secenekler:['Plastik kap','Tahta çubuk','Cam bardak','Bakır tel'],dogru:3,aciklama:'💡 Metaller (bakır, demir, alüminyum, gümüş) serbest elektronları sayesinde elektriği iyi iletir. Plastik, tahta, cam yalıtkandır.'},
-  {soru:'Hangisi yalıtkan bir malzemedir?',secenekler:['Bakır tel','Demir çivi','Plastik çubuk','Alüminyum folyo'],dogru:2,aciklama:'💡 Plastik, cam, tahta ve kauçuk yalıtkandır — elektrik akımını geçirmez. Metaller ise iletkendir.'},
-  {soru:'Elektrik devresinde direnç artarsa ampulün parlaklığı nasıl değişir?',secenekler:['Artar','Azalır','Değişmez','Önce artar, sonra söner'],dogru:1,aciklama:'💡 Ohm Yasası: I = V / R. Direnç (R) artarsa akım (I) azalır → ampule gelen enerji düşer → ampul daha az parlar.'},
-  {soru:'Elektrik devresinde anahtar (şalter) ne işe yarar?',secenekler:['Gerilimi artırır','Direnci ölçer','Devreyi açar veya kapatır','Akımı depolar'],dogru:2,aciklama:'💡 Anahtar kapalı → akım akar (devre çalışır). Anahtar açık → akım akmaz (devre çalışmaz).'},
-  {soru:'Reostat (ayarlanabilir direnç) devreye eklendiğinde ne işe yarar?',secenekler:['Devreyi açıp kapatır','Akımı depolayarak pil gibi çalışır','Direnci değiştirerek akım şiddetini ve ampul parlaklığını ayarlar','Sadece kısa devreyi önler'],dogru:2,aciklama:'💡 Reostat, tel uzunluğunu değiştirerek direnci artırır/azaltır. Direnç değiştikçe akım ve ampul parlaklığı da değişir.'},
-  {soru:'Aşağıdakilerden hangisi biyoçeşitliliği tehdit eden bir faktördür?',secenekler:['Bitkilerin fotosentez yapması','Orman yangınları ve habitat kaybı','Yağmur yağması','Doğal üreme ve çoğalma'],dogru:1,aciklama:'💡 Habitat kaybı (ormansızlaşma, tarım alanı açma, kentleşme) biyoçeşitliliği en çok tehdit eden faktördür.'},
-  {soru:'Nesli tükenme tehlikesindeki bir türü korumak için en etkili yol nedir?',secenekler:['Avcılığı teşvik etmek','Farklı bir ülkeye göndermek','Doğal yaşam alanını (habitatını) koruma altına almak','Çiftliklerde suni üretim yapmak'],dogru:2,aciklama:'💡 Habitatı korumak en temel çözümdür. Türün doğal ortamı korunursa kendiliğinden çoğalabilir.'},
-  {soru:'Hangisi sürdürülebilir bir davranıştır?',secenekler:['Ormanlık alanları tarım arazisine dönüştürmek','Plastik atıkları denize dökmek','Geri dönüşüm kutularını kullanmak','Fabrika atıklarını nehre bırakmak'],dogru:2,aciklama:'💡 Geri dönüşüm kaynakların tekrar kullanılmasını sağlar ve doğaya zarar vermez — sürdürülebilirliğin temelidir.'},
-  {soru:'"Kitaplar benim en iyi dostlarımdır" cümlesinde hangi söz sanatı vardır?',secenekler:['Abartma (mübalağa)','Kişileştirme (teşhis)','Benzetme (teşbih)','Karşıtlık (tezat)'],dogru:1,aciklama:'💡 İnsan dışındaki varlıklara (kitaplara) insan özelliği (dost olma) verildiğinde KİŞİLEŞTİRME sanatı kullanılmıştır.'},
-  {soru:'"Aslan gibi cesur bir çocuktu" cümlesinde hangi söz sanatı vardır?',secenekler:['Kişileştirme','İstiare (eğretileme)','Benzetme (teşbih)','Abartma'],dogru:2,aciklama:'💡 BENZETME: çocuk (benzetilen) + aslan (kendisine benzetilen) + gibi (benzetme edatı) + cesur (benzetme yönü). 4 unsur tam!'},
-  {soru:'"Gözleri deniz mavi" cümlesinde hangi söz sanatı vardır?',secenekler:['Kişileştirme','Benzetme (teşbih)','Abartma','Tezat'],dogru:1,aciklama:'💡 BENZETME: gözler (benzetilen) + deniz (kendisine benzetilen). Benzetme edatı yok ama benzetme yönü var (mavi).'},
-  {soru:'Hangisi doğru yazılmıştır?',secenekler:["Türk'çe",'türkçe','Türkçe','TÜRKçe'],dogru:2,aciklama:'💡 Dil ve kavim adları büyük harfle başlar: Türkçe, İngilizce, Arapça. Türkçe kelimesi büyük T ile yazılır!'},
-  {soru:'"Yağmur yağdı___ sokaklar ıslandı" cümlesine hangi noktalama işareti gelir?',secenekler:['Nokta (.)','Virgül (,)','Soru işareti (?)','Ünlem (!)'],dogru:1,aciklama:'💡 Birbiriyle yakın anlamlı art arda gelen cümleler arasına VİRGÜL konur: "Yağmur yağdı, sokaklar ıslandı."'},
-  {soru:'"Hızlı koştu" cümlesinde "hızlı" hangi sözcük türüdür?',secenekler:['Sıfat','Zarf','İsim','Fiil'],dogru:1,aciklama:'💡 "Hızlı" fiili (koştu) nitelediği için ZARF görevindedir. Bir ismi nitelese sıfat olurdu: "hızlı araba".'},
-  {soru:'"O kitabı okuyunca çok etkilendim" cümlesinde "O" hangi sözcük türüdür?',secenekler:['Sıfat','Zarf','Fiil','Bağlaç'],dogru:0,aciklama:'💡 "O" sözcüğü "kitabı" ismine sıfat yapmaktadır. Tek başına kullanılsaydı (O okudu) zamir olurdu.'}
-];
+var QUIZ_DERSLER = {
+  fen:{
+    label:'🔬 Fen Bilimleri', renk:'linear-gradient(90deg,#059669,#10b981)',
+    sorular:[
+      {soru:'Suyun katı hâli (buz) sıvı suya atıldığında ne olur?',secenekler:['Batar — yoğunluğu fazladır','Yüzer — yoğunluğu daha düşüktür','Çözünür ve kaybolur','Hiçbir şey olmaz'],dogru:1,aciklama:'💡 Buzun yoğunluğu ≈ 0.92 g/cm³, sıvı suyun ≈ 1 g/cm³. Buz daha hafif olduğu için yüzer. Bu sayede göllerin yüzeyi donar ama altı sıvı kalır — canlılar hayatta kalır!'},
+      {soru:'Yoğunluk formülü hangisidir?',secenekler:['d = m × V','d = V ÷ m','d = m ÷ V','d = m + V'],dogru:2,aciklama:'💡 Yoğunluk = Kütle / Hacim (d = m/V). Birimi g/cm³ ya da kg/m³ olabilir.'},
+      {soru:'Kütlesi 60 g, hacmi 20 cm³ olan bir cismin yoğunluğu kaçtır?',secenekler:['3 g/cm³','1200 g/cm³','0.33 g/cm³','80 g/cm³'],dogru:0,aciklama:'💡 d = m / V = 60 g ÷ 20 cm³ = 3 g/cm³. Formülü kullanmayı unutma!'},
+      {soru:'Yoğunluğu 0.8 g/cm³ olan bir cisim suya (1 g/cm³) atıldığında ne olur?',secenekler:['Batar','Yüzer','Yerinde sabit durur','Eriyerek çözünür'],dogru:1,aciklama:'💡 Cismin yoğunluğu (0.8) < sıvının yoğunluğu (1) olduğu için cisim YÜZER. Madde sıvıdan hafifse yüzer!'},
+      {soru:'Demir mi yoksa tahta mı daha yüksek yoğunluğa sahiptir?',secenekler:['Tahta','İkisi eşittir','Demir','Maddeye bağlıdır'],dogru:2,aciklama:'💡 Demir ≈ 7.87 g/cm³, tahta ≈ 0.5 g/cm³. Bu yüzden demir batar, tahta yüzer.'},
+      {soru:'Aşağıdakilerden hangisi elektriği iletir (iletken maddedir)?',secenekler:['Plastik kap','Tahta çubuk','Cam bardak','Bakır tel'],dogru:3,aciklama:'💡 Metaller (bakır, demir, alüminyum, gümüş) serbest elektronları sayesinde elektriği iyi iletir. Plastik, tahta, cam yalıtkandır.'},
+      {soru:'Hangisi yalıtkan bir malzemedir?',secenekler:['Bakır tel','Demir çivi','Plastik çubuk','Alüminyum folyo'],dogru:2,aciklama:'💡 Plastik, cam, tahta ve kauçuk yalıtkandır — elektrik akımını geçirmez. Metaller ise iletkendir.'},
+      {soru:'Elektrik devresinde direnç artarsa ampulün parlaklığı nasıl değişir?',secenekler:['Artar','Azalır','Değişmez','Önce artar, sonra söner'],dogru:1,aciklama:'💡 Ohm Yasası: I = V / R. Direnç (R) artarsa akım (I) azalır → ampule gelen enerji düşer → ampul daha az parlar.'},
+      {soru:'Elektrik devresinde anahtar (şalter) ne işe yarar?',secenekler:['Gerilimi artırır','Direnci ölçer','Devreyi açar veya kapatır','Akımı depolar'],dogru:2,aciklama:'💡 Anahtar kapalı → akım akar (devre çalışır). Anahtar açık → akım akmaz (devre çalışmaz).'},
+      {soru:'Reostat (ayarlanabilir direnç) devreye eklendiğinde ne işe yarar?',secenekler:['Devreyi açıp kapatır','Akımı depolayarak pil gibi çalışır','Direnci değiştirerek akım şiddetini ve ampul parlaklığını ayarlar','Sadece kısa devreyi önler'],dogru:2,aciklama:'💡 Reostat, tel uzunluğunu değiştirerek direnci artırır/azaltır. Direnç değiştikçe akım ve ampul parlaklığı da değişir.'},
+      {soru:'Aşağıdakilerden hangisi biyoçeşitliliği tehdit eden bir faktördür?',secenekler:['Bitkilerin fotosentez yapması','Orman yangınları ve habitat kaybı','Yağmur yağması','Doğal üreme ve çoğalma'],dogru:1,aciklama:'💡 Habitat kaybı (ormansızlaşma, tarım alanı açma, kentleşme) biyoçeşitliliği en çok tehdit eden faktördür.'},
+      {soru:'Nesli tükenme tehlikesindeki bir türü korumak için en etkili yol nedir?',secenekler:['Avcılığı teşvik etmek','Farklı bir ülkeye göndermek','Doğal yaşam alanını (habitatını) koruma altına almak','Çiftliklerde suni üretim yapmak'],dogru:2,aciklama:'💡 Habitatı korumak en temel çözümdür. Türün doğal ortamı korunursa kendiliğinden çoğalabilir.'},
+      {soru:'Hangisi sürdürülebilir bir davranıştır?',secenekler:['Ormanlık alanları tarım arazisine dönüştürmek','Plastik atıkları denize dökmek','Geri dönüşüm kutularını kullanmak','Fabrika atıklarını nehre bırakmak'],dogru:2,aciklama:'💡 Geri dönüşüm kaynakların tekrar kullanılmasını sağlar ve doğaya zarar vermez — sürdürülebilirliğin temelidir.'}
+    ]
+  },
+  tur:{
+    label:'📝 Türkçe', renk:'linear-gradient(90deg,#d97706,#f59e0b)',
+    sorular:[
+      {soru:'"Kitaplar benim en iyi dostlarımdır" cümlesinde hangi söz sanatı vardır?',secenekler:['Abartma (mübalağa)','Kişileştirme (teşhis)','Benzetme (teşbih)','Karşıtlık (tezat)'],dogru:1,aciklama:'💡 İnsan dışındaki varlıklara (kitaplara) insan özelliği (dost olma) verildiğinde KİŞİLEŞTİRME sanatı kullanılmıştır.'},
+      {soru:'"Aslan gibi cesur bir çocuktu" cümlesinde hangi söz sanatı vardır?',secenekler:['Kişileştirme','İstiare (eğretileme)','Benzetme (teşbih)','Abartma'],dogru:2,aciklama:'💡 BENZETME: çocuk (benzetilen) + aslan (kendisine benzetilen) + gibi (benzetme edatı) + cesur (benzetme yönü). 4 unsur tam!'},
+      {soru:'"Gözleri deniz mavi" cümlesinde hangi söz sanatı vardır?',secenekler:['Kişileştirme','Benzetme (teşbih)','Abartma','Tezat'],dogru:1,aciklama:'💡 BENZETME: gözler (benzetilen) + deniz (kendisine benzetilen). Benzetme edatı yok ama benzetme yönü var (mavi).'},
+      {soru:'Hangisi doğru yazılmıştır?',secenekler:["Türk'çe",'türkçe','Türkçe','TÜRKçe'],dogru:2,aciklama:'💡 Dil ve kavim adları büyük harfle başlar: Türkçe, İngilizce, Arapça. Türkçe kelimesi büyük T ile yazılır!'},
+      {soru:'"Yağmur yağdı___ sokaklar ıslandı" cümlesine hangi noktalama işareti gelir?',secenekler:['Nokta (.)','Virgül (,)','Soru işareti (?)','Ünlem (!)'],dogru:1,aciklama:'💡 Birbiriyle yakın anlamlı art arda gelen cümleler arasına VİRGÜL konur: "Yağmur yağdı, sokaklar ıslandı."'},
+      {soru:'"Hızlı koştu" cümlesinde "hızlı" hangi sözcük türüdür?',secenekler:['Sıfat','Zarf','İsim','Fiil'],dogru:1,aciklama:'💡 "Hızlı" fiili (koştu) nitelediği için ZARF görevindedir. Bir ismi nitelese sıfat olurdu: "hızlı araba".'},
+      {soru:'"O kitabı okuyunca çok etkilendim" cümlesinde "O" hangi sözcük türüdür?',secenekler:['Sıfat','Zarf','Fiil','Bağlaç'],dogru:0,aciklama:'💡 "O" sözcüğü "kitabı" ismine sıfat yapmaktadır. Tek başına kullanılsaydı (O okudu) zamir olurdu.'}
+    ]
+  }
+};
+var quizDers = 'fen';
+var quizStates = { fen:{idx:0,score:0,answered:false}, tur:{idx:0,score:0,answered:false} };
 
-var quizState = { idx: 0, score: 0, answered: false };
+window.quizSetDers=function(ders){
+  if(ders===quizDers) return;
+  quizDers=ders;
+  renderQuiz();
+};
 
-function renderQuiz() {
-  var el = document.getElementById('quiz-card'); if(!el) return;
-  if(quizState.idx >= QUIZ_DATA.length){ renderQuizResult(); return; }
-  var q = QUIZ_DATA[quizState.idx];
-  var letters = ['A','B','C','D'];
-  var pct = Math.round(quizState.idx / QUIZ_DATA.length * 100);
-  el.innerHTML =
-    '<div class="quiz-top">'+
+function _quizTabs(){
+  return '<div class="quiz-tabs">'+
+    ['fen','tur'].map(function(k){
+      var d=QUIZ_DERSLER[k];
+      var st=quizStates[k];
+      var done=st.idx>=d.sorular.length;
+      var isAct=quizDers===k;
+      return '<button class="quiz-tab'+(isAct?' active':'')+'" onclick="quizSetDers(\''+k+'\')" style="'+(isAct?'background:'+d.renk+';border-color:transparent;color:#fff':'')+'">'
+        +d.label+' <span style="font-size:.65rem;opacity:.75">('+d.sorular.length+')</span>'+(done&&!isAct?' ✓':'')+
+      '</button>';
+    }).join('')+
+  '</div>';
+}
+
+function renderQuiz(){
+  var el=document.getElementById('quiz-card'); if(!el) return;
+  var d=QUIZ_DERSLER[quizDers];
+  var st=quizStates[quizDers];
+  var qData=d.sorular;
+  if(st.idx>=qData.length){ renderQuizResult(); return; }
+  var q=qData[st.idx];
+  var letters=['A','B','C','D'];
+  var pct=Math.round(st.idx/qData.length*100);
+  el.innerHTML=_quizTabs()+
+    '<div class="quiz-top" style="background:'+d.renk+'">'+
       '<div class="quiz-top-left">'+
-        '<div class="quiz-top-lbl">Soru '+(quizState.idx+1)+' / '+QUIZ_DATA.length+'</div>'+
+        '<div class="quiz-top-lbl">Soru '+(st.idx+1)+' / '+qData.length+'</div>'+
         '<div class="quiz-prog-track"><div class="quiz-prog-fill" style="width:'+pct+'%"></div></div>'+
       '</div>'+
-      '<div class="quiz-score-badge">⭐ '+quizState.score+' / '+QUIZ_DATA.length+'</div>'+
+      '<div class="quiz-score-badge">⭐ '+st.score+' / '+qData.length+'</div>'+
     '</div>'+
     '<div class="quiz-body">'+
       '<div class="quiz-q-text">'+safe(q.soru)+'</div>'+
@@ -1599,35 +1635,38 @@ function renderQuiz() {
         }).join('')+
       '</div>'+
       '<div class="quiz-aciklama" id="quiz-aciklama">'+safe(q.aciklama)+'</div>'+
-      '<div class="quiz-next-wrap"><button class="quiz-next-btn" id="quiz-next" onclick="quizNext()">'+(quizState.idx < QUIZ_DATA.length-1 ? 'Sonraki Soru →' : '✓ Sonuçları Gör')+'</button></div>'+
+      '<div class="quiz-next-wrap"><button class="quiz-next-btn" id="quiz-next" onclick="quizNext()">'+(st.idx<qData.length-1?'Sonraki Soru →':'✓ Sonuçları Gör')+'</button></div>'+
     '</div>';
   el.querySelectorAll('.quiz-opt').forEach(function(btn){
     btn.addEventListener('click',function(){
-      if(quizState.answered) return;
-      quizState.answered = true;
-      var chosen = +btn.dataset.idx;
-      var correct = q.dogru;
+      var st=quizStates[quizDers];
+      if(st.answered) return;
+      st.answered=true;
+      var chosen=+btn.dataset.idx, correct=q.dogru;
       el.querySelectorAll('.quiz-opt').forEach(function(b,i){
-        b.disabled = true;
+        b.disabled=true;
         if(i===correct) b.classList.add('correct');
         else if(i===chosen) b.classList.add('wrong');
       });
-      if(chosen===correct) quizState.score++;
+      if(chosen===correct) st.score++;
       var aEl=document.getElementById('quiz-aciklama'); if(aEl) aEl.classList.add('show');
       var nBtn=document.getElementById('quiz-next'); if(nBtn) nBtn.classList.add('show');
     });
   });
 }
 window.quizNext=function(){
-  quizState.idx++; quizState.answered=false;
-  quizState.idx>=QUIZ_DATA.length ? renderQuizResult() : renderQuiz();
+  var st=quizStates[quizDers]; st.idx++; st.answered=false;
+  st.idx>=QUIZ_DERSLER[quizDers].sorular.length ? renderQuizResult() : renderQuiz();
 };
 function renderQuizResult(){
   var el=document.getElementById('quiz-card'); if(!el) return;
-  var s=quizState.score, t=QUIZ_DATA.length, pct=Math.round(s/t*100);
+  var d=QUIZ_DERSLER[quizDers];
+  var st=quizStates[quizDers];
+  var s=st.score, t=d.sorular.length, pct=Math.round(s/t*100);
   var em=pct>=80?'🏆':pct>=60?'👍':'📚';
   var msg=pct>=80?'Mükemmel! Konuya çok iyi hâkimsin.':pct>=60?'İyi gidiyorsun! Zayıf sorulara tekrar bak.':'Simülasyonları dene, sonra tekrar çöz!';
-  el.innerHTML='<div class="quiz-result">'+
+  el.innerHTML=_quizTabs()+'<div class="quiz-result">'+
+    '<div style="font-size:.8rem;font-weight:800;margin-bottom:6px;color:#64748b">'+d.label+' Sonucu</div>'+
     '<div class="quiz-result-em">'+em+'</div>'+
     '<div class="quiz-result-score">'+s+' / '+t+' doğru &nbsp;('+pct+'%)</div>'+
     '<div class="quiz-result-msg">'+msg+'</div>'+
@@ -1637,12 +1676,14 @@ function renderQuizResult(){
     '</div>'+
   '</div>';
 }
-window.quizRestart=function(){ quizState={idx:0,score:0,answered:false}; renderQuiz(); };
+window.quizRestart=function(){ quizStates[quizDers]={idx:0,score:0,answered:false}; renderQuiz(); };
 window.quizBildir=function(){
   if(!window._sc_ref){ alert('Sohbet bağlantısı hazır değil. Sayfayı yenileyip tekrar dene.'); return; }
-  var s=quizState.score, t=QUIZ_DATA.length, pct=Math.round(s/t*100);
+  var d=QUIZ_DERSLER[quizDers];
+  var st=quizStates[quizDers];
+  var s=st.score, t=d.sorular.length, pct=Math.round(s/t*100);
   var em=pct>=80?'🏆':pct>=60?'👍':'📚';
-  var metin='🎯 Mini Soru Bankası Sonucu\n\n'+em+' '+s+' / '+t+' doğru ('+pct+'%)\n'+(pct>=80?'Mükemmel! Konuya çok iyi hâkim.':pct>=60?'İyi gidiyorsun! Biraz daha tekrar yap.':'Daha fazla çalışmak lazım 💪');
+  var metin='🎯 Mini Soru Bankası — '+d.label+'\n\n'+em+' '+s+' / '+t+' doğru ('+pct+'%)\n'+(pct>=80?'Mükemmel! Konuya çok iyi hâkim.':pct>=60?'İyi gidiyorsun! Biraz daha tekrar yap.':'Daha fazla çalışmak lazım 💪');
   var btn=document.getElementById('quiz-bildir-btn');
   if(btn){btn.disabled=true;btn.textContent='⏳ Gönderiliyor…';}
   window._sc_ref.push({kimden:window._sc_slug||'ogrenci',isim:window._sc_isim||'Öğrenci',metin:metin,zaman:firebase.database.ServerValue.TIMESTAMP})
