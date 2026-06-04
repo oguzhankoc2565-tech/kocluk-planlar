@@ -306,6 +306,39 @@
     .sh-tab-n { display:inline-block; background:#dc2626; border-radius:5px; padding:0 4px; font-size:.6rem; margin-left:3px; vertical-align:1px; }
     #sh-ozel-notice { display:none; background:#f0fdf4; border-bottom:1px solid #a7f3d0; padding:6px 12px; font-size:.74rem; font-weight:700; color:#065f46; text-align:center; }
 
+    /* ── MİNİ QUIZ ── */
+    .quiz-card { background:#fff; border-radius:var(--r); box-shadow:var(--shadow); overflow:hidden; }
+    .quiz-top { padding:14px 18px; background:linear-gradient(90deg,#059669,#10b981); color:#fff; display:flex; align-items:center; gap:14px; }
+    .quiz-top-left { flex:1; min-width:0; }
+    .quiz-top-lbl { font-size:.7rem; font-weight:800; opacity:.8; margin-bottom:4px; }
+    .quiz-prog-track { height:6px; background:rgba(255,255,255,.3); border-radius:999px; overflow:hidden; }
+    .quiz-prog-fill { height:100%; background:#fff; border-radius:999px; transition:width .4s ease; }
+    .quiz-score-badge { background:rgba(255,255,255,.2); border-radius:999px; padding:5px 14px; font-size:.82rem; font-weight:900; white-space:nowrap; flex-shrink:0; }
+    .quiz-body { padding:20px 18px; }
+    .quiz-q-text { font-size:.98rem; font-weight:800; color:#111827; line-height:1.55; margin-bottom:16px; }
+    .quiz-options { display:grid; gap:8px; }
+    .quiz-opt { display:flex; align-items:center; gap:10px; padding:11px 14px; border-radius:12px; border:2px solid #e2e8f0; background:#fff; cursor:pointer; font-family:inherit; font-size:.88rem; font-weight:700; color:#374151; text-align:left; transition:all .15s; width:100%; }
+    .quiz-opt:hover:not(:disabled) { border-color:#34d399; background:#f0fdf4; color:#065f46; }
+    .quiz-opt.correct { border-color:#10b981!important; background:#f0fdf4!important; color:#065f46!important; }
+    .quiz-opt.wrong   { border-color:#ef4444!important; background:#fef2f2!important; color:#991b1b!important; }
+    .quiz-opt.show-correct { border-color:#10b981; background:#f0fdf4; }
+    .quiz-opt-letter { width:28px; height:28px; border-radius:8px; background:#f1f5f9; display:grid; place-items:center; font-size:.8rem; font-weight:900; flex-shrink:0; transition:all .15s; }
+    .quiz-opt.correct .quiz-opt-letter { background:#10b981; color:#fff; }
+    .quiz-opt.wrong   .quiz-opt-letter { background:#ef4444; color:#fff; }
+    .quiz-opt.show-correct .quiz-opt-letter { background:#10b981; color:#fff; }
+    .quiz-aciklama { margin-top:12px; padding:10px 14px; background:#f0fdf4; border:1.5px solid #a7f3d0; border-radius:10px; font-size:.82rem; font-weight:700; color:#065f46; display:none; line-height:1.5; }
+    .quiz-aciklama.show { display:block; }
+    .quiz-next-wrap { display:flex; justify-content:flex-end; margin-top:14px; }
+    .quiz-next-btn { background:linear-gradient(90deg,#059669,#10b981); color:#fff; border:none; border-radius:12px; padding:10px 22px; font-size:.88rem; font-weight:800; cursor:pointer; font-family:inherit; display:none; }
+    .quiz-next-btn.show { display:block; }
+    .quiz-next-btn:hover { opacity:.88; }
+    .quiz-result { padding:32px 18px; text-align:center; }
+    .quiz-result-em { font-size:3rem; margin-bottom:10px; }
+    .quiz-result-score { font-size:2rem; font-weight:900; color:#059669; margin-bottom:6px; }
+    .quiz-result-msg { font-size:.9rem; font-weight:700; color:#374151; margin-bottom:20px; line-height:1.6; }
+    .quiz-restart-btn { background:linear-gradient(90deg,#059669,#10b981); color:#fff; border:none; border-radius:12px; padding:11px 24px; font-size:.9rem; font-weight:800; cursor:pointer; font-family:inherit; }
+    .quiz-restart-btn:hover { opacity:.88; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 720px) {
       .two, .three { grid-template-columns: 1fr; }
@@ -418,6 +451,10 @@
       </div>
     </div>
   </div>
+
+  <!-- 2c. Mini Quiz -->
+  <div class="sec"><div class="sec-ic" style="background:#d1fae5">🎯</div><div class="sec-t">Mini Soru Bankası</div><div class="sec-s">6 soru · anında feedback</div></div>
+  <div class="quiz-card" id="quiz-card"></div>
 
   <!-- 3. Not Hesaplayıcı -->
   <div class="sec"><div class="sec-ic" style="background:#e0e7ff">🧮</div><div class="sec-t">Not Hesaplayıcı</div><div class="sec-s">MEB formülü · otomatik kaydedilir</div></div>
@@ -557,7 +594,7 @@
    Yeni özellik ekleyince bu numarayı değiştir (ör: tarih + sıra).
    Öğrencilerin tarayıcısı 5 dk içinde güncelleme bildirimi görür.
 ──────────────────────────────────────────────────────────────── */
-const PAGE_VERSION = '2026-06-03-v5';
+const PAGE_VERSION = '2026-06-04-v3';
 
 /* ─── DATA ─── */
 const API_URL = 'https://script.google.com/macros/s/AKfycbyUvFShqvwvwOlJmVSY8TQFmYoXCqcfu4JFrK3KtzIVMHN9YctZmRpyrfK5AydUNcPd/exec';
@@ -615,11 +652,28 @@ const SENARYOLAR = {
         {konu:'T.Y.6.21 — Yazım kuralları ve noktalama işaretleri',soru:1}
       ]}
     ]
+  },
+  fen: {
+    baslik:'🔬 Fen Bilimleri — SENARYO 1', renk:'linear-gradient(90deg,#059669,#10b981)',
+    toplam:'6 Soru',
+    unite:[
+      {ad:'Maddenin Ayırt Edici Özellikleri', konular:[
+        {konu:'FB.6.5.3.3 — Suyun katı ve sıvı hâllerine ait yoğunlukları karşılaştırarak canlılar için önemi hakkında bilimsel çıkarımlar yapabilme',soru:1},
+        {konu:'FB.6.5.3.4 — Yoğunluk ile ilgili bilimsel model oluşturabilme',soru:1}
+      ]},
+      {ad:'Elektriğin İletimi ve Direnç', konular:[
+        {konu:'FB.6.6.1.1 — Maddelerin elektriği iletme durumlarını gösteren deney yapabilme',soru:1},
+        {konu:'FB.6.6.2.1 — Elektrik devresindeki ampulün parlaklığının bağlı olduğu değişkenleri belirlemeye yönelik deney yapabilme',soru:1},
+        {konu:'FB.6.6.2.2 — Ayarlanabilir direncin ampulün parlaklığına etkilerine yönelik bilimsel çıkarım yapabilme',soru:1}
+      ]},
+      {ad:'Sürdürülebilir Yaşam ve Etkileşim', konular:[
+        {konu:'FB.6.7.1.2 — Biyoçeşitliliği tehdit eden faktörleri araştırma verilerine dayalı tahmin edebilme',soru:1}
+      ]}
+    ]
   }
 };
 
 const RESOURCES = [
-  {label:"Anadolu'nun Türkleşmesi",file:"Anadolu'nun Türkleşmesi ve İslamlaşması.pdf",kod:'sos',em:'📑'},
   {label:'Zamirler Testi 1',file:'Zamirler-Konu-Testi-1.pdf',kod:'tur',em:'📄'},
   {label:'Zamirler Testi 2',file:'Zamirler-Konu-Testi-2.pdf',kod:'tur',em:'📄'},
   {label:'Zamirler Testi 3',file:'Zamirler-Konu-Testi-3.pdf',kod:'tur',em:'📄'},
@@ -630,6 +684,9 @@ const RESOURCES = [
   {label:'Sıfatlar Fasikülü',file:'6.Sınıf Sıfatlar Fasikülü.pdf',kod:'tur',em:'📗'},
   {label:'6. Sınıf İsimler',file:'6 İSİMLER.docx',kod:'tur',em:'📑'},
   {label:'Fen 2. Dönem Yazılı',file:'6_Fen_2.Donem_2. Yazili (1).pdf',kod:'fen',em:'🔬'},
+  {label:'Maddenin Ayırt Edici Özellikleri',file:'6. SINIF 5. ÜNİTE MADDENİN AYIRT EDİCİ ÖZELLİKLERİ.pdf',kod:'fen',em:'📑'},
+  {label:'Elektriğin İletimi ve Direnç',file:'6. SINIF 6. ÜNİTE ELEKTRİĞİN İLETİMİ VE DİRENÇ KONU ANLATIMI.pdf',kod:'fen',em:'📑'},
+  {label:'Sürdürülebilir Yaşam ve Etkileşim',file:'6. SINIF 7. ÜNİTE SÜRDÜRÜLEBİLİR YAŞAM VE ETKİLEŞİM KONU ANLATIMI.pdf',kod:'fen',em:'📑'},
 ];
 
 /* Not hesaplayıcı */
@@ -941,48 +998,6 @@ function renderTodaySection(){
 /* ── ÇALIŞMA MATERYALLERİ ── */
 const STUDY_RESOURCES = [
   {
-    id:'sm1', tur:'video', ders:'sos', em:'🎬',
-    baslik:'Türkleşme ve İslamlaşma Süreci',
-    aciklama:'XI-XIII. yy. — Senaryo konusu',
-    sure:'Video', url:'https://youtu.be/jhD58-7Itys',
-    tag:'Sosyal', tagRenk:'#ede9fe', tagText:'#7c3aed'
-  },
-  {
-    id:'sm1b', tur:'pdf', ders:'sos', em:'📑',
-    baslik:"Anadolu'nun Türkleşmesi ve İslamlaşması",
-    aciklama:'Senaryo konusu — Okuma ve çalışma dokümanı',
-    sure:'PDF', url:"sinav-haftasi/Anadolu'nun Türkleşmesi ve İslamlaşması.pdf",
-    tag:'Sosyal', tagRenk:'#ede9fe', tagText:'#7c3aed'
-  },
-  {
-    id:'sm1c', tur:'video', ders:'sos', em:'🎬',
-    baslik:'Yönetimin Karar Alma Sürecini Etkileyen Unsurlar',
-    aciklama:'Yaşayan Demokrasimiz — Senaryo konusu',
-    sure:'Video', url:'https://www.youtube.com/watch?v=Vq6bzbpB8DE',
-    tag:'Sosyal', tagRenk:'#ede9fe', tagText:'#7c3aed'
-  },
-  {
-    id:'sm1d', tur:'video', ders:'sos', em:'🎬',
-    baslik:'5. Senaryo Örneği ve Çözümleri',
-    aciklama:'2. Dönem 2. Yazılı — Senaryo 5',
-    sure:'Video', url:'https://www.youtube.com/watch?v=qm4ONb3ly8g',
-    tag:'Sosyal', tagRenk:'#ede9fe', tagText:'#7c3aed'
-  },
-  {
-    id:'sm1e', tur:'video', ders:'sos', em:'🎬',
-    baslik:'Tonguç — 2. Dönem 2. Yazılı Hazırlık',
-    aciklama:'Sosyal Bilgiler genel tekrar',
-    sure:'Video', url:'https://www.youtube.com/watch?v=xfQNbw8kPN0',
-    tag:'Sosyal', tagRenk:'#ede9fe', tagText:'#7c3aed'
-  },
-  {
-    id:'sm2', tur:'video', ders:'sos', em:'🎬',
-    baslik:'Ekonomik Faaliyetler ve Meslekler',
-    aciklama:'Hayatımızdaki Ekonomi ünitesi',
-    sure:'Video', url:'',
-    tag:'Sosyal', tagRenk:'#ede9fe', tagText:'#7c3aed'
-  },
-  {
     id:'sm3', tur:'video', ders:'tur', em:'🎬',
     baslik:'Söz Sanatları — Konu Anlatımı',
     aciklama:'T.O.6.20 · T.O.6.25 — Senaryo konusu',
@@ -1060,22 +1075,92 @@ const STUDY_RESOURCES = [
     tag:'Türkçe', tagRenk:'#fef3c7', tagText:'#d97706'
   },
   {
+    id:'fen_v1', tur:'video', ders:'fen', em:'🎬',
+    baslik:'Tonguç — Fen Yazılısında Çıkar!',
+    aciklama:'Sınava özel genel tekrar videosu',
+    sure:'Video', url:'https://www.youtube.com/watch?v=5xSHrpgofRA',
+    tag:'Fen', tagRenk:'#d1fae5', tagText:'#059669'
+  },
+  {
+    id:'fen_v2', tur:'video', ders:'fen', em:'🎬',
+    baslik:'Yoğunluk, Kütle ve Hacim',
+    aciklama:'Senaryo konusu — Maddenin Ayırt Edici Özellikleri',
+    sure:'Video', url:'https://www.youtube.com/watch?v=e5zgjfX-EG0&t=313s',
+    tag:'Fen', tagRenk:'#d1fae5', tagText:'#059669'
+  },
+  {
+    id:'fen_v3', tur:'video', ders:'fen', em:'🎬',
+    baslik:'Elektriğin İletimi — İletken ve Yalıtkan',
+    aciklama:'Senaryo konusu — Elektriğin İletimi ve Direnç',
+    sure:'Video', url:'https://www.youtube.com/watch?v=FVZkCBPYDHw&t=7s',
+    tag:'Fen', tagRenk:'#d1fae5', tagText:'#059669'
+  },
+  {
+    id:'fen_v4', tur:'video', ders:'fen', em:'🎬',
+    baslik:'2. Dönem 2. Yazılı — Konu Tekrar',
+    aciklama:'6. Sınıf Fen Bilimleri genel tekrar',
+    sure:'Video', url:'https://www.youtube.com/watch?v=bAxVGzpgqb8',
+    tag:'Fen', tagRenk:'#d1fae5', tagText:'#059669'
+  },
+  {
+    id:'fen_p1', tur:'pdf', ders:'fen', em:'📑',
+    baslik:'Maddenin Ayırt Edici Özellikleri',
+    aciklama:'6. Sınıf 5. Ünite — Konu anlatımı',
+    sure:'PDF', url:'sinav-haftasi/6. SINIF 5. ÜNİTE MADDENİN AYIRT EDİCİ ÖZELLİKLERİ.pdf',
+    tag:'Fen', tagRenk:'#d1fae5', tagText:'#059669'
+  },
+  {
+    id:'fen_p2', tur:'pdf', ders:'fen', em:'📑',
+    baslik:'Elektriğin İletimi ve Direnç',
+    aciklama:'6. Sınıf 6. Ünite — Konu anlatımı',
+    sure:'PDF', url:'sinav-haftasi/6. SINIF 6. ÜNİTE ELEKTRİĞİN İLETİMİ VE DİRENÇ KONU ANLATIMI.pdf',
+    tag:'Fen', tagRenk:'#d1fae5', tagText:'#059669'
+  },
+  {
+    id:'fen_p3', tur:'pdf', ders:'fen', em:'📑',
+    baslik:'Sürdürülebilir Yaşam ve Etkileşim',
+    aciklama:'6. Sınıf 7. Ünite — Konu anlatımı',
+    sure:'PDF', url:'sinav-haftasi/6. SINIF 7. ÜNİTE SÜRDÜRÜLEBİLİR YAŞAM VE ETKİLEŞİM KONU ANLATIMI.pdf',
+    tag:'Fen', tagRenk:'#d1fae5', tagText:'#059669'
+  },
+  {
     id:'sm6', tur:'pdf', ders:'fen', em:'🔬',
     baslik:'Fen 2. Dönem 2. Yazılı',
     aciklama:'Geçmiş sınav soruları',
     sure:'PDF', url:'sinav-haftasi/6_Fen_2.Donem_2. Yazili (1).pdf',
     tag:'Fen', tagRenk:'#d1fae5', tagText:'#059669'
+  },
+  {
+    id:'dnz1', tur:'link', ders:'fen', em:'🧪',
+    baslik:'Yoğunluk Simülasyonu — Türkçe (dnzhoca)',
+    aciklama:'Cisimleri sıvıya at, yüzer/batar dene · d=m/V formül hesabı',
+    sure:'Simülasyon', url:'https://dnzhoca.com/6-sinif-yogunluk-deneyler-simulasyonlar/6-sinif-yogunluk-simulasyonu-etkilesimli-sanal-deney/',
+    tag:'Fen · Simülasyon', tagRenk:'#d1fae5', tagText:'#059669'
+  },
+  {
+    id:'phet1', tur:'phet', ders:'fen', em:'🧪',
+    baslik:'Yoğunluk — İnteraktif Simülasyon',
+    aciklama:'Maddeleri sıvıya at, yüzer mi batar mı izle · PhET Colorado',
+    sure:'Simülasyon', url:'https://phet.colorado.edu/sims/html/density/latest/density_tr.html',
+    tag:'Fen · Simülasyon', tagRenk:'#d1fae5', tagText:'#059669'
+  },
+  {
+    id:'phet2', tur:'phet', ders:'fen', em:'⚡',
+    baslik:'Elektrik Devresi — İnteraktif Simülasyon',
+    aciklama:'Devre kur, direnç değiştir, ampul parlaklığını izle · PhET Colorado',
+    sure:'Simülasyon', url:'https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_tr.html',
+    tag:'Fen · Simülasyon', tagRenk:'#d1fae5', tagText:'#059669'
   }
 ];
 
 function ytEmbed(url){
   var m=url.match(/(?:youtu\.be\/|[?&]v=)([A-Za-z0-9_-]{11})/);
-  return m?'https://www.youtube.com/embed/'+m[1]+'?rel=0':'';
+  if(!m) return '';
+  var p='?rel=0', t=url.match(/[?&]t=(\d+)/);
+  if(t) p+='&start='+t[1];
+  return 'https://www.youtube.com/embed/'+m[1]+p;
 }
-function ytUrl(url){
-  var m=url.match(/(?:youtu\.be\/|[?&]v=)([A-Za-z0-9_-]{11})/);
-  return m?'https://www.youtube.com/watch?v='+m[1]:url;
-}
+function ytUrl(url){ return url; }
 
 var activeStudyId=null;
 function renderStudyList(){
@@ -1127,6 +1212,13 @@ window.studyOpen=function(id){
     } else {
       body.innerHTML='<iframe src="'+item.url+'" style="width:100%;height:580px;border:none;display:block"></iframe>';
     }
+  } else if(item.tur==='phet'){
+    body.innerHTML=
+      '<iframe src="'+item.url+'" style="width:100%;height:520px;border:none;display:block" allowfullscreen></iframe>'+
+      '<div style="padding:8px 14px;background:#f0fdf4;border-top:1px solid #a7f3d0;font-size:.74rem;font-weight:700;color:#065f46;display:flex;align-items:center;gap:6px">'+
+        '🎓 PhET Colorado Üniversitesi — Ücretsiz Eğitim Simülasyonu'+
+        '<a href="'+item.url+'" target="_blank" rel="noreferrer" style="margin-left:auto;color:#059669;font-weight:800;text-decoration:none;font-size:.72rem">Tam ekran ↗</a>'+
+      '</div>';
   } else {
     body.innerHTML='<div class="study-placeholder">'+
       '<div class="study-placeholder-icon">🔗</div>'+
@@ -1536,12 +1628,119 @@ function deviceNoticeKapat(){
   setInterval(checkUpdate, 5 * 60 * 1000);
 })();
 
+/* ── MİNİ QUIZ ── */
+var QUIZ_DATA = [
+  {
+    soru: 'Suyun katı hâli (buz) sıvı suya atıldığında ne olur?',
+    secenekler: ['Batar — yoğunluğu fazladır', 'Yüzer — yoğunluğu daha düşüktür', 'Çözünür ve kaybolur', 'Hiçbir şey olmaz'],
+    dogru: 1,
+    aciklama: '💡 Buzun yoğunluğu ≈ 0.92 g/cm³, sıvı suyun ≈ 1 g/cm³. Buz daha hafif olduğu için yüzer. Bu sayede göllerin yüzeyi donar ama altı sıvı kalır — canlılar hayatta kalır!'
+  },
+  {
+    soru: 'Yoğunluk formülü hangisidir?',
+    secenekler: ['d = m × V', 'd = V ÷ m', 'd = m ÷ V', 'd = m + V'],
+    dogru: 2,
+    aciklama: '💡 Yoğunluk = Kütle / Hacim (d = m/V). Birimi g/cm³ ya da kg/m³ olabilir.'
+  },
+  {
+    soru: 'Aşağıdakilerden hangisi elektriği iletir (iletken maddedir)?',
+    secenekler: ['Plastik kap', 'Tahta çubuk', 'Cam bardak', 'Bakır tel'],
+    dogru: 3,
+    aciklama: '💡 Metaller (bakır, demir, alüminyum, gümüş) serbest elektronları sayesinde elektriği iyi iletir. Plastik, tahta, cam yalıtkandır.'
+  },
+  {
+    soru: 'Elektrik devresinde direnç artarsa ampulün parlaklığı nasıl değişir?',
+    secenekler: ['Artar', 'Azalır', 'Değişmez', 'Önce artar, sonra söner'],
+    dogru: 1,
+    aciklama: '💡 Ohm Yasası: I = V / R. Direnç (R) artarsa akım (I) azalır → ampule gelen enerji düşer → ampul daha az parlar.'
+  },
+  {
+    soru: 'Reostat (ayarlanabilir direnç) devreye eklendiğinde ne işe yarar?',
+    secenekler: [
+      'Devreyi açıp kapatır',
+      'Akımı depolayarak pil gibi çalışır',
+      'Direnci değiştirerek akım şiddetini ve ampul parlaklığını ayarlar',
+      'Sadece kısa devreyi önler'
+    ],
+    dogru: 2,
+    aciklama: '💡 Reostat, tel uzunluğunu değiştirerek direnci artırır/azaltır. Direnç değiştikçe akım ve ampul parlaklığı da değişir.'
+  },
+  {
+    soru: 'Aşağıdakilerden hangisi biyoçeşitliliği tehdit eden bir faktördür?',
+    secenekler: ['Bitkilerin fotosentez yapması', 'Orman yangınları ve habitat kaybı', 'Yağmur yağması', 'Doğal üreme ve çoğalma'],
+    dogru: 1,
+    aciklama: '💡 Habitat kaybı (ormansızlaşma, tarım alanı açma, kentleşme) biyoçeşitliliği en çok tehdit eden faktördür. Orman yangınları da binlerce türün yaşam alanını yok eder.'
+  }
+];
+
+var quizState = { idx: 0, score: 0, answered: false };
+
+function renderQuiz() {
+  var el = document.getElementById('quiz-card'); if(!el) return;
+  if(quizState.idx >= QUIZ_DATA.length){ renderQuizResult(); return; }
+  var q = QUIZ_DATA[quizState.idx];
+  var letters = ['A','B','C','D'];
+  var pct = Math.round(quizState.idx / QUIZ_DATA.length * 100);
+  el.innerHTML =
+    '<div class="quiz-top">'+
+      '<div class="quiz-top-left">'+
+        '<div class="quiz-top-lbl">Soru '+(quizState.idx+1)+' / '+QUIZ_DATA.length+'</div>'+
+        '<div class="quiz-prog-track"><div class="quiz-prog-fill" style="width:'+pct+'%"></div></div>'+
+      '</div>'+
+      '<div class="quiz-score-badge">⭐ '+quizState.score+' / '+QUIZ_DATA.length+'</div>'+
+    '</div>'+
+    '<div class="quiz-body">'+
+      '<div class="quiz-q-text">'+safe(q.soru)+'</div>'+
+      '<div class="quiz-options">'+
+        q.secenekler.map(function(s,i){
+          return '<button class="quiz-opt" data-idx="'+i+'"><span class="quiz-opt-letter">'+letters[i]+'</span>'+safe(s)+'</button>';
+        }).join('')+
+      '</div>'+
+      '<div class="quiz-aciklama" id="quiz-aciklama">'+safe(q.aciklama)+'</div>'+
+      '<div class="quiz-next-wrap"><button class="quiz-next-btn" id="quiz-next" onclick="quizNext()">'+(quizState.idx < QUIZ_DATA.length-1 ? 'Sonraki Soru →' : '✓ Sonuçları Gör')+'</button></div>'+
+    '</div>';
+  el.querySelectorAll('.quiz-opt').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      if(quizState.answered) return;
+      quizState.answered = true;
+      var chosen = +btn.dataset.idx;
+      var correct = q.dogru;
+      el.querySelectorAll('.quiz-opt').forEach(function(b,i){
+        b.disabled = true;
+        if(i===correct) b.classList.add('correct');
+        else if(i===chosen) b.classList.add('wrong');
+      });
+      if(chosen===correct) quizState.score++;
+      var aEl=document.getElementById('quiz-aciklama'); if(aEl) aEl.classList.add('show');
+      var nBtn=document.getElementById('quiz-next'); if(nBtn) nBtn.classList.add('show');
+    });
+  });
+}
+window.quizNext=function(){
+  quizState.idx++; quizState.answered=false;
+  quizState.idx>=QUIZ_DATA.length ? renderQuizResult() : renderQuiz();
+};
+function renderQuizResult(){
+  var el=document.getElementById('quiz-card'); if(!el) return;
+  var s=quizState.score, t=QUIZ_DATA.length, pct=Math.round(s/t*100);
+  var em=pct>=80?'🏆':pct>=60?'👍':'📚';
+  var msg=pct>=80?'Mükemmel! Konuya çok iyi hâkimsin.':pct>=60?'İyi gidiyorsun! Zayıf sorulara tekrar bak.':'Simülasyonları dene, sonra tekrar çöz!';
+  el.innerHTML='<div class="quiz-result">'+
+    '<div class="quiz-result-em">'+em+'</div>'+
+    '<div class="quiz-result-score">'+s+' / '+t+' doğru &nbsp;('+pct+'%)</div>'+
+    '<div class="quiz-result-msg">'+msg+'</div>'+
+    '<button class="quiz-restart-btn" onclick="quizRestart()">↺ Tekrar Çöz</button>'+
+  '</div>';
+}
+window.quizRestart=function(){ quizState={idx:0,score:0,answered:false}; renderQuiz(); };
+
 /* INIT */
 renderTodayLbl();
 renderExams();
 renderTodaySection();
 renderStudyList();
 renderResources();
+renderQuiz();
 renderNK();
 renderCL();
 renderMoti();
