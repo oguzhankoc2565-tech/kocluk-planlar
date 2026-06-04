@@ -344,8 +344,13 @@
 
     /* ── SİMÜLASYONLAR ── */
     .sim-grid { display:grid; grid-template-columns:230px 1fr; gap:14px; align-items:start; }
-    .sim-list-card { background:#fff; border-radius:var(--r); box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column; }
+    .sim-list-card { background:#fff; border-radius:var(--r); box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column; max-height:600px; }
     .sim-list-hd { background:linear-gradient(90deg,#059669,#10b981); padding:12px 14px; color:#fff; font-size:.82rem; font-weight:800; display:flex; align-items:center; gap:6px; flex-shrink:0; }
+    #sim-list { flex:1; overflow-y:auto; }
+    #sim-list::-webkit-scrollbar { width:5px; }
+    #sim-list::-webkit-scrollbar-track { background:transparent; }
+    #sim-list::-webkit-scrollbar-thumb { background:#a7f3d0; border-radius:999px; }
+    #sim-list::-webkit-scrollbar-thumb:hover { background:#6ee7b7; }
     .sim-item { display:flex; align-items:flex-start; gap:10px; padding:11px 13px; cursor:pointer; border-bottom:1px solid #f1f5f9; transition:background .12s; }
     .sim-item:last-child { border-bottom:none; }
     .sim-item:hover { background:#f0fdf4; }
@@ -628,7 +633,7 @@
    Yeni özellik ekleyince bu numarayı değiştir (ör: tarih + sıra).
    Öğrencilerin tarayıcısı 5 dk içinde güncelleme bildirimi görür.
 ──────────────────────────────────────────────────────────────── */
-const PAGE_VERSION = '2026-06-04-v10';
+const PAGE_VERSION = '2026-06-04-v11';
 
 /* ─── DATA ─── */
 const API_URL = 'https://script.google.com/macros/s/AKfycbyUvFShqvwvwOlJmVSY8TQFmYoXCqcfu4JFrK3KtzIVMHN9YctZmRpyrfK5AydUNcPd/exec';
@@ -1037,21 +1042,21 @@ const STUDY_RESOURCES = [
 
 /* ── SİMÜLASYONLAR ── */
 const SIMULATIONS = [
-  {id:'sim1',em:'🧪',baslik:'Yoğunluk Sanal Lab (Türkçe)',aciklama:'5 sekme: Kütle/Hacim · Çoklu Atım · Sıvı Kulesi · Taşırma · Sıvı Kütlesi',url:'https://dnzhoca.com/wp-content/uploads/2026/03/yogunluk-dnzhoca-V3.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669'},
-  {id:'sim2',em:'🔬',baslik:'Yoğunluk — PhET',aciklama:'Sıvı kulesi oluştur · Madde yoğunluklarını karşılaştır',url:'https://phet.colorado.edu/sims/html/density/latest/density_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#cffafe',tagText:'#0891b2'},
-  {id:'sim3',em:'⚡',baslik:'Elektrik Devresi — PhET',aciklama:'Devre kur · Direnç değiştir · Ampul parlaklığını izle',url:'https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#ede9fe',tagText:'#7c3aed'},
-  {id:'sim4',em:'⚡',baslik:'Ohm Yasası — PhET',aciklama:'V = I × R · Gerilim, akım, direnç ilişkisi',url:'https://phet.colorado.edu/sims/html/ohms-law/latest/ohms-law_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#fef3c7',tagText:'#d97706'},
-  {id:'sim5',em:'🌿',baslik:'Doğal Seçilim — PhET',aciklama:'Biyoçeşitlilik · Evrim · Nesil korunması',url:'https://phet.colorado.edu/sims/html/natural-selection/latest/natural-selection_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#d1fae5',tagText:'#059669'},
-  {id:'sim6',em:'💧',baslik:'Basınç Altında — PhET',aciklama:'Sıvı basıncı · Maddenin ayırt edici özellikleri',url:'https://phet.colorado.edu/sims/html/under-pressure/latest/under-pressure_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#cffafe',tagText:'#0891b2'},
-  {id:'sim7',em:'🪞',baslik:'Aynalar Simülasyonu',aciklama:'Görüntü özellikleri · Düzlem & çukur ayna deneyleri',url:'https://dnzhoca.com/wp-content/uploads/2025/12/AYNA-ETKINLIGI.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669'},
-  {id:'sim8',em:'💡',baslik:'Işığın Yansıması Lab.',aciklama:'Yansıma açısı · İnteraktif ışın deneyi',url:'https://dnzhoca.com/wp-content/uploads/2025/12/v7-isigin-yansimasi.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669'},
-  {id:'sim9',em:'🌈',baslik:'Işığın Soğurulması Lab.',aciklama:'Renkler ve ışık soğurulması · Filtreleme deneyi',url:'https://dnzhoca.com/wp-content/uploads/2026/01/isiginsogurulmasiverenkler_dnzhocav2.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669'},
-  {id:'sim10',em:'⚖️',baslik:'Bileşke Kuvvet Lab.',aciklama:'Kuvvetleri topla · Denge & bileşke hesaplama',url:'https://dnzhoca.com/wp-content/uploads/2025/12/bileske-kuvvet-labv10_dnzhoca_31_12_2025.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669'},
-  {id:'sim11',em:'🏃',baslik:'Hız & Sürat Lab.',aciklama:'Sabit hızlı hareket · Hız-sürat hesaplama',url:'https://dnzhoca.com/wp-content/uploads/2025/12/HIZ-VE-SURAT-ETKINLIGI_V10dnzhoca.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669'},
-  {id:'sim12',em:'🌍',baslik:'Güneş Sistemi Lab.',aciklama:'Gezegenleri keşfet · Güneş sistemi özellikleri',url:'https://dnzhoca.com/wp-content/uploads/2025/12/gunes-sistemi.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669'},
-  {id:'sim13',em:'🌑',baslik:'Güneş & Ay Tutulmaları',aciklama:'Gökyüzündeki gölge oyunları · Tutulma mekanizması',url:'https://dnzhoca.com/wp-content/uploads/2025/12/tutulmalar-simulasyonu.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669'},
-  {id:'sim14',em:'🔦',baslik:'İletken Avcısı & Ampul',aciklama:'İletken/yalıtkan test · Ampul parlaklığı deneyi',url:'https://dnzhoca.com/wp-content/uploads/2026/04/iletkenyalitkanv3dnzhoca.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669'},
-  {id:'sim15',em:'🔌',baslik:'Elektriksel Direnç Lab.',aciklama:'Sanal elektrik lab · Direnç ve akım deneyleri',url:'https://dnzhoca.com/wp-content/uploads/2026/05/elektrik_lab_v8.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669'}
+  {id:'sim1',em:'🧪',baslik:'Yoğunluk Sanal Lab (Türkçe)',aciklama:'5 sekme: Kütle/Hacim · Çoklu Atım · Sıvı Kulesi · Taşırma · Sıvı Kütlesi',url:'https://dnzhoca.com/wp-content/uploads/2026/03/yogunluk-dnzhoca-V3.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669',konuTag:'yogunluk'},
+  {id:'sim2',em:'🔬',baslik:'Yoğunluk — PhET',aciklama:'Sıvı kulesi oluştur · Madde yoğunluklarını karşılaştır',url:'https://phet.colorado.edu/sims/html/density/latest/density_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#cffafe',tagText:'#0891b2',konuTag:'yogunluk'},
+  {id:'sim3',em:'⚡',baslik:'Elektrik Devresi — PhET',aciklama:'Devre kur · Direnç değiştir · Ampul parlaklığını izle',url:'https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#ede9fe',tagText:'#7c3aed',konuTag:'elektrik'},
+  {id:'sim4',em:'⚡',baslik:'Ohm Yasası — PhET',aciklama:'V = I × R · Gerilim, akım, direnç ilişkisi',url:'https://phet.colorado.edu/sims/html/ohms-law/latest/ohms-law_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#fef3c7',tagText:'#d97706',konuTag:'elektrik'},
+  {id:'sim5',em:'🌿',baslik:'Doğal Seçilim — PhET',aciklama:'Biyoçeşitlilik · Evrim · Nesil korunması',url:'https://phet.colorado.edu/sims/html/natural-selection/latest/natural-selection_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#d1fae5',tagText:'#059669',konuTag:'biyoçeşitlilik'},
+  {id:'sim6',em:'💧',baslik:'Basınç Altında — PhET',aciklama:'Sıvı basıncı · Maddenin ayırt edici özellikleri',url:'https://phet.colorado.edu/sims/html/under-pressure/latest/under-pressure_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#cffafe',tagText:'#0891b2',konuTag:'basinc'},
+  {id:'sim14',em:'🔦',baslik:'İletken Avcısı & Ampul',aciklama:'İletken/yalıtkan test · Ampul parlaklığı deneyi',url:'https://dnzhoca.com/wp-content/uploads/2026/04/iletkenyalitkanv3dnzhoca.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669',konuTag:'elektrik'},
+  {id:'sim15',em:'🔌',baslik:'Elektriksel Direnç Lab.',aciklama:'Sanal elektrik lab · Direnç ve akım deneyleri',url:'https://dnzhoca.com/wp-content/uploads/2026/05/elektrik_lab_v8.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669',konuTag:'elektrik'},
+  {id:'sim7',em:'🪞',baslik:'Aynalar Simülasyonu',aciklama:'Görüntü özellikleri · Düzlem & çukur ayna deneyleri',url:'https://dnzhoca.com/wp-content/uploads/2025/12/AYNA-ETKINLIGI.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669',konuTag:'isik'},
+  {id:'sim8',em:'💡',baslik:'Işığın Yansıması Lab.',aciklama:'Yansıma açısı · İnteraktif ışın deneyi',url:'https://dnzhoca.com/wp-content/uploads/2025/12/v7-isigin-yansimasi.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669',konuTag:'isik'},
+  {id:'sim9',em:'🌈',baslik:'Işığın Soğurulması Lab.',aciklama:'Renkler ve ışık soğurulması · Filtreleme deneyi',url:'https://dnzhoca.com/wp-content/uploads/2026/01/isiginsogurulmasiverenkler_dnzhocav2.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669',konuTag:'isik'},
+  {id:'sim10',em:'⚖️',baslik:'Bileşke Kuvvet Lab.',aciklama:'Kuvvetleri topla · Denge & bileşke hesaplama',url:'https://dnzhoca.com/wp-content/uploads/2025/12/bileske-kuvvet-labv10_dnzhoca_31_12_2025.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669',konuTag:'kuvvet'},
+  {id:'sim11',em:'🏃',baslik:'Hız & Sürat Lab.',aciklama:'Sabit hızlı hareket · Hız-sürat hesaplama',url:'https://dnzhoca.com/wp-content/uploads/2025/12/HIZ-VE-SURAT-ETKINLIGI_V10dnzhoca.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669',konuTag:'hareket'},
+  {id:'sim12',em:'🌍',baslik:'Güneş Sistemi Lab.',aciklama:'Gezegenleri keşfet · Güneş sistemi özellikleri',url:'https://dnzhoca.com/wp-content/uploads/2025/12/gunes-sistemi.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669',konuTag:'uzay'},
+  {id:'sim13',em:'🌑',baslik:'Güneş & Ay Tutulmaları',aciklama:'Gökyüzündeki gölge oyunları · Tutulma mekanizması',url:'https://dnzhoca.com/wp-content/uploads/2025/12/tutulmalar-simulasyonu.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669',konuTag:'uzay'}
 ];
 
 function ytEmbed(url){
@@ -1131,14 +1136,40 @@ window.studyOpen=function(id){
 
 /* SİMÜLASYONLAR */
 var activeSimId=null;
+
+/* Senaryo konularına göre simülasyon öncelik skoru */
+function simScore(sim){
+  var nx=nextExamObj(); if(!nx) return 0;
+  var nxDate=nx.dt.toISOString().slice(0,10);
+  var exam=EXAMS.find(function(e){return e.tarih===nxDate;}); if(!exam) return 0;
+  var uniteNames=[];
+  exam.dersler.forEach(function(d){
+    var sen=SENARYOLAR[d.kod];
+    if(sen) sen.unite.forEach(function(u){ uniteNames.push(u.ad.toLowerCase()); });
+  });
+  if(!uniteNames.length) return 0;
+  var tag=(sim.konuTag||'').toLowerCase();
+  /* Doğrudan senaryo konusuyla eşleşme */
+  if((tag==='yogunluk'||tag==='basinc') && uniteNames.some(function(u){return u.includes('madde')||u.includes('yoğunluk');})) return 3;
+  if(tag==='elektrik' && uniteNames.some(function(u){return u.includes('elektrik');})) return 3;
+  if(tag==='biyoçeşitlilik' && uniteNames.some(function(u){return u.includes('sürdürülebilir')||u.includes('biyoçeşitlilik');})) return 3;
+  return 0;
+}
+
 function renderSimulations(){
   var el=document.getElementById('sim-list'); if(!el) return;
-  el.innerHTML=SIMULATIONS.map(function(s){
+  /* Senaryo önceliğine göre sırala */
+  var sorted=SIMULATIONS.slice().sort(function(a,b){ return simScore(b)-simScore(a); });
+  var firstLow=-1;
+  sorted.forEach(function(s,i){ if(firstLow===-1&&simScore(s)===0) firstLow=i; });
+  el.innerHTML=sorted.map(function(s,i){
     var cls='sim-item'+(activeSimId===s.id?' active':'');
-    return '<div class="'+cls+'" data-id="'+s.id+'" onclick="simOpen(\''+s.id+'\')">'+
+    var divider=(i===firstLow&&firstLow>0)?'<div style="padding:5px 12px 3px;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#94a3b8;background:#f8faff;border-bottom:1px solid #f1f5f9;">Diğer Simülasyonlar</div>':'';
+    var badge=(i===0&&simScore(s)>0)?'<span style="font-size:.6rem;font-weight:800;background:#fef3c7;color:#92400e;padding:2px 6px;border-radius:999px;margin-left:4px">📌 Sınava Uygun</span>':'';
+    return divider+'<div class="'+cls+'" data-id="'+s.id+'" onclick="simOpen(\''+s.id+'\')">'+
       '<div class="sim-item-ic">'+s.em+'</div>'+
       '<div>'+
-        '<div class="sim-item-title">'+safe(s.baslik)+'</div>'+
+        '<div class="sim-item-title">'+safe(s.baslik)+badge+'</div>'+
         '<div class="sim-item-sub">'+safe(s.aciklama)+'</div>'+
         '<span class="sim-item-tag" style="background:'+s.tagRenk+';color:'+s.tagText+'">'+s.tag+'</span>'+
       '</div>'+
