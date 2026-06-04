@@ -628,7 +628,7 @@
    Yeni özellik ekleyince bu numarayı değiştir (ör: tarih + sıra).
    Öğrencilerin tarayıcısı 5 dk içinde güncelleme bildirimi görür.
 ──────────────────────────────────────────────────────────────── */
-const PAGE_VERSION = '2026-06-04-v6';
+const PAGE_VERSION = '2026-06-04-v7';
 
 /* ─── DATA ─── */
 const API_URL = 'https://script.google.com/macros/s/AKfycbyUvFShqvwvwOlJmVSY8TQFmYoXCqcfu4JFrK3KtzIVMHN9YctZmRpyrfK5AydUNcPd/exec';
@@ -1037,7 +1037,7 @@ const STUDY_RESOURCES = [
 
 /* ── SİMÜLASYONLAR ── */
 const SIMULATIONS = [
-  {id:'sim1',em:'🧪',baslik:'Yoğunluk Simülasyonu (Türkçe)',aciklama:'Cisimleri sıvıya at · d=m/V hesapla · Yüzer mi batar mı keşfet',url:'https://dnzhoca.com/6-sinif-yogunluk-deneyler-simulasyonlar/6-sinif-yogunluk-simulasyonu-etkilesimli-sanal-deney/',tip:'link',tag:'Fen',tagRenk:'#d1fae5',tagText:'#059669'},
+  {id:'sim1',em:'🧪',baslik:'Yoğunluk Sanal Lab (Türkçe)',aciklama:'5 sekme: Kütle/Hacim · Çoklu Atım · Sıvı Kulesi · Taşırma · Sıvı Kütlesi',url:'https://dnzhoca.com/wp-content/uploads/2026/03/yogunluk-dnzhoca-V3.html',tip:'lab',tag:'Fen · Türkçe Lab',tagRenk:'#d1fae5',tagText:'#059669'},
   {id:'sim2',em:'🔬',baslik:'Yoğunluk — PhET',aciklama:'Sıvı kulesi oluştur · Madde yoğunluklarını karşılaştır',url:'https://phet.colorado.edu/sims/html/density/latest/density_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#cffafe',tagText:'#0891b2'},
   {id:'sim3',em:'⚡',baslik:'Elektrik Devresi — PhET',aciklama:'Devre kur · Direnç değiştir · Ampul parlaklığını izle',url:'https://phet.colorado.edu/sims/html/circuit-construction-kit-dc/latest/circuit-construction-kit-dc_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#ede9fe',tagText:'#7c3aed'},
   {id:'sim4',em:'⚡',baslik:'Ohm Yasası — PhET',aciklama:'V = I × R · Gerilim, akım, direnç ilişkisi',url:'https://phet.colorado.edu/sims/html/ohms-law/latest/ohms-law_tr.html',tip:'phet',tag:'Fen · PhET',tagRenk:'#fef3c7',tagText:'#d97706'},
@@ -1148,17 +1148,21 @@ window.simOpen=function(id){
   if(nameEl) nameEl.textContent=sim.em+' '+sim.baslik;
   if(fsBtn){ fsBtn.href=sim.url; fsBtn.style.display='inline-flex'; fsBtn.style.alignItems='center'; fsBtn.style.gap='4px'; }
   if(!body) return;
-  if(sim.tip==='phet'){
+  if(sim.tip==='lab'){
+    /* Bağımsız HTML dosyası — X-Frame-Options yok, doğrudan embed edilebilir */
+    body.innerHTML=
+      '<div style="width:100%;background:#f8fafc;border-radius:0 0 var(--r) var(--r);overflow:hidden">'+
+        '<iframe src="'+sim.url+'" width="100%" height="850" style="border:none;display:block" '+
+        'title="'+safe(sim.baslik)+'" loading="lazy" allowfullscreen></iframe>'+
+      '</div>';
+  } else if(sim.tip==='phet'){
     body.innerHTML='<iframe src="'+sim.url+'" allowfullscreen allow="fullscreen"></iframe>';
   } else {
-    /* dnzhoca gibi embed edilemeyen siteler için iframe dene, X-Frame-Options hatasında fallback */
     body.innerHTML=
-      '<iframe src="'+sim.url+'" allowfullscreen style="width:100%;height:600px;border:none;display:block" '+
-      'onerror="this.style.display=\'none\';document.getElementById(\'sim-embed-err\').style.display=\'flex\'"></iframe>'+
-      '<div id="sim-embed-err" style="display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:60px 24px;text-align:center;background:#f0fdf4;min-height:300px">'+
+      '<div class="sim-placeholder">'+
         '<div style="font-size:2.5rem">🔬</div>'+
-        '<div style="font-weight:800;font-size:.92rem;color:#065f46">Bu site doğrudan gömülemez</div>'+
-        '<div style="font-size:.82rem;color:#047857;font-weight:600">Üst sağdaki "⛶ Tam Ekran" butonuna tıkla</div>'+
+        '<div style="font-weight:700;font-size:.9rem">'+safe(sim.baslik)+'</div>'+
+        '<a href="'+sim.url+'" target="_blank" rel="noreferrer" style="background:linear-gradient(90deg,#059669,#10b981);color:#fff;padding:10px 20px;border-radius:12px;text-decoration:none;font-size:.88rem;font-weight:800">⛶ Tam Ekranda Aç ↗</a>'+
       '</div>';
   }
 };
